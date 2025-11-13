@@ -6,16 +6,16 @@ public class AttackContext
     public BodyBalance body;
 
     // references (may be null)
-    public RightArmBalance rightArm;
-    public RightElbowBalance rightElbow;
-    public RightHandBalance rightHand;
-    public LeftArmBalance leftArm;
-    public LeftElbowBalance leftElbow;
-    public LeftHandBalance leftHand;
-    public RightLegBalance rightLeg;
-    public RightFootBalance rightFoot;
-    public LeftLegBalance leftLeg;
-    public LeftFootBalance leftFoot;
-    public RightPillowBalance rightPillow;
-    public LeftPillowBalance leftPillow;
+    public BalanceAbstract rightArm;
+    public BalanceAbstract rightElbow;
+    public BalanceAbstract rightHand;
+    public BalanceAbstract leftArm;
+    public BalanceAbstract leftElbow;
+    public BalanceAbstract leftHand;
+    public BalanceAbstract rightLeg;
+    public BalanceAbstract rightFoot;
+    public BalanceAbstract leftLeg;
+    public BalanceAbstract leftFoot;
+    public BalanceAbstract rightPillow;
+    public BalanceAbstract leftPillow;
 }

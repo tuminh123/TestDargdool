@@ -1,16 +1,17 @@
-using UnityEngine;
-
-public class AttackActionFactory : MonoBehaviour
+public static class AttackActionFactory
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static IAttackAction Create(AttackProfile profile)
     {
-        
-    }
+        if (profile == null) return null;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        bool isRight = profile.side != AttackProfile.Side.Left;
+        switch (profile.category)
+        {
+            case AttackProfile.Category.Arm: return new ArmAttackAction(isRight);
+            case AttackProfile.Category.Elbow: return new ArmAttackAction(isRight); // reuse Arm with different angles via profile
+            case AttackProfile.Category.Leg: return new LegAttackAction(isRight);
+            case AttackProfile.Category.Pillow: return new PillowAttackAction(isRight);
+            default: return new ArmAttackAction(isRight);
+        }
     }
 }
