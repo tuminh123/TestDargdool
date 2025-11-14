@@ -47,10 +47,6 @@ public abstract class BalanceAbstract : MonoBehaviour
     {
         this.isActive = isActive;
     }
-    // ======================================================================
-    // 🚀 Bổ sung thêm phần ragdoll hỗ trợ vật lý tấn công "bồng bềnh"
-    // ======================================================================
-
     /// <summary>
     /// Thêm một lực đẩy vật lý (dùng khi tấn công)
     /// </summary>

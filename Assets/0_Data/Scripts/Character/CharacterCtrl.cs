@@ -12,8 +12,6 @@ public class CharacterCtrl : MonoBehaviour
     //component
     private Idling idling;
     private Moving moving;
-    private AttackTest attacking;
-    private AttackTest_2 attackTest_2;
     private Attack_Test_3 attack_3;
     protected Animator anim;
     //get
@@ -24,9 +22,7 @@ public class CharacterCtrl : MonoBehaviour
         idling = GetComponent<Idling>();
         moving = GetComponent<Moving>();
         anim = GetComponent<Animator>();
-        attacking = GetComponent<AttackTest>();
         balances = GetComponentsInChildren<BalanceAbstract>();
-        attackTest_2 = GetComponent<AttackTest_2>();
         attack_3 = GetComponent<Attack_Test_3>();
     }
     private void Start()
@@ -73,8 +69,6 @@ public class CharacterCtrl : MonoBehaviour
 
                 break;
             case state.attack:
-                //attacking.AttackHandle();
-                //attackTest_2.AttackHandle();
                 attack_3.AttackHandle();
                 break;
             default:

@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Balance : MonoBehaviour
-{   public float targetRotation;
-    public Rigidbody2D rb;
-    public float force;
+{
+    [SerializeField] private BalanceType type;
+    [SerializeField] private float targetRotation;
+    [SerializeField] private float force;
 
-    private void Start()
-    {
-        rb = gameObject.GetComponent<Rigidbody2D>();
-    }
+    [SerializeField] private Rigidbody2D rb;
+    //get
+    public float TargetRotation=>targetRotation;
+    public float Force=>force;
+    public Rigidbody2D Rb => rb;
+    public  BalanceType Type =>type;
 
     private void FixedUpdate()
     {
@@ -24,5 +27,9 @@ public class Balance : MonoBehaviour
     public void SetForce(float force)
     {
         this.force = force;
+    }
+    public void SetType(BalanceType type)
+    {
+        this.type = type;
     }
 }
