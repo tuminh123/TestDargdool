@@ -1,7 +1,17 @@
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public enum AttackTypes
+{
+    Punch,
+    Kick,
+    Elbow,
+    Knee
+}
 
 public interface IAttackAction
 {
-    // Returns IEnumerator to be started as coroutine.
-    IEnumerator Execute(AttackContext ctx, AttackProfile profile);
+    bool IsAttacking { get; }
+    IEnumerator Execute(Vector2 attackDir);
 }

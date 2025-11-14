@@ -16,14 +16,16 @@ public class Attack_Test_3 : ActionBase
     }
 
     [Header("Attack Settings")]
-    [SerializeField] private float attackForce = 100f;        // Lực tay
-    [SerializeField] private float handForce = 100f;          // Lực bàn tay
-    [SerializeField] private float legForce = 150f;           // Lực đá
-    [SerializeField] private float pillowForce = 120f;        // Lực gối
-    [SerializeField] private float bodyForce = 70f;           // Lực thân nhẹ
-    [SerializeField] private float damping = 1.5f;            // Giảm tốc độ
-    [SerializeField] private float stiffness = 50f;           // Độ đàn hồi tay
-    [SerializeField] private float attackDuration = 0.25f;    // Thời gian cú tấn công
+    [SerializeField] private float attackDuration = 0.4f;
+    [SerializeField] private float damping = 0.95f;        // giảm nhẹ, tự nhiên
+    [SerializeField] private float stiffness = 45f;         // mềm mại hơn
+
+    [Header("Force Settings")]
+    [SerializeField] private float attackForce = 80f;       // lực tay trên (arm)
+    [SerializeField] private float handForce = 65f;         // lực bàn tay
+    [SerializeField] private float legForce = 150f;         // lực chân (đòn đá mạnh)
+    [SerializeField] private float pillowForce = 95f;       // lực đầu gối
+    [SerializeField] private float bodyForce = 65f;         // lực toàn thân
 
     [Header("References - Right side")]
     [SerializeField] private RightArmBalance rightArmBalance;
