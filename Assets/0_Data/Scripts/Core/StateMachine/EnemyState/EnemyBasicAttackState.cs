@@ -10,7 +10,7 @@ public class EnemyBasicAttackState : EnemyBasicState
     {
         base.Enter();
         
-        enemyAI.attack.HandleAttack();
+        enemyAI.attack.HandleAttack(attackDir);
         
         enemyAI.attack.currentAttackData.OnAttackEnd += () =>
         {

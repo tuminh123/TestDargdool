@@ -15,12 +15,14 @@ public class EnemyBasicIdleState : EnemyBasicState
     public override void Update()
     {
         base.Update();
-        if (distanceToPlayer > attackDistance)
-        {
-            stateMachine.ChangeState(enemyAI.enemyChaseState);
-        }else /*if (distanceToPlayer <= attackDistance)*/
+        if (distanceToPlayer <= attackDistance)
         {
             stateMachine.ChangeState(enemyAI.enemyAttackState);
+            
+        }
+        else /*if (distanceToPlayer <= attackDistance)*/
+        {
+            stateMachine.ChangeState(enemyAI.enemyChaseState);
         }
     }
 }

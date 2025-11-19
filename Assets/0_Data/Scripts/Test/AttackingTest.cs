@@ -19,37 +19,122 @@ public class AttackingTest : MonoBehaviour
 
     [SerializeField] Balance body;
     [SerializeField] float attackForce;
+    [SerializeField] AnimationCurve attackCurve;
+    private float attackSpeed;
+    float time;
 
     private Vector2 attackDir;
 
     private bool isAttacking;
+    [SerializeField] private AnimationCurve rotateCurve;
+
     public bool IsAttacking=>isAttacking;
+    private void Start()
+    {
+        StartAttack();
+    }
     private void Update()
     {
         AttackDirHandle();
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            //StartCoroutine(RightPunch());
-            IEnumerator punchRight = BodyPartHandle(rightArm, rightArmDown, 110, 100, 10, 10, -15, 0, 0, 0,5, 1); 
-            IEnumerator elbowRight = BodyPartHandle(rightArm, rightArmDown, 100, -65, 20, 20, -15, 0, 0, 0,5, 1); 
-            IEnumerator kickRight = BodyPartHandle(rightLeg, rightLegDown, 100, 100, 50, 35, 50, 0, 0, 0,20, 15); 
-            IEnumerator pillowRight = BodyPartHandle(rightLeg, rightLegDown,90,-25,50,35,50, 0, 0, 0,20, 15); 
-            IEnumerator[] coroutines = { punchRight, elbowRight,kickRight, pillowRight };
-            int rand = Random.Range(0, coroutines.Length);
-            StartCoroutine(coroutines[rand]);
+            StartCoroutine(HandleAttack(rightArm, rightArmDown));
+            ////StartCoroutine(RightPunch());
+            //IEnumerator punchRight = BodyPartHandle(rightArm, rightArmDown, 110, 100, 10, 10, -15, 0, 0, 0,5, 1); 
+            //IEnumerator elbowRight = BodyPartHandle(rightArm, rightArmDown, 100, -65, 20, 20, -15, 0, 0, 0,5, 1); 
+            //IEnumerator kickRight = BodyPartHandle(rightLeg, rightLegDown, 100, 100, 50, 35, 50, 0, 0, 0,20, 15); 
+            //IEnumerator pillowRight = BodyPartHandle(rightLeg, rightLegDown,90,-25,50,35,50, 0, 0, 0,20, 15); 
+            //IEnumerator[] coroutines = { punchRight, elbowRight,kickRight, pillowRight };
+            //int rand = Random.Range(0, coroutines.Length);
+            //StartCoroutine(coroutines[rand]);
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            IEnumerator punchLeft = BodyPartHandle(leftArm,leftArmDown, -110, -100, 10, 10, 15, 0, 0, 0, 5, 1);
-            IEnumerator elbowLeft = BodyPartHandle(leftArm,leftArmDown, -100, 65, 20, 20, 15, 0, 0, 0, 5, 1);
-            IEnumerator kickLeft = BodyPartHandle(leftLeg,leftLegDown, -100, -100, 50, 35, -50, 0, 0, 0, 20, 15);
-            IEnumerator pillowLeft = BodyPartHandle(leftLeg,leftLegDown, -90, 25, 50, 35, -50, 0, 0, 0, 20, 15);
-            IEnumerator[] coroutines = { punchLeft,elbowLeft,kickLeft,pillowLeft };
-            int rand = Random.Range(0, coroutines.Length);
-            StartCoroutine(coroutines[rand]);
+            //IEnumerator punchLeft = BodyPartHandle(leftArm,leftArmDown, -110, -100, 10, 10, 15, 0, 0, 0, 5, 1);
+            //IEnumerator elbowLeft = BodyPartHandle(leftArm,leftArmDown, -100, 65, 20, 20, 15, 0, 0, 0, 5, 1);
+            //IEnumerator kickLeft = BodyPartHandle(leftLeg,leftLegDown, -100, -100, 50, 35, -50, 0, 0, 0, 20, 15);
+            //IEnumerator pillowLeft = BodyPartHandle(leftLeg,leftLegDown, -90, 25, 50, 35, -50, 0, 0, 0, 20, 15);
+            //IEnumerator[] coroutines = { punchLeft,elbowLeft,kickLeft,pillowLeft };
+            //int rand = Random.Range(0, coroutines.Length);
+            //StartCoroutine(coroutines[rand]);
         }
     }
+    private void StartAttack()
+    {
+        time = 0;
+        attackSpeed = attackCurve.Evaluate(time);
+    }
+    private void AttackHandle()
+    {
+        time += Time.fixedDeltaTime;
+        attackSpeed = attackCurve.Evaluate(time);
+
+    }
+    private IEnumerator HandleAttack(Balance p1,Balance p2)
+    {
+        float t = 0f;
+        float duration = 0.25f;
+
+        // Lưu giá trị ban đầu
+        float p1StartRot = p1.TargetRotation;
+        float p2StartRot = p2.TargetRotation;
+        float bodyStartRot = body.TargetRotation;
+
+        // Giá trị muốn xoay tới
+        float p1EndRot = 100;
+        float p2EndRot = -60;
+        float bodyEndRot = -50;
+
+        // Toàn bộ chạy trong 1 coroutine
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float ratio = t / duration;
+
+            // Easing bằng AnimationCurve
+            float eased = rotateCurve.Evaluate(ratio);
+
+            // Rotate
+            p1.SetTargetRotation(Mathf.Lerp(p1StartRot, p1EndRot, eased));
+            p2.SetTargetRotation(Mathf.Lerp(p2StartRot, p2EndRot, eased));
+            body.SetTargetRotation(Mathf.Lerp(bodyStartRot, bodyEndRot, eased));
+
+            yield return null;
+        }
+
+        // Apply lực sau khi xoay xong
+        float speed = attackCurve.Evaluate(1f);
+        p1.Rb.linearVelocity = attackDir * speed;
+        body.Rb.linearVelocity = attackDir * (speed / 2f);
+
+        // Giữ một chút
+        yield return new WaitForSeconds(0.2f);
+
+        // Trả khớp về ban đầu – cũng chỉ trong 1 coroutine
+        t = 0;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float ratio = t / duration;
+            float eased = rotateCurve.Evaluate(ratio);
+
+            p1.SetTargetRotation(Mathf.Lerp(p1EndRot, p1StartRot, eased));
+            p2.SetTargetRotation(Mathf.Lerp(p2EndRot, p2StartRot, eased));
+            body.SetTargetRotation(Mathf.Lerp(bodyEndRot, bodyStartRot, eased));
+
+            yield return null;
+        }
+    }
+
+    private void Init(Balance p1, Balance p2, out float rot1, out float rot2, out float for1, out float for2)
+    {
+        rot1 = p1.TargetRotation;
+        rot2 = p2.TargetRotation;
+        for1 = p1.Force;
+        for2 = p2.Force;
+    }
+
     private void AttackDirHandle()
     {
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);

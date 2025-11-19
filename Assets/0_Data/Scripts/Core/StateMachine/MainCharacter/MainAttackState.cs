@@ -10,7 +10,7 @@ public class MainAttackState : MainCharacterState
     {
         base.Enter();
         Debug.Log("begin");
-        characterCtrl.attack.HandleAttack();
+        characterCtrl.attack.HandleAttack(characterCtrl.attackDir);
         characterCtrl.attack.currentAttackData.OnAttackEnd += () =>
         {
             Debug.Log("exit");

@@ -24,7 +24,10 @@ public class CharacterCtrl : MonoBehaviour
     private StateMachine stateMachine;
 
     #endregion
-    
+
+    [SerializeField] Balance body;
+    public Vector2 attackDir {  get; private set; }
+
     private void Awake()
     {
         idle = GetComponentInChildren<Idle>();
@@ -49,7 +52,13 @@ public class CharacterCtrl : MonoBehaviour
     private void FixedUpdate()
     {
         stateMachine.UpdateState();
+        AttackDirHandle();
     }
 
-    
+    private void AttackDirHandle()
+    {
+        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorld.z = 0;
+        attackDir = (mouseWorld - body.transform.position).normalized;
+    }
 }
