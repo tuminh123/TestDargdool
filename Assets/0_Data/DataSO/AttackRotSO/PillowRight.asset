@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 365bc1136b6d4b8eaff374a624bea4ae, type: 3}
   m_Name: PillowRight
   m_EditorClassIdentifier: 
-  rot_1: 120
+  rot_1: 130
   rot_2: -60

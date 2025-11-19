@@ -21,8 +21,8 @@ public class AttackData
         attackRotSo.InitData(bodyPart_1, bodyPart_2);
 
         // Mục tiêu xoay forward
-        float targetRot1 = attackRotSo.CaculateRot_1();
-        float targetRot2 = attackRotSo.CaculateRot_2();
+        float targetRot1 = attackRotSo.Rot_1;
+        float targetRot2 = attackRotSo.Rot_2;
 
 
         // Cài đặt drag vật lý để tránh văng khớp
@@ -60,13 +60,13 @@ public class AttackData
         {
             elapsed += Time.fixedDeltaTime;
 
-            // 1️⃣ Xoay tay mượt với giới hạn tốc độ xoay
-            // float rotateSmoothSpeed = configSO.RotateSmoothSpeed;
-            // float maxAngularSpeed = configSO.MaxAngularSpeed;
-            float t_1 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_1.TargetRotation, targetRot1, rotateSmoothSpeed,maxAngularSpeed);
-            float t_2 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_2.TargetRotation, targetRot2, rotateSmoothSpeed, maxAngularSpeed);
-            bodyPart_1.SetTargetRotation(t_1);
-            bodyPart_2.SetTargetRotation(t_2);
+            //// 1️⃣ Xoay tay mượt với giới hạn tốc độ xoay
+            //// float rotateSmoothSpeed = configSO.RotateSmoothSpeed;
+            //// float maxAngularSpeed = configSO.MaxAngularSpeed;
+            //float t_1 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_1.TargetRotation, targetRot1, rotateSmoothSpeed,maxAngularSpeed);
+            //float t_2 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_2.TargetRotation, targetRot2, rotateSmoothSpeed, maxAngularSpeed);
+            //bodyPart_1.SetTargetRotation(t_1);
+            //bodyPart_2.SetTargetRotation(t_2);
             
             // 2️⃣ Tính target theo momentum cơ thể
             float attackReach = configSO.AttackReach;
@@ -76,7 +76,7 @@ public class AttackData
             {
                 bodyPart_1.Rb.linearVelocity = attackDir * attackForce; // Đẩy tay thẳng tới target
                 bodyPart_2.Rb.linearVelocity = attackDir * attackForce;
-                body.Rb.AddForce(attackDir * attackForce * 0.3f, ForceMode2D.Impulse); // Kéo body
+                body.Rb.linearVelocity = attackDir * attackForce * 0.3f; // Kéo body
             }
 
             // 3️⃣ Di chuyển tay procedural với lực giới hạn và giảm tốc
@@ -109,32 +109,25 @@ public class Attack : MonoBehaviour
     [SerializeField] private AttackData[] leftAttacks;
     [SerializeField] private AttackData[] rightAttacks;
     public AttackData currentAttackData { get; private set; }
-    
-    private Vector2 attackDir;
+
     private Coroutine attackRoutine;
     
     //get
     public AttackDataConfigSO ConfigSo => configSO;
-    public Vector2 AttackDir => attackDir;
 
     private void FixedUpdate()
     {
-        AttackDirHandle();
+       
     }
      
     //private bool isAttacking;
-    private void AttackDirHandle()
-    {
-        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorld.z = 0;
-        attackDir = (mouseWorld - body.transform.position).normalized;
-    }
+    
     public AttackData GetRandomAttack(bool isRight)
     {
         var list = isRight ? rightAttacks : leftAttacks;
         return list[Random.Range(0, list.Length)];
     }
-    public void HandleAttack()
+    public void HandleAttack(Vector2 attackDir)
     {
         bool isRight = attackDir.x > 0;
         AttackData attack = GetRandomAttack(isRight);
