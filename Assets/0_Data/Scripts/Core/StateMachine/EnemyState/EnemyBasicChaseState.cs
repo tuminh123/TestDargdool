@@ -2,16 +2,17 @@
 
 public class EnemyBasicChaseState : EnemyBasicState
 {
-    public EnemyBasicChaseState(StateMachine stateMachine, EnemyAI enemyAI, GameObject player, float attackDistance, Balance bodyBalance) : base(stateMachine, enemyAI, player, attackDistance, bodyBalance)
+    public EnemyBasicChaseState(StateMachine stateMachine, EnemyAI enemyAI, Transform body) : base(stateMachine, enemyAI, body)
     {
     }
+
     public override void Update()
     {
         base.Update();
         
         enemyAI.move.MoveHandle(attackDir.x);
         
-        if (distanceToPlayer <= attackDistance)
+        if (enemyAI.playerDetect.IsPlayer == true)
         {
             stateMachine.ChangeState(enemyAI.enemyAttackState);
         }
@@ -21,6 +22,6 @@ public class EnemyBasicChaseState : EnemyBasicState
     {
         base.Exit();
         enemyAI.move.StopMoveCoroutine();
-        enemyAI.idle.IdelHandle();
+        //enemyAI.idle.IdelHandle();
     }
 }

@@ -14,24 +14,24 @@ public class EnemyAI : MonoBehaviour
         public EnemyBasicChaseState enemyChaseState { get; private set; }
         public EnemyBasicAttackState enemyAttackState { get; private set; }
         public EnemyBasicIdleState enemyIdleState { get; private set; }
-     
-        #endregion
 
-        [SerializeField] private GameObject player;
-        [SerializeField] private Balance body;
-        [SerializeField] private float attackDistance;
+    #endregion
+
+        [SerializeField] private Transform body;
+        public PlayerDetect playerDetect { get; private set; }
         
         private void Awake()
         {
                 move = GetComponentInChildren<Move>();
                 attack = GetComponentInChildren<Attack>();
                 idle = GetComponentInChildren<Idle>();
+                playerDetect = GetComponentInChildren<PlayerDetect>();
 
                 //state init
                 stateMachine = new StateMachine();
-                enemyChaseState = new EnemyBasicChaseState(stateMachine, this, player,attackDistance,body);
-                enemyAttackState = new EnemyBasicAttackState(stateMachine, this, player,attackDistance,body);
-                enemyIdleState = new EnemyBasicIdleState(stateMachine, this, player, attackDistance, body);
+                enemyChaseState = new EnemyBasicChaseState(stateMachine, this,body);
+                enemyAttackState = new EnemyBasicAttackState(stateMachine, this,body);
+                enemyIdleState = new EnemyBasicIdleState(stateMachine, this,body);
         }
 
         private void Start()

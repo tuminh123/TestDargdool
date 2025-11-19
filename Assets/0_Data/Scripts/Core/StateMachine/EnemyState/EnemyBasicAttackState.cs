@@ -2,7 +2,7 @@
 
 public class EnemyBasicAttackState : EnemyBasicState
 {
-    public EnemyBasicAttackState(StateMachine stateMachine, EnemyAI enemyAI, GameObject player, float attackDistance, Balance bodyBalance) : base(stateMachine, enemyAI, player, attackDistance, bodyBalance)
+    public EnemyBasicAttackState(StateMachine stateMachine, EnemyAI enemyAI, Transform body) : base(stateMachine, enemyAI, body)
     {
     }
 
@@ -14,18 +14,18 @@ public class EnemyBasicAttackState : EnemyBasicState
         
         enemyAI.attack.currentAttackData.OnAttackEnd += () =>
         {
-            stateMachine.ChangeState(enemyAI.enemyIdleState);
+            stateMachine.ChangeState(enemyAI.enemyChaseState);
         };
     }
 
-    public override void Update()
-    {
-        base.Update();
-        if (distanceToPlayer > attackDistance)
-        {
-            stateMachine.ChangeState(enemyAI.enemyChaseState);
-        }
-    }
+    //public override void Update()
+    //{
+    //    base.Update();
+    //    if (enemyAI.playerDetect.IsPlayer == false)
+    //    {
+    //        stateMachine.ChangeState(enemyAI.enemyChaseState);
+    //    }
+    //}
 
     public override void Exit()
     {

@@ -2,25 +2,26 @@
 
 public class EnemyBasicIdleState : EnemyBasicState
 {
-    public EnemyBasicIdleState(StateMachine stateMachine, EnemyAI enemyAI, GameObject player, float attackDistance, Balance bodyBalance) : base(stateMachine, enemyAI, player, attackDistance, bodyBalance)
+    public EnemyBasicIdleState(StateMachine stateMachine, EnemyAI enemyAI, Transform body) : base(stateMachine, enemyAI, body)
     {
     }
 
     public override void Enter()
     {
         base.Enter();
-        enemyAI.idle.IdelHandle();
+       
     }
 
     public override void Update()
     {
         base.Update();
-        if (distanceToPlayer <= attackDistance)
+        enemyAI.idle.IdelHandle();
+        if (enemyAI.playerDetect.IsPlayer == true)
         {
             stateMachine.ChangeState(enemyAI.enemyAttackState);
-            
+
         }
-        else /*if (distanceToPlayer <= attackDistance)*/
+        if (enemyAI.playerDetect.IsPlayer == false)
         {
             stateMachine.ChangeState(enemyAI.enemyChaseState);
         }
