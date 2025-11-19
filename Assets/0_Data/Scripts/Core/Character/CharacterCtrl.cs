@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class CharacterCtrl : MonoBehaviour
 {
+    public static CharacterCtrl Instance { get; private set; }
+
     #region Child Component Action
 
     public Move move { get; private set; }
@@ -27,9 +29,12 @@ public class CharacterCtrl : MonoBehaviour
 
     [SerializeField] Balance body;
     public Vector2 attackDir {  get; private set; }
+    public Balance Body => body;
 
     private void Awake()
     {
+        Instance = this;
+
         idle = GetComponentInChildren<Idle>();
         move = GetComponentInChildren<Move>();
         attack = GetComponentInChildren<Attack>();

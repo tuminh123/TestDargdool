@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Move :MonoBehaviour
 {
-    [SerializeField]private Balance rightLeg, leftLeg,body;
+    [SerializeField]private Balance rightLeg, leftLeg,body,legRightDown,legLeftDown;
     
     [SerializeField] float speed = 2f;
     [SerializeField] float legWait = .5f;
@@ -92,16 +92,23 @@ public class Move :MonoBehaviour
     {
         while (isMovingRight)
         {
-            rightLeg.SetTargetRotation(5);
-            leftLeg.SetTargetRotation(90);
+
+            rightLeg.SetTargetRotation(40);
+            legRightDown.SetTargetRotation(30);
+
+            leftLeg.SetTargetRotation(-30);
+            legLeftDown.SetTargetRotation(-30);
 
             //leftLeg.Rb.AddForce(Vector2.right * (speed * 1000) * Time.fixedDeltaTime);
             SmoothMotionHelper.SmoothMoveTowards(rightLeg.Rb, rightLeg.Rb.position + Vector2.right * speed * Time.fixedDeltaTime, maxSpeed);
 
             yield return new WaitForSeconds(seconds);
 
-            rightLeg.SetTargetRotation(90);
-            leftLeg.SetTargetRotation(5);
+            rightLeg.SetTargetRotation(-50);
+            legRightDown.SetTargetRotation(-40);
+
+            leftLeg.SetTargetRotation(30);
+            legLeftDown.SetTargetRotation(5);
 
             // rightLeg.Rb.AddForce(Vector2.right * (speed * 1000) * Time.fixedDeltaTime);
             SmoothMotionHelper.SmoothMoveTowards(leftLeg.Rb, leftLeg.Rb.position + Vector2.right * speed * Time.fixedDeltaTime, maxSpeed);
@@ -114,16 +121,22 @@ public class Move :MonoBehaviour
     {
         while (isMovingLeft)
         {
-            rightLeg.SetTargetRotation(-90);
-            leftLeg.SetTargetRotation(-5);
+            rightLeg.SetTargetRotation(-50);
+            legRightDown.SetTargetRotation(-40);
+
+            leftLeg.SetTargetRotation(30);
+            legLeftDown.SetTargetRotation(5);
 
             //rightLeg.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
             SmoothMotionHelper.SmoothMoveTowards(rightLeg.Rb, rightLeg.Rb.position + Vector2.left * speed * Time.fixedDeltaTime, maxSpeed);
 
             yield return new WaitForSeconds(seconds);
 
-            rightLeg.SetTargetRotation(-5);
-            leftLeg.SetTargetRotation(-90);
+            rightLeg.SetTargetRotation(40);
+            legRightDown.SetTargetRotation(30);
+
+            leftLeg.SetTargetRotation(-30);
+            legLeftDown.SetTargetRotation(-30);
 
             //leftLeg.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
             SmoothMotionHelper.SmoothMoveTowards(leftLeg.Rb, leftLeg.Rb.position + Vector2.left * speed * Time.fixedDeltaTime, maxSpeed);
