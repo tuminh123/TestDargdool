@@ -1,10 +1,11 @@
 ﻿
+using UnityEngine;
+
 public class MainJumpState :MainCharacterState
 {
     public MainJumpState(StateMachine stateMachine, CharacterCtrl characterCtrl) : base(stateMachine, characterCtrl)
     {
     }
-
     public override void Enter()
     {
         base.Enter();
@@ -19,4 +20,6 @@ public class MainJumpState :MainCharacterState
             stateMachine.ChangeState(characterCtrl.idelState);
         }
     }
+
+  
 }

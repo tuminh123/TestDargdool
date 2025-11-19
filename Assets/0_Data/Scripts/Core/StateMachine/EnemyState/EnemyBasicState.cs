@@ -32,7 +32,10 @@ public class EnemyBasicState : IState
 
     public virtual void Update()
     {
+        Debug.Log($"{stateMachine.CurrentState}");
+
         distanceToPlayer = Vector2.Distance(bodyBalance.transform.position, player.transform.position);
         attackDir = (player.transform.position - enemyAI.transform.position).normalized;
+        
     }
 }

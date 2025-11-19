@@ -1,73 +1,127 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+#region Attack Data
+
+[System.Serializable]
+public class AttackData
+{
+    public System.Action OnAttackEnd;
+    [SerializeField] private Balance bodyPart_1, bodyPart_2;
+    [SerializeField] private AttackRotSO attackRotSo;
+    private bool isAttacking;
+    public bool IsAttacking => isAttacking;
+
+    public IEnumerator ExecuteAttack(AttackDataConfigSO configSO, Vector2 attackDir,Balance body)
+    {
+        isAttacking = true;
+
+        attackRotSo.InitData(bodyPart_1, bodyPart_2);
+
+        // Mục tiêu xoay forward
+        float targetRot1 = attackRotSo.CaculateRot_1();
+        float targetRot2 = attackRotSo.CaculateRot_2();
+
+
+        // Cài đặt drag vật lý để tránh văng khớp
+        bodyPart_1.Rb.linearDamping = configSO.LinearDrag;
+        bodyPart_2.Rb.linearDamping = configSO.LinearDrag;
+        bodyPart_1.Rb.angularDamping = configSO.AngularDrag;
+        bodyPart_2.Rb.angularDamping = configSO.AngularDrag;
+        
+        float rotateSmoothSpeed = configSO.RotateSmoothSpeed;
+        float maxAngularSpeed = configSO.MaxAngularSpeed;
+
+        // ===== Phase 1: Định hình tay =====
+        float poseTime = 0.35f; // thời gian định hình
+        float elapsedPose = 0f;
+
+        while (elapsedPose < poseTime)
+        {
+            elapsedPose += Time.fixedDeltaTime;
+
+            // Xoay tay mượt về target
+            float t_1 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_1.TargetRotation, targetRot1, rotateSmoothSpeed, maxAngularSpeed);
+            float t_2 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_2.TargetRotation, targetRot2, rotateSmoothSpeed, maxAngularSpeed);
+            bodyPart_1.SetTargetRotation(t_1);
+            bodyPart_2.SetTargetRotation(t_2);
+
+            yield return new WaitForFixedUpdate();
+        }
+        
+        float elapsed = 0f;
+        //float poseTime = 0.2f; // thời gian định hình tay (có thể config)
+        float launchTime = configSO.LaunchTime;
+        float proceduralOffset = configSO.ProceduralOffset;
+
+        while (elapsed < configSO.AttackDuration)
+        {
+            elapsed += Time.fixedDeltaTime;
+
+            // 1️⃣ Xoay tay mượt với giới hạn tốc độ xoay
+            // float rotateSmoothSpeed = configSO.RotateSmoothSpeed;
+            // float maxAngularSpeed = configSO.MaxAngularSpeed;
+            float t_1 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_1.TargetRotation, targetRot1, rotateSmoothSpeed,maxAngularSpeed);
+            float t_2 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_2.TargetRotation, targetRot2, rotateSmoothSpeed, maxAngularSpeed);
+            bodyPart_1.SetTargetRotation(t_1);
+            bodyPart_2.SetTargetRotation(t_2);
+            
+            // 2️⃣ Tính target theo momentum cơ thể
+            float attackReach = configSO.AttackReach;
+            float attackForce = configSO.AttackForce;
+            Vector2 targetPos = (Vector2)body.Rb.position + attackDir * attackReach + Vector2.Perpendicular(attackDir) * proceduralOffset;
+            if (elapsed < launchTime)
+            {
+                bodyPart_1.Rb.linearVelocity = attackDir * attackForce; // Đẩy tay thẳng tới target
+                bodyPart_2.Rb.linearVelocity = attackDir * attackForce;
+                body.Rb.AddForce(attackDir * attackForce * 0.3f, ForceMode2D.Impulse); // Kéo body
+            }
+
+            // 3️⃣ Di chuyển tay procedural với lực giới hạn và giảm tốc
+            float maxSpeed = configSO.MaxSpeed;
+            float maxForce = configSO.MaxForce;
+            float decelDistance = configSO.DecelDistance;
+            SmoothMotionHelper.SmoothMoveTowardsLimited(bodyPart_1.Rb, targetPos, maxSpeed, maxForce, decelDistance);
+            SmoothMotionHelper.SmoothMoveTowardsLimited(bodyPart_2.Rb, targetPos, maxSpeed, maxForce, decelDistance);
+
+            // 4️⃣ Đẩy cơ thể bay nhẹ procedural
+            SmoothMotionHelper.ApplySoftImpulse(body.Rb, attackDir, attackForce * 0.2f, 0.5f);
+
+            yield return new WaitForFixedUpdate();
+
+        }
+        OnAttackEnd?.Invoke();
+        attackRotSo.ResetData(bodyPart_1,bodyPart_2);
+        isAttacking = false;
+    }
+}
+
+    #endregion
+
 public class Attack : MonoBehaviour
 {
-    [SerializeField] private Balance body;
-    [SerializeField] Balance rightArm;
-    [SerializeField] Balance rightArmDown;
-    [SerializeField] Balance rightLeg;
-    [SerializeField] Balance rightLegDown;
-
-    [SerializeField] Balance leftArm;
-    [SerializeField] Balance leftArmDown;
-    [SerializeField] Balance leftLeg;
-    [SerializeField] Balance leftLegDown;
     
-    [SerializeField]private AttackDataConfigSO configSO;
+    [SerializeField] private Balance body;
+    [SerializeField] private AttackDataConfigSO configSO;
 
-    private AttackHandle[] attacks;
-    // private BaseAttack[] rightAttacks;
-    // private BaseAttack[] leftAttacks;
-    // private int randAttackRight;
-    // private int randAttackLeft;
-    private float timeAttack;
+    [SerializeField] private AttackData[] leftAttacks;
+    [SerializeField] private AttackData[] rightAttacks;
+    public AttackData currentAttackData { get; private set; }
+    
     private Vector2 attackDir;
+    private Coroutine attackRoutine;
     
     //get
     public AttackDataConfigSO ConfigSo => configSO;
     public Vector2 AttackDir => attackDir;
 
-    private void Start()
-    {
-        attacks = new[]
-        {
-            new AttackHandle(rightArm, rightArmDown, body,90, 80,attackDir),
-            new AttackHandle(rightLeg, rightLegDown, body,110, 100,attackDir),
-            new AttackHandle(rightArm, rightArmDown, body,140, -120,attackDir),
-            new AttackHandle(rightLeg, rightLegDown, body,120, -60,attackDir),
-            new AttackHandle(leftArm, leftArmDown, body,-90, -80,attackDir),
-            new AttackHandle(leftLeg, leftLegDown, body,-110, -100,attackDir),
-            new AttackHandle(leftArm, leftArmDown, body,-140, 120,attackDir),
-            new AttackHandle(leftLeg, leftLegDown, body,-120, 60,attackDir)
-        };
-        
-        /*rightAttacks = new BaseAttack[]
-      {
-          new BaseAttack(rightArm, rightArmDown, body,90, 80,attackDir),
-          new BaseAttack(rightLeg, rightLegDown, body,110, 100,attackDir),
-          new BaseAttack(rightArm, rightArmDown, body,140, -120,attackDir),
-          new BaseAttack(rightLeg, rightLegDown, body,120, -60,attackDir)
-      };
-
-      leftAttacks = new BaseAttack[]
-      {
-          new BaseAttack(leftArm, leftArmDown, body,-90, -80,attackDir),
-          new BaseAttack(leftLeg, leftLegDown, body,-110, -100,attackDir),
-          new BaseAttack(leftArm, leftArmDown, body,-140, 120,attackDir),
-          new BaseAttack(leftLeg, leftLegDown, body,-120, 60,attackDir)
-      };
-
-      randAttackRight = Random.Range(0, rightAttacks.Length);
-      randAttackLeft = Random.Range(0, leftAttacks.Length);*/
-    }
-
     private void FixedUpdate()
     {
         AttackDirHandle();
     }
-
+     
     //private bool isAttacking;
     private void AttackDirHandle()
     {
@@ -75,27 +129,26 @@ public class Attack : MonoBehaviour
         mouseWorld.z = 0;
         attackDir = (mouseWorld - body.transform.position).normalized;
     }
-
-    public void BeginAttack()
+    public AttackData GetRandomAttack(bool isRight)
     {
-        int rand = Random.Range(0, attacks.Length);
-        attacks[rand].AttackBegin(configSO);
+        var list = isRight ? rightAttacks : leftAttacks;
+        return list[Random.Range(0, list.Length)];
+    }
+    public void HandleAttack()
+    {
+        bool isRight = attackDir.x > 0;
+        AttackData attack = GetRandomAttack(isRight);
+        currentAttackData = attack;
+        attackRoutine = StartCoroutine(attack.ExecuteAttack(configSO,attackDir,body));
     }
 
-    public void EndAttack()
+    public void StopAttack()
     {
-        int rand = Random.Range(0, attacks.Length);
-        attacks[rand].AttackEnd();
+        if (attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+            attackRoutine = null;
+        }
     }
-    // public void AttackExecute()
-    // {
-    //     if(attackDir.x > 0 ) rightAttacks[randAttackRight].AttackBegin(configSO);
-    //     if(attackDir.x < 0 ) leftAttacks[randAttackLeft].AttackBegin(configSO);
-    // }
-    //
-    // public void RandomLeftAttack()
-    // {
-    //     if(attackDir.x > 0 ) rightAttacks[randAttackRight].AttackBegin(configSO);
-    //     if(attackDir.x < 0 ) leftAttacks[randAttackLeft].AttackBegin(configSO);
-    // }
+    
 }

@@ -9,16 +9,18 @@ public class EnemyBasicChaseState : EnemyBasicState
     {
         base.Update();
         
-        if(attackDir.x > 0) 
-            enemyAI.move.MoveRight();
-        else if(attackDir.x < 0)
-            enemyAI.move.MoveLeft();
-
+        enemyAI.move.MoveHandle(attackDir.x);
+        
         if (distanceToPlayer <= attackDistance)
         {
             stateMachine.ChangeState(enemyAI.enemyAttackState);
         }
     }
 
-  
+    public override void Exit()
+    {
+        base.Exit();
+        enemyAI.move.StopMoveCoroutine();
+        enemyAI.idle.IdelHandle();
+    }
 }

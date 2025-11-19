@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IgnoreCollision : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // Enter is called before the first frame update
     void Start()
     {
         var colliders = GetComponentsInChildren<Collider2D>();
