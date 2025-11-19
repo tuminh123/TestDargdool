@@ -1,6 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -23,11 +21,7 @@ public class Movement : MonoBehaviour
     private bool isMovingRight = false;
     private bool isMovingLeft = false;
     #endregion
-    private AttackingTest attackingTest;
-    private void Awake()
-    {
-        attackingTest = GetComponent<AttackingTest>();
-    }
+    
     private void FixedUpdate()
     {
         MoveHandle();
@@ -56,7 +50,7 @@ public class Movement : MonoBehaviour
     private void MoveHandle()
     {
         float x = Input.GetAxisRaw("Horizontal");
-        if (attackingTest.IsAttacking) return;
+        //if (attackingTest.IsAttacking) return;
         if (Mathf.Abs(x) != 0)
         {
 
@@ -65,7 +59,6 @@ public class Movement : MonoBehaviour
                 body.Rb.AddForce(Vector2.right * bodyForce, ForceMode2D.Impulse);
                 if (!isMovingRight)
                 {
-                    
                     isMovingRight = true;
                     isMovingLeft = false;
                     StopAllCoroutines();
@@ -77,7 +70,6 @@ public class Movement : MonoBehaviour
                 body.Rb.AddForce(Vector2.left * bodyForce, ForceMode2D.Impulse);
                 if (!isMovingLeft)
                 {
-                    
                     isMovingLeft = true;
                     isMovingRight = false;
                     StopAllCoroutines();
@@ -89,9 +81,9 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            legLeft.SetPropertie(0, 20);
-            legRight.SetPropertie(0, 20);
-            body.Rb.linearVelocity = new Vector2(body.Rb.linearVelocity.x * damping, body.Rb.linearVelocity.y);
+            var linearVelocity = body.Rb.linearVelocity;
+            linearVelocity = new Vector2(linearVelocity.x * damping, linearVelocity.y);
+            body.Rb.linearVelocity = linearVelocity;
         }
     }
     IEnumerator MoveRight(float seconds)

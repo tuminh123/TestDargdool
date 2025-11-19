@@ -76,6 +76,18 @@ public class Move :MonoBehaviour
 
         }
     }
+      
+    public void StopMoveCoroutine()
+    {
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
+
+        isMovingLeft = false;
+        isMovingRight = false;
+    }
     IEnumerator MoveRight(float seconds)
     {
         while (isMovingRight)
