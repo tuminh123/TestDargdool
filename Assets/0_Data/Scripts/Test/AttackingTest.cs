@@ -77,9 +77,9 @@ public class AttackingTest : MonoBehaviour
         float duration = 0.25f;
 
         // Lưu giá trị ban đầu
-        float p1StartRot = p1.TargetRotation;
-        float p2StartRot = p2.TargetRotation;
-        float bodyStartRot = body.TargetRotation;
+        float p1StartRot = p1.Rotation;
+        float p2StartRot = p2.Rotation;
+        float bodyStartRot = body.Rotation;
 
         // Giá trị muốn xoay tới
         float p1EndRot = 100;
@@ -96,9 +96,9 @@ public class AttackingTest : MonoBehaviour
             float eased = rotateCurve.Evaluate(ratio);
 
             // Rotate
-            p1.SetTargetRotation(Mathf.Lerp(p1StartRot, p1EndRot, eased));
-            p2.SetTargetRotation(Mathf.Lerp(p2StartRot, p2EndRot, eased));
-            body.SetTargetRotation(Mathf.Lerp(bodyStartRot, bodyEndRot, eased));
+            p1.SetRotation(Mathf.Lerp(p1StartRot, p1EndRot, eased));
+            p2.SetRotation(Mathf.Lerp(p2StartRot, p2EndRot, eased));
+            body.SetRotation(Mathf.Lerp(bodyStartRot, bodyEndRot, eased));
 
             yield return null;
         }
@@ -119,9 +119,9 @@ public class AttackingTest : MonoBehaviour
             float ratio = t / duration;
             float eased = rotateCurve.Evaluate(ratio);
 
-            p1.SetTargetRotation(Mathf.Lerp(p1EndRot, p1StartRot, eased));
-            p2.SetTargetRotation(Mathf.Lerp(p2EndRot, p2StartRot, eased));
-            body.SetTargetRotation(Mathf.Lerp(bodyEndRot, bodyStartRot, eased));
+            p1.SetRotation(Mathf.Lerp(p1EndRot, p1StartRot, eased));
+            p2.SetRotation(Mathf.Lerp(p2EndRot, p2StartRot, eased));
+            body.SetRotation(Mathf.Lerp(bodyEndRot, bodyStartRot, eased));
 
             yield return null;
         }
@@ -129,8 +129,8 @@ public class AttackingTest : MonoBehaviour
 
     private void Init(Balance p1, Balance p2, out float rot1, out float rot2, out float for1, out float for2)
     {
-        rot1 = p1.TargetRotation;
-        rot2 = p2.TargetRotation;
+        rot1 = p1.Rotation;
+        rot2 = p2.Rotation;
         for1 = p1.Force;
         for2 = p2.Force;
     }
@@ -147,7 +147,7 @@ public class AttackingTest : MonoBehaviour
         isAttacking = true;
         leftArm.SetPropertie(-110, 10);
         leftArmDown.SetPropertie(-100, 10);
-        body.SetTargetRotation(15);
+        body.SetRotation(15);
 
         leftArm.Rb.linearVelocity = attackDir * attackForce;
         leftArmDown.Rb.linearVelocity = attackDir * attackForce;
@@ -155,7 +155,7 @@ public class AttackingTest : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        body.SetTargetRotation(0);
+        body.SetRotation(0);
         leftArm.SetPropertie(0, 5);
         leftArmDown.SetPropertie(0, 1);
         isAttacking = false;
@@ -165,7 +165,7 @@ public class AttackingTest : MonoBehaviour
         isAttacking = true;
         leftArm.SetPropertie(-100, 20);
         leftArmDown.SetPropertie(65, 20);
-        body.SetTargetRotation(15);
+        body.SetRotation(15);
 
         leftArm.Rb.linearVelocity = Vector2.left * attackForce;
         leftArmDown.Rb.linearVelocity = Vector2.left * attackForce;
@@ -173,7 +173,7 @@ public class AttackingTest : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        body.SetTargetRotation(0);
+        body.SetRotation(0);
         leftArm.SetPropertie(0, 5);
         leftArmDown.SetPropertie(0, 1);
         isAttacking = false;
@@ -183,7 +183,7 @@ public class AttackingTest : MonoBehaviour
         isAttacking = true;
         leftLeg.SetPropertie(-100, 50);
         leftLegDown.SetPropertie(-100, 35);
-        body.SetTargetRotation(-50);
+        body.SetRotation(-50);
 
         leftLeg.Rb.linearVelocity = Vector2.left * attackForce;
         leftLegDown.Rb.linearVelocity = Vector2.left * attackForce;
@@ -191,7 +191,7 @@ public class AttackingTest : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        body.SetTargetRotation(0);
+        body.SetRotation(0);
         leftLeg.SetPropertie(0, 20);
         leftLegDown.SetPropertie(0, 15);
         isAttacking = false;
@@ -201,7 +201,7 @@ public class AttackingTest : MonoBehaviour
         isAttacking = true;
         leftLeg.SetPropertie(-90, 50);
         leftLegDown.SetPropertie(25, 35);
-        body.SetTargetRotation(-50);
+        body.SetRotation(-50);
 
         leftLeg.Rb.linearVelocity = Vector2.left * attackForce;
         leftLegDown.Rb.linearVelocity = Vector2.left * attackForce;
@@ -209,7 +209,7 @@ public class AttackingTest : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        body.SetTargetRotation(0);
+        body.SetRotation(0);
         leftLeg.SetPropertie(0, 20);
         leftLegDown.SetPropertie(0, 15);
         isAttacking = false;
@@ -222,7 +222,7 @@ public class AttackingTest : MonoBehaviour
         isAttacking = true;
         rightArm.SetPropertie(110,10);
         rightArmDown.SetPropertie(100,10);
-        body.SetTargetRotation(-15);
+        body.SetRotation(-15);
 
         rightArm.Rb.linearVelocity = Vector2.right * attackForce;
         rightArmDown.Rb.linearVelocity = Vector2.right * attackForce;
@@ -230,7 +230,7 @@ public class AttackingTest : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        body.SetTargetRotation(0);
+        body.SetRotation(0);
         rightArm.SetPropertie(0, 5);
         rightArmDown.SetPropertie(0, 1);
         isAttacking= false;
@@ -240,7 +240,7 @@ public class AttackingTest : MonoBehaviour
         isAttacking = true;
         rightArm.SetPropertie(100, 20);
         rightArmDown.SetPropertie(-65, 20);
-        body.SetTargetRotation(-15);
+        body.SetRotation(-15);
 
         rightArm.Rb.linearVelocity = Vector2.right * attackForce;
         rightArmDown.Rb.linearVelocity = Vector2.right * attackForce;
@@ -248,7 +248,7 @@ public class AttackingTest : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        body.SetTargetRotation(0);
+        body.SetRotation(0);
         rightArm.SetPropertie(0, 5);
         rightArmDown.SetPropertie(0, 1);
         isAttacking = false;
@@ -258,7 +258,7 @@ public class AttackingTest : MonoBehaviour
         isAttacking = true;
         rightLeg.SetPropertie(100, 50);
         rightLegDown.SetPropertie(100, 35);
-        body.SetTargetRotation(50);
+        body.SetRotation(50);
 
         rightLeg.Rb.linearVelocity = Vector2.right *attackForce;
         rightLegDown.Rb.linearVelocity = Vector2.right * attackForce;
@@ -266,7 +266,7 @@ public class AttackingTest : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        body.SetTargetRotation(0);
+        body.SetRotation(0);
         rightLeg.SetPropertie(0, 20);
         rightLegDown.SetPropertie(0, 15);
         isAttacking = false;
@@ -276,7 +276,7 @@ public class AttackingTest : MonoBehaviour
         isAttacking = true;
         rightLeg.SetPropertie(90, 50);
         rightLegDown.SetPropertie(-25, 35);
-        body.SetTargetRotation(50);
+        body.SetRotation(50);
 
         rightLeg.Rb.linearVelocity = Vector2.right * attackForce;
         rightLegDown.Rb.linearVelocity = Vector2.right * attackForce;
@@ -284,7 +284,7 @@ public class AttackingTest : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        body.SetTargetRotation(0);
+        body.SetRotation(0);
         rightLeg.SetPropertie(0, 20);
         rightLegDown.SetPropertie(0, 15);
         isAttacking = false;
@@ -296,7 +296,7 @@ public class AttackingTest : MonoBehaviour
         isAttacking = true;
         part_1.SetPropertie(rot_1,force_1);
         part_2.SetPropertie(rot_2,force_2);
-        body.SetTargetRotation(body_rot);
+        body.SetRotation(body_rot);
 
         part_1.Rb.linearVelocity = attackDir*attackForce;
         part_2.Rb.linearVelocity = attackDir * attackForce;
@@ -304,7 +304,7 @@ public class AttackingTest : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        body.SetTargetRotation(init_body_rot);
+        body.SetRotation(init_body_rot);
         part_1.SetPropertie(init_rot_1,init_force_1);
         part_2.SetPropertie(init_rot_2, init_force_2);
 

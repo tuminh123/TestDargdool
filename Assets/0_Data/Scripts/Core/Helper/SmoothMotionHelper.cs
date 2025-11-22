@@ -7,7 +7,7 @@
 public static class SmoothMotionHelper
 {
     /// <summary>
-    /// Xoay khớp mượt từ currentRotation đến targetRotation
+    /// Xoay khớp mượt từ currentRotation đến rotation
     /// smoothSpeed: tốc độ mượt, càng lớn càng nhanh đuổi target
     /// </summary>
     public static float SmoothRotateTo(float currentRotation, float targetRotation, float smoothSpeed = 10f)

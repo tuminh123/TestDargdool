@@ -3,34 +3,38 @@ using UnityEngine;
 
 public class HealthBalance : MonoBehaviour
 {
-    public System.Action<float> OnDamage;
+    [SerializeField] private float durationAffected;
+    [SerializeField] private Faction faction;
 
-    [SerializeField] private float damageTaken = 10;
-    [SerializeField] private float forceKnockBack = -70;
     private HealthBase healthBase;
     private Balance balance;
+    
+    //get
+    public HealthBase HealthBase => healthBase;
+    public Balance Balance => balance;
+    public Faction Faction => faction;
     private void Awake()
     {
-        healthBase = transform.parent.GetComponent<HealthBase>();
+        healthBase = transform.root.GetComponent<HealthBase>();
         balance = GetComponent<Balance>();
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnEnable()
     {
-        if(collision.collider == null) return;
-        IDamageFaction dam = collision.transform.GetComponent<IDamageFaction>();
-        if(dam == null) return;
-        if(healthBase == null) return;
-        if (healthBase.Faction == dam.GetFaction) return;
-
-        StartCoroutine(SetBalanceTrigger(collision));
-        OnDamage?.Invoke(damageTaken);
+        healthBase.OnTakeDamage += OnTakeDamage;
     }
-    private IEnumerator SetBalanceTrigger(Collision2D collision)
+    private void OnDisable()
     {
-        Vector2 dir = (collision.transform.position - transform.position).normalized;
+        healthBase.OnTakeDamage -= OnTakeDamage;
+    }
+    private void OnTakeDamage(float damage)
+    {
+        StartCoroutine(SetBalanceTrigger());
+    }
+    private IEnumerator SetBalanceTrigger()
+    {
         balance.SetIsTrigger(false);
-        balance.Rb.AddForce(dir * (forceKnockBack*1000)*Time.fixedDeltaTime);
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(durationAffected);
         balance.SetIsTrigger(true);
     }
+   
 }
