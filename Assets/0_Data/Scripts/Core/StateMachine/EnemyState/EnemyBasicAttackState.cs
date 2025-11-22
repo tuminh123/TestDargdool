@@ -9,30 +9,24 @@ public class EnemyBasicAttackState : EnemyBasicState
     public override void Enter()
     {
         base.Enter();
-        
-        enemyAI.attack.HandleAttack(attackDir);
-        
-        enemyAI.attack.currentAttackData.OnAttackEnd += () =>
-        {
-            stateMachine.ChangeState(enemyAI.enemyChaseState);
-        };
-    }
 
-    //public override void Update()
-    //{
-    //    base.Update();
-    //    if (enemyAI.playerDetect.IsPlayer == false)
-    //    {
-    //        stateMachine.ChangeState(enemyAI.enemyChaseState);
-    //    }
-    //}
+        
+
+        enemyAI.attack.HandleAttack(attackDir);
+
+       /* enemyAI.attack.currentAttackData.OnAttackEnd += OnAttackEnd;*/
+    }
 
     public override void Exit()
     {
         base.Exit();      
         enemyAI.attack.StopAttack();
-        
+
+       /* enemyAI.attack.currentAttackData.OnAttackEnd -= OnAttackEnd;*/
     }
 
-   
+    private void OnAttackEnd()
+    {
+        stateMachine.ChangeState(enemyAI.enemyChaseState);
+    }
 }

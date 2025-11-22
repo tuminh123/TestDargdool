@@ -90,14 +90,14 @@ public class Movement : MonoBehaviour
     {
         while (isMovingRight)
         {
-            legRight.SetTargetRotation(5);
-            legLeft.SetTargetRotation(90);
+            legRight.SetRotation(5);
+            legLeft.SetRotation(90);
 
             legLeft.Rb.AddForce(Vector2.right * (speed * 1000) * Time.fixedDeltaTime);
             yield return new WaitForSeconds(seconds);
 
-            legRight.SetTargetRotation(90);
-            legLeft.SetTargetRotation(5);
+            legRight.SetRotation(90);
+            legLeft.SetRotation(5);
 
             legRight.Rb.AddForce(Vector2.right * (speed * 1000) * Time.fixedDeltaTime);
             yield return new WaitForSeconds(seconds);
@@ -108,14 +108,14 @@ public class Movement : MonoBehaviour
     {
         while (isMovingLeft)
         {
-            legRight.SetTargetRotation(-90);
-            legLeft.SetTargetRotation(-5);
+            legRight.SetRotation(-90);
+            legLeft.SetRotation(-5);
 
             legRight.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
             yield return new WaitForSeconds(seconds);
 
-            legRight.SetTargetRotation(-5);
-            legLeft.SetTargetRotation(-90);
+            legRight.SetRotation(-5);
+            legLeft.SetRotation(-90);
 
             legLeft.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
             yield return new WaitForSeconds(seconds);

@@ -26,7 +26,7 @@ public class EnemyBasicState : IState
 
     public virtual void Update()
     {
-        Debug.Log($"{stateMachine.CurrentState}");
+        //Debug.Log($"{stateMachine.CurrentState}");
 
         Transform player = CharacterCtrl.Instance.Body.transform;
         attackDir = (player.position - body.position).normalized;

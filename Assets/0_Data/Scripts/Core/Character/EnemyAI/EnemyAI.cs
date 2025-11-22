@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour,IObjectPool
 {
         #region Child component
         public Move move { get; private set; }
@@ -43,4 +43,9 @@ public class EnemyAI : MonoBehaviour
         {
                 stateMachine.UpdateState();
         }
+
+    public string GetObjectName()
+    {
+        return StringConst.ENEMY;
+    }
 }

@@ -1,0 +1,1274 @@
+fileFormatVersion: 2
+guid: 74091bdc8fcbcd747b27d1aa2e6a7052
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: b2a9591990af98743ba3ff7cf1000886, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 1
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 1
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 100
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  singleSpriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
+  multiSpriteImportData: []
+  layeredSpriteImportData:
+  - name: xich_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 518
+      y: 323
+      width: 41
+      height: 223
+    spriteID: 420b313c87a88d64ea0e8706783c2b7a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 518, y: 323}
+    spritePosition: {x: 915, y: 726}
+  - name: spike_round
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 306
+      y: 648
+      width: 91
+      height: 266
+    spriteID: d2461bcd7e2d3c244b6309d9fae674ef
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 306, y: 648}
+    spritePosition: {x: 891, y: 481}
+  - name: brick_treo
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 862
+      width: 147
+      height: 63
+    spriteID: 582f04fd74a90854d88be4b75de5b854
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 128, y: 862}
+    spritePosition: {x: 862, y: 917}
+  - name: day
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 487
+      y: 648
+      width: 13
+      height: 315
+    spriteID: 4c712f9fc5772db448d88f08a5237cdd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 487, y: 648}
+    spritePosition: {x: 327, y: 629}
+  - name: weight_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 306
+      y: 472
+      width: 156
+      height: 168
+    spriteID: 9ed2efb6cecf40e4380f070f0d150a97
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 306, y: 472}
+    spritePosition: {x: 256, y: 481}
+  - name: brick_treo
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 933
+      width: 147
+      height: 63
+    spriteID: 0947c1405cbe7a0428774f033fd81033
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 128, y: 933}
+    spritePosition: {x: 260, y: 917}
+  - name: weight_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 306
+      y: 279
+      width: 185
+      height: 185
+    spriteID: 6d077ca73470b9a43bdeec063dee3750
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 306, y: 279}
+    spritePosition: {x: 532, y: 481}
+  - name: xich_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 518
+      y: 4
+      width: 41
+      height: 311
+    spriteID: 2b9ac249712843541badf74a8e7d1848
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 518, y: 4}
+    spritePosition: {x: 604, y: 638}
+  - name: brick_treo copy
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 567
+      y: 4
+      width: 147
+      height: 63
+    spriteID: 4e9fba93e4a00884a8c8c80c37f1cebc
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 567, y: 4}
+    spritePosition: {x: 551, y: 917}
+  - name: weapon_rack
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 306
+      y: 4
+      width: 204
+      height: 267
+    spriteID: 5d5377d195a813a49b1ddb67f79dfe05
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 306, y: 4}
+    spritePosition: {x: 1516, y: 70}
+  - name: shuriken
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 598
+      width: 254
+      height: 256
+    spriteID: 978739d704eec6140a7d45acc1edf57d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 598}
+    spritePosition: {x: 284, y: 65}
+  - name: incisor_circle
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 294
+      height: 294
+    spriteID: 28b0497cf1d841b4091aaf5b1af2a609
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 598, y: 47}
+  - name: pinion
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 306
+      width: 284
+      height: 284
+    spriteID: 6d58eb54421b6e4429c7959cb2c02f4d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 306}
+    spritePosition: {x: 1032, y: 52}
+  - name: push_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 405
+      y: 648
+      width: 74
+      height: 186
+    spriteID: d525323b897c6e045bad8527d6d5d503
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 405, y: 648}
+    spritePosition: {x: 1375, y: 388}
+  - name: push_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 862
+      width: 116
+      height: 116
+    spriteID: e05b85b4f4a3ca9409fec077e280f0f6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 862}
+    spritePosition: {x: 1491, y: 422}
+  - name: push_3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 722
+      y: 4
+      width: 170
+      height: 38
+    spriteID: 9ed7b5a087185be49a4c05996e6555f4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 720, y: 3}
+    spritePosition: {x: 1437, y: 461}
+  spriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
+  rigSpriteImportData:
+  - name: xich_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 518
+      y: 323
+      width: 41
+      height: 223
+    spriteID: 420b313c87a88d64ea0e8706783c2b7a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 518, y: 323}
+    spritePosition: {x: 915, y: 726}
+  - name: spike_round
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 306
+      y: 648
+      width: 91
+      height: 266
+    spriteID: d2461bcd7e2d3c244b6309d9fae674ef
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 306, y: 648}
+    spritePosition: {x: 891, y: 481}
+  - name: brick_treo
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 862
+      width: 147
+      height: 63
+    spriteID: 582f04fd74a90854d88be4b75de5b854
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 128, y: 862}
+    spritePosition: {x: 862, y: 917}
+  - name: day
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 487
+      y: 648
+      width: 13
+      height: 315
+    spriteID: 4c712f9fc5772db448d88f08a5237cdd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 487, y: 648}
+    spritePosition: {x: 327, y: 629}
+  - name: weight_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 306
+      y: 472
+      width: 156
+      height: 168
+    spriteID: 9ed2efb6cecf40e4380f070f0d150a97
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 306, y: 472}
+    spritePosition: {x: 256, y: 481}
+  - name: brick_treo
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 933
+      width: 147
+      height: 63
+    spriteID: 0947c1405cbe7a0428774f033fd81033
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 128, y: 933}
+    spritePosition: {x: 260, y: 917}
+  - name: weight_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 306
+      y: 279
+      width: 185
+      height: 185
+    spriteID: 6d077ca73470b9a43bdeec063dee3750
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 306, y: 279}
+    spritePosition: {x: 532, y: 481}
+  - name: xich_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 518
+      y: 4
+      width: 41
+      height: 311
+    spriteID: 2b9ac249712843541badf74a8e7d1848
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 518, y: 4}
+    spritePosition: {x: 604, y: 638}
+  - name: brick_treo copy
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 567
+      y: 4
+      width: 147
+      height: 63
+    spriteID: 4e9fba93e4a00884a8c8c80c37f1cebc
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 567, y: 4}
+    spritePosition: {x: 551, y: 917}
+  - name: weapon_rack
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 306
+      y: 4
+      width: 204
+      height: 267
+    spriteID: 5d5377d195a813a49b1ddb67f79dfe05
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 306, y: 4}
+    spritePosition: {x: 1516, y: 70}
+  - name: shuriken
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 598
+      width: 254
+      height: 256
+    spriteID: 978739d704eec6140a7d45acc1edf57d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 598}
+    spritePosition: {x: 284, y: 65}
+  - name: incisor_circle
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 294
+      height: 294
+    spriteID: 28b0497cf1d841b4091aaf5b1af2a609
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 598, y: 47}
+  - name: pinion
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 306
+      width: 284
+      height: 284
+    spriteID: 6d58eb54421b6e4429c7959cb2c02f4d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 306}
+    spritePosition: {x: 1032, y: 52}
+  - name: push_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 405
+      y: 648
+      width: 74
+      height: 186
+    spriteID: d525323b897c6e045bad8527d6d5d503
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 405, y: 648}
+    spritePosition: {x: 1375, y: 388}
+  - name: push_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 862
+      width: 116
+      height: 116
+    spriteID: e05b85b4f4a3ca9409fec077e280f0f6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 862}
+    spritePosition: {x: 1491, y: 422}
+  - name: push_3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 722
+      y: 4
+      width: 170
+      height: 38
+    spriteID: 9ed7b5a087185be49a4c05996e6555f4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 720, y: 3}
+    spritePosition: {x: 1437, y: 461}
+  sharedRigSpriteImportData: []
+  mosaicSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  platformSettings: []
+  mosaicLayers: 1
+  characterMode: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 7
+  importHiddenLayers: 0
+  layerMappingOption: 2
+  generatePhysicsShape: 0
+  paperDollMode: 0
+  keepDupilcateSpriteName: 1
+  padding: 4
+  spriteSizeExpand: 0
+  skeletonAssetReferenceID: 
+  pipeline: {instanceID: 0}
+  pipelineVersion: 
+  spriteCategoryList:
+    categories: []
+  spritePackingTag: 
+  resliceFromLayer: 0
+  pSDLayerImportSetting: []
+  psdLayers:
+  - name: spike_round
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: e85a1124a78138a4eb22e230a43acea3
+    layerID: 1142
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: xich_2
+    spriteName: xich_2
+    isGroup: 0
+    parentIndex: 0
+    spriteID: 420b313c87a88d64ea0e8706783c2b7a
+    layerID: 1136
+    mosaicPosition: {x: 518, y: 323}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: spike_round
+    spriteName: spike_round
+    isGroup: 0
+    parentIndex: 0
+    spriteID: d2461bcd7e2d3c244b6309d9fae674ef
+    layerID: 1143
+    mosaicPosition: {x: 306, y: 648}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: brick_treo
+    spriteName: brick_treo
+    isGroup: 0
+    parentIndex: 0
+    spriteID: 582f04fd74a90854d88be4b75de5b854
+    layerID: 1388
+    mosaicPosition: {x: 128, y: 862}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: weight_2
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: b29b1a62782df204bb6e19681a27dfd9
+    layerID: 1273
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: day
+    spriteName: day
+    isGroup: 0
+    parentIndex: 4
+    spriteID: 4c712f9fc5772db448d88f08a5237cdd
+    layerID: 1276
+    mosaicPosition: {x: 487, y: 648}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: weight_2
+    spriteName: weight_2
+    isGroup: 0
+    parentIndex: 4
+    spriteID: 9ed2efb6cecf40e4380f070f0d150a97
+    layerID: 1343
+    mosaicPosition: {x: 306, y: 472}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: brick_treo
+    spriteName: brick_treo
+    isGroup: 0
+    parentIndex: 4
+    spriteID: 0947c1405cbe7a0428774f033fd81033
+    layerID: 1391
+    mosaicPosition: {x: 128, y: 933}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: weight_1
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 160fd75dfe506c6459ee69be9b24d472
+    layerID: 1092
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: weight_1
+    spriteName: weight_1
+    isGroup: 0
+    parentIndex: 8
+    spriteID: 6d077ca73470b9a43bdeec063dee3750
+    layerID: 1095
+    mosaicPosition: {x: 306, y: 279}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: xich_1
+    spriteName: xich_1
+    isGroup: 0
+    parentIndex: 8
+    spriteID: 2b9ac249712843541badf74a8e7d1848
+    layerID: 1090
+    mosaicPosition: {x: 518, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: brick_treo copy
+    spriteName: brick_treo copy
+    isGroup: 0
+    parentIndex: 8
+    spriteID: 4e9fba93e4a00884a8c8c80c37f1cebc
+    layerID: 1390
+    mosaicPosition: {x: 567, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: weapon_rack
+    spriteName: weapon_rack
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 5d5377d195a813a49b1ddb67f79dfe05
+    layerID: 1167
+    mosaicPosition: {x: 306, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: shuriken
+    spriteName: shuriken
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 978739d704eec6140a7d45acc1edf57d
+    layerID: 1101
+    mosaicPosition: {x: 4, y: 598}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: incisor_circle
+    spriteName: incisor_circle
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 28b0497cf1d841b4091aaf5b1af2a609
+    layerID: 1044
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: pinion
+    spriteName: pinion
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 6d58eb54421b6e4429c7959cb2c02f4d
+    layerID: 1059
+    mosaicPosition: {x: 4, y: 306}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: push
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 55d4a1a7b51606a46a377370cd16c65b
+    layerID: 1011
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: push_1
+    spriteName: push_1
+    isGroup: 0
+    parentIndex: 16
+    spriteID: d525323b897c6e045bad8527d6d5d503
+    layerID: 1009
+    mosaicPosition: {x: 405, y: 648}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: push_2
+    spriteName: push_2
+    isGroup: 0
+    parentIndex: 16
+    spriteID: e05b85b4f4a3ca9409fec077e280f0f6
+    layerID: 1019
+    mosaicPosition: {x: 4, y: 862}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: push_3
+    spriteName: push_3
+    isGroup: 0
+    parentIndex: 16
+    spriteID: 9ed7b5a087185be49a4c05996e6555f4
+    layerID: 1021
+    mosaicPosition: {x: 722, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  mosaicPSDLayers: []
+  rigPSDLayers:
+  - name: spike_round
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: e85a1124a78138a4eb22e230a43acea3
+    layerID: 1142
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: xich_2
+    spriteName: xich_2
+    isGroup: 0
+    parentIndex: 0
+    spriteID: 420b313c87a88d64ea0e8706783c2b7a
+    layerID: 1136
+    mosaicPosition: {x: 518, y: 323}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: spike_round
+    spriteName: spike_round
+    isGroup: 0
+    parentIndex: 0
+    spriteID: d2461bcd7e2d3c244b6309d9fae674ef
+    layerID: 1143
+    mosaicPosition: {x: 306, y: 648}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: brick_treo
+    spriteName: brick_treo
+    isGroup: 0
+    parentIndex: 0
+    spriteID: 582f04fd74a90854d88be4b75de5b854
+    layerID: 1388
+    mosaicPosition: {x: 128, y: 862}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: weight_2
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: b29b1a62782df204bb6e19681a27dfd9
+    layerID: 1273
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: day
+    spriteName: day
+    isGroup: 0
+    parentIndex: 4
+    spriteID: 4c712f9fc5772db448d88f08a5237cdd
+    layerID: 1276
+    mosaicPosition: {x: 487, y: 648}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: weight_2
+    spriteName: weight_2
+    isGroup: 0
+    parentIndex: 4
+    spriteID: 9ed2efb6cecf40e4380f070f0d150a97
+    layerID: 1343
+    mosaicPosition: {x: 306, y: 472}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: brick_treo
+    spriteName: brick_treo
+    isGroup: 0
+    parentIndex: 4
+    spriteID: 0947c1405cbe7a0428774f033fd81033
+    layerID: 1391
+    mosaicPosition: {x: 128, y: 933}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: weight_1
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 160fd75dfe506c6459ee69be9b24d472
+    layerID: 1092
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: weight_1
+    spriteName: weight_1
+    isGroup: 0
+    parentIndex: 8
+    spriteID: 6d077ca73470b9a43bdeec063dee3750
+    layerID: 1095
+    mosaicPosition: {x: 306, y: 279}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: xich_1
+    spriteName: xich_1
+    isGroup: 0
+    parentIndex: 8
+    spriteID: 2b9ac249712843541badf74a8e7d1848
+    layerID: 1090
+    mosaicPosition: {x: 518, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: brick_treo copy
+    spriteName: brick_treo copy
+    isGroup: 0
+    parentIndex: 8
+    spriteID: 4e9fba93e4a00884a8c8c80c37f1cebc
+    layerID: 1390
+    mosaicPosition: {x: 567, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: weapon_rack
+    spriteName: weapon_rack
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 5d5377d195a813a49b1ddb67f79dfe05
+    layerID: 1167
+    mosaicPosition: {x: 306, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: shuriken
+    spriteName: shuriken
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 978739d704eec6140a7d45acc1edf57d
+    layerID: 1101
+    mosaicPosition: {x: 4, y: 598}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: incisor_circle
+    spriteName: incisor_circle
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 28b0497cf1d841b4091aaf5b1af2a609
+    layerID: 1044
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: pinion
+    spriteName: pinion
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 6d58eb54421b6e4429c7959cb2c02f4d
+    layerID: 1059
+    mosaicPosition: {x: 4, y: 306}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: push
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 55d4a1a7b51606a46a377370cd16c65b
+    layerID: 1011
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: push_1
+    spriteName: push_1
+    isGroup: 0
+    parentIndex: 16
+    spriteID: d525323b897c6e045bad8527d6d5d503
+    layerID: 1009
+    mosaicPosition: {x: 405, y: 648}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: push_2
+    spriteName: push_2
+    isGroup: 0
+    parentIndex: 16
+    spriteID: e05b85b4f4a3ca9409fec077e280f0f6
+    layerID: 1019
+    mosaicPosition: {x: 4, y: 862}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: push_3
+    spriteName: push_3
+    isGroup: 0
+    parentIndex: 16
+    spriteID: 9ed7b5a087185be49a4c05996e6555f4
+    layerID: 1021
+    mosaicPosition: {x: 722, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  spriteSizeExpandChanged: 0
+  generateGOHierarchy: 0
+  textureAssetName: 
+  prefabAssetName: 
+  spriteLibAssetName: 
+  skeletonAssetName: 
+  secondarySpriteTextures: []

@@ -92,8 +92,8 @@ public class MovementController : MonoBehaviour
 
         if (idx == 0)
         {
-            rightLeg.SetTargetRotation(10 * forward);
-            leftLeg.SetTargetRotation(85 * forward);
+            rightLeg.SetRotation(10 * forward);
+            leftLeg.SetRotation(85 * forward);
 
             SmoothMotionHelper.SmoothMoveTowards(
                 rightLeg.Rb,
@@ -103,8 +103,8 @@ public class MovementController : MonoBehaviour
         }
         else
         {
-            rightLeg.SetTargetRotation(85 * forward);
-            leftLeg.SetTargetRotation(10 * forward);
+            rightLeg.SetRotation(85 * forward);
+            leftLeg.SetRotation(10 * forward);
 
             SmoothMotionHelper.SmoothMoveTowards(
                 leftLeg.Rb,
@@ -125,8 +125,8 @@ public class MovementController : MonoBehaviour
     void StandPose()
     {
         // trả chân về thế đứng tự nhiên
-        leftLeg.SetTargetRotation(leftStandRot);
-        rightLeg.SetTargetRotation(rightStandRot);
+        leftLeg.SetRotation(leftStandRot);
+        rightLeg.SetRotation(rightStandRot);
 
         // nếu vẫn còn tốc → giảm từ từ
         if (Mathf.Abs(bodyRb.linearVelocity.x) > 0.1f)

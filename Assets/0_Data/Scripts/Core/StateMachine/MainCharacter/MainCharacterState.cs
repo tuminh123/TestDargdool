@@ -27,10 +27,8 @@ public class MainCharacterState : IState
         x = Input.GetAxisRaw("Horizontal");
         isGround = characterCtrl.groundDetect.IsGround();
         
-        
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && characterCtrl.attack.CanAttack())
         {
-            Debug.Log("Attack");
             stateMachine.ChangeState(characterCtrl.attackState);
         }
         else if (Input.GetKeyDown(KeyCode.Space) && isGround)

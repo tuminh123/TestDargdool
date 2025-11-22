@@ -1,105 +1,102 @@
-﻿using Core;
+﻿
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-namespace _0_Data.Scripts.Test
+public class Test : MonoBehaviour
 {
-    public struct SignalTest
+    [SerializeField] private List<AttackBase> attackBases = new List<AttackBase>();
+
+    [SerializeField] Balance body_2;
+    //[SerializeField] AnimationCurve speedCurve;
+    //public float speed;
+    //private float time;
+
+    Vector2 attackDir;
+   
+    private void FixedUpdate()
     {
+        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorld.z = 0;
+        attackDir = (mouseWorld - body_2.transform.position).normalized;
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            StartCoroutine(Attack());
+        }
     }
-    public class Test : Visual, IReceive<SignalTest>
+    private IEnumerator Attack()
     {
-        public void Receive(in SignalTest signal)
-        {
-            Debug.Log("a");
-        }
-          #region Test
-    /*private void HandleAttack()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && attackDir.x > 0)
-        {
-            IEnumerator rightPunch = SmoothAttack(rightArm, rightArmDown, 90, 80);
-            IEnumerator rightKick = SmoothAttack(rightLeg, rightLegDown, 110, 100);
-            IEnumerator rightElbow = SmoothAttack(rightArm, rightArm, 140, -120);
-            IEnumerator rightPillow = SmoothAttack(rightLeg, rightLegDown,120,-60);
 
-            IEnumerator[] rightBodyPart = { rightPunch, rightKick, rightElbow, rightPillow };
-            int rand = Random.Range(0, rightBodyPart.Length);
+        attackBases[0].AttackHandle(attackDir);
 
-            StartCoroutine(rightBodyPart[rand]);
-        }
-        if (InputManager.Instance.ConsumeAttackLeftBuffer() && attackDir.x < 0)
-        {
-            IEnumerator leftPunch = SmoothAttack(leftArm, leftArmDown, -90,- 80);
-            IEnumerator leftKick = SmoothAttack(leftLeg,leftLegDown, -110, -100);
-            IEnumerator leftElbow = SmoothAttack(leftArm, leftArmDown, -140, 120);
-            IEnumerator leftPillow = SmoothAttack(leftLeg, leftLegDown,-120, 60);
+        //time += Time.fixedDeltaTime;
+        //speed =  speedCurve.Evaluate(time);
 
-            IEnumerator[] leftBodyPart = { leftPunch, leftKick, leftElbow, leftPillow };
-            int rand = Random.Range(0, leftBodyPart.Length);
+        //SetTriggerBalance(false);
 
-            StartCoroutine(leftBodyPart[rand]);
-        }
+        //if(attackDir.x < 0)
+        //{
+        //    left_up_arm.SetRotation(-115);
+
+        //    left_down_arm.SetRotation(50);
+        //    left_hand.SetRotation(50);
+        //    //body.SetRotation(30);
+        //    //hip.SetRotation(30);
+        //    //body_2.SetRotation(30);
            
+        //}
+        //else if(attackDir.x > 0)
+        //{
+        //    left_up_arm.SetRotation(115);
+
+        //    left_down_arm.SetRotation(-50);
+        //    left_hand.SetRotation(-50);
+        //    //body.SetRotation(-30);
+        //    //hip.SetRotation(-30);
+        //    //body_2.SetRotation(-30);
+        //}
+
+
+        //left_up_arm.Rb.linearVelocity = attackDir * speed * Time.fixedDeltaTime;
+
+        //left_down_arm.Rb.linearVelocity = attackDir * speed * Time.fixedDeltaTime;
+        //left_hand.Rb.linearVelocity = attackDir * speed * Time.fixedDeltaTime;
+        //body.Rb.linearVelocity = attackDir * speed * Time.fixedDeltaTime;
+        ////hip.Rb.linearVelocity = attackDir * speed * Time.fixedDeltaTime;
+        ////body_2.Rb.linearVelocity = attackDir * speed * Time.fixedDeltaTime;
+
+        ////foreach (var item in balances)
+        ////{
+        ////    if (item == null) continue;
+        ////    item.Rb.linearVelocity = attackDir * speed * Time.fixedDeltaTime;
+        ////}
+
+
+        yield return new WaitForSeconds(0.5f);
+
+        attackBases[0].AttackEnd();
+
+        ////time = 0;
+        ////speed = speedCurve.Evaluate(time);
+
+        //SetTriggerBalance(true);
+
+        //left_up_arm.ResetData();
+        //left_down_arm.ResetData();
+        //left_hand.ResetData();
+        //body.ResetData();
+        //hip.ResetData();
+        //body_2.ResetData();
     }
 
-    private IEnumerator SmoothAttack(Balance part1, Balance part2, float rot_1, float rot_2)
-    {
-        isAttacking = true;
-
-        // Lưu rotation ban đầu
-        float initRot1 = part1.TargetRotation;
-        float initRot2 = part2.TargetRotation;
-
-        // Mục tiêu xoay forward
-        float targetRot1 = initRot1 + rot_1;
-        float targetRot2 = initRot2 + rot_2;
-
-        // Cài đặt drag vật lý để tránh văng khớp
-        part1.Rb.linearDamping = configSO.LinearDrag;
-        part2.Rb.linearDamping = configSO.LinearDrag;
-        part1.Rb.angularDamping = configSO.AngularDrag;
-        part2.Rb.angularDamping = configSO.AngularDrag;
-
-        float elapsed = 0f;
-        float launchTime = 0.3f; // 10% duration dùng lực chính
-        float proceduralOffset = 0.2f;
-        while (elapsed < configSO.AttackDuration)
-        {
-            elapsed += Time.fixedDeltaTime;
-
-            // 1️⃣ Xoay tay mượt với giới hạn tốc độ xoay
-            float t_1 = SmoothMotionHelper.SmoothRotateLimited(part1.TargetRotation, targetRot1, configSO.RotateSmoothSpeed,configSO.MaxAngularSpeed);
-            float t_2 = SmoothMotionHelper.SmoothRotateLimited(part2.TargetRotation, targetRot2, configSO.RotateSmoothSpeed,configSO.MaxAngularSpeed);
-            part1.SetTargetRotation(t_1);
-            part2.SetTargetRotation(t_2);
-            // 2️⃣ Tính target theo momentum cơ thể
-            Vector2 targetPos = (Vector2)body.Rb.position + attackDir *configSO.AttackReach + Vector2.Perpendicular(attackDir) * proceduralOffset;
-            if (elapsed < launchTime)
-            {
-                part1.Rb.linearVelocity = attackDir * configSO.AttackForce;  // Đẩy tay thẳng tới target
-                part2.Rb.linearVelocity = attackDir * configSO.AttackForce;
-                body.Rb.AddForce(attackDir *configSO.AttackForce * 0.3f, ForceMode2D.Impulse); // Kéo body
-            }
-            // 3️⃣ Di chuyển tay procedural với lực giới hạn và giảm tốc
-            SmoothMotionHelper.SmoothMoveTowardsLimited(part1.Rb, targetPos, maxSpeed, configSO.MaxForce, configSO.DecelDistance);
-            SmoothMotionHelper.SmoothMoveTowardsLimited(part2.Rb, targetPos, maxSpeed, configSO.MaxForce, configSO.DecelDistance);
-
-            // 4️⃣ Đẩy cơ thể bay nhẹ procedural
-            SmoothMotionHelper.ApplySoftImpulse(body.Rb, attackDir, configSO.AttackForce * 0.2f, 0.5f);
-
-            yield return new WaitForFixedUpdate();
-        }
-
-        // Reset rotation mượt
-        part1.SetTargetRotation(initRot1);
-        part2.SetTargetRotation(initRot2);
-
-        isAttacking = false;
-    }
-    */
-
-
-    #endregion
-
-    }
+    //private void SetTriggerBalance(bool value)
+    //{
+    //    foreach (var item in balances)
+    //    {
+    //        if (item == null) continue;
+    //        item.SetIsTrigger(value);
+    //    }
+    //}
 }
+

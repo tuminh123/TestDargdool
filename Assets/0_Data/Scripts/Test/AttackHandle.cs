@@ -20,8 +20,8 @@ public class AttackHandle
         
         this.rot_1 = rot_1;
         this.rot_2 = rot_2;
-        this.initRot1 = bodyPart_1.TargetRotation;
-        this.initRot2 = bodyPart_2.TargetRotation;
+        this.initRot1 = bodyPart_1.Rotation;
+        this.initRot2 = bodyPart_2.Rotation;
         
         initLinearDamping_1 = bodyPart_1.Rb.linearDamping;
         initLinearDamping_2 = bodyPart_2.Rb.linearDamping;
@@ -53,10 +53,10 @@ public class AttackHandle
             // 1️⃣ Xoay tay mượt với giới hạn tốc độ xoay
             float rotateSmoothSpeed = configSO.RotateSmoothSpeed;
             float maxAngularSpeed = configSO.MaxAngularSpeed;
-            float t_1 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_1.TargetRotation, targetRot1, rotateSmoothSpeed, maxAngularSpeed);
-            float t_2 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_2.TargetRotation, targetRot2, rotateSmoothSpeed, maxAngularSpeed);
-            bodyPart_1.SetTargetRotation(t_1);
-            bodyPart_2.SetTargetRotation(t_2);
+            float t_1 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_1.Rotation, targetRot1, rotateSmoothSpeed, maxAngularSpeed);
+            float t_2 = SmoothMotionHelper.SmoothRotateLimited(bodyPart_2.Rotation, targetRot2, rotateSmoothSpeed, maxAngularSpeed);
+            bodyPart_1.SetRotation(t_1);
+            bodyPart_2.SetRotation(t_2);
 
             // 2️⃣ Tính target theo momentum cơ thể
             float attackReach = configSO.AttackReach;
@@ -84,8 +84,8 @@ public class AttackHandle
     public void AttackEnd()
     {
         
-        bodyPart_1.SetTargetRotation(initRot1);
-        bodyPart_2.SetTargetRotation(initRot2);
+        bodyPart_1.SetRotation(initRot1);
+        bodyPart_2.SetRotation(initRot2);
         
         // Restore damping
         bodyPart_1.Rb.linearDamping = initLinearDamping_1;
