@@ -40,6 +40,9 @@ public class CharacterCtrl : CharacterParent
     private void Start()
     {
         stateMachine.InitState(idelState);
+        //Debug.Log(stats.MaxHealth);
+        //Debug.Log(stats.Speed);
+        //Debug.Log(stats.DamageBase);
     }
 
     private void FixedUpdate()

@@ -145,7 +145,7 @@ public class Move :MonoBehaviour
     {
         while (isMovingRight)
         {
-            Debug.Log("Move right");
+            //Debug.Log("Move right");
 
             data.Walk_1();
             //leftLeg.Rb.AddForce(Vector2.right * (speed * 1000) * Time.fixedDeltaTime);
@@ -166,7 +166,7 @@ public class Move :MonoBehaviour
         while (isMovingLeft)
         {
 
-            Debug.Log("Move Left");
+            //Debug.Log("Move Left");
 
             data.Walk_2();
             //rightLeg.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);

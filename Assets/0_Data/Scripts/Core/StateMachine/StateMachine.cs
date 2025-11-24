@@ -17,11 +17,11 @@ public class StateMachine
         currentState?.Exit();
         currentState = stateNew;
         currentState?.Enter();
-        Debug.Log($"{currentState}");
+        //Debug.Log($"{currentState}");
     }
     public void UpdateState()
     {
         currentState?.Update();
-        Debug.Log($"{currentState}");
+        //Debug.Log($"{currentState}");
     }
 }

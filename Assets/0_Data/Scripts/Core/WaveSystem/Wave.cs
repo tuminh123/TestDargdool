@@ -17,6 +17,10 @@ public class EnemyData
     [SerializeField] private int count;
     [SerializeField] private float spawnInterval = 0.5f;// Delay giữa mỗi enemy
 
+    // Buff riêng cho từng enemy theo wave
+    public float healthPerWave = 0.2f; // tăng 20% HP mỗi wave
+    public float damagePerWave = 0.1f; // tăng 10% damage mỗi wave
+
     //get
     public GameObject EnemyPrefab=>enemyPrefab;
     public float SpawnInterval => spawnInterval;

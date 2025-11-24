@@ -4,10 +4,22 @@ public class DamageDetect : MonoBehaviour
     [SerializeField] private float damageBase;
     [SerializeField] private float radius;
     [SerializeField] private LayerMask layer;
+    private CharacterParent characterParent;
 
     //get
     public float Radius => radius;
     public LayerMask Layer => layer;
+    private void Awake()
+    {
+        characterParent = GetComponentInParent<CharacterParent>();
+
+        damageBase = characterParent.Stats.DamageBase;
+    }
+
+    public void SetDamageBase(float damageBase)
+    {
+        this.damageBase = damageBase;
+    }
 
     public void SenderDamageTo()
     {
