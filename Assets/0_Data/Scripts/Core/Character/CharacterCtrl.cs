@@ -4,20 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterCtrl : MonoBehaviour
+public class CharacterCtrl : CharacterParent
 {
     public static CharacterCtrl Instance { get; private set; }
-
-    #region Child Component Action
-
-    public Move move { get; private set; }
-    public Attack attack { get; private set; }
-    public Jump jump { get; private set; }
-    public Idle idle { get; private set; }
-    public GroundDetect groundDetect { get; private set; }
-    public DamageDetect[] damageDetect { get; private set; }
-
-    #endregion
+    
+    public Jump jump {  get; private set; } 
 
     #region  State
     public MainMoveState moveState { get; private set; }
@@ -28,26 +19,15 @@ public class CharacterCtrl : MonoBehaviour
 
     #endregion
 
-    [SerializeField] Balance body;
     [SerializeField] GameObject gameOverPanel;
-    public HealthBase healthBase { get; private set; }
-    public Vector2 attackDir {  get; private set; }
-    public Balance Body => body;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Instance = this;
-
         gameOverPanel.SetActive(false);
-        
 
-        idle = GetComponentInChildren<Idle>();
-        move = GetComponentInChildren<Move>();
-        attack = GetComponentInChildren<Attack>();
         jump = GetComponentInChildren<Jump>();
-        groundDetect = GetComponentInChildren<GroundDetect>();
-        healthBase = GetComponent<HealthBase>();
-        damageDetect = GetComponentsInChildren<DamageDetect>();
         
         //state init
         stateMachine = new StateMachine();
@@ -67,37 +47,32 @@ public class CharacterCtrl : MonoBehaviour
         stateMachine.UpdateState();
         AttackDirHandle();
     }
-    private void OnEnable()
-    {
-        if (healthBase == null) return;
-        healthBase.OnDead += OnCharacterDead;
-    }
-    private void OnDisable()
-    {
-        if (healthBase == null) return;
-        healthBase.OnDead -= OnCharacterDead;
-    }
-
-    private void OnCharacterDead()
-    {
-        gameOverPanel.SetActive(true);
-        Time.timeScale = 0;
-    }
 
 
     private void AttackDirHandle()
     {
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorld.z = 0;
-        attackDir = (mouseWorld - body.transform.position).normalized;
+        attackDir = (mouseWorld - bodyParent.transform.position).normalized;
     }
 
-    public void SendDamage()
+    public override void OnDead()
     {
-        foreach (var item in damageDetect)
-        {
-            if (item == null) continue;
-            item.SenderDamageTo();
-        }
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    protected override Vector2 GetKnockDir()
+    {
+      
+        Vector2 dir;
+        if(move.IsMovingRight) 
+            dir = Vector2.left;
+        else if(move.IsMovingLeft) 
+            dir = Vector2.right;
+        else 
+            dir = Vector2.up;
+        Debug.Log(dir);
+        return dir;
     }
 }

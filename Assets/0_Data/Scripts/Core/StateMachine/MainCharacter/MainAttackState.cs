@@ -10,7 +10,7 @@ public class MainAttackState : MainCharacterState
     public override void Enter()
     {
         base.Enter();
-        characterCtrl.attack.HandleAttack(characterCtrl.attackDir);
+        characterCtrl.attack.HandleAttack(characterCtrl.AttackDir);
 
         if (characterCtrl.attack.currentAttackData == null) return;
 

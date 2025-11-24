@@ -8,6 +8,7 @@ public class IgnoreCollision : MonoBehaviour
     void Start()
     {
         var colliders = GetComponentsInChildren<Collider2D>();
+        var parentCollider = GetComponent<Collider2D>();
         for (int i = 0; i < colliders.Length; i++)
         {
             for(int k = i + 1; k < colliders.Length; k++)
@@ -15,6 +16,7 @@ public class IgnoreCollision : MonoBehaviour
                 Physics2D.IgnoreCollision(colliders[i], colliders[k]);
             }
         }
+        
     }
 
     private void OnCollisionEnter2D(Collision2D coll)

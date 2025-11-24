@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy_1
   m_EditorClassIdentifier: 
   nameObj: Enemy_1
-  objectData: {fileID: 5585782902008034225, guid: 9e58524772f0d1046aa474661dc9077e, type: 3}
+  objectData: {fileID: 2286832251840490485, guid: 0817a8bc8765e2e418c03b2259daa241, type: 3}
   enemyStat:
     maxHP: 0
     damageBase: 0

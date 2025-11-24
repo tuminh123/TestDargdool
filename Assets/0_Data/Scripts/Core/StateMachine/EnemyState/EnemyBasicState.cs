@@ -28,8 +28,13 @@ public class EnemyBasicState : IState
     {
         //Debug.Log($"{stateMachine.CurrentState}");
 
-        Transform player = CharacterCtrl.Instance.Body.transform;
+        if (enemyAI.healthBase.IsDead) return;
+        if (enemyAI.IsStunned == true) return;
+
+        Transform player = CharacterCtrl.Instance.transform;
         attackDir = (player.position - body.position).normalized;
+
+       
         
     }
 }

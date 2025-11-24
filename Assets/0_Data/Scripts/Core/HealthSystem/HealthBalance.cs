@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-
+public enum Faction { none=0,player =1,enemy=2, }
 public class HealthBalance : MonoBehaviour
 {
     [SerializeField] private float durationAffected;

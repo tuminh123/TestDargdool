@@ -27,6 +27,7 @@ public class EnemyBasicAttackState : EnemyBasicState
 
     private void OnAttackEnd()
     {
-        stateMachine.ChangeState(enemyAI.enemyChaseState);
+        enemyAI.SendDamage();
+        stateMachine.ChangeState(enemyAI.enemyIdleState);
     }
 }
