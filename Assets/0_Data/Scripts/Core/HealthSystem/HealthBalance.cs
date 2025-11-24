@@ -26,7 +26,7 @@ public class HealthBalance : MonoBehaviour
     {
         healthBase.OnTakeDamage -= OnTakeDamage;
     }
-    private void OnTakeDamage(float damage)
+    private void OnTakeDamage()
     {
         StartCoroutine(SetBalanceTrigger());
     }

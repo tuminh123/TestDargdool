@@ -10,7 +10,7 @@ public class EnemyBasicIdleState : EnemyBasicState
     public override void Enter()
     {
         base.Enter();
-        time = 1f;
+        time = 1.5f;
         enemyAI.idle.IdelHandle();
     }
 
@@ -19,6 +19,7 @@ public class EnemyBasicIdleState : EnemyBasicState
         base.Update();
 
         time -= Time.fixedDeltaTime;
+        //enemyAI.idle.IdelHandle();
 
         if (enemyAI.playerDetect.IsPlayer == true && time < 0)
         {

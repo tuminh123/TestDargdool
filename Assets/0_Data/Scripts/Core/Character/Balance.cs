@@ -11,8 +11,8 @@ public class Balance : MonoBehaviour
     [SerializeField] private float minRot = -150f;
     [SerializeField] private float maxRot = 150f;
 
-    [SerializeField] private float smoothTime = 0.1f; // thời gian mượt
-    private float angularVelocity; // lưu velocity giữa các frame
+    //[SerializeField] private float smoothTime = 0.1f; // thời gian mượt
+    //private float angularVelocity; // lưu velocity giữa các frame
 
 
     [SerializeField] private DefaultBalanceData dataSO;
@@ -46,18 +46,18 @@ public class Balance : MonoBehaviour
 
     private void HandleBalance()
     {
-        float clampedRot = Mathf.Clamp(rot, minRot, maxRot);
+        
         if (isTrigger)
         {
-            
+            float clampedRot = Mathf.Clamp(rot, minRot, maxRot);
             rb.MoveRotation(Mathf.LerpAngle(rb.rotation, clampedRot, force * Time.fixedDeltaTime));
         }
-        else
-        {
-            //float clampedRot = Mathf.Clamp(rot, minRot, maxRot);
-            float newRotation = Mathf.SmoothDampAngle(rb.rotation, clampedRot, ref angularVelocity, smoothTime);
-            rb.MoveRotation(newRotation);
-        }
+        //else
+        //{
+        //    //float clampedRot = Mathf.Clamp(rot, minRot, maxRot);
+        //    float newRotation = Mathf.SmoothDampAngle(rb.rotation, clampedRot, ref angularVelocity, smoothTime);
+        //    rb.MoveRotation(newRotation);
+        //}
     }
 
     public void ResetData()

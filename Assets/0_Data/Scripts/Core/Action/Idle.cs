@@ -7,6 +7,24 @@ public class IdleData
     [SerializeField] private Balance rightArmUp, rightArmDown, rightHand;
     [SerializeField] private Balance leftArmUp, leftArmDown, leftHand;
     public Balance Body => body;
+    
+    public void SetRot(float arm,float leg_up,float low_leg)
+    {
+        rightArmUp.SetRotation(arm);
+        rightArmDown.SetRotation(arm);
+        rightHand.SetRotation(arm);
+
+        leftArmUp.SetRotation(-arm);
+        leftArmDown.SetRotation(-arm);
+        leftHand.SetRotation(-arm);
+
+        leftLeg.SetRotation(-leg_up);
+        rightLeg.SetRotation(leg_up);
+
+        leftDownLeg.SetRotation(-low_leg);
+        rightDownLeg.SetRotation(low_leg);
+
+    }
 
     public void ResetData()
     {
@@ -32,6 +50,13 @@ public class Idle : MonoBehaviour
     public void IdelHandle()
     {
         data.ResetData();
+
+        data.SetRot(50, 30, 25);
+
+        data.Body.Rb.linearVelocity = new Vector2(data.Body.Rb.linearVelocity.x * damping, data.Body.Rb.linearVelocity.y);
+    }
+    public void StopMove()
+    {
         data.Body.Rb.linearVelocity = new Vector2(data.Body.Rb.linearVelocity.x * damping, data.Body.Rb.linearVelocity.y);
     }
 }

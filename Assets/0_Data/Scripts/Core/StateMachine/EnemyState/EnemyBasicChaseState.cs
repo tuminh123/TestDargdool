@@ -29,6 +29,5 @@ public class EnemyBasicChaseState : EnemyBasicState
     {
         base.Exit();
         enemyAI.move.StopMoveCoroutine();
-        //enemyAI.idle.IdelHandle();
     }
 }

@@ -2,18 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class AttackProperties
-{
-    [SerializeField] private Balance balance;
-    [SerializeField] private float rot;
-    [SerializeField] private float force;
-
-    public Balance Balance => balance;
-    public float Rot => rot;
-    public float Force => force;
-}
-
-[System.Serializable]
 public class AttackBase : IAttackHandle
 {
     [SerializeField] protected List<AttackProperties> balances = new List<AttackProperties>();
