@@ -24,10 +24,13 @@ public class MainCharacterState : IState
 
     public virtual void Update()
     {
+        if (characterCtrl.healthBase.IsDead) return;
+        if (characterCtrl.IsStunned) return;
+
         x = Input.GetAxisRaw("Horizontal");
         isGround = characterCtrl.groundDetect.IsGround();
         
-        if (Input.GetMouseButtonDown(0) && characterCtrl.attack.CanAttack())
+        if (Input.GetMouseButtonDown(0) && characterCtrl.attack.CanAttack() && characterCtrl.IsStunned == false)
         {
             stateMachine.ChangeState(characterCtrl.attackState);
         }

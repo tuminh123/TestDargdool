@@ -16,6 +16,7 @@ public class DamageDetect : MonoBehaviour
 
         IDamageable health = collider.GetComponent<IDamageable>();
         if(health == null) return;
+        if (health.IsDead) return;
 
         health.TakeDamaged(damageBase);
     }

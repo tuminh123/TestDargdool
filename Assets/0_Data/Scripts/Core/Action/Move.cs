@@ -65,6 +65,10 @@ public class Move :MonoBehaviour
     private bool isMovingRight = false;
     private bool isMovingLeft = false;
 
+    //get
+    public bool IsMovingRight => isMovingRight;
+    public bool IsMovingLeft => isMovingLeft;
+
     #region  Utils
 
     private void FixedUpdate()

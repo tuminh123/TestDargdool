@@ -66,7 +66,7 @@ public class AttackHandle
             {
                 bodyPart_1.Rb.linearVelocity = attackDir * attackForce;  // Đẩy tay thẳng tới target
                 bodyPart_2.Rb.linearVelocity = attackDir * attackForce;
-                body.Rb.AddForce(attackDir * attackForce * 0.3f, ForceMode2D.Impulse); // Kéo body
+                body.Rb.AddForce(attackDir * attackForce * 0.3f, ForceMode2D.Impulse); // Kéo bodyParent
             }
             // 3️⃣ Di chuyển tay procedural với lực giới hạn và giảm tốc
             float maxSpeed = configSO.MaxSpeed;

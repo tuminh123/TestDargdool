@@ -1,0 +1,83 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class WaveSpawner : MonoBehaviour
+{
+    [SerializeField] private List<Wave> waves;
+    [SerializeField] private Transform[] spawnPoints;
+
+    private int currentWaveIndex = 0;
+
+
+    void Start()
+    {
+        StartCoroutine(SpawnWaves());
+    }
+
+
+    private IEnumerator SpawnWaves()
+    {
+        while (currentWaveIndex < waves.Count)
+        {
+            Wave wave = waves[currentWaveIndex];
+
+
+            foreach (var enemyData in wave.Enemies)
+            {
+                for (int i = 0; i < enemyData.Count; i++)
+                {
+                    Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+                    SpawnEnemy(enemyData.EnemyPrefab, spawnPoint.position);
+                    yield return new WaitForSeconds(enemyData.SpawnInterval);
+                }
+            }
+
+
+            // Chờ 1 khoảng thời gian giữa các wave (tùy chỉnh nếu muốn)
+            yield return new WaitForSeconds(wave.WaveDelay);
+
+
+            currentWaveIndex++;
+        }
+        OnAllWavesCompleted();
+    }
+    private void OnAllWavesCompleted()
+    {
+        Debug.Log("Tất cả wave đã hoàn thành.");
+        // Bạn có thể làm gì đó ở đây, ví dụ:
+        // - Bật cửa ra next level
+        // - Hiện thông báo
+        // - Thay đổi trạng thái game
+    }
+
+    private void SpawnEnemy(GameObject prefab, Vector3 position)
+    {
+        GameObject enemy = Instantiate(prefab, position, Quaternion.identity);
+        EnemySpawnUtils(enemy);
+    }
+
+    private static void EnemySpawnUtils(GameObject enemy)
+    {
+        // 1. Reset physics ngay khi spawn (quan trọng với ragdoll)
+        Rigidbody2D[] rbs = enemy.GetComponentsInChildren<Rigidbody2D>();
+        Rigidbody2D rbParent = enemy.GetComponent<Rigidbody2D>();
+        foreach (var rb in rbs)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.Sleep(); // Wake up khi cần
+        }
+        rbParent.linearVelocity = Vector2.zero;
+        rbParent.angularVelocity = 0f;
+        rbParent.Sleep(); // Wake up khi cần
+
+        Collider2D[] colliders = enemy.GetComponentsInChildren<Collider2D>();
+        Collider2D parentCollider = enemy.GetComponent<Collider2D>();
+        foreach (var c in colliders)
+        {
+            c.enabled = true; // đảm bảo collider hoạt động
+        }
+        parentCollider.enabled = true;
+    }
+}

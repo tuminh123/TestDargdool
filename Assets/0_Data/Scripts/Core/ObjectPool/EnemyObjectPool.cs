@@ -37,13 +37,22 @@ public class EnemyObjectPool : ObjectPoolManager<EnemyAI>
         for (int i = 0; i < spawmEnemyAmount; i++)
         {
             float health = enemyHealthAmount.Evaluate(waveIndex);
-            CreateEnemy(health);
+            StartCoroutine(SpawnDelayEnemy(health));
         }
     }
+
+    private IEnumerator SpawnDelayEnemy(float health)
+    {
+        CreateEnemy(health);
+        yield return new WaitForSeconds(2f);
+    }
+
     public void CreateEnemy(float maxHealth)
     {
+        Debug.Log("Spawn at frame: " + Time.frameCount);
+
         EnemyAI enemy = Spawn("Enemy", GetRandomPoint().position, Quaternion.identity);
-        enemy.ResetEnemyPhysics();
+        enemy.SetTriggerBalance(true);
         enemy.healthBase.SetMaxHealth(maxHealth);
         enemy.healthBase.InitHealth();
     }

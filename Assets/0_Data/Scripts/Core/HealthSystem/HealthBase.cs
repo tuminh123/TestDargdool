@@ -9,10 +9,11 @@ public class HealthBase : MonoBehaviour,IDamageable
 
     [SerializeField] private float maxHealth = 100;
     [SerializeField] private float currentHealth;
-   
-    private bool isDead = false;
     public float MaxHealth => maxHealth;
     public float CurrentHealth => currentHealth;
+
+    public bool IsDead => currentHealth <= 0;
+
     private void Awake()
     {
         InitHealth();
@@ -25,7 +26,7 @@ public class HealthBase : MonoBehaviour,IDamageable
 
     public void TakeDamaged(float damage)
     {
-        if(isDead) return;
+        if(IsDead) return;
         currentHealth -= damage;
         OnTakeDamage?.Invoke();
 
@@ -40,7 +41,7 @@ public class HealthBase : MonoBehaviour,IDamageable
 
     private void Die()
     {
-        isDead = true;
+        //isDead = true;
         // xử lý chết ragdoll hoặc enemy
         Debug.Log($"{gameObject.name} died.");
         OnDead?.Invoke();
