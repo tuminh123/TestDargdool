@@ -33,6 +33,7 @@ public class DefaultBalanceData :ScriptableObject
     //get
     public float Rot => rot;
     public float Force => force;
+    public BalanceType BalanceType => balanceType;
 
     public void Change(float rot,float force)
     {

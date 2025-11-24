@@ -1,70 +1,85 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class MoveTest : MonoBehaviour
 {
-    [Header("Character Parts")]
-    [SerializeField] BalanceTest left_up_arm;
-    [SerializeField] BalanceTest left_down_arm;
-    [SerializeField] BalanceTest left_hand;
-    [SerializeField] BalanceTest body;
-    [SerializeField] BalanceTest body_2;
-    [SerializeField] BalanceTest hip;
+    private HealthBase healthBase;
+    private Coroutine damageCoroutine;
 
-    [Header("Attack Settings")]
-    [SerializeField] float attackDuration = 1f; // thời gian giữ pose tấn công
+    public Transform target;
 
-    private Vector2 attackDir;
-
-    private void FixedUpdate()
+    private void Awake()
     {
-        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorld.z = 0;
-        attackDir = (mouseWorld - body_2.transform.position).normalized;
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            StartCoroutine(Attack());
-        }
+        healthBase = GetComponentInChildren<HealthBase>();
     }
 
-    private IEnumerator Attack()
+    #region Health event
+    private void OnEnable()
     {
-        // ------------------------------
-        // 1. Set góc tấn công dựa theo hướng
-        // ------------------------------
-        if (attackDir.x < 0) // sang trái
-        {
-            left_up_arm.SetRotation(-115f);
-            left_down_arm.SetRotation(50f);
-            left_hand.SetRotation(50f);
-            body.SetRotation(25f);
-            hip.SetRotation(20f);
-            body_2.SetRotation(25f);
-        }
-        else if (attackDir.x > 0) // sang phải
-        {
-            left_up_arm.SetRotation(115f);
-            left_down_arm.SetRotation(-50f);
-            left_hand.SetRotation(-50f);
-            body.SetRotation(-25f);
-            hip.SetRotation(-20f);
-            body_2.SetRotation(-25f);
-        }
-
-        // ------------------------------
-        // 2. Giữ tư thế tấn công trong attackDuration giây
-        // ------------------------------
-        yield return new WaitForSeconds(attackDuration);
-
-        // ------------------------------
-        // 3. Trở về tư thế idle (0 độ)
-        // ------------------------------
-        left_up_arm.SetRotation(0f);
-        left_down_arm.SetRotation(0f);
-        left_hand.SetRotation(0f);
-        body.SetRotation(0f);
-        hip.SetRotation(0f);
-        body_2.SetRotation(0f);
+        if (healthBase == null) return;
+        //healthBase.OnDead += OnEnmyDead;
+        healthBase.OnTakeDamage += OnTakeDamage;
     }
+
+    private void OnDisable()
+    {
+        if (healthBase == null) return;
+        //healthBase.OnDead -= OnEnmyDead;
+        healthBase.OnTakeDamage += OnTakeDamage;
+
+        StopDamageCoroutine();
+    }
+    private void OnDestroy()
+    {
+        StopDamageCoroutine();
+    }
+    //private void OnEnmyDead()
+    //{
+    //    EnemyObjectPool.Instance.DeSpawn(this);
+    //}
+    private void OnTakeDamage()
+    {
+        Balance body = transform.GetComponent<Balance>();
+        Balance[] childBalance = transform.GetComponentsInChildren<Balance>();
+
+        Vector2 dir = transform.position - target.position;
+        foreach (var item in childBalance)
+        {
+            item.Rb.linearVelocity = dir * 3;
+
+        }
+        body.Rb.linearVelocity = dir * 3;
+
+        damageCoroutine = StartCoroutine(SetBalanceTrigger(body, childBalance));
+
+    }
+    private IEnumerator SetBalanceTrigger(Balance body, Balance[] childBalance)
+    {
+        
+
+        foreach (var item in childBalance)
+        {
+            item.SetIsTrigger(false);
+           
+        }
+        body.SetIsTrigger(false);
+
+        yield return new WaitForSeconds(2);
+
+        foreach (var item in childBalance)
+        {
+            item.SetIsTrigger(true);
+        }
+        body.SetIsTrigger(true);
+    }
+    public void StopDamageCoroutine()
+    {
+        if (damageCoroutine != null)
+        {
+            StopCoroutine(damageCoroutine);
+            damageCoroutine = null;
+        }
+    }
+    #endregion
 }

@@ -14,7 +14,7 @@ public class EnemyBasicAttackState : EnemyBasicState
 
         enemyAI.attack.HandleAttack(attackDir);
 
-       /* enemyAI.attack.currentAttackData.OnAttackEnd += OnAttackEnd;*/
+        enemyAI.attack.currentAttackData.OnAttackEnd += OnAttackEnd; 
     }
 
     public override void Exit()
@@ -22,7 +22,7 @@ public class EnemyBasicAttackState : EnemyBasicState
         base.Exit();      
         enemyAI.attack.StopAttack();
 
-       /* enemyAI.attack.currentAttackData.OnAttackEnd -= OnAttackEnd;*/
+        enemyAI.attack.currentAttackData.OnAttackEnd -= OnAttackEnd;
     }
 
     private void OnAttackEnd()

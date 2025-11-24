@@ -15,6 +15,7 @@ public class CharacterCtrl : MonoBehaviour
     public Jump jump { get; private set; }
     public Idle idle { get; private set; }
     public GroundDetect groundDetect { get; private set; }
+    public DamageDetect[] damageDetect { get; private set; }
 
     #endregion
 
@@ -28,6 +29,8 @@ public class CharacterCtrl : MonoBehaviour
     #endregion
 
     [SerializeField] Balance body;
+    [SerializeField] GameObject gameOverPanel;
+    public HealthBase healthBase { get; private set; }
     public Vector2 attackDir {  get; private set; }
     public Balance Body => body;
 
@@ -35,11 +38,16 @@ public class CharacterCtrl : MonoBehaviour
     {
         Instance = this;
 
+        gameOverPanel.SetActive(false);
+        
+
         idle = GetComponentInChildren<Idle>();
         move = GetComponentInChildren<Move>();
         attack = GetComponentInChildren<Attack>();
         jump = GetComponentInChildren<Jump>();
         groundDetect = GetComponentInChildren<GroundDetect>();
+        healthBase = GetComponent<HealthBase>();
+        damageDetect = GetComponentsInChildren<DamageDetect>();
         
         //state init
         stateMachine = new StateMachine();
@@ -59,11 +67,37 @@ public class CharacterCtrl : MonoBehaviour
         stateMachine.UpdateState();
         AttackDirHandle();
     }
+    private void OnEnable()
+    {
+        if (healthBase == null) return;
+        healthBase.OnDead += OnCharacterDead;
+    }
+    private void OnDisable()
+    {
+        if (healthBase == null) return;
+        healthBase.OnDead -= OnCharacterDead;
+    }
+
+    private void OnCharacterDead()
+    {
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0;
+    }
+
 
     private void AttackDirHandle()
     {
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorld.z = 0;
         attackDir = (mouseWorld - body.transform.position).normalized;
+    }
+
+    public void SendDamage()
+    {
+        foreach (var item in damageDetect)
+        {
+            if (item == null) continue;
+            item.SenderDamageTo();
+        }
     }
 }
