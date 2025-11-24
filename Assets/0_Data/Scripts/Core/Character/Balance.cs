@@ -62,7 +62,7 @@ public class Balance : MonoBehaviour
 
     public void ResetData()
     {
-        Debug.Log("Reset");
+        //Debug.Log("Reset");
         dataSO.Init(out rot,out force);
     }
     public void SetPropertie(float targetRotation,float force)

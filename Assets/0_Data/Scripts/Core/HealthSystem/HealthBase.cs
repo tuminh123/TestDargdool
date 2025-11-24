@@ -7,14 +7,21 @@ public class HealthBase : MonoBehaviour,IDamageable
     public System.Action OnTakeDamage;
     public System.Action OnDead;
 
-    [SerializeField] private float maxHealth = 100;
+    [SerializeField] private float maxHealth;
     [SerializeField] private float currentHealth;
     public float MaxHealth => maxHealth;
     public float CurrentHealth => currentHealth;
 
     public bool IsDead => currentHealth <= 0;
 
+    private CharacterParent characterParent;
     private void Awake()
+    {
+        characterParent = GetComponentInParent<CharacterParent>();
+        maxHealth = characterParent.Stats.MaxHealth;
+    }
+
+    private void Start()
     {
         InitHealth();
     }

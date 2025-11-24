@@ -15,10 +15,10 @@ public class EnemyAI : CharacterParent,IObjectPool
 
     #endregion
 
-        public PlayerDetect playerDetect { get; private set; }
+    public PlayerDetect playerDetect { get; private set; }
 
     protected override void Awake()
-        {
+    {
                 base.Awake();
                 playerDetect = GetComponentInChildren<PlayerDetect>();
                 //state init
@@ -26,17 +26,20 @@ public class EnemyAI : CharacterParent,IObjectPool
                 enemyChaseState = new EnemyBasicChaseState(stateMachine, this,bodyParent.transform);
                 enemyAttackState = new EnemyBasicAttackState(stateMachine, this,bodyParent.transform);
                 enemyIdleState = new EnemyBasicIdleState(stateMachine, this,bodyParent.transform);
-        }
+    }
 
-        private void Start()
-        {
+    private void Start()
+    {
                 stateMachine.InitState(enemyIdleState);
-        }
+        //Debug.Log(stats.MaxHealth);
+        //Debug.Log(stats.Speed);
+        //Debug.Log(stats.DamageBase);
+    }
 
-        private void FixedUpdate()
-        {
+    private void FixedUpdate()
+    {
                 stateMachine.UpdateState();
-        }
+    }
 
     public override void OnDead()
     {

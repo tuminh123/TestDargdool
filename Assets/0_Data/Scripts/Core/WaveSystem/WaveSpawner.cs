@@ -28,7 +28,8 @@ public class WaveSpawner : MonoBehaviour
                 for (int i = 0; i < enemyData.Count; i++)
                 {
                     Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                    SpawnEnemy(enemyData.EnemyPrefab, spawnPoint.position);
+                    GameObject enemyObj = SpawnEnemy(enemyData.EnemyPrefab, spawnPoint.position);
+                    ApplyBuffToEnemy(enemyObj, enemyData,currentWaveIndex);
                     yield return new WaitForSeconds(enemyData.SpawnInterval);
                 }
             }
@@ -50,11 +51,24 @@ public class WaveSpawner : MonoBehaviour
         // - Hiện thông báo
         // - Thay đổi trạng thái game
     }
+    private void ApplyBuffToEnemy(GameObject enemyObj, EnemyData enemyData, int waveIndex)
+    {
+        EnemyAI enemy = enemyObj.transform.GetComponent<EnemyAI>();
+        if (enemy != null)
+        {
+            float healthMultiplier = 1f + enemyData.healthPerWave * waveIndex;
+            float damageMultiplier = 1f + enemyData.damagePerWave * waveIndex;
 
-    private void SpawnEnemy(GameObject prefab, Vector3 position)
+
+            enemy.Buff(healthMultiplier, damageMultiplier);
+        }
+    }
+
+    private GameObject SpawnEnemy(GameObject prefab, Vector3 position)
     {
         GameObject enemy = Instantiate(prefab, position, Quaternion.identity);
         EnemySpawnUtils(enemy);
+        return enemy;
     }
 
     private static void EnemySpawnUtils(GameObject enemy)

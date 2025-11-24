@@ -2,6 +2,25 @@ using System.Collections;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
+[System.Serializable]
+public class Stats
+{
+    [SerializeField] private float maxHealth;
+    [SerializeField] private float damageBase;
+
+    //get
+    public float MaxHealth => maxHealth;
+    public float DamageBase => damageBase;
+
+    public void SetMaxHealth(float maxHealth)
+    {
+        this.maxHealth = maxHealth;
+    }
+    public void SetDamageBase(float damageBase)
+    {
+        this.damageBase = damageBase;
+    }
+}
 public abstract class CharacterParent : MonoBehaviour
 {
     #region Child component
@@ -12,6 +31,7 @@ public abstract class CharacterParent : MonoBehaviour
     public GroundDetect groundDetect { get; private set; }
     public DamageDetect[] damageDetect { get; private set; }
     #endregion
+    [SerializeField] protected Stats stats;
 
     //Balance
     protected Balance bodyParent;
@@ -27,9 +47,11 @@ public abstract class CharacterParent : MonoBehaviour
     //get
     public Vector2 AttackDir=> attackDir;
     public bool IsStunned => isStunned;
+    public Stats Stats => stats;
 
     protected virtual void Awake()
     {
+
         idle = GetComponentInChildren<Idle>();
         move = GetComponentInChildren<Move>();
         attack = GetComponentInChildren<Attack>();
@@ -40,8 +62,18 @@ public abstract class CharacterParent : MonoBehaviour
 
         bodyParent = transform.GetComponent<Balance>();
         childBalance = transform.GetComponentsInChildren<Balance>();
-    }
 
+        //healthBase.SetMaxHealth(stats.MaxHealth);
+        //foreach (var item in damageDetect)
+        //{
+        //    if (item == null) continue;
+        //    item.SetDamageBase(stats.DamageBase);
+        //}
+    }
+    private void Start()
+    {
+      
+    }
     public abstract void OnDead();
     protected abstract Vector2 GetKnockDir();
 
@@ -120,6 +152,24 @@ public abstract class CharacterParent : MonoBehaviour
         {
             if (item == null) continue;
             item.SenderDamageTo();
+        }
+    }
+
+    public void Buff(float healthMultiplier, float damageMultiplierr)
+    {
+        Debug.Log("buff");
+        float buffMaxHealth = stats.MaxHealth*healthMultiplier;
+        float buffDamageBase = stats.DamageBase * damageMultiplierr;
+        Debug.Log(buffMaxHealth);
+        Debug.Log(buffDamageBase);
+        stats.SetMaxHealth(buffMaxHealth);
+        stats.SetDamageBase(buffDamageBase);
+
+        healthBase.SetMaxHealth(stats.MaxHealth);
+        foreach (var item in damageDetect)
+        {
+            if (item == null) continue;
+            item.SetDamageBase(stats.DamageBase);
         }
     }
 }

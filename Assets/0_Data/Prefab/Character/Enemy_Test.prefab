@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 20
-  radius: 0.25
+  radius: 0.3
   layer:
     serializedVersion: 2
     m_Bits: 64
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 50
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
     m_Bits: 64
@@ -2088,7 +2088,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 10
-  radius: 0.25
+  radius: 0.3
   layer:
     serializedVersion: 2
     m_Bits: 64
@@ -2137,7 +2137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 10
-  radius: 0.25
+  radius: 0.3
   layer:
     serializedVersion: 2
     m_Bits: 64
@@ -2305,6 +2305,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a3810ea85646a4bab11f6993ce178e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats:
+    maxHealth: 100
+    damageBase: 20
   stunTime: 3
   knockBackForce: 10
 --- !u!1 &4410550863498641718
@@ -2593,7 +2596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 20
-  radius: 0.25
+  radius: 0.3
   layer:
     serializedVersion: 2
     m_Bits: 64
@@ -3017,7 +3020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 50
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
     m_Bits: 64

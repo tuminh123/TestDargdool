@@ -2126,7 +2126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28bff0db62676594dabae9f6b0b210fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5000
+  maxHealth: 1000
   currentHealth: 0
 --- !u!70 &490966136
 CapsuleCollider2D:
@@ -3326,7 +3326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 20
-  radius: 0.25
+  radius: 0.3
   layer:
     serializedVersion: 2
     m_Bits: 128
@@ -4038,6 +4038,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f594c41f4a95cd4a8506170a6ecab24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats:
+    maxHealth: 1000
+    damageBase: 30
   stunTime: 2
   knockBackForce: 5
   gameOverPanel: {fileID: 941960145}
@@ -6025,19 +6028,19 @@ MonoBehaviour:
     - enemyPrefab: {fileID: 4207200127957107742, guid: 0817a8bc8765e2e418c03b2259daa241, type: 3}
       count: 2
       spawnInterval: 1.5
-    waveDelay: 3
+    waveDelay: 25
   - waveName: wave 2
     enemies:
     - enemyPrefab: {fileID: 4207200127957107742, guid: 0817a8bc8765e2e418c03b2259daa241, type: 3}
       count: 4
       spawnInterval: 2
-    waveDelay: 4
+    waveDelay: 30
   - waveName: wave 3
     enemies:
     - enemyPrefab: {fileID: 4207200127957107742, guid: 0817a8bc8765e2e418c03b2259daa241, type: 3}
       count: 6
       spawnInterval: 3
-    waveDelay: 5
+    waveDelay: 35
   spawnPoints:
   - {fileID: 597247383}
   - {fileID: 1930353565}
@@ -7339,7 +7342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 20
-  radius: 0.25
+  radius: 0.3
   layer:
     serializedVersion: 2
     m_Bits: 128
@@ -7697,6 +7700,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f594c41f4a95cd4a8506170a6ecab24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats:
+    maxHealth: 0
+    damageBase: 0
   stunTime: 0
   knockBackForce: 0
   gameOverPanel: {fileID: 0}
@@ -7895,7 +7901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 50
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
     m_Bits: 128
@@ -8690,7 +8696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 10
-  radius: 0.25
+  radius: 0.3
   layer:
     serializedVersion: 2
     m_Bits: 128
@@ -8875,7 +8881,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 10
-  radius: 0.25
+  radius: 0.3
   layer:
     serializedVersion: 2
     m_Bits: 128
@@ -9014,7 +9020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 50
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
     m_Bits: 128
