@@ -2,7 +2,7 @@
 
 public class EnemyBasicIdleState : EnemyBasicState
 {
-    private float time;
+    private float attackTime = 0f;
     public EnemyBasicIdleState(StateMachine stateMachine, EnemyAI enemyAI, Transform body) : base(stateMachine, enemyAI, body)
     {
     }
@@ -10,7 +10,9 @@ public class EnemyBasicIdleState : EnemyBasicState
     public override void Enter()
     {
         base.Enter();
-        time = 1.5f;
+
+        attackTime = 3f;
+
         enemyAI.idle.IdelHandle();
     }
 
@@ -18,17 +20,18 @@ public class EnemyBasicIdleState : EnemyBasicState
     {
         base.Update();
 
-        time -= Time.fixedDeltaTime;
-        //enemyAI.idle.IdelHandle();
+        attackTime -= Time.deltaTime;
 
-        if (enemyAI.playerDetect.IsPlayer == true && time < 0)
+        if(attackTime < 0f)
         {
             stateMachine.ChangeState(enemyAI.enemyAttackState);
-
         }
-        if (enemyAI.playerDetect.IsPlayer == false)
+        else
         {
-            stateMachine.ChangeState(enemyAI.enemyChaseState);
+            enemyAI.idle.IdelHandle();
         }
+
+        if (distance > 7) stateMachine.ChangeState(enemyAI.enemyChaseState);
+
     }
 }

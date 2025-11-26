@@ -29,7 +29,7 @@ public static class SmoothMotionHelper
     /// <summary>
     /// Di chuyển Rigidbody2D mượt đến targetPosition
     /// maxSpeed: tốc độ tối đa
-    /// accelerate: độ tăng tốc (force áp dụng)
+    /// accelerate: độ tăng tốc (forceChange áp dụng)
     /// decelDistance: khoảng cách bắt đầu giảm tốc khi gần target
     /// </summary>
     public static void SmoothMoveTowards(Rigidbody2D rb, Vector2 targetPosition, float maxSpeed, float accelerate = 30f, float decelDistance = 0.5f)
@@ -76,7 +76,7 @@ public static class SmoothMotionHelper
     /// <summary>
     /// Tạo lực đẩy mềm thay vì Impulse giật mạnh
     /// direction: hướng đẩy
-    /// force: tổng lực
+    /// forceChange: tổng lực
     /// softness: tỷ lệ lực mềm, 0 = toàn lực bình thường, 1 = toàn lực mềm
     /// </summary>
     public static void ApplySoftImpulse(Rigidbody2D rb, Vector2 direction, float force, float softness = 0.3f)

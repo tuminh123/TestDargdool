@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4219df33416c684cbc2fdc5aeb2a091, type: 3}
+  m_Name: Idle_1
+  m_EditorClassIdentifier: 
+  actionName: idle_1
+  balanceDatas:
+  - type: 3
+    rotChange: 50
+    forceChange: 20
+  - type: 4
+    rotChange: 50
+    forceChange: 15
+  - type: 5
+    rotChange: 50
+    forceChange: 10
+  - type: 6
+    rotChange: -50
+    forceChange: 20
+  - type: 7
+    rotChange: -50
+    forceChange: 15
+  - type: 8
+    rotChange: -50
+    forceChange: 10
+  - type: 9
+    rotChange: 30
+    forceChange: 50
+  - type: 10
+    rotChange: 25
+    forceChange: 35
+  - type: 12
+    rotChange: -30
+    forceChange: 50
+  - type: 13
+    rotChange: -25
+    forceChange: 35
