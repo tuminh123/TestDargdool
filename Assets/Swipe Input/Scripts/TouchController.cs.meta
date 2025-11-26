@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 970b4d1f8d5cdcb4a9cab6ccef85fbd1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275012
+  packageName: Swipe Input
+  packageVersion: 1.0
+  assetPath: Assets/Swipe Input/Scripts/TouchController.cs
+  uploadId: 639030

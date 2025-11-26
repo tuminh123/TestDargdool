@@ -1,40 +1,45 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class EnemyBasicState : IState
 {
     protected EnemyAI enemyAI;
     protected StateMachine stateMachine;
-    protected Vector2 attackDir;
-    private Transform body;
+    protected Transform body;
 
-    public EnemyBasicState(StateMachine stateMachine, EnemyAI enemyAI,Transform body)
+    protected float distance;
+    protected Vector2 dir;
+
+    protected float timeAttack;
+
+    public EnemyBasicState(StateMachine stateMachine, EnemyAI enemyAI, Transform body)
     {
         this.stateMachine = stateMachine;
         this.enemyAI = enemyAI;
         this.body = body;
     }
-    
-    public virtual void Enter()
-    {
-        
-    }
 
-    public virtual void Exit()
-    {
-      
-    }
+    public virtual void Enter() { }
+    public virtual void Exit() { }
 
     public virtual void Update()
     {
-        //Debug.Log($"{stateMachine.CurrentState}");
+        timeAttack -= Time.deltaTime;
 
-        if (enemyAI.healthBase.IsDead) return;
-        if (enemyAI.IsStunned == true) return;
+        if (enemyAI.healthBase.IsDead || enemyAI.IsStunned) return;
 
+        HandleProperties();
+    }
+
+    private void HandleProperties()
+    {
         Transform player = CharacterCtrl.Instance.transform;
-        attackDir = (player.position - body.position).normalized;
 
-       
-        
+        dir = (player.position - body.position).normalized;
+        distance = Vector2.Distance(body.position, player.position);
+    }
+
+    public virtual void UpdatePhysic() 
+    {
     }
 }

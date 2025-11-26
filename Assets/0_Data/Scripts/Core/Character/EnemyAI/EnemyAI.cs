@@ -2,12 +2,11 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class EnemyAI : CharacterParent,IObjectPool
 {
 
-        #region State
+    #region State
         private StateMachine stateMachine;
         public EnemyBasicChaseState enemyChaseState { get; private set; }
         public EnemyBasicAttackState enemyAttackState { get; private set; }
@@ -30,15 +29,18 @@ public class EnemyAI : CharacterParent,IObjectPool
 
     private void Start()
     {
-                stateMachine.InitState(enemyIdleState);
+         stateMachine.InitState(enemyChaseState);
         //Debug.Log(stats.MaxHealth);
         //Debug.Log(stats.Speed);
         //Debug.Log(stats.DamageBase);
     }
-
+    private void Update()
+    {
+        stateMachine.UpdateState();
+    }
     private void FixedUpdate()
     {
-                stateMachine.UpdateState();
+        stateMachine.UpdatePhysicState();
     }
 
     public override void OnDead()

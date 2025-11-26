@@ -120,14 +120,14 @@ public class AttackData
                 Balance part = item.Balance;
                 float targetRot = item.Rot;
 
-                float t = SmoothMotionHelper.SmoothRotateLimited(
-                    part.Rotation,
-                    targetRot,
-                    configSO.RotateSmoothSpeed,
-                    configSO.MaxAngularSpeed
-                );
+                //float t = SmoothMotionHelper.SmoothRotateLimited(
+                //    part.Rotation,
+                //    targetRot,
+                //    configSO.RotateSmoothSpeed,
+                //    configSO.MaxAngularSpeed
+                //);
 
-                part.SetRotation(t);
+                part.SetRotation(targetRot);
             }
 
             yield return new WaitForFixedUpdate();

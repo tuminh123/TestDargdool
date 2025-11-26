@@ -10,10 +10,13 @@ public class MainMoveState : MainCharacterState
     public override void Update()
     {
         base.Update();
-
-        characterCtrl.move.MoveHandle(x);
         
         if(x==0) stateMachine.ChangeState(characterCtrl.idelState);
+    }
+    public override void UpdatePhysic()
+    {
+        base.UpdatePhysic();
+        characterCtrl.move.MoveHandle(x);
     }
 
     public override void Exit()

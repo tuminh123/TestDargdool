@@ -35,8 +35,8 @@ public class Balance : MonoBehaviour
     }
     //private void OnValidate()
     //{
-    //    rot = dataSO.Rot;
-    //    force = dataSO.Force;
+    //    rotChange = dataSO.Rot;
+    //    forceChange = dataSO.Force;
     //}
 
     private void FixedUpdate()
@@ -54,7 +54,7 @@ public class Balance : MonoBehaviour
         }
         //else
         //{
-        //    //float clampedRot = Mathf.Clamp(rot, minRot, maxRot);
+        //    //float clampedRot = Mathf.Clamp(rotChange, minRot, maxRot);
         //    float newRotation = Mathf.SmoothDampAngle(rb.rotation, clampedRot, ref angularVelocity, smoothTime);
         //    rb.MoveRotation(newRotation);
         //}

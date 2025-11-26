@@ -6,12 +6,17 @@ public class MainIdelState : MainCharacterState
     public MainIdelState(StateMachine stateMachine, CharacterCtrl characterCtrl) : base(stateMachine, characterCtrl)
     {
     }
+    public override void Enter()
+    {
+        base.Enter();
+        characterCtrl.idle.IdelHandle();
+    }
     public override void Update()
     {
         base.Update();
-        characterCtrl.idle.IdelHandle();
+       
         
-        if(x!=0 && isGround)stateMachine.ChangeState(characterCtrl.moveState);
+        if(x!=0 && isGround )stateMachine.ChangeState(characterCtrl.moveState);
     }
 
    

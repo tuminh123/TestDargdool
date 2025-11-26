@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4219df33416c684cbc2fdc5aeb2a091, type: 3}
+  m_Name: PunchRight
+  m_EditorClassIdentifier: 
+  actionName: punch_right
+  balanceDatas:
+  - type: 3
+    rotChange: 115
+    forceChange: 50
+  - type: 4
+    rotChange: 110
+    forceChange: 55
+  - type: 5
+    rotChange: 105
+    forceChange: 60
+  - type: 15
+    rotChange: -30
+    forceChange: 30
+  - type: 9
+    rotChange: 30
+    forceChange: 30
+  - type: 10
+    rotChange: 20
+    forceChange: 30
+  - type: 12
+    rotChange: -30
+    forceChange: 30
+  - type: 13
+    rotChange: -20
+    forceChange: 30
