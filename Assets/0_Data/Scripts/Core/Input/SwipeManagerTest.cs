@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SwipeManagerTest : MonoBehaviour
 {
@@ -34,6 +35,18 @@ public class SwipeManagerTest : MonoBehaviour
         Tap = false;
         SwipeLeft = SwipeRight = SwipeUp = SwipeDown = false;
         MoveDirection = 0;
+
+//        // Nếu đang chạm vào UI → bỏ qua hoàn toàn việc xử lý swipe/tap
+//#if UNITY_EDITOR
+//        if (EventSystem.current.IsPointerOverGameObject())
+//            return;
+//#else
+//        if (Input.touchCount > 0)
+//        {
+//            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+//                return;
+//        }
+//#endif
 
 #if UNITY_EDITOR
         HandleMouse();

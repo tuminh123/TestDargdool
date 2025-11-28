@@ -29,15 +29,14 @@ public class MainCharacterState : IState
 
     private void HandleTap(Vector2 pos)
     {
-        if (characterCtrl.healthBase.IsDead || characterCtrl.IsStunned) return;
+        if (characterCtrl.healthBase.IsDead) return;
 
-        // Tính hướng tấn công
-        Vector3 tapWorldPos = Camera.main.ScreenToWorldPoint(pos);
-        tapWorldPos.z = 0;
-        Vector2 attackDir = (tapWorldPos - characterCtrl.transform.position).normalized;
+        if (characterCtrl.IsStunned)
+        {
+            stateMachine.ChangeState(characterCtrl.stunnedState);
+        }
 
-        // Truyền hướng cho attack
-        characterCtrl.SetAttackDirection(attackDir);
+        characterCtrl.SetAttackDirection(pos);
 
         if (characterCtrl.attack.CanAttack()) stateMachine.ChangeState(characterCtrl.attackState);
     }
@@ -66,7 +65,11 @@ public class MainCharacterState : IState
     public virtual void Update()
     {
         if (characterCtrl.healthBase.IsDead) return;
-        if (characterCtrl.IsStunned) return;
+
+        if (characterCtrl.IsStunned)
+        {
+            stateMachine.ChangeState(characterCtrl.stunnedState);
+        }
 
         x = SwipeManagerTest.MoveDirection;
 

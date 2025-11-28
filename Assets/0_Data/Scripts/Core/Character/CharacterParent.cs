@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 [System.Serializable]
 public class Stats
@@ -29,18 +28,19 @@ public abstract class CharacterParent : MonoBehaviour
     public Idle idle { get; private set; }
     public HealthBase healthBase { get; private set; }
     public GroundDetect groundDetect { get; private set; }
-    public DamageDetect[] damageDetect { get; private set; }
+    public CharacterDamage[] damageDetect { get; private set; }
     #endregion
     [SerializeField] protected Stats stats;
 
+    public StateMachine stateMachine { get; private set; }
+
     //Balance
-    protected Balance bodyParent;
+    [SerializeField]protected Balance bodyParent;
     protected Balance[] childBalance;
 
-    [SerializeField] protected float stunTime;
     [SerializeField] protected float knockBackForce;
-    protected Transform target;
 
+    //damage
     protected Vector2 attackDir;
     protected Coroutine damageCoroutine;
     protected bool isStunned =false;
@@ -58,10 +58,12 @@ public abstract class CharacterParent : MonoBehaviour
         groundDetect = GetComponentInChildren<GroundDetect>();
 
         healthBase = GetComponentInChildren<HealthBase>();
-        damageDetect = GetComponentsInChildren<DamageDetect>();
+        damageDetect = GetComponentsInChildren<CharacterDamage>();
 
-        bodyParent = transform.GetComponent<Balance>();
+        //bodyParent = transform.GetComponent<Balance>();
         childBalance = transform.GetComponentsInChildren<Balance>();
+
+        stateMachine = new StateMachine();
 
         //healthBase.SetMaxHealth(stats.MaxHealth);
         //foreach (var item in damageDetect)
@@ -77,51 +79,42 @@ public abstract class CharacterParent : MonoBehaviour
     public abstract void OnDead();
     protected abstract Vector2 GetKnockDir();
 
-    #region Health event
+   
     protected virtual void OnEnable()
     {
         if (healthBase == null) return;
-        healthBase.OnDead += OnDead;
+
         healthBase.OnTakeDamage += OnTakeDamage;
+       
     }
 
     protected virtual void OnDisable()
     {
+        stateMachine.ExitState();
+        if (healthBase == null) return;
+       
+        healthBase.OnTakeDamage -= OnTakeDamage;
+        
+    }
+    protected virtual void OnDestroy()
+    {
+        stateMachine.ExitState();
         if (healthBase == null) return;
         healthBase.OnDead -= OnDead;
-        healthBase.OnTakeDamage += OnTakeDamage;
-
-        StopDamageCoroutine();
+        healthBase.OnTakeDamage -= OnTakeDamage;
+        
     }
-    private void OnDestroy()
-    {
-        StopDamageCoroutine();
-    }
-    
-    private void OnTakeDamage()
-    {
-        SetKnockBackBalance();
-
-        damageCoroutine = StartCoroutine(SetBalanceTrigger());
-
-    }
-    private IEnumerator SetBalanceTrigger()
+    #region Damage Event
+    public void OnTakeDamage()
     {
         isStunned = true;
 
-        SetTriggerBalance(false);
-
-        yield return new WaitForSeconds(stunTime);
-
-        SetTriggerBalance(true);
-
-        isStunned = false;
     }
-
     public void SetTriggerBalance(bool value)
     {
         foreach (var item in childBalance)
         {
+            if(item == null) continue;
             item.SetIsTrigger(value);
         }
         bodyParent.SetIsTrigger(value);
@@ -135,14 +128,9 @@ public abstract class CharacterParent : MonoBehaviour
         }
         bodyParent.Rb.linearVelocity = knockBackDir * knockBackForce; ;
     }
-
-    public void StopDamageCoroutine()
+    public void SetIsStunned(bool isStunned)
     {
-        if (damageCoroutine != null)
-        {
-            StopCoroutine(damageCoroutine);
-            damageCoroutine = null;
-        }
+        this.isStunned = isStunned;
     }
     #endregion
 

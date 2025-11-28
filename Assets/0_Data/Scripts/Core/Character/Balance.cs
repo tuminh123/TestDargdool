@@ -17,7 +17,7 @@ public class Balance : MonoBehaviour
 
     [SerializeField] private DefaultBalanceData dataSO;
     private Rigidbody2D rb;
-
+    private Collider2D col;
     private bool isTrigger = true;
 
 
