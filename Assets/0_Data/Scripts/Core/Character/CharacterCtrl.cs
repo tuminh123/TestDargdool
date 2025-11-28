@@ -16,14 +16,13 @@ public class CharacterCtrl : CharacterParent
     public MainAttackState attackState { get; private set; }
     public MainIdelState idelState { get; private set; }
     public MainJumpState jumpState { get; private set; }
-    public StateMachine stateMachine { get;private set; }
+    public MainStunState stunnedState { get;private set; }
 
     #endregion
 
     [SerializeField] SwipeManager swipeManager;
     [SerializeField] GameObject gameOverPanel;
 
-    // Input
     public bool isAttackPress { get; private set; } = false;
     public bool isJumpPress { get; private set; } = false ;
     public bool isMoving { get; private set; } = false;
@@ -44,13 +43,18 @@ public class CharacterCtrl : CharacterParent
         moveVer2 = GetComponentInChildren<MoveVer2>();
         
         //state init
-        stateMachine = new StateMachine();
+        //stateMachine = new StateMachine();
         moveState = new MainMoveState(stateMachine, this);
         idelState = new MainIdelState(stateMachine, this);
         attackState = new MainAttackState(stateMachine, this);
         jumpState = new MainJumpState(stateMachine, this);
+        stunnedState = new MainStunState(stateMachine, this);
     }
-
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        healthBase.OnDead += OnDead;
+    }
     private void Start()
     {
         stateMachine.InitState(idelState);
@@ -61,7 +65,6 @@ public class CharacterCtrl : CharacterParent
     private void Update()
     {
         stateMachine.UpdateState();
-        AttackDirHandle();
     }
     private void FixedUpdate()
     {
@@ -70,27 +73,22 @@ public class CharacterCtrl : CharacterParent
     protected override void OnDisable()
     {
         base.OnDisable();
-        stateMachine.ExitState();
+
+        healthBase.OnDead -= OnDead;
 
     }
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
-        stateMachine.ExitState();
+        base.OnDestroy();
+        healthBase.OnDead -= OnDead;
     }
 
-    public void SetAttackDirection(Vector2 attackDir)
+    public void SetAttackDirection(Vector2 pos)
     {
-        this.attackDir = attackDir;
+        Vector3 tapWorldPos = Camera.main.ScreenToWorldPoint(pos);
+        tapWorldPos.z = 0;
+        attackDir = (tapWorldPos - transform.position).normalized;
     }
-    private void AttackDirHandle()
-    {
-        // Nếu không có tap → không làm gì
-        //if (!SwipeManager.tap) return;
-        //Vector3 worldPos = Camera.main.ScreenToWorldPoint(SwipeManager.TapPosition);
-        //worldPos.z = bodyParent.transform.position.z;
-        //attackDir = (worldPos - bodyParent.transform.position).normalized;
-    }
-
     public override void OnDead()
     {
         gameOverPanel.SetActive(true);
@@ -99,15 +97,6 @@ public class CharacterCtrl : CharacterParent
 
     protected override Vector2 GetKnockDir()
     {
-      
-        Vector2 dir;
-        if(move.IsMovingRight) 
-            dir = Vector2.left;
-        else if(move.IsMovingLeft) 
-            dir = Vector2.right;
-        else 
-            dir = Vector2.up;
-        Debug.Log(dir);
-        return dir;
+        return Vector2.up;
     }
 }

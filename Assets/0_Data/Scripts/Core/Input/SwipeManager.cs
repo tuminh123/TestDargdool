@@ -1,7 +1,8 @@
 ﻿
 
-using UnityEngine;
 using System;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SwipeManager : MonoBehaviour
 {
@@ -21,6 +22,18 @@ public class SwipeManager : MonoBehaviour
 
     private void Update()
     {
+        // Nếu đang chạm vào UI → bỏ qua hoàn toàn việc xử lý swipe/tap
+//#if UNITY_EDITOR
+//        if (EventSystem.current.IsPointerOverGameObject())
+//            return;
+//#else
+//        if (Input.touchCount > 0)
+//        {
+//            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+//                return;
+//        }
+//#endif
+
 #if UNITY_EDITOR
         HandleMouse();
 #else

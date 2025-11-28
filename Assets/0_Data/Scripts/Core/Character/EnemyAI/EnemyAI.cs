@@ -3,65 +3,58 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class EnemyAI : CharacterParent,IObjectPool
+public abstract class EnemyAI : CharacterParent
 {
-
-    #region State
-        private StateMachine stateMachine;
-        public EnemyBasicChaseState enemyChaseState { get; private set; }
-        public EnemyBasicAttackState enemyAttackState { get; private set; }
-        public EnemyBasicIdleState enemyIdleState { get; private set; }
-
-    #endregion
+    [SerializeField] protected float maxAttackDistance = 5;
+    //Time change state
+    [SerializeField] protected float attackDuration = 3;
+    [SerializeField] protected float stunnedDuration = 4;
+    [SerializeField] protected float dieDuration = 3;
+    [SerializeField] GameObject parent;
 
     public PlayerDetect playerDetect { get; private set; }
 
+    public float disBetweenEnemyAndPlayer { get; private set; }
+    //get
+    public float MaxAttackDistance => maxAttackDistance;
     protected override void Awake()
     {
-                base.Awake();
-                playerDetect = GetComponentInChildren<PlayerDetect>();
-                //state init
-                stateMachine = new StateMachine();
-                enemyChaseState = new EnemyBasicChaseState(stateMachine, this,bodyParent.transform);
-                enemyAttackState = new EnemyBasicAttackState(stateMachine, this,bodyParent.transform);
-                enemyIdleState = new EnemyBasicIdleState(stateMachine, this,bodyParent.transform);
+        base.Awake();
+        
+        playerDetect = GetComponentInChildren<PlayerDetect>();
+        //state init
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-         stateMachine.InitState(enemyChaseState);
+         
         //Debug.Log(stats.MaxHealth);
         //Debug.Log(stats.Speed);
         //Debug.Log(stats.DamageBase);
     }
     private void Update()
     {
+        HandleProperties();
         stateMachine.UpdateState();
     }
     private void FixedUpdate()
     {
         stateMachine.UpdatePhysicState();
     }
+    private void HandleProperties()
+    {
+        Transform player = CharacterCtrl.Instance.transform;
 
+        attackDir = (player.position - bodyParent.transform.position).normalized;
+        disBetweenEnemyAndPlayer = Vector2.Distance(bodyParent.transform.position, player.position);
+    }
     public override void OnDead()
     {
-        StartCoroutine(EnemyDead());
-    }
-    private IEnumerator EnemyDead()
-    {
-        SetTriggerBalance(false);
-        yield return new WaitForSeconds(2f);
-        Destroy(gameObject);
+        Destroy(parent);
+        //Destroy(bodyParent.gameObject);
     }
     protected override Vector2 GetKnockDir()
     {
         return transform.position - CharacterCtrl.Instance.transform.position;
-    }
-
-    public string GetObjectName()
-    {
-        return StringConst.ENEMY;
-    }
-
-  
+    }  
 }

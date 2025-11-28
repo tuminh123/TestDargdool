@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using Core;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class WaveSpawner : MonoBehaviour
 {
     [SerializeField] private List<Wave> waves;
     [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private GameObject waveCompletePanel;
 
     private int currentWaveIndex = 0;
 
@@ -13,13 +16,17 @@ public class WaveSpawner : MonoBehaviour
     void Start()
     {
         StartCoroutine(SpawnWaves());
+        waveCompletePanel?.SetActive(false);
     }
-
+     
 
     private IEnumerator SpawnWaves()
     {
+        yield return new WaitForSeconds(1);
         while (currentWaveIndex < waves.Count)
         {
+            Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1 });
+
             Wave wave = waves[currentWaveIndex];
 
 
@@ -34,12 +41,10 @@ public class WaveSpawner : MonoBehaviour
                 }
             }
 
-
             // Chờ 1 khoảng thời gian giữa các wave (tùy chỉnh nếu muốn)
             yield return new WaitForSeconds(wave.WaveDelay);
-
-
             currentWaveIndex++;
+            //Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1});
         }
         OnAllWavesCompleted();
     }
@@ -50,6 +55,7 @@ public class WaveSpawner : MonoBehaviour
         // - Bật cửa ra next level
         // - Hiện thông báo
         // - Thay đổi trạng thái game
+        waveCompletePanel?.SetActive(true);
     }
     private void ApplyBuffToEnemy(GameObject enemyObj, EnemyData enemyData, int waveIndex)
     {
@@ -94,4 +100,6 @@ public class WaveSpawner : MonoBehaviour
         }
         parentCollider.enabled = true;
     }
+
+   
 }

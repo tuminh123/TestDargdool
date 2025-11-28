@@ -9,7 +9,7 @@ public class MainJumpState :MainCharacterState
     public override void Enter()
     {
         base.Enter();
-        characterCtrl.jump.JumpHandle();
+        characterCtrl.jump.JumpHandle(0);
     }
 
     public override void Update()
