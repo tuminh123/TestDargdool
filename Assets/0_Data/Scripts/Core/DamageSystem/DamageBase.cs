@@ -8,7 +8,6 @@ public abstract class DamageBase : MonoBehaviour
     //get
     public float Radius => radius;
     public LayerMask Layer => layer;
-   
 
     public void SetDamageBase(float damageBase)
     {
@@ -24,12 +23,17 @@ public abstract class DamageBase : MonoBehaviour
             if(collider.TryGetComponent(out IDamageable health))
             {
                 if (health.IsDead) return false;
-                health.TakeDamaged(damageBase);
-                Debug.Log(damageBase);
+                DamageHandle(health);
                 return true;
             }
         }
         return false; 
+    }
+
+    private void DamageHandle(IDamageable health)
+    {
+        Debug.Log($"1 ");
+        health.TakeDamaged(damageBase);
     }
 
     private void OnDrawGizmos()
