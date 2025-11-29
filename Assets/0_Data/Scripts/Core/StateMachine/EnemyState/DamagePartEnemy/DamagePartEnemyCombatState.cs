@@ -16,7 +16,6 @@ public class DamagePartEnemyCombatState : DamagePartEnemyState
         base.Enter();
         partEnemy.idle.IdelHandle();
         attackTime = attackDuration;
-        Debug.Log(attackTime);
     }
 
     public override void Update()

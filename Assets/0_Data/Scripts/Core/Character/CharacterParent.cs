@@ -139,7 +139,10 @@ public abstract class CharacterParent : MonoBehaviour
         foreach (var item in damageDetect)
         {
             if (item == null) continue;
-            item.SenderDamageTo();
+            if (item.SenderDamageTo())
+            {
+                break;
+            }
         }
     }
 
