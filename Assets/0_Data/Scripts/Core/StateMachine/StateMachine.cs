@@ -21,11 +21,15 @@ public class StateMachine
     }
     public void UpdateState()
     {
+        GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
+        if (currentGameState != GameState.PLAY) return;
         currentState?.Update();
         //Debug.Log($"{currentState}");
     }
     public void UpdatePhysicState()
     {
+        GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
+        if (currentGameState != GameState.PLAY) return;
         currentState?.UpdatePhysic();
     }
     public void ExitState()

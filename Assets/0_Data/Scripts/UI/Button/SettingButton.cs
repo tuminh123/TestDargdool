@@ -1,35 +1,26 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Yade.Editor;
 
-public class SettingToggle : MonoBehaviour
+public class SettingButton : ButtonBase
 {
-    [SerializeField] private GameObject settingPanel;
-    private Toggle settingsToggle;
-    private void Awake()
-    {
-        settingsToggle = GetComponent<Toggle>();
-    }
-    void Start()
-    {
-        settingPanel.SetActive(settingsToggle.isOn);
-        SetGamePause(settingsToggle.isOn);
 
-        settingsToggle.onValueChanged.AddListener(OnToggleChanged);
+    public override void Clicked()
+    {
+        SingletonManager.Instance.uiManager.SettingPanel.SetActive(true);
+        SingletonManager.Instance.gameManager.SetState(GameState.PAUSE);
     }
 
-    void OnToggleChanged(bool isOn)
+    /*private void OnToggleChanged(bool isOn)
     {
-        settingPanel.SetActive(isOn);
-    }
-    void SetGamePause(bool pause)
-    {
-        if (pause)
+        SingletonManager.Instance.uiManager.SettingPanel.SetActive(isOn);
+        if (isOn)
         {
-            Time.timeScale = 0f;
+           
         }
         else
         {
-            Time.timeScale = 1f;
+            SingletonManager.Instance.gameManager.SetState(GameState.PLAY);
         }
-    }
+    }*/
 }

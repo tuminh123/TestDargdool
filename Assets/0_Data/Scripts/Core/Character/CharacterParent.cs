@@ -6,6 +6,7 @@ public class Stats
 {
     [SerializeField] private float maxHealth;
     [SerializeField] private float damageBase;
+    //[SerializeField] private float scritDamage;
 
     //get
     public float MaxHealth => maxHealth;
