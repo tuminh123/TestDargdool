@@ -22,10 +22,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         SingletonManager.Instance.dataManager.DataLoad();
-
-        int goldCount = SingletonManager.Instance.dataManager.Data.goldCount;
-
-        SingletonManager.Instance.goldManager.SetGoldCount(goldCount);
     }
     private void Start()
     {
