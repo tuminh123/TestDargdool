@@ -29,6 +29,7 @@ public class HealthBase : MonoBehaviour,IDamageable
     public void InitHealth()
     {
         currentHealth = maxHealth;
+        //OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
     public void TakeDamaged(float damage)

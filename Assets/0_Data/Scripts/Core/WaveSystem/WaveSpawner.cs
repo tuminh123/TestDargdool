@@ -9,23 +9,55 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] private List<Wave> waves;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private GameObject waveCompletePanel;
+    [SerializeField] private bool isSpawn;
 
     private int currentWaveIndex = 0;
+
+    //private void OnEnable()
+    //{
+    //    GameEventBus.OnGameStateChanged += OnGameStateChanged;
+    //}
+
+    //private void OnDisable()
+    //{
+    //    GameEventBus.OnGameStateChanged -= OnGameStateChanged;
+    //}
 
 
     void Start()
     {
-        StartCoroutine(SpawnWaves());
         waveCompletePanel?.SetActive(false);
+
+        GameEventBus.OnGameStateChanged += OnGameStateChanged;
     }
-     
+
+    private void OnDestroy()
+    {
+        GameEventBus.OnGameStateChanged -= OnGameStateChanged;
+    }
+    private void OnGameStateChanged(GameState newState)
+    {
+        if (newState == GameState.MENU)
+        {
+            ClearAllEnemies();
+        }
+        else if(newState == GameState.PLAY && isSpawn == false ) 
+        {
+            Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1 });
+            StartCoroutine(SpawnWaves());
+        }
+    }
+
 
     private IEnumerator SpawnWaves()
     {
-        yield return new WaitForSeconds(1);
+        isSpawn = false;
+        yield return new WaitForSeconds(1f);
+
+        isSpawn = true;
         while (currentWaveIndex < waves.Count)
         {
-            Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1 });
+            //Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1 });
 
             Wave wave = waves[currentWaveIndex];
 
@@ -44,10 +76,26 @@ public class WaveSpawner : MonoBehaviour
             // Chờ 1 khoảng thời gian giữa các wave (tùy chỉnh nếu muốn)
             yield return new WaitForSeconds(wave.WaveDelay);
             currentWaveIndex++;
-            //Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1});
+            Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1});
         }
         OnAllWavesCompleted();
     }
+
+    public void ClearAllEnemies()
+    {
+        // Dừng spawn ngay lập tức
+        StopAllCoroutines();
+        currentWaveIndex = 0;
+        isSpawn = false;
+
+        // Xóa toàn bộ enemy đang có trên scene
+        EnemyAI[] enemies = Object.FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
+        foreach (var enemy in enemies)
+        {
+            Destroy(enemy.gameObject);
+        }
+    }
+
     private void OnAllWavesCompleted()
     {
         Debug.Log("Tất cả wave đã hoàn thành.");

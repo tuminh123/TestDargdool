@@ -8,6 +8,7 @@ public static class StringConst
     //Enemy
     public const string ENEMY = "Enemy";
 
-    //Object send damage
-    public const string OBJECTDAMADE = "ObjectDamage";
+    public const string GOLD = "Gold";
+    public const string MAINMENU = "MainMenu";
+    public const string GAMEPLAY = "GamePlay";
 }

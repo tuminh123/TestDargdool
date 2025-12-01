@@ -9,7 +9,6 @@ public class CharacterCtrl : CharacterParent
     public static CharacterCtrl Instance { get; private set; }
     
     public Jump jump {  get; private set; } 
-    public MoveVer2 moveVer2 { get; private set; }
 
     #region  State
     public MainMoveState moveState { get; private set; }
@@ -20,28 +19,16 @@ public class CharacterCtrl : CharacterParent
 
     #endregion
 
-    [SerializeField] SwipeManager swipeManager;
-    [SerializeField] GameObject gameOverPanel;
-
-    public bool isAttackPress { get; private set; } = false;
-    public bool isJumpPress { get; private set; } = false ;
-    public bool isMoving { get; private set; } = false;
-    public Vector2 moveDir { get; private set; }
-
-    public void SetIsAttackingPress(bool isAttackingPress) => this.isAttackPress = isAttackPress;
-    public void SetIsJumpPress(bool isJumpPress)=> this.isJumpPress = isJumpPress;
-    public void SetIsMovingInput(bool isMoving)=> this.isMoving  = isMoving;
-    public void SetMoveDir(Vector2 moveDir)=> this.moveDir = moveDir;
-
+    
     protected override void Awake()
     {
         base.Awake();
         Instance = this;
-        gameOverPanel.SetActive(false);
+
+        InitPlayerData();
 
         jump = GetComponentInChildren<Jump>();
-        moveVer2 = GetComponentInChildren<MoveVer2>();
-        
+
         //state init
         //stateMachine = new StateMachine();
         moveState = new MainMoveState(stateMachine, this);
@@ -50,6 +37,7 @@ public class CharacterCtrl : CharacterParent
         jumpState = new MainJumpState(stateMachine, this);
         stunnedState = new MainStunState(stateMachine, this);
     }
+
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -83,6 +71,16 @@ public class CharacterCtrl : CharacterParent
         healthBase.OnDead -= OnDead;
     }
 
+    #region Stats setup
+    private void InitPlayerData()
+    {
+        float maxHP = SingletonManager.Instance.dataManager.Data.maxHp;
+        float damageBase = SingletonManager.Instance.dataManager.Data.damageBase;
+        stats.SetMaxHealth(maxHP);
+        stats.SetDamageBase(damageBase);
+    }
+    #endregion
+
     public void SetAttackDirection(Vector2 pos)
     {
         Vector3 tapWorldPos = Camera.main.ScreenToWorldPoint(pos);
@@ -91,8 +89,7 @@ public class CharacterCtrl : CharacterParent
     }
     public override void OnDead()
     {
-        gameOverPanel.SetActive(true);
-        Time.timeScale = 0;
+        SingletonManager.Instance.gameManager.SetState(GameState.LOSE);
     }
 
     protected override Vector2 GetKnockDir()

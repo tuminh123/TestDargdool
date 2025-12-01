@@ -4,6 +4,6 @@ public class MainMenuButton : ButtonBase
 {
     public override void Clicked()
     {
-        SceneLoader.Instance.LoadScene("MainMenu");
+        SingletonManager.Instance.gameManager.SetState(GameState.MENU);
     }
 }
