@@ -74,10 +74,11 @@ public class CharacterCtrl : CharacterParent
     #region Stats setup
     private void InitPlayerData()
     {
-        float maxHP = SingletonManager.Instance.dataManager.Data.maxHp;
-        float damageBase = SingletonManager.Instance.dataManager.Data.damageBase;
+        PlayerData data = SingletonManager.Instance.dataManager.Data;
+        float maxHP = data.maxHp;
+        float finalDamage = data.CalculateDamage();
         stats.SetMaxHealth(maxHP);
-        stats.SetDamageBase(damageBase);
+        stats.SetDamageBase(finalDamage);
     }
     #endregion
 

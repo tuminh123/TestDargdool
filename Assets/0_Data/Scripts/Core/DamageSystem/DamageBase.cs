@@ -32,7 +32,7 @@ public abstract class DamageBase : MonoBehaviour
 
     private void DamageHandle(IDamageable health)
     {
-        Debug.Log($"1 ");
+        //Debug.Log($"1 ");
         health.TakeDamaged(damageBase);
     }
 

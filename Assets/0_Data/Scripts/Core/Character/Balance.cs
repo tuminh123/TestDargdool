@@ -26,12 +26,14 @@ public class Balance : MonoBehaviour
     public float Rotation=>rot;
     public float Force=>force;
     public Rigidbody2D Rb => rb;
+    public Collider2D Col => col;
 
 
     private void Awake()
     {
         ResetData();
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
     }
     //private void OnValidate()
     //{

@@ -14,7 +14,7 @@ public class DamagePartEnemyDeadState : DamagePartEnemyState
 
         partEnemy.SetTriggerBalance(false);
         partEnemy.SetKnockBackBalance();
-
+        partEnemy.SetLayerBalance("None");
         deadTime = deadDuration;
     }
     public override void Update()
