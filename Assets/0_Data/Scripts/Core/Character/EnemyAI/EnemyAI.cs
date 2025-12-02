@@ -52,6 +52,9 @@ public abstract class EnemyAI : CharacterParent
     {
         Destroy(parent);
         //Destroy(bodyParent.gameObject);
+        Gold gold = SingletonManager.Instance.objInGamePoolManager.Spawn(StringConst.GOLD, transform.position,Quaternion.identity) as Gold;
+        gold.SetVelocity();
+
     }
     protected override Vector2 GetKnockDir()
     {

@@ -10,7 +10,8 @@ public enum GameState
     WIN = 5,
     LOADING = 6,
     RESUME = 7,
-    SETTINGS = 8,
+    QUITGAME = 9,
+    RESTART = 10,
 
 }
 

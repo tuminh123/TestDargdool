@@ -37,7 +37,7 @@ public class WaveSpawner : MonoBehaviour
     }
     private void OnGameStateChanged(GameState newState)
     {
-        if (newState == GameState.MENU)
+        if (newState == GameState.MENU || newState == GameState.LOSE)
         {
             ClearAllEnemies();
         }
@@ -89,7 +89,7 @@ public class WaveSpawner : MonoBehaviour
         isSpawn = false;
 
         // Xóa toàn bộ enemy đang có trên scene
-        EnemyAI[] enemies = Object.FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
+        EnemyAI[] enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
         foreach (var enemy in enemies)
         {
             Destroy(enemy.gameObject);

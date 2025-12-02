@@ -1183,10 +1183,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
 --- !u!1 &2590390815735937087
 GameObject:
   m_ObjectHideFlags: 0
@@ -1376,10 +1376,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
 --- !u!1 &2888367478229479544
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,10 +1425,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
 --- !u!1 &2943023745367880582
 GameObject:
   m_ObjectHideFlags: 0
@@ -2192,10 +2192,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
 --- !u!1 &4458621924859661522
 GameObject:
   m_ObjectHideFlags: 0
@@ -2776,10 +2776,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
 --- !u!1 &5428919758252232434
 GameObject:
   m_ObjectHideFlags: 0
@@ -2825,10 +2825,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
 --- !u!1 &5440717115204680979
 GameObject:
   m_ObjectHideFlags: 0
@@ -2874,10 +2874,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
 --- !u!1 &5468394354843758427
 GameObject:
   m_ObjectHideFlags: 0
@@ -4054,10 +4054,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.3
+  radius: 0.35
   layer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
 --- !u!1 &8656707755994014873
 GameObject:
   m_ObjectHideFlags: 0

@@ -164,4 +164,14 @@ public abstract class CharacterParent : MonoBehaviour
             item.SetDamageBase(stats.DamageBase);
         }
     }
+
+    public void SetLayerBalance(string layer)
+    {
+        foreach (var item in childBalance)
+        {
+            if (item == null) continue;
+            item.gameObject.layer = LayerMask.NameToLayer(layer);
+        }
+        bodyParent.gameObject.layer = LayerMask.NameToLayer(layer);
+    }
 }

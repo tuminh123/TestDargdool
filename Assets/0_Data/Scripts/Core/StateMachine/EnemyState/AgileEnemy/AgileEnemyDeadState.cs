@@ -15,7 +15,7 @@ public class AgileEnemyDeadState : AgileEnemyState
 
         agileEnemy.SetTriggerBalance(false);
         agileEnemy.SetKnockBackBalance();
-
+        agileEnemy.SetLayerBalance("None");
         deadTime = deadDuration;
     }
     public override void Update()

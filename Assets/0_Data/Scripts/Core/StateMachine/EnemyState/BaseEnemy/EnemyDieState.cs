@@ -15,7 +15,7 @@ public class EnemyDieState : EnemyBaseState
 
         enemyBasic.SetTriggerBalance(false);
         enemyBasic.SetKnockBackBalance();
-
+        enemyBasic.SetLayerBalance("None");
         deadTime = deadDuration;
     }
     public override void Update()

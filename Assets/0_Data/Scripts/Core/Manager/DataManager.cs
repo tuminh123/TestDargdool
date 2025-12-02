@@ -7,6 +7,20 @@ public class PlayerData
     public int goldCount = 100;
     public float maxHp = 500;
     public float damageBase = 30;
+
+    // --- Chỉ số Crit ---
+    public float critChance = 0.05f;      // 5% ban đầu
+    public float critMultiplier = 1.5f;   // 150% damage khi Crit
+
+    public float CalculateDamage()
+    {
+        bool isCrit = UnityEngine.Random.value < critChance;
+        float damage = damageBase;
+
+        if (isCrit) damage *= critMultiplier;
+
+        return damage;
+    }
 }
 
 public class DataManager : MonoBehaviour

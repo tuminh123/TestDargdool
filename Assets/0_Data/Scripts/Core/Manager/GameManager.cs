@@ -1,4 +1,4 @@
-
+﻿
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
@@ -54,15 +54,42 @@ public class GameManager : MonoBehaviour
                 PlayHandle();
                 break;
             case GameState.LOSE:
-                Time.timeScale = 0;
-                uiManager.SetUI(currentState);
+                LoseHandle();
                 break;
             case GameState.PAUSE:
-                Time.timeScale = 0;
-                uiManager.SetUI(currentState);
+                PauseHandle();
                 break;
-
+            case GameState.RESTART:
+                ResetHandle();
+                break;
         }
+    }
+    private void ResetHandle()
+    {
+        Time.timeScale = 1;
+
+        SingletonManager.Instance.waveSpawner.ClearAllEnemies();
+
+        ClearData();
+        SetState(GameState.PLAY);
+    }
+
+   
+
+    private void LoseHandle()
+    {
+        Time.timeScale = 0;
+
+        ClearData();
+
+        uiManager.SetUI(currentState);
+    }
+
+    private void PauseHandle()
+    {
+        Time.timeScale = 0;
+        uiManager.SetUI(currentState);
+        SingletonManager.Instance.dataManager.DataSave();
     }
 
     private void PlayHandle()
@@ -82,14 +109,31 @@ public class GameManager : MonoBehaviour
     private void MenuHandle()
     {
         uiManager.SetUI(currentState);
-        if (playerInstance == null) return;
-        Destroy(playerInstance);
+
+        ClearData();
     }
-    
+    private void ClearData()
+    {
+        ObjInGameBase[] objs = FindObjectsByType<ObjInGameBase>(FindObjectsSortMode.None);
+        foreach (var obj in objs)
+        {
+            if (obj == null) continue;
+            SingletonManager.Instance.objInGamePoolManager.DeSpawn(obj);
+        }
+        if (playerInstance != null)
+        {
+            Destroy(playerInstance);
+            playerInstance = null;
+        }
+    }
     public void SetState(GameState newState)
     {
         if(currentState == newState) return;
         currentState = newState;
         GameEventBus.RaiseGameStateChanged(newState);
+    }
+    private void OnApplicationQuit()
+    {
+        SingletonManager.Instance.dataManager.DataSave();
     }
 }

@@ -51,7 +51,7 @@ public class HealthBase : MonoBehaviour,IDamageable
     {
         //isDead = true;
         // xử lý chết ragdoll hoặc enemy
-        Debug.Log($"{gameObject.name} died.");
+        //Debug.Log($"{gameObject.name} died.");
         OnDead?.Invoke();
     }
 

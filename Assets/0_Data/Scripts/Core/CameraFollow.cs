@@ -2,8 +2,6 @@
 
 public class CameraFollow : MonoBehaviour
 {
-    [Header("Target cần follow")]
-    [SerializeField] Transform target;
 
     [Header("Offset so với target")]
     [SerializeField] Vector3 offset = new Vector3(0, 0, -10f);
@@ -13,9 +11,13 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] float smoothSpeed = 0.15f;
 
     private Vector3 velocity = Vector3.zero;
-
+ 
     void LateUpdate()
     {
+        if (SingletonManager.Instance.gameManager.CurrentState != GameState.PLAY) return;
+        if (SingletonManager.Instance.gameManager.PlayerInstance == null) return;
+        Transform target = SingletonManager.Instance.gameManager.PlayerInstance.transform;
+
         if (target == null) return;
 
         // Vị trí camera muốn tới
