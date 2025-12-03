@@ -2034,7 +2034,7 @@ MonoBehaviour:
   maxAttackDistance: 5
   attackDuration: 2
   stunnedDuration: 3
-  dieDuration: 3
+  dieDuration: 4
   parent: {fileID: 4654706497745713187}
   right_up_arm: {fileID: 6690319202401171192}
   right_down_arm: {fileID: 1024842703808659027}

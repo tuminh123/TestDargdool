@@ -60,4 +60,10 @@ public abstract class EnemyAI : CharacterParent
     {
         return transform.position - CharacterCtrl.Instance.transform.position;
     }  
+    public void EnemyDieHandle()
+    {
+        SetTriggerBalance(false);
+        SetKnockBackBalance();
+        SingletonManager.Instance.vfxPoolManager.Spawn(StringConst.DIEVFX, transform.position, Quaternion.identity);
+    }
 }
