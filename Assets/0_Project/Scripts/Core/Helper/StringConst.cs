@@ -15,4 +15,8 @@ public static class StringConst
     public const string GOLD = "Gold";
     public const string DAGGER = "Dagger";
     public const string BOX = "Box";
+
+    //Vfx
+    public const string DIEVFX = "DieVfx";
+    public const string HURTVFX = "HurtVfx";
 }

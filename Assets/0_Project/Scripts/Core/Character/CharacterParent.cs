@@ -113,6 +113,7 @@ public abstract class CharacterParent : MonoBehaviour
     public void OnTakeDamage()
     {
         isStunned = true;
+        SingletonManager.Instance.vfxPoolManager.Spawn(StringConst.HURTVFX, transform.position, Quaternion.identity);
     }
     public void SetTriggerBalance(bool value)
     {
