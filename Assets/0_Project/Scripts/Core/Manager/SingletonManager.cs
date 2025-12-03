@@ -12,6 +12,7 @@ public class SingletonManager : MonoBehaviour
     public DataManager dataManager { get; private set; }
     public ObjInGamePoolManager objInGamePoolManager { get; private set; }
     public WaveSpawner waveSpawner { get; private set; }
+    public VfxPoolManager vfxPoolManager { get; private set; }
     private void Awake()
     {
         Instance = this;
@@ -23,5 +24,6 @@ public class SingletonManager : MonoBehaviour
         swipeManager = GetComponentInChildren<SwipeManager>();
         dataManager = GetComponentInChildren<DataManager>();
         objInGamePoolManager = GetComponentInChildren<ObjInGamePoolManager>();
+        vfxPoolManager = GetComponentInChildren<VfxPoolManager>();
     }
 }
