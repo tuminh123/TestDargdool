@@ -36,6 +36,8 @@ MonoBehaviour:
     assemblyNames:
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
+    - DamageNumbersPro
+    - ParticleImage
     - YadeRuntime
     - Zenject
     - Zenject-IntegrationTests
