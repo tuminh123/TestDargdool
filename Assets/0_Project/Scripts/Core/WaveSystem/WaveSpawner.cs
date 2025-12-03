@@ -57,29 +57,36 @@ public class WaveSpawner : MonoBehaviour
         isSpawn = true;
         while (currentWaveIndex < waves.Count)
         {
-            //Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1 });
-
             Wave wave = waves[currentWaveIndex];
 
-
+            // Spawn toàn bộ enemy của wave
             foreach (var enemyData in wave.Enemies)
             {
                 for (int i = 0; i < enemyData.Count; i++)
                 {
                     Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
                     GameObject enemyObj = SpawnEnemy(enemyData.EnemyPrefab, spawnPoint.position);
-                    ApplyBuffToEnemy(enemyObj, enemyData,currentWaveIndex);
+                    ApplyBuffToEnemy(enemyObj, enemyData, currentWaveIndex);
                     yield return new WaitForSeconds(enemyData.SpawnInterval);
                 }
             }
 
-            // Chờ 1 khoảng thời gian giữa các wave (tùy chỉnh nếu muốn)
+            // ⚠️ CHỜ TẤT CẢ ENEMY CHẾT MỚI QUA WAVE TIẾP THEO
+            while (IsAnyEnemyAlive())
+            {
+                yield return new WaitForSeconds(0.2f);
+            }
+
+            // Delay giữa các wave (nếu có)
             yield return new WaitForSeconds(wave.WaveDelay);
+
             currentWaveIndex++;
-            Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1});
+            Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1 });
         }
+
         OnAllWavesCompleted();
     }
+
 
     public void ClearAllEnemies()
     {
@@ -95,7 +102,10 @@ public class WaveSpawner : MonoBehaviour
             Destroy(enemy.gameObject);
         }
     }
-
+    private bool IsAnyEnemyAlive()
+    {
+        return FindObjectsByType<EnemyAI>(FindObjectsSortMode.None).Length > 0;
+    }
     private void OnAllWavesCompleted()
     {
         Debug.Log("Tất cả wave đã hoàn thành.");

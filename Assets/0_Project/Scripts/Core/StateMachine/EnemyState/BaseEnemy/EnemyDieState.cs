@@ -13,8 +13,8 @@ public class EnemyDieState : EnemyBaseState
     {
         base.Enter();
 
-        enemyBasic.SetTriggerBalance(false);
-        enemyBasic.SetKnockBackBalance();
+        enemyBasic.EnemyDieHandle();
+        
         deadTime = deadDuration;
     }
     public override void Update()

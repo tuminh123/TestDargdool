@@ -2375,7 +2375,7 @@ MonoBehaviour:
   maxAttackDistance: 5
   attackDuration: 1.5
   stunnedDuration: 2
-  dieDuration: 3
+  dieDuration: 4
   parent: {fileID: 4207200127957107742}
 --- !u!1 &4410550863498641718
 GameObject:

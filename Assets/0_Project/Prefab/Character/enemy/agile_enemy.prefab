@@ -2141,7 +2141,7 @@ MonoBehaviour:
   maxAttackDistance: 5
   attackDuration: 3
   stunnedDuration: 2
-  dieDuration: 3
+  dieDuration: 4
   parent: {fileID: 4253342356034479571}
   dagger: {fileID: 7521384947311697558, guid: bcf4037d4ceec1c438a286818a354c25, type: 3}
   shootPoint: {fileID: 362803144993752216}

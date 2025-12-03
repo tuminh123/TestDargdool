@@ -13,8 +13,7 @@ public class AgileEnemyDeadState : AgileEnemyState
     {
         base.Enter();
 
-        agileEnemy.SetTriggerBalance(false);
-        agileEnemy.SetKnockBackBalance();
+        agileEnemy.EnemyDieHandle();
         deadTime = deadDuration;
     }
     public override void Update()
