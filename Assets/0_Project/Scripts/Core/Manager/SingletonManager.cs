@@ -13,6 +13,7 @@ public class SingletonManager : MonoBehaviour
     public ObjInGamePoolManager objInGamePoolManager { get; private set; }
     public WaveSpawner waveSpawner { get; private set; }
     public VfxPoolManager vfxPoolManager { get; private set; }
+    public TimeSlow timeSlow { get; private set; }
     private void Awake()
     {
         Instance = this;
@@ -25,5 +26,6 @@ public class SingletonManager : MonoBehaviour
         dataManager = GetComponentInChildren<DataManager>();
         objInGamePoolManager = GetComponentInChildren<ObjInGamePoolManager>();
         vfxPoolManager = GetComponentInChildren<VfxPoolManager>();
+        timeSlow = GetComponentInChildren<TimeSlow>();
     }
 }

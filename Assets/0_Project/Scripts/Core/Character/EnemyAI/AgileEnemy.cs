@@ -11,6 +11,7 @@ public class AgileEnemy : EnemyAI
     public AgileEnemyStunnedState agileEnemyStunnedState { get;private set; }
     public AgileEnemyShootState agileEnemyShootState { get; private set; }
     public AgileEnemyDeadState agileEnemyDeadState { get; private set; }
+    public AgileEnemyIdleState agileEnemyIdleState { get; private set; }
     #endregion
     public GameObject dagger;
     [SerializeField] private Transform shootPoint;
@@ -33,6 +34,7 @@ public class AgileEnemy : EnemyAI
         agileEnemyAttackState = new AgileEnemyAttackState(this, stateMachine);
         agileEnemyShootState = new AgileEnemyShootState(this, stateMachine,timeComebackCombat);
         agileEnemyDeadState = new AgileEnemyDeadState(this,stateMachine,dieDuration);
+        agileEnemyIdleState = new AgileEnemyIdleState(this, stateMachine);
 
         jump = GetComponentInChildren<Jump>();
     }
@@ -85,8 +87,7 @@ public class AgileEnemy : EnemyAI
 
     private void DaggerHandle()
     {
-        GameObject obj = Instantiate(dagger, shootPoint.position, Quaternion.identity);
-        Dagger daggerClone = obj.GetComponent<Dagger>();
+        Dagger daggerClone = SingletonManager.Instance.objInGamePoolManager.Spawn(StringConst.DAGGER, shootPoint.position, Quaternion.identity) as Dagger;
         if (daggerClone == null) return;
 
         if(attackDir.x > 0) 

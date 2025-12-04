@@ -17,6 +17,13 @@ public class DamagePartEnemyState : IState
 
     public virtual void Update()
     {
+        GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
+        if (currentGameState == GameState.LOSE)
+        {
+            stateMachine.ChangeState(partEnemy.damagePartEnemyIdleState);
+            return;
+        }
+
         if (partEnemy.healthBase.IsDead)
         {
             stateMachine.ChangeState(partEnemy.damagePartEnemyDeadState);
@@ -29,5 +36,7 @@ public class DamagePartEnemyState : IState
 
     public virtual void UpdatePhysic()
     {
+        GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
+        if (currentGameState == GameState.LOSE) return;
     }
 }

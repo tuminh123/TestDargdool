@@ -6,9 +6,9 @@
     public EnemyChaseState enemyChaseState { get; private set; }
     public EnemyAttackState enemyAttackState { get; private set; }
     public EnemyCombatState enemyCombatState { get; private set; }
+    public EnemyIdleState enemyIdleState { get; private set; }
 
     #endregion
-
 
     protected override void Awake()
     {
@@ -18,6 +18,7 @@
         enemyCombatState = new EnemyCombatState(stateMachine,this,attackDuration);
         enemyDieState = new EnemyDieState(stateMachine,this,dieDuration);
         enemyStunState = new EnemyStunState(stateMachine,this,stunnedDuration);
+        enemyIdleState = new EnemyIdleState(stateMachine, this);
     }
     protected override void Start()
     {

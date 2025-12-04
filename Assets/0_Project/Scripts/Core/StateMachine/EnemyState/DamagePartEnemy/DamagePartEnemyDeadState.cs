@@ -13,7 +13,7 @@ public class DamagePartEnemyDeadState : DamagePartEnemyState
         base.Enter();
 
         partEnemy.EnemyDieHandle();
-        
+
         deadTime = deadDuration;
     }
     public override void Update()

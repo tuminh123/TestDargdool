@@ -1,4 +1,5 @@
 ﻿
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
@@ -78,11 +79,18 @@ public class GameManager : MonoBehaviour
 
     private void LoseHandle()
     {
+        OnDeadWait().Forget();
+        //SingletonManager.Instance.timeSlow.DoSlowmotion();
+    }
+
+    private async UniTask OnDeadWait()
+    {
+        SingletonManager.Instance.timeSlow.DoSlowmotion();
+        await UniTask.Delay(5000);
         Time.timeScale = 0;
-
         ClearData();
-
         uiManager.SetUI(currentState);
+
     }
 
     private void PauseHandle()
