@@ -11,6 +11,7 @@ public abstract class EnemyAI : CharacterParent
     [SerializeField] protected float stunnedDuration = 4;
     [SerializeField] protected float dieDuration = 3;
     [SerializeField] GameObject parent;
+    [SerializeField] protected ParticleSystem dieParticle;
 
     public PlayerDetect playerDetect { get; private set; }
 
@@ -27,23 +28,28 @@ public abstract class EnemyAI : CharacterParent
 
     protected virtual void Start()
     {
-         
+         dieParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         //Debug.Log(stats.MaxHealth);
         //Debug.Log(stats.Speed);
         //Debug.Log(stats.DamageBase);
     }
     private void Update()
     {
+        
         HandleProperties();
         stateMachine.UpdateState();
     }
     private void FixedUpdate()
     {
+       /* GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
+        if (currentGameState != GameState.PLAY) return;*/
         stateMachine.UpdatePhysicState();
     }
     private void HandleProperties()
     {
-        Transform player = CharacterCtrl.Instance.transform;
+        CharacterCtrl characterCtrl = CharacterCtrl.Instance;
+        if (characterCtrl == null || characterCtrl.healthBase.IsDead) return;
+        Transform player = characterCtrl.transform;
 
         attackDir = (player.position - bodyParent.transform.position).normalized;
         disBetweenEnemyAndPlayer = Vector2.Distance(bodyParent.transform.position, player.position);
@@ -58,12 +64,27 @@ public abstract class EnemyAI : CharacterParent
     }
     protected override Vector2 GetKnockDir()
     {
-        return transform.position - CharacterCtrl.Instance.transform.position;
+        CharacterCtrl characterCtrl = CharacterCtrl.Instance;
+        if (characterCtrl == null || characterCtrl.healthBase.IsDead) return Vector2.zero;
+        Transform player = characterCtrl.transform;
+
+        return transform.position - player.position;
     }  
     public void EnemyDieHandle()
     {
         SetTriggerBalance(false);
         SetKnockBackBalance();
-        SingletonManager.Instance.vfxPoolManager.Spawn(StringConst.DIEVFX, transform.position, Quaternion.identity);
+        StartCoroutine(SetDieParticle());
+    }
+    private IEnumerator SetDieParticle()
+    {
+        dieParticle.Play();
+        yield return new WaitForSeconds(3);
+        dieParticle.Clear();
+    }
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        StopCoroutine(SetDieParticle());
     }
 }

@@ -14,6 +14,7 @@ public class AgileEnemyDeadState : AgileEnemyState
         base.Enter();
 
         agileEnemy.EnemyDieHandle();
+
         deadTime = deadDuration;
     }
     public override void Update()

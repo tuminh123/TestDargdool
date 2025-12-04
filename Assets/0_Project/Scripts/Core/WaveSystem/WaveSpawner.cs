@@ -37,7 +37,7 @@ public class WaveSpawner : MonoBehaviour
     }
     private void OnGameStateChanged(GameState newState)
     {
-        if (newState == GameState.MENU || newState == GameState.LOSE)
+        if (newState == GameState.MENU)
         {
             ClearAllEnemies();
         }

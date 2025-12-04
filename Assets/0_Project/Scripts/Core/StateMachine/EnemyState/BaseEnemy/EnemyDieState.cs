@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using UnityEditor;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class EnemyDieState : EnemyBaseState
 {
@@ -14,7 +16,7 @@ public class EnemyDieState : EnemyBaseState
         base.Enter();
 
         enemyBasic.EnemyDieHandle();
-        
+
         deadTime = deadDuration;
     }
     public override void Update()

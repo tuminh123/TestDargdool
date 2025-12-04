@@ -21,7 +21,7 @@ public abstract class HealthUI : MonoBehaviour
         health.OnHealthChanged -= UpdateBar;
     }
 
-    protected void UpdateBar(float current, float max)
+    protected virtual void UpdateBar(float current, float max)
     {
         fill.fillAmount = current / max;
     }

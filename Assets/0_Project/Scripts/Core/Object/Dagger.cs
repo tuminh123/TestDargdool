@@ -6,7 +6,8 @@ public class Dagger : ObjInGameBase
     private WeaponDamage weaponDamage;
     private bool hasHit = false;   // tránh gây damage 2 lần
     public WeaponDamage WeaponDamage=>weaponDamage;
-
+    //get
+    public bool HasHit => hasHit;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -22,7 +23,7 @@ public class Dagger : ObjInGameBase
         if (weaponDamage.SenderDamageTo())
         {
             hasHit = true;
-            Destroy(gameObject);
+            SingletonManager.Instance.objInGamePoolManager.DeSpawn(this);
         }
     }
 

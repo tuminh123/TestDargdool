@@ -48,6 +48,7 @@ public abstract class CharacterParent : MonoBehaviour
     protected Coroutine damageCoroutine;
     protected bool isStunned =false;
     protected bool balanceColSkip;
+
     //get
     public Vector2 AttackDir=> attackDir;
     public bool IsStunned => isStunned;
@@ -79,7 +80,7 @@ public abstract class CharacterParent : MonoBehaviour
     }
     private void Start()
     {
-      
+        
     }
     public abstract void OnDead();
     protected abstract Vector2 GetKnockDir();
@@ -90,7 +91,6 @@ public abstract class CharacterParent : MonoBehaviour
         if (healthBase == null) return;
 
         healthBase.OnTakeDamage += OnTakeDamage;
-       
     }
 
     protected virtual void OnDisable()
@@ -99,21 +99,24 @@ public abstract class CharacterParent : MonoBehaviour
         if (healthBase == null) return;
        
         healthBase.OnTakeDamage -= OnTakeDamage;
-        
+
     }
     protected virtual void OnDestroy()
     {
         stateMachine.ExitState();
         if (healthBase == null) return;
-        healthBase.OnDead -= OnDead;
+
         healthBase.OnTakeDamage -= OnTakeDamage;
-        
     }
+
     #region Damage Event
     public void OnTakeDamage()
     {
         isStunned = true;
-        SingletonManager.Instance.vfxPoolManager.Spawn(StringConst.HURTVFX, transform.position, Quaternion.identity);
+        VfxBase vfx = SingletonManager.Instance.vfxPoolManager.Spawn(StringConst.HURTVFX, transform.position, Quaternion.identity);
+
+        SingletonManager.Instance.vfxPoolManager.SetParent(vfx, bodyParent.transform);
+        
     }
     public void SetTriggerBalance(bool value)
     {
@@ -138,7 +141,6 @@ public abstract class CharacterParent : MonoBehaviour
     {
         this.isStunned = isStunned;
     }
-    #endregion
 
     public void SendDamage()
     {
@@ -151,14 +153,16 @@ public abstract class CharacterParent : MonoBehaviour
             }
         }
     }
+    #endregion
+
 
     public void Buff(float healthMultiplier, float damageMultiplierr)
     {
-        Debug.Log("buff");
+        //Debug.Log("buff");
         float buffMaxHealth = stats.MaxHealth*healthMultiplier;
         float buffDamageBase = stats.DamageBase * damageMultiplierr;
-        Debug.Log(buffMaxHealth);
-        Debug.Log(buffDamageBase);
+        //Debug.Log(buffMaxHealth);
+        //Debug.Log(buffDamageBase);
         stats.SetMaxHealth(buffMaxHealth);
         stats.SetDamageBase(buffDamageBase);
 

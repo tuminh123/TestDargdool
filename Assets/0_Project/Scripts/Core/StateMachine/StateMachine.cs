@@ -17,14 +17,14 @@ public class StateMachine
         currentState?.Exit();
         currentState = stateNew;
         currentState?.Enter();
-        //Debug.Log($"{currentState}");
+        Debug.Log($"{currentState}");
     }
     public void UpdateState()
     {
         GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
         if (currentGameState != GameState.PLAY) return;
         currentState?.Update();
-        //Debug.Log($"{currentState}");
+        Debug.Log($"{currentState}");
     }
     public void UpdatePhysicState()
     {

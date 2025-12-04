@@ -1,4 +1,5 @@
 ﻿
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -91,6 +92,9 @@ public class CharacterCtrl : CharacterParent
     public override void OnDead()
     {
         SingletonManager.Instance.gameManager.SetState(GameState.LOSE);
+        SetKnockBackBalance();
+        SetTriggerBalance(false);
+        //OnDeadWait().Forget();
     }
 
     protected override Vector2 GetKnockDir()
