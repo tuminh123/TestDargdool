@@ -38,7 +38,14 @@ public class MainCharacterState : IState
 
         characterCtrl.SetAttackDirection(pos);
 
-        if (characterCtrl.attack.CanAttack()) stateMachine.ChangeState(characterCtrl.attackState);
+        if (characterCtrl.weaponEquip.IsEquipping)
+        {
+            stateMachine.ChangeState(characterCtrl.weaponAttackState);
+        }
+        else if (characterCtrl.attack.CanAttack())
+        {
+            stateMachine.ChangeState(characterCtrl.attackState);
+        }
     }
 
     //private void HandleSwipe(Vector2 delta)

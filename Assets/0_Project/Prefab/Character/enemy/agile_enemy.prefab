@@ -2134,7 +2134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats:
-    maxHealth: 1000
+    maxHealth: 200
     damageBase: 30
   detectCol: {fileID: 1678699877713915816}
   bodyParent: {fileID: 7943490942889562316}
