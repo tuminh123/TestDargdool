@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
     private async UniTask OnDeadWait()
     {
         SingletonManager.Instance.timeSlow.DoSlowmotion();
-        await UniTask.Delay(5000);
+        await UniTask.Delay(1500);
         Time.timeScale = 0;
         ClearData();
         uiManager.SetUI(currentState);

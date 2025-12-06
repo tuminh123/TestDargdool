@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[DefaultExecutionOrder(-1000)]
 public class SingletonManager : MonoBehaviour
 {
     public static SingletonManager Instance { get;private set; }
@@ -11,6 +12,8 @@ public class SingletonManager : MonoBehaviour
     public SwipeManager swipeManager { get; private set; }
     public DataManager dataManager { get; private set; }
     public ObjInGamePoolManager objInGamePoolManager { get; private set; }
+    public ProjectilePoolManager projectilePoolManager { get; private set; }
+    public WeaponPoolManager weaponPoolManager { get; private set; }
     public WaveSpawner waveSpawner { get; private set; }
     public VfxPoolManager vfxPoolManager { get; private set; }
     public TimeSlow timeSlow { get; private set; }
@@ -25,7 +28,9 @@ public class SingletonManager : MonoBehaviour
         swipeManager = GetComponentInChildren<SwipeManager>();
         dataManager = GetComponentInChildren<DataManager>();
         objInGamePoolManager = GetComponentInChildren<ObjInGamePoolManager>();
+        weaponPoolManager = GetComponentInChildren<WeaponPoolManager>();
         vfxPoolManager = GetComponentInChildren<VfxPoolManager>();
         timeSlow = GetComponentInChildren<TimeSlow>();
+        projectilePoolManager = GetComponentInChildren<ProjectilePoolManager>();
     }
 }

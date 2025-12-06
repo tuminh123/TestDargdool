@@ -15,6 +15,9 @@ public class Attack : MonoBehaviour
     [SerializeField] private AttackData[] leftAttacks;
     [SerializeField] private AttackData[] rightAttacks;
 
+    [SerializeField] private AttackData weaponLeftAttack;
+    [SerializeField] private AttackData weaponRightAttack;
+
     //Text attack effect
     [SerializeField] protected DamageNumber textEffect;
     protected string[] texts = { "Bump", "Bonk", "Baam", "Hit", "Pow", "Pop", "Thunk", "Smack", "Ahh" };
@@ -23,6 +26,7 @@ public class Attack : MonoBehaviour
 
     private Coroutine attackRoutine;
 
+    #region Combat attack
     public AttackData GetRandomAttack(bool isRight)
     {
         if (!CanAttack()) return null;
@@ -36,6 +40,7 @@ public class Attack : MonoBehaviour
         if (attack == null) return;
         currentAttackData = attack;
 
+        //TextCombat
         int rand = Random.Range(0, texts.Length);
         string text = texts[rand];
         Vector3 pos = (Vector3) attackDir + transform.position;
@@ -43,6 +48,7 @@ public class Attack : MonoBehaviour
 
         attackRoutine = StartCoroutine(attack.ExecuteAttack(configSO,attackDir,body));
     }
+
     public void StopAttack()
     {
         if (attackRoutine != null)
@@ -55,5 +61,25 @@ public class Attack : MonoBehaviour
     {
         return rightAttacks.Length > 0 && leftAttacks.Length > 0;
     }
-    
+    #endregion
+
+    #region Weapon attack
+
+    public void HandleWeaponAttack(Vector2 attackDir)
+    {
+        if (attackDir.x > 0)
+        {
+            currentAttackData = weaponRightAttack;
+
+        }
+        else if (attackDir.x < 0) 
+        {
+            currentAttackData = weaponLeftAttack;
+        }
+        if (currentAttackData == null) return;
+        attackRoutine = StartCoroutine(currentAttackData.ExecuteAttack(configSO, attackDir, body));
+    }
+
+    #endregion
+
 }

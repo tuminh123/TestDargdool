@@ -19,4 +19,12 @@ public static class StringConst
     //Vfx
     public const string DIEVFX = "DieVfx";
     public const string HURTVFX = "HurtVfx";
+
+    //Weapon
+    public const string WEAPON = "Weapon";
+    public const string KATANAWEAPON = "KatanaWeapon";
+    public const string SHURIKENWEAPON = "ShurikenWeapon";
+
+    //Projectile
+    public const string SHURIKENPROJECTILE = "ShurikenProjectile";
 }

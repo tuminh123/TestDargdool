@@ -71,12 +71,12 @@ public abstract class CharacterParent : MonoBehaviour
 
         stateMachine = new StateMachine();
 
-        //healthBase.SetMaxHealth(stats.MaxHealth);
-        //foreach (var item in damageDetect)
-        //{
-        //    if (item == null) continue;
-        //    item.SetDamageBase(stats.DamageBase);
-        //}
+        healthBase.SetMaxHealth(stats.MaxHealth);
+        foreach (var item in damageDetect)
+        {
+            if (item == null) continue;
+            item.SetDamageBase(stats.DamageBase);
+        }
     }
     private void Start()
     {

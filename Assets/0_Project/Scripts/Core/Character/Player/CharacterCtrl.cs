@@ -11,12 +11,17 @@ public class CharacterCtrl : CharacterParent
     
     public Jump jump {  get; private set; } 
     public DetectionZone zone { get; private set; }
+    public PlayerWeaponEquip weaponEquip { get; private set; }
+
+    public WeaponBase currentWeaponBase { get; private set; }
+
     #region  State
     public MainMoveState moveState { get; private set; }
     public MainAttackState attackState { get; private set; }
     public MainIdelState idelState { get; private set; }
     public MainJumpState jumpState { get; private set; }
     public MainStunState stunnedState { get;private set; }
+    public MainWeaponAttackState weaponAttackState { get; private set; }
 
     #endregion
 
@@ -30,6 +35,7 @@ public class CharacterCtrl : CharacterParent
 
         jump = GetComponentInChildren<Jump>();
         zone = GetComponentInChildren<DetectionZone>();
+        weaponEquip = GetComponentInChildren<PlayerWeaponEquip>();
         //state init
         //stateMachine = new StateMachine();
         moveState = new MainMoveState(stateMachine, this);
@@ -37,13 +43,16 @@ public class CharacterCtrl : CharacterParent
         attackState = new MainAttackState(stateMachine, this);
         jumpState = new MainJumpState(stateMachine, this);
         stunnedState = new MainStunState(stateMachine, this);
+        weaponAttackState = new MainWeaponAttackState(stateMachine, this);
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
         healthBase.OnDead += OnDead;
+        weaponEquip.OnEquip += WeaponEquip_OnEquip;
     }
+
     private void Start()
     {
         stateMachine.InitState(idelState);
@@ -64,12 +73,21 @@ public class CharacterCtrl : CharacterParent
         base.OnDisable();
 
         healthBase.OnDead -= OnDead;
+        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
 
     }
     protected override void OnDestroy()
     {
         base.OnDestroy();
         healthBase.OnDead -= OnDead;
+        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
+    }
+
+    // Weapon equipment event
+    private void WeaponEquip_OnEquip(WeaponBase obj)
+    {
+        if (obj == null) return;
+        currentWeaponBase = obj;
     }
 
     #region Stats setup
