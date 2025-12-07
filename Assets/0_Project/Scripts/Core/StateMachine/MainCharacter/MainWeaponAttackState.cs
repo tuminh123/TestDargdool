@@ -52,20 +52,28 @@ public class MainWeaponAttackState : MainCharacterState
 
     private void WeaponAttackHandle(WeaponBase weapon)
     {
-        if(weapon.Type == WeaponType.MELE)
+        switch (weapon.Type)
         {
-            WeaponDamage damage = weapon.weaponDamage;
-            if (damage == null) return;
+            default:
+            case WeaponType.MELE:
 
-            if (damage.SenderDamageTo())
-            {
+                WeaponDamage damage = weapon.weaponDamage;
+                if (damage == null) return;
+
+                if (damage.SenderDamageTo())
+                {
+                    RemoveWeapon(weapon);
+                }
+
+                break;
+            case WeaponType.RANGE:
+
+                IShoot shoot = GetIShootByType(weapon);
+                if (shoot == null) return;
+                shoot.Shoot(characterCtrl.AttackDir);
                 RemoveWeapon(weapon);
-            }
-        }
-        else if(weapon.Type == WeaponType.RANGE)
-        {
-            GetIShootByType(RangeWeaponType.Shuriken, weapon).Shoot(characterCtrl.AttackDir);
-            RemoveWeapon(weapon);
+
+                break;
         }
     }
 
@@ -85,12 +93,9 @@ public class MainWeaponAttackState : MainCharacterState
         characterCtrl.weaponEquip.SetIsEquipping(false);
         SingletonManager.Instance.weaponPoolManager.DeSpawn(weapon);
     }
-    private IShoot GetIShootByType(RangeWeaponType type,WeaponBase weapon)
+    private IShoot GetIShootByType(WeaponBase weapon)
     {
-        if(weapon.TryGetComponent(out IShoot shoot))
-        {
-            if(shoot.type == type) return shoot;
-        }
+        if(weapon.TryGetComponent(out IShoot shoot)) return shoot;
         return null;
     }
 }

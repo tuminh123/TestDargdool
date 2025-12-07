@@ -3,7 +3,7 @@ using DamageNumbersPro;
 using System;
 using UnityEngine;
 
-public class HealthBase : MonoBehaviour,IDamageable
+public class HealthBase : MonoBehaviour,IDamageable,IHeal
 {
     public event Action<float, float> OnHealthChanged;
     public System.Action OnTakeDamage;
@@ -64,5 +64,15 @@ public class HealthBase : MonoBehaviour,IDamageable
     public void SetMaxHealth(float maxHealth)
     {
         this.maxHealth = maxHealth;
+    }
+
+    public void Heal(float add)
+    {
+        if (IsDead) return;
+        if (currentHealth >= maxHealth) return;
+        currentHealth += add;
+
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 }
