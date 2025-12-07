@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Shuriken : WeaponBase,IShoot
 {
-    RangeWeaponType IShoot.type => RangeWeaponType.Shuriken;
+    //RangeWeaponType IShoot.type => RangeWeaponType.Shuriken;
 
     public override string GetObjectName()
     {

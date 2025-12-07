@@ -14,9 +14,9 @@ TagManager:
   - Player
   - Enemy
   - Ground
-  - Box
+  - Object
   - Gold
-  - None
+  - Potion
   - Weapon
   - Projectile
   - 
