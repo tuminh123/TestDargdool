@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1310767581773280041}
-  - component: {fileID: 4771476143857274775}
-  - component: {fileID: 2581199471579178898}
+  - component: {fileID: 564202125641481392}
+  - component: {fileID: 7255892320962911194}
+  - component: {fileID: 738763555809098862}
   - component: {fileID: 4656431842099114478}
   m_Layer: 12
   m_Name: Katana
@@ -37,7 +38,7 @@ Transform:
   - {fileID: 5923680577617527772}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &4771476143857274775
+--- !u!58 &564202125641481392
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -73,7 +74,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!50 &2581199471579178898
+--- !u!50 &7255892320962911194
 Rigidbody2D:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -100,6 +101,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!233 &738763555809098862
+HingeJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524869000351904240}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_BreakAction: 3
+  m_AutoConfigureConnectedAnchor: 1
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_UseConnectedAnchor: 1
+  m_UseMotor: 0
+  m_Motor:
+    m_MotorSpeed: 0
+    m_MaximumMotorForce: 10000
+  m_UseLimits: 0
+  m_AngleLimits:
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!114 &4656431842099114478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +140,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  rotationOffset: 0
+  isEquip: 0
 --- !u!1 &819766602102926650
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8103092196781603511}
   - component: {fileID: 311516925672973500}
-  - component: {fileID: 8069565934353871204}
+  - component: {fileID: 1846912195710983396}
   m_Layer: 0
   m_Name: model
   m_TagString: Untagged
@@ -295,7 +324,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &8069565934353871204
+--- !u!61 &1846912195710983396
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

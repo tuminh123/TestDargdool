@@ -1,75 +1,68 @@
 ﻿using Cysharp.Threading.Tasks;
+using System.Security.Cryptography;
 using System.Threading;
 using UnityEngine;
 
 public class PlayerWeaponEquip : MonoBehaviour
 {
-    public event System.Action<WeaponBase> OnEquip;
-
-    [SerializeField] private Balance handRight, handLeft;
+    [SerializeField] private GameObject weaponArmRight, weaponArmLeft;
     [SerializeField] private bool isEquipping = false;
 
+    public WeaponBase currentWeapon { get; private set; }
     private CharacterCtrl ctrl;
     //get
-    public bool IsEquipping => isEquipping; 
+    public bool IsEquipping => isEquipping;
 
     private void Awake()
     {
         ctrl = GetComponentInParent<CharacterCtrl>();
     }
-
+    /* private void FixedUpdate()
+     {
+         if (currentWeapon == null || !currentWeapon.IsEquip) return;
+         currentWeapon.RotateByDirection(ctrl.AttackDir);
+         isEquipping = currentWeapon.IsEquip;
+     }*/
     private void EquipHandle(WeaponBase weapon)
     {
-        Balance hand = GetHandBalance();
+        GameObject handObj = GetHandBalance();
+        if (handObj == null) return;
+        Rigidbody2D hand = handObj.GetComponent<Rigidbody2D>(); 
 
-        SingletonManager.Instance.weaponPoolManager.SetParent(weapon, hand.transform);
-
-        weapon.rb.bodyType = RigidbodyType2D.Kinematic;
-        weapon.weaponDeSpawn.gameObject.SetActive(false);
-
-        RotationWeapon(weapon, hand);
+        float flipDir = (hand == weaponArmLeft) ? -1f : 1f;
+        Vector3 pos = new Vector3(0.1f, -0.4f, 0);
+        weapon.EquipWeapon(hand,hand.transform, flipDir, pos);
 
         isEquipping = true;
+        currentWeapon = weapon;
 
-        OnEquip?.Invoke(weapon);
-    }
-
-    private void RotationWeapon(WeaponBase weapon, Balance hand)
-    {
-        if (hand == handLeft)
-        {
-            WeaponSetup(weapon, hand, -1);
-        }
-        else if (hand == handRight)
-        {
-            WeaponSetup(weapon, hand, 1);
-        }
-    }
-
-    private void WeaponSetup(WeaponBase weapon, Balance hand,float rot)
-    {
-        weapon.transform.localScale = new Vector3(rot, 1, 1);
-        weapon.transform.position = (hand.transform.position+new Vector3(0.1f,-0.4f,0));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision == null) return;
-        if (collision.TryGetComponent(out WeaponBase weapon))
+        if (collision.transform.TryGetComponent(out WeaponBase weapon))
         {
-            if(isEquipping) return;
+            if (isEquipping) return;
             EquipHandle(weapon);
         }
+    }
+
+    public void ResetEquip()
+    {
+        if (currentWeapon == null) return;
+        isEquipping = false;
+        currentWeapon.UnEquipWeapon();
 
     }
-    public Balance GetHandBalance()
+    public void SetIsEquip(bool isEquip)
     {
-        Balance[] randHand = new Balance[] { handLeft, handRight };
+        this.isEquipping = isEquip;
+    }
+    public GameObject GetHandBalance()
+    {
+        GameObject[] randHand = new GameObject[] { weaponArmLeft, weaponArmRight };
         int index = Random.Range(0, randHand.Length);
         return randHand[index];
-    }
-    public void SetIsEquipping(bool isEquipping)
-    {
-        this.isEquipping = isEquipping;
     }
 }

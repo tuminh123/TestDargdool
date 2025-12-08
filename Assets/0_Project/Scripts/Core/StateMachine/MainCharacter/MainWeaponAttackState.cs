@@ -11,10 +11,11 @@ public class MainWeaponAttackState : MainCharacterState
         base.Enter();
         characterCtrl.attack.HandleWeaponAttack(characterCtrl.AttackDir);
 
-        WeaponBase weapon = characterCtrl?.currentWeaponBase;
+        /*PlayerWeaponEquip weaponEquip = characterCtrl?.weaponEquip;
+        WeaponBase weapon = weaponEquip?.currentWeapon;
         if (weapon == null) return;
 
-        WeaponRotationHandle(weapon);
+        weapon.RotateByDirection(characterCtrl.AttackDir);*/
 
         if (characterCtrl.attack.currentAttackData == null) return;
 
@@ -42,7 +43,8 @@ public class MainWeaponAttackState : MainCharacterState
     }
     private void EndAttack()
     {
-        WeaponBase weapon = characterCtrl?.currentWeaponBase;
+        PlayerWeaponEquip weaponEquip = characterCtrl?.weaponEquip;
+        WeaponBase weapon = weaponEquip?.currentWeapon;
         if (weapon == null) return;
 
         WeaponAttackHandle(weapon);
@@ -62,7 +64,7 @@ public class MainWeaponAttackState : MainCharacterState
 
                 if (damage.SenderDamageTo())
                 {
-                    RemoveWeapon(weapon);
+                    characterCtrl.weaponEquip.ResetEquip();
                 }
 
                 break;
@@ -71,27 +73,21 @@ public class MainWeaponAttackState : MainCharacterState
                 IShoot shoot = GetIShootByType(weapon);
                 if (shoot == null) return;
                 shoot.Shoot(characterCtrl.AttackDir);
-                RemoveWeapon(weapon);
 
+                characterCtrl.weaponEquip.ResetEquip();
                 break;
         }
     }
-
     private void WeaponRotationHandle(WeaponBase weapon)
     {
         if (characterCtrl.AttackDir.x < 0)
         {
-            weapon.transform.localScale = new Vector3(-1, 1, 1);
+            weapon.rb.MovePosition (new Vector3(-1, 1, 1));
         }
         else
         {
-            weapon.transform.localScale = new Vector3(1, 1, 1);
+            weapon.rb.MovePosition(new Vector3(1, 1, 1));
         }
-    }
-    private void RemoveWeapon(WeaponBase weapon)
-    {
-        characterCtrl.weaponEquip.SetIsEquipping(false);
-        SingletonManager.Instance.weaponPoolManager.DeSpawn(weapon);
     }
     private IShoot GetIShootByType(WeaponBase weapon)
     {

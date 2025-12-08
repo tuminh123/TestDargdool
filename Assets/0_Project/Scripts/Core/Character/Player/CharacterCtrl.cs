@@ -13,8 +13,6 @@ public class CharacterCtrl : CharacterParent
     public DetectionZone zone { get; private set; }
     public PlayerWeaponEquip weaponEquip { get; private set; }
 
-    public WeaponBase currentWeaponBase { get; private set; }
-
     #region  State
     public MainMoveState moveState { get; private set; }
     public MainAttackState attackState { get; private set; }
@@ -50,7 +48,6 @@ public class CharacterCtrl : CharacterParent
     {
         base.OnEnable();
         healthBase.OnDead += OnDead;
-        weaponEquip.OnEquip += WeaponEquip_OnEquip;
     }
 
     private void Start()
@@ -73,23 +70,12 @@ public class CharacterCtrl : CharacterParent
         base.OnDisable();
 
         healthBase.OnDead -= OnDead;
-        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
-
     }
     protected override void OnDestroy()
     {
         base.OnDestroy();
         healthBase.OnDead -= OnDead;
-        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
     }
-
-    // Weapon equipment event
-    private void WeaponEquip_OnEquip(WeaponBase obj)
-    {
-        if (obj == null) return;
-        currentWeaponBase = obj;
-    }
-
     #region Stats setup
     private void InitPlayerData()
     {

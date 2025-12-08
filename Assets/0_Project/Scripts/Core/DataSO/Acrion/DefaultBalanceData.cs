@@ -19,7 +19,8 @@ public enum BalanceType
     left_foot = 14,
     body_bottom = 15,
     hip = 16,
-
+    weapon_arm_left = 17,
+    weapon_arm_right = 18,
 }
 
 

@@ -7,8 +7,11 @@ public class WeaponPoolManager : ObjectPoolManager<WeaponBase>
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Shuriken katana= Spawn(StringConst.SHURIKENWEAPON,transform.position,Quaternion.identity) as Shuriken;
-            if (katana != null) katana.ResetWeapon();
+            Katana katana= Spawn(StringConst.KATANAWEAPON,transform.position,Quaternion.identity) as Katana;
+            /*if (katana != null)
+            {
+                katana.ResetWeapon();
+            }*/
         }
     }
 }
