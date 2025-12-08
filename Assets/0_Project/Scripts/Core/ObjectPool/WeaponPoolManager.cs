@@ -8,10 +8,7 @@ public class WeaponPoolManager : ObjectPoolManager<WeaponBase>
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Katana katana= Spawn(StringConst.KATANAWEAPON,transform.position,Quaternion.identity) as Katana;
-            /*if (katana != null)
-            {
-                katana.ResetWeapon();
-            }*/
+            if (katana != null) katana.ResetWeapon();
         }
     }
 }

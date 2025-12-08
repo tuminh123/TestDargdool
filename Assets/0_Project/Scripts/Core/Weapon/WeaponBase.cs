@@ -84,6 +84,8 @@ public enum WeaponType
 public abstract class WeaponBase : MonoBehaviour, IObjectPool
 {
     [SerializeField] protected WeaponType type;
+    [SerializeField] Collider2D col;
+    [SerializeField] private CircleCollider2D circle;
     public WeaponDeSpawn weaponDeSpawn { get; protected set; }
     public WeaponDamage weaponDamage { get; protected set; }
     public Rigidbody2D rb { get; protected set; }
@@ -106,27 +108,26 @@ public abstract class WeaponBase : MonoBehaviour, IObjectPool
         weaponDeSpawn = GetComponentInChildren<WeaponDeSpawn>();
         weaponDamage = GetComponentInChildren<WeaponDamage>();
         joint2D = GetComponent<HingeJoint2D>();
-
-        joint2D.enabled = false;
     }
     private void OnEnable()
     {
         ResetWeapon();
     }
-    /* private void FixedUpdate()
-     {
-         if (handTarget == null) return;
+  /*  private void FixedUpdate()
+    {
+        if (handTarget == null) return;
 
-         // Move towards hand
-         Vector3 targetPos = handTarget.position + equipOffset;
+        // Move towards hand
+        Vector3 targetPos = handTarget.position + equipOffset;
 
-         rb.MovePosition(targetPos);
-     }*/
+        rb.MovePosition(targetPos);
+    }*/
     public void EquipWeapon(Rigidbody2D hand, Transform handTranform, float flip, Vector3 offset)
     {
         EquipWeapon(handTranform, flip, offset);
 
         joint2D.enabled = true;
+        circle.isTrigger = false;
         joint2D.connectedBody = hand;
         gameObject.layer = LayerMask.NameToLayer("Default");
        
@@ -141,7 +142,9 @@ public abstract class WeaponBase : MonoBehaviour, IObjectPool
         //transform.localScale = new Vector3(flip, 1, 1);
 
         transform.position = hand.transform.position;
-
+        rb.linearVelocity = Vector2.zero;
+        rb.totalTorque = 0;
+        col.enabled = false;
         weaponDeSpawn.gameObject.SetActive(false);
     }
     public void UnEquipWeapon()
@@ -155,6 +158,8 @@ public abstract class WeaponBase : MonoBehaviour, IObjectPool
     {
         joint2D.connectedBody = null;
         joint2D.enabled = false;
+        col.enabled = true;
+        circle.isTrigger = true;
         gameObject.layer= LayerMask.NameToLayer("Weapon");
     }
     public abstract string GetObjectName();
