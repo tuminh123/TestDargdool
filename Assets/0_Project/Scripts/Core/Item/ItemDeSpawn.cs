@@ -3,11 +3,11 @@ using System.Collections;
 using System.Threading;
 using UnityEngine;
 
-public class WeaponDeSpawn : MonoBehaviour
+public class ItemDeSpawn : MonoBehaviour
 {
 
     [SerializeField] protected int timeDuration = 5;
-    protected WeaponBase weapon;
+    protected ItemBase itemBase;
 
     private CancellationTokenSource cts;
 
@@ -33,20 +33,20 @@ public class WeaponDeSpawn : MonoBehaviour
 
     private void Awake()
     {
-        weapon = GetComponentInParent<WeaponBase>();
+        itemBase = GetComponentInParent<ItemBase>();
     }
 
     public async UniTask WaitForDeSpawn(CancellationToken token)
     {
         await UniTask.Delay(timeDuration * 1000, cancellationToken: token);
 
-        WeaponDespawnHandle();
+        ItemDeSpawnHandle();
     }
 
-    private void WeaponDespawnHandle()
+    private void ItemDeSpawnHandle()
     {
-        Transform holder = SingletonManager.Instance.weaponPoolManager.Holder;
-        SingletonManager.Instance.weaponPoolManager.DeSpawn(weapon);
-        SingletonManager.Instance.weaponPoolManager.SetParent(weapon, holder);
+        Transform holder = SingletonManager.Instance.itemPoolManager.Holder;
+        SingletonManager.Instance.itemPoolManager.DeSpawn(itemBase);
+        SingletonManager.Instance.itemPoolManager.SetParent(itemBase, holder);
     }
 }

@@ -35,9 +35,9 @@ public class BoxHealth : MonoBehaviour, IDamageable
         box.ani.Play("explosion");
 
         await UniTask.Delay(500);
-        Gold gold = SingletonManager.Instance.objInGamePoolManager.Spawn(StringConst.GOLD, transform.position, Quaternion.identity) as Gold;
-        gold.SetVelocity();
-
+        /* Gold gold = SingletonManager.Instance.objInGamePoolManager.Spawn(StringConst.GOLD, transform.position, Quaternion.identity) as Gold;
+         gold.SetVelocity();*/
+        SingletonManager.Instance.itemPoolManager.SpawnRandomItem(transform.position);
         await UniTask.Delay(200);
         SingletonManager.Instance.objInGamePoolManager.DeSpawn(box);
     }

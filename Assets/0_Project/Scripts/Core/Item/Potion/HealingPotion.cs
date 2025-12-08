@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class HealingPotion : PotionBase
 {
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         effect = new HealEffect(amount);
     }
     public override string GetObjectName()

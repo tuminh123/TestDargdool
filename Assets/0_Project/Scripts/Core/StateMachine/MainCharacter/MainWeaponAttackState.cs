@@ -91,7 +91,7 @@ public class MainWeaponAttackState : MainCharacterState
     private void RemoveWeapon(WeaponBase weapon)
     {
         characterCtrl.weaponEquip.SetIsEquipping(false);
-        SingletonManager.Instance.weaponPoolManager.DeSpawn(weapon);
+        weapon.UnEquip();
     }
     private IShoot GetIShootByType(WeaponBase weapon)
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class PotionBase : ObjInGameBase
+public abstract class PotionBase : ItemBase
 {
     [SerializeField] protected float amount = 30;
 

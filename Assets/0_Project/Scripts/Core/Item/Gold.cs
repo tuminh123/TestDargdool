@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Gold : ObjInGameBase
+public class Gold : ItemBase
 {
     public override string GetObjectName()
     {

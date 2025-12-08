@@ -11,9 +11,9 @@ public class Katana : WeaponBase
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Transform holder = SingletonManager.Instance.weaponPoolManager.Holder;
-            SingletonManager.Instance.weaponPoolManager.DeSpawn(this);
-            SingletonManager.Instance.weaponPoolManager.SetParent(this, holder);
+            Transform holder = SingletonManager.Instance.itemPoolManager.Holder;
+            SingletonManager.Instance.itemPoolManager.DeSpawn(this);
+            SingletonManager.Instance.itemPoolManager.SetParent(this, holder);
         }
     }
 }

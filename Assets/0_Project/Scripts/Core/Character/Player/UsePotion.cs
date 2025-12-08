@@ -13,7 +13,7 @@ public class UsePotion : MonoBehaviour
         if(collision.TryGetComponent(out PotionBase potion))
         {
             potion.Use(ctrl.gameObject);
-            SingletonManager.Instance.objInGamePoolManager.DeSpawn(potion);
+            SingletonManager.Instance.itemPoolManager.DeSpawn(potion);
         }
     }
 }

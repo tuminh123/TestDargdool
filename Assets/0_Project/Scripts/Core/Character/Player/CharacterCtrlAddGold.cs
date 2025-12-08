@@ -11,7 +11,7 @@ public class CharacterCtrlAddGold : MonoBehaviour
         if (collision.transform.TryGetComponent(out Gold gold))
         {
             SingletonManager.Instance.goldManager.AddGold(1);
-            SingletonManager.Instance.objInGamePoolManager.DeSpawn(gold);
+            SingletonManager.Instance.itemPoolManager.DeSpawn(gold);
             //SingletonManager.Instance.dataManager.DataSave();
         }
     }

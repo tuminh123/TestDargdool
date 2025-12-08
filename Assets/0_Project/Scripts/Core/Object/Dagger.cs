@@ -29,7 +29,7 @@ public class Dagger : ObjInGameBase
 
     public void SetDaggerAction(Vector2 dir,float rot)
     {
-        rb.linearVelocity = dir * speed;
+        rb.linearVelocity = dir * 15;
         model.rotation = new Quaternion(0, rot, 0,0);
     }
 

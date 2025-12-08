@@ -16,6 +16,7 @@ public class ObjectPoolManager<T> : MonoBehaviour where T : MonoBehaviour,IObjec
     //get
     public int Count => count;
     public Transform Holder => holder;
+    public ListDataPoolSO<T> Data => data;
 
     //DeSpawn
     public void DeSpawn(T obj)
