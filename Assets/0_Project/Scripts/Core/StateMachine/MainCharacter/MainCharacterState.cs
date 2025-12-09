@@ -8,6 +8,8 @@ public class MainCharacterState : IState
     protected float x;
     protected bool isGround;
 
+    private int airTapCount = 0;       // Đếm số lần tap khi đang trên không
+
     public MainCharacterState(StateMachine stateMachine, CharacterCtrl characterCtrl)
     {
         this.stateMachine = stateMachine;
@@ -34,6 +36,20 @@ public class MainCharacterState : IState
         if (characterCtrl.IsStunned)
         {
             stateMachine.ChangeState(characterCtrl.stunnedState);
+        }
+
+        isGround = characterCtrl.groundDetect.IsGround();
+
+        if (!isGround)
+        {
+            if (airTapCount >= 3)
+            {
+                Debug.Log("Air tap limit reached!");
+                return;
+            }
+
+            airTapCount++;
+            Debug.Log("Air tap count: " + airTapCount);
         }
 
         characterCtrl.SetAttackDirection(pos);
@@ -82,11 +98,17 @@ public class MainCharacterState : IState
 
         isGround = characterCtrl.groundDetect.IsGround();
 
+        if (isGround)
+        {
+            airTapCount = 0;
+        }
+
         /*if (SwipeManager.Tap && characterCtrl.attack.CanAttack() && !characterCtrl.IsStunned)
         {
             stateMachine.ChangeState(characterCtrl.attackState);
         }
-        else*/ if (SwipeManagerTest.SwipeUp && isGround)
+        else*/
+        if (SwipeManagerTest.SwipeUp && isGround)
         {
             stateMachine.ChangeState(characterCtrl.jumpState);
         }

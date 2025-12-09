@@ -29,7 +29,7 @@ public class AgileEnemyCombatState : AgileEnemyState
             if (Random.value < 0.5f)
                 stateMachine.ChangeState(agileEnemy.agileEnemyAttackState);
             else
-                stateMachine.ChangeState(agileEnemy.agileEnemyJumpState);
+                stateMachine.ChangeState(agileEnemy.agileEnemyShootState);
 
         }
         else

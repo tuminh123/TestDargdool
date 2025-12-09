@@ -42,7 +42,7 @@ public class AgileEnemy : EnemyAI
     protected override void Start()
     {
         base.Start();
-        stateMachine.InitState(agileEnemyChaseState);
+        stateMachine.InitState(agileEnemyIdleState);
     }
 
     public void BeginShoot()

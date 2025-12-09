@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.kyrylokuzyk.primetween": "file:../Assets/Plugins/PrimeTween/internal/com.kyrylokuzyk.primetween.tgz",
     "com.tuna.config": "file:../../TunaCore/com.tuna.config",
     "com.tuna.core": "file:../../TunaCore/com.tuna.core",
     "com.unity.collab-proxy": "2.10.0",

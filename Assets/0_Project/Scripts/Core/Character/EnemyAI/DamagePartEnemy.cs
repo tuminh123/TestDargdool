@@ -43,7 +43,7 @@ public class DamagePartEnemy : EnemyAI
         base.Start();
         //damagePartToPlayer.gameObject.SetActive(false);
 
-        stateMachine.InitState(damagePartEnemyCombatState);
+        stateMachine.InitState(damagePartEnemyIdleState);
     }
     public void BeginDefense()
     {

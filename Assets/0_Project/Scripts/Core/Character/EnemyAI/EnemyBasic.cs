@@ -23,6 +23,6 @@
     protected override void Start()
     {
         base.Start();
-        stateMachine.InitState(enemyChaseState);
+        stateMachine.InitState(enemyIdleState);
     }
 }

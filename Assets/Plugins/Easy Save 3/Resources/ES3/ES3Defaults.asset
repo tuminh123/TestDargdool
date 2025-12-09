@@ -40,6 +40,9 @@ MonoBehaviour:
     - Lofelt.NiceVibrations
     - Lofelt.NiceVibrations.Demo
     - ParticleImage
+    - PrimeTween.Debug
+    - PrimeTween.Demo
+    - PrimeTween.Runtime
     - UniTask
     - UniTask.Addressables
     - UniTask.DOTween
