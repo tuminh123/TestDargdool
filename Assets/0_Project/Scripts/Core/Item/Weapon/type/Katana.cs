@@ -6,14 +6,4 @@ public class Katana : WeaponBase
     {
         return StringConst.KATANAWEAPON;
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Transform holder = SingletonManager.Instance.itemPoolManager.Holder;
-            SingletonManager.Instance.itemPoolManager.DeSpawn(this);
-            SingletonManager.Instance.itemPoolManager.SetParent(this, holder);
-        }
-    }
 }

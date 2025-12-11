@@ -1,6 +1,7 @@
 ﻿
 using Cysharp.Threading.Tasks;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Playables;
@@ -8,137 +9,69 @@ using Zenject;
 
 public class GameManager : MonoBehaviour
 {
-    private GameState currentState;
-
-    [SerializeField] private GameObject player;
-
-
-    private GameObject playerInstance;
+    [InjectOptional]
+    private TimeSlow timeSlow;
+    [InjectOptional]
     private UIManager uiManager;
-
-    //get
-    public GameState CurrentState => currentState;
-    public GameObject PlayerInstance => playerInstance;
 
     private void Awake()
     {
         SingletonManager.Instance.dataManager.DataLoad();
     }
-    private void Start()
-    {
-        uiManager = SingletonManager.Instance.uiManager;
-        currentState = GameState.MENU;
-        GameEventBus.RaiseGameStateChanged(currentState);
-
-    }
-
     private void OnEnable()
     {
-        GameEventBus.OnGameStateChanged += GameEventBus_OnGameStateChanged;
+        GameEventBus.OnGameLose += HandleGameLose;
+        GameEventBus.OnGameResume += GameEventBus_OnGameResume;
+        GameEventBus.OnGamePause += GameEventBus_OnGamePause;
     }
 
     private void OnDisable()
     {
-        GameEventBus.OnGameStateChanged -= GameEventBus_OnGameStateChanged;
+        GameEventBus.OnGameLose -= HandleGameLose;
+        GameEventBus.OnGameResume -= GameEventBus_OnGameResume;
+        GameEventBus.OnGamePause -= GameEventBus_OnGamePause;
+    }
+    private void GameEventBus_OnGamePause()
+    {
+        Time.timeScale = 0;
     }
 
-    private void GameEventBus_OnGameStateChanged(GameState obj)
-    {
-        Debug.Log(currentState);
-        switch (obj)
-        {
-            default:
-            case GameState.MENU:
-                MenuHandle();
-                break;
-            case GameState.PLAY:
-                PlayHandle();
-                break;
-            case GameState.LOSE:
-                LoseHandle();
-                break;
-            case GameState.PAUSE:
-                PauseHandle();
-                break;
-            case GameState.RESTART:
-                ResetHandle();
-                break;
-        }
-    }
-    private void ResetHandle()
+    private void GameEventBus_OnGameResume()
     {
         Time.timeScale = 1;
-
-        SingletonManager.Instance.waveSpawner.ClearAllEnemies();
-
-        ClearData();
-        SetState(GameState.PLAY);
     }
+    private void HandleGameLose(CharacterCtrl ctrl)
+    {
+        StartCoroutine(LoseHandle());
+    }
+    private IEnumerator LoseHandle()
+    {
+        ZenManager.Instance.timeSlow.gameObject.SetActive(true);
+        ZenManager.Instance.timeSlow.DoSlowmotion();
+        yield return new WaitForSeconds(4f);
 
+        ZenManager.Instance.timeSlow.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+        Time.timeScale = 0f;
+
+        ZenManager.Instance.uIManager.PopupLose.OpenPopup();
+    }
    
-
-    private void LoseHandle()
+    public void ChangeMenuScene()
     {
-        OnDeadWait().Forget();
-        //SingletonManager.Instance.timeSlow.DoSlowmotion();
-    }
-
-    private async UniTask OnDeadWait()
-    {
-        SingletonManager.Instance.timeSlow.DoSlowmotion();
-        await UniTask.Delay(1500);
-        Time.timeScale = 0;
-        ClearData();
-        uiManager.SetUI(currentState);
-
-    }
-
-    private void PauseHandle()
-    {
-        Time.timeScale = 0;
-        uiManager.SetUI(currentState);
+        Time.timeScale = 1f;
+        SingletonManager.Instance.sceneLoader.LoadHomeScene();
         SingletonManager.Instance.dataManager.DataSave();
     }
-
-    private void PlayHandle()
+    public void ChangePlayScene()
     {
-        Time.timeScale = 1;
-        uiManager.SetUI(currentState);
-        
-        if (playerInstance != null) return; 
-        playerInstance = Instantiate(player,transform.position,Quaternion.identity);
-
-        var ctrl = playerInstance.GetComponent<CharacterCtrl>();
-        if (ctrl == null) return;
-
-        GameEventBus.RaisePlayerSpawned(ctrl);
+        //Time.timeScale = 1f;
+        SingletonManager.Instance.sceneLoader.LoadGamePlayScene();
     }
-
-    private void MenuHandle()
+    public void ChangeUpgradeScene()
     {
-        uiManager.SetUI(currentState);
-
-        ClearData();
-    }
-    private void ClearData()
-    {
-        ObjInGameBase[] objs = FindObjectsByType<ObjInGameBase>(FindObjectsSortMode.None);
-        foreach (var obj in objs)
-        {
-            if (obj == null) continue;
-            SingletonManager.Instance.objInGamePoolManager.DeSpawn(obj);
-        }
-        if (playerInstance != null)
-        {
-            Destroy(playerInstance);
-            playerInstance = null;
-        }
-    }
-    public void SetState(GameState newState)
-    {
-        if(currentState == newState) return;
-        currentState = newState;
-        GameEventBus.RaiseGameStateChanged(newState);
+        //Time.timeScale = 1f;
+        SingletonManager.Instance.sceneLoader.LoadUpgradeScene();
     }
     private void OnApplicationQuit()
     {

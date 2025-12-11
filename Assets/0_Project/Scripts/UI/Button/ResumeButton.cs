@@ -5,6 +5,6 @@ public class ResumeButton : ButtonBase
 {
     public override void Clicked()
     {
-        SingletonManager.Instance.gameManager.SetState(GameState.PLAY);
+        //SingletonManager.Instance.gameManager.SetState(GameState.PLAY);
     }
 }

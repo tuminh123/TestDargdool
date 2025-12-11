@@ -9,14 +9,15 @@ public class CameraFollow : MonoBehaviour
     [Header("Độ mượt khi theo dõi")]
     [Range(0f, 1f)]
     [SerializeField] float smoothSpeed = 0.15f;
+    [SerializeField] Transform target;
 
     private Vector3 velocity = Vector3.zero;
  
     void LateUpdate()
     {
-        if (SingletonManager.Instance.gameManager.CurrentState != GameState.PLAY) return;
-        if (SingletonManager.Instance.gameManager.PlayerInstance == null) return;
-        Transform target = SingletonManager.Instance.gameManager.PlayerInstance.transform;
+      /*  if (SingletonManager.Instance.gameManager.CurrentState != GameState.PLAY) return;
+        if (SingletonManager.Instance.gameManager.PlayerInstance == null) return;*/
+        //Transform target = SingletonManager.Instance.gameManager.PlayerInstance.transform;
 
         if (target == null) return;
 

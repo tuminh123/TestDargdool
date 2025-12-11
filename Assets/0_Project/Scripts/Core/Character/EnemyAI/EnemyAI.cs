@@ -2,9 +2,13 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public abstract class EnemyAI : CharacterParent
 {
+    [InjectOptional]
+    private ItemPoolManager itemPoolManager;
+
     [SerializeField] protected float maxAttackDistance = 5;
     //Time change state
     [SerializeField] protected float attackDuration = 3;
@@ -13,6 +17,7 @@ public abstract class EnemyAI : CharacterParent
     [SerializeField] GameObject parent;
     [SerializeField] protected ParticleSystem dieParticle;
 
+    public CharacterCtrl characterCtrl { get;private set; }
     public PlayerDetect playerDetect { get; private set; }
 
     public float disBetweenEnemyAndPlayer { get; private set; }
@@ -28,10 +33,8 @@ public abstract class EnemyAI : CharacterParent
 
     protected virtual void Start()
     {
-         dieParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        //Debug.Log(stats.MaxHealth);
-        //Debug.Log(stats.Speed);
-        //Debug.Log(stats.DamageBase);
+        characterCtrl = CharacterCtrl.Instance;
+        dieParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
     private void Update()
     {
@@ -41,13 +44,10 @@ public abstract class EnemyAI : CharacterParent
     }
     private void FixedUpdate()
     {
-       /* GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
-        if (currentGameState != GameState.PLAY) return;*/
         stateMachine.UpdatePhysicState();
     }
     private void HandleProperties()
     {
-        CharacterCtrl characterCtrl = CharacterCtrl.Instance;
         if (characterCtrl == null || characterCtrl.healthBase.IsDead) return;
         Transform player = characterCtrl.transform;
 
@@ -58,14 +58,12 @@ public abstract class EnemyAI : CharacterParent
     {
         Destroy(parent);
         //Destroy(bodyParent.gameObject);
-        /* Gold gold = SingletonManager.Instance.objInGamePoolManager.Spawn(StringConst.GOLD, transform.position,Quaternion.identity) as Gold;
-         gold.SetVelocity();*/
-        SingletonManager.Instance.itemPoolManager.SpawnRandomItem(transform.position);
+
+        ZenManager.Instance. itemPoolManager.SpawnRandomItem(transform.position);
 
     }
     protected override Vector2 GetKnockDir()
     {
-        CharacterCtrl characterCtrl = CharacterCtrl.Instance;
         if (characterCtrl == null || characterCtrl.healthBase.IsDead) return Vector2.zero;
         Transform player = characterCtrl.transform;
 

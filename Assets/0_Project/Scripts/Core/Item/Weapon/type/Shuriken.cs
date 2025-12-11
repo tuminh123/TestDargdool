@@ -1,7 +1,9 @@
 using UnityEngine;
+using Zenject;
 
 public class Shuriken : WeaponBase,IShoot
 {
+    [InjectOptional] private ProjectilePoolManager projectilePoolManager;
     //RangeWeaponType IShoot.type => RangeWeaponType.Shuriken;
 
     public override string GetObjectName()
@@ -11,7 +13,7 @@ public class Shuriken : WeaponBase,IShoot
 
     public void Shoot(Vector2 dir)
     {
-        ShurikenProjectile shuriken = SingletonManager.Instance.projectilePoolManager.Spawn(StringConst.SHURIKENPROJECTILE, transform.position, Quaternion.identity) as ShurikenProjectile;
+        ShurikenProjectile shuriken = ZenManager.Instance. projectilePoolManager.Spawn(StringConst.SHURIKENPROJECTILE, transform.position, Quaternion.identity) as ShurikenProjectile;
         shuriken.ProjectileMoving(dir);
     }
 }

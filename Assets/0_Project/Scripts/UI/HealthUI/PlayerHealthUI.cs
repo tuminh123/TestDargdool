@@ -6,20 +6,17 @@ using UnityEngine.UI;
 public class PlayerHealthUI : HealthUI
 {
     [SerializeField] private Image damageOverlayImage;
+    [SerializeField] private CharacterCtrl playerCtrl;
+    protected override void Awake()
+    {
+        base.Awake();
+        health = playerCtrl.healthBase;
+    }
     protected override void Start()
     {
         base.Start();
         if (damageOverlayImage == null) return;
         damageOverlayImage.enabled = false;
-    }
-    private void OnEnable()
-    {
-        GameEventBus.OnPlayerSpawned += OnPlayerSpawned;
-    }
-
-    private void OnDisable()
-    {
-        GameEventBus.OnPlayerSpawned -= OnPlayerSpawned;
     }
 
     private void OnPlayerSpawned(CharacterCtrl player)

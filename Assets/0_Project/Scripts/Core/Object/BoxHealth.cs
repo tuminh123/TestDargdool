@@ -1,8 +1,11 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 
 public class BoxHealth : MonoBehaviour, IDamageable
 {
+    [InjectOptional] private ObjInGamePoolManager objInGamePoolManager;
+    [InjectOptional] private ItemPoolManager itemPoolManager;
     [SerializeField] private float maxHP = 1;
     [SerializeField] private float currentHP;
     private Box box;
@@ -35,11 +38,10 @@ public class BoxHealth : MonoBehaviour, IDamageable
         box.ani.Play("explosion");
 
         await UniTask.Delay(500);
-        /* Gold gold = SingletonManager.Instance.objInGamePoolManager.Spawn(StringConst.GOLD, transform.position, Quaternion.identity) as Gold;
-         gold.SetVelocity();*/
-        SingletonManager.Instance.itemPoolManager.SpawnRandomItem(transform.position);
+
+        ZenManager.Instance.itemPoolManager.SpawnRandomItem(transform.position);
         await UniTask.Delay(200);
-        SingletonManager.Instance.objInGamePoolManager.DeSpawn(box);
+        ZenManager.Instance. objInGamePoolManager.DeSpawn(box);
     }
     public void InitHealth()
     {

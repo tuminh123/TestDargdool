@@ -2,9 +2,11 @@
 using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
+using Zenject;
 
 public class VfxDeSpawn : MonoBehaviour
 {
+    [InjectOptional] private VfxPoolManager vfxPoolManager;
     [SerializeField] private float durationTime;
     private float time;
     private VfxBase vfxBase;
@@ -28,8 +30,8 @@ public class VfxDeSpawn : MonoBehaviour
 
     private void VfxDeSpawnHandle()
     {
-        SingletonManager.Instance.vfxPoolManager.DeSpawn(vfxBase);
-        Transform holder = SingletonManager.Instance.vfxPoolManager.Holder;
-        SingletonManager.Instance.vfxPoolManager.SetParent(vfxBase, holder);
+        ZenManager.Instance.vfxPoolManager.DeSpawn(vfxBase);
+        Transform holder = ZenManager.Instance.vfxPoolManager.Holder;
+        ZenManager.Instance.vfxPoolManager.SetParent(vfxBase, holder);
     }
 }

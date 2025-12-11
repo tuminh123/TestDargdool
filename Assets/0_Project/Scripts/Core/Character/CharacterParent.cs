@@ -1,6 +1,7 @@
 using DamageNumbersPro;
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 [System.Serializable]
 public class Stats
@@ -24,6 +25,9 @@ public class Stats
 }
 public abstract class CharacterParent : MonoBehaviour
 {
+    [InjectOptional]
+    private VfxPoolManager vfxPoolManager;
+
     #region Child component
     public Move move { get; private set; }
     public Attack attack { get; private set; }
@@ -113,9 +117,9 @@ public abstract class CharacterParent : MonoBehaviour
     public void OnTakeDamage()
     {
         isStunned = true;
-        VfxBase vfx = SingletonManager.Instance.vfxPoolManager.Spawn(StringConst.HURTVFX, transform.position, Quaternion.identity);
+        VfxBase vfx = ZenManager.Instance.vfxPoolManager.Spawn(StringConst.HURTVFX, transform.position, Quaternion.identity);
 
-        SingletonManager.Instance.vfxPoolManager.SetParent(vfx, bodyParent.transform);
+        ZenManager.Instance.vfxPoolManager.SetParent(vfx, bodyParent.transform);
         
     }
     public void SetTriggerBalance(bool value)

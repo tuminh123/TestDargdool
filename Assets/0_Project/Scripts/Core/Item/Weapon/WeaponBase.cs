@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public enum WeaponType
 {
@@ -9,6 +10,7 @@ public enum WeaponType
 
 public abstract class WeaponBase : ItemBase
 {
+    [InjectOptional] private ItemPoolManager itemPoolManager;
     [SerializeField] protected WeaponType type;
     public ItemDeSpawn weaponDeSpawn {  get; protected set; }
     public WeaponDamage weaponDamage { get; protected set; }
@@ -34,7 +36,7 @@ public abstract class WeaponBase : ItemBase
     }
     public void UnEquip()
     {
-        SingletonManager.Instance.itemPoolManager.DeSpawn(this);
+        ZenManager.Instance.itemPoolManager.DeSpawn(this);
         ResetWeapon();
     }
     public void ResetWeapon()
@@ -42,7 +44,6 @@ public abstract class WeaponBase : ItemBase
         joint.enabled = false;
         joint.connectedBody = null;
         weaponDeSpawn.gameObject.SetActive(true);
-        //rb.bodyType = RigidbodyType2D.Dynamic;
     }
     
 }

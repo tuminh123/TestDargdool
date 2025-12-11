@@ -1,7 +1,10 @@
 using UnityEngine;
+using Zenject;
 
 public class ProjectileDamage : MonoBehaviour
 {
+    [InjectOptional]
+    private ProjectilePoolManager projectilePoolManager;
     [SerializeField] protected float damage;
     [SerializeField] protected LayerMask targetLayer;
     public ProjectileBase projectile;
@@ -18,7 +21,7 @@ public class ProjectileDamage : MonoBehaviour
             if (targetLayer.Contains(health.gameObject.layer)) 
             {
                 health.TakeDamaged(damage);
-                SingletonManager.Instance.projectilePoolManager.DeSpawn(projectile);
+                ZenManager.Instance. projectilePoolManager.DeSpawn(projectile);
             }
         }
     }

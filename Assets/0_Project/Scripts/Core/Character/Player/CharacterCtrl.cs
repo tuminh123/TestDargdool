@@ -4,9 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class CharacterCtrl : CharacterParent
 {
+    [InjectOptional]
+    private CameraShaker cameraShaker;
     public static CharacterCtrl Instance { get; private set; }
     
     public Jump jump {  get; private set; } 
@@ -25,7 +28,8 @@ public class CharacterCtrl : CharacterParent
 
     #endregion
 
-    
+    //get
+    public CameraShaker CameraShaker=>cameraShaker;
     protected override void Awake()
     {
         base.Awake();
@@ -56,9 +60,6 @@ public class CharacterCtrl : CharacterParent
     private void Start()
     {
         stateMachine.InitState(idelState);
-        //Debug.Log(stats.MaxHealth);
-        //Debug.Log(stats.Speed);
-        //Debug.Log(stats.DamageBase);
     }
     private void Update()
     {
@@ -94,7 +95,7 @@ public class CharacterCtrl : CharacterParent
     private void InitPlayerData()
     {
         PlayerData data = SingletonManager.Instance.dataManager.Data;
-        float maxHP = data.maxHp;
+        float maxHP = data.Health;
         float finalDamage = data.CalculateDamage();
         stats.SetMaxHealth(maxHP);
         stats.SetDamageBase(finalDamage);
@@ -109,9 +110,10 @@ public class CharacterCtrl : CharacterParent
     }
     public override void OnDead()
     {
-        SingletonManager.Instance.gameManager.SetState(GameState.LOSE);
         SetKnockBackBalance();
         SetTriggerBalance(false);
+
+        GameEventBus.RaisePlayerLose(this);
         //OnDeadWait().Forget();
     }
 

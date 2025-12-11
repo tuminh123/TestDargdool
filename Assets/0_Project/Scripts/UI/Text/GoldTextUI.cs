@@ -6,7 +6,7 @@ public class GoldTextUI : TextBase
 
     private void Start()
     {
-        UpdateText(SingletonManager.Instance.dataManager.Data.goldCount.ToString());
+        UpdateText(SingletonManager.Instance.dataManager.Data.GoldCount.ToString());
 
         SingletonManager.Instance.goldManager.OnGoldAmountChanged += Gold_OnGoldAmountChanged;
     }
@@ -18,7 +18,7 @@ public class GoldTextUI : TextBase
 
     private void Gold_OnGoldAmountChanged()
     {
-        string text = $"{SingletonManager.Instance.dataManager.Data.goldCount}";
+        string text = $"{SingletonManager.Instance.dataManager.Data.GoldCount}";
         UpdateText(text);
     }
 

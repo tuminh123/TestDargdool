@@ -7,30 +7,16 @@ public class SingletonManager : MonoBehaviour
 
     //Component
     public GameManager gameManager {  get; private set; }
-    public UIManager uiManager { get; private set; }
+    public SceneLoader sceneLoader { get; private set; }
     public GoldManager goldManager { get; private set; }
-    public SwipeManager swipeManager { get; private set; }
     public DataManager dataManager { get; private set; }
-    public ObjInGamePoolManager objInGamePoolManager { get; private set; }
-    public ProjectilePoolManager projectilePoolManager { get; private set; }
-    public ItemPoolManager itemPoolManager { get; private set; }
-    public WaveSpawner waveSpawner { get; private set; }
-    public VfxPoolManager vfxPoolManager { get; private set; }
-    public TimeSlow timeSlow { get; private set; }
     private void Awake()
     {
         Instance = this;
 
-        waveSpawner = GetComponentInChildren<WaveSpawner>();
         gameManager = GetComponentInChildren<GameManager>();
-        uiManager = GetComponentInChildren<UIManager>();
         goldManager = GetComponentInChildren<GoldManager>();
-        swipeManager = GetComponentInChildren<SwipeManager>();
         dataManager = GetComponentInChildren<DataManager>();
-        objInGamePoolManager = GetComponentInChildren<ObjInGamePoolManager>();
-        itemPoolManager = GetComponentInChildren<ItemPoolManager>();
-        vfxPoolManager = GetComponentInChildren<VfxPoolManager>();
-        timeSlow = GetComponentInChildren<TimeSlow>();
-        projectilePoolManager = GetComponentInChildren<ProjectilePoolManager>();
+        sceneLoader = GetComponentInChildren<SceneLoader>();
     }
 }

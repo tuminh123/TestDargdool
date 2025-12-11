@@ -17,12 +17,12 @@ public class EnemyBaseState : IState
 
     public virtual void Update()
     {
-        GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
-        if (currentGameState == GameState.LOSE)
+        if(enemyBasic.characterCtrl == null || enemyBasic.characterCtrl.healthBase.IsDead)
         {
             stateMachine.ChangeState(enemyBasic.enemyIdleState);
             return;
         }
+
         if (enemyBasic.healthBase.IsDead)
         {
             stateMachine.ChangeState(enemyBasic.enemyDieState);
@@ -33,11 +33,7 @@ public class EnemyBaseState : IState
         }
     }
 
-    
-
     public virtual void UpdatePhysic() 
     {
-        GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
-        if (currentGameState == GameState.LOSE) return;
     }
 }

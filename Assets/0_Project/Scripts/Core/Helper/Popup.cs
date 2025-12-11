@@ -1,0 +1,45 @@
+using PrimeTween;
+using UnityEngine;
+
+namespace Popup
+{
+    public class Popup : MonoBehaviour
+    {
+        private void OnEnable()
+        {
+            gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            TweenPopupOpen();
+        }
+
+        private void OnDisable()
+        {
+            gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+        }
+
+        public void OpenPopup()
+        {
+            //Time.timeScale = 0;
+            gameObject.SetActive(true);
+
+            GameEventBus.RaiseGamePause();
+        }
+        public void ClosePopup()
+        {
+            //Time.timeScale = 1;
+            TweenPopupClose();
+
+            GameEventBus.RaiseGameResume();
+        }
+
+        private void TweenPopupOpen()
+        {
+            Tween.Scale(gameObject.transform, Vector3.one, 0.25f, Ease.OutBack);
+        }
+
+        private void TweenPopupClose()
+        {
+            Tween.Scale(gameObject.transform, Vector3.zero, 0.25f, Ease.InBack)
+                .OnComplete(() => { gameObject.SetActive(false); });
+        }
+    }
+}

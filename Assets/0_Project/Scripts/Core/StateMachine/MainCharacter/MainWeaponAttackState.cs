@@ -39,6 +39,7 @@ public class MainWeaponAttackState : MainCharacterState
     {
         Debug.Log("Attack By Weapon");
         //characterCtrl.SendDamage();
+        ZenManager.Instance.cameraShaker.ShakeCam();
     }
     private void EndAttack()
     {

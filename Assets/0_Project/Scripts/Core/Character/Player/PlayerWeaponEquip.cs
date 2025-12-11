@@ -22,11 +22,6 @@ public class PlayerWeaponEquip : MonoBehaviour
     {
         Balance hand = GetHandBalance();
 
-        /* SingletonManager.Instance.itemPoolManager.SetParent(itemBase, hand.transform);
-
-         itemBase.rb.bodyType = RigidbodyType2D.Kinematic;
-         itemBase.weaponDeSpawn.gameObject.SetActive(false);*/
-
         weapon.Equip(hand.Rb);
 
         RotationWeapon(weapon, hand);

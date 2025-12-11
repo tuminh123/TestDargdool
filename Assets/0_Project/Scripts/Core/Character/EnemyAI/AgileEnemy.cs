@@ -1,8 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class AgileEnemy : EnemyAI
 {
+    [InjectOptional]
+    private ObjInGamePoolManager objInGamePoolManager;
+
     #region State
     public AgileEnemyChaseState agileEnemyChaseState { get; private set; }
     public AgileEnemyAttackState agileEnemyAttackState { get; private set; }
@@ -87,7 +91,7 @@ public class AgileEnemy : EnemyAI
 
     private void DaggerHandle()
     {
-        Dagger daggerClone = SingletonManager.Instance.objInGamePoolManager.Spawn(StringConst.DAGGER, shootPoint.position, Quaternion.identity) as Dagger;
+        Dagger daggerClone =ZenManager.Instance. objInGamePoolManager.Spawn(StringConst.DAGGER, shootPoint.position, Quaternion.identity) as Dagger;
         if (daggerClone == null) return;
 
         if(attackDir.x > 0) 

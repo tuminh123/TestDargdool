@@ -18,12 +18,12 @@ public class AgileEnemyState : IState
 
     public virtual void Update()
     {
-        GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
+       /* GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
         if (currentGameState == GameState.LOSE)
         {
             stateMachine.ChangeState(agileEnemy.agileEnemyIdleState);
             return;
-        } 
+        } */
 
         isGround = agileEnemy.groundDetect.IsGround();
 
@@ -42,7 +42,7 @@ public class AgileEnemyState : IState
 
     public virtual void UpdatePhysic()
     {
-        GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
-        if (currentGameState == GameState.LOSE) return;
+      /*  GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
+        if (currentGameState == GameState.LOSE) return;*/
     }
 }

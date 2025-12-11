@@ -13,39 +13,10 @@ public class WaveSpawner : MonoBehaviour
 
     private int currentWaveIndex = 0;
 
-    //private void OnEnable()
-    //{
-    //    GameEventBus.OnGameStateChanged += OnGameStateChanged;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    GameEventBus.OnGameStateChanged -= OnGameStateChanged;
-    //}
-
-
-    void Start()
+    private void Start()
     {
-        waveCompletePanel?.SetActive(false);
-
-        GameEventBus.OnGameStateChanged += OnGameStateChanged;
-    }
-
-    private void OnDestroy()
-    {
-        GameEventBus.OnGameStateChanged -= OnGameStateChanged;
-    }
-    private void OnGameStateChanged(GameState newState)
-    {
-        if (newState == GameState.MENU)
-        {
-            ClearAllEnemies();
-        }
-        else if(newState == GameState.PLAY && isSpawn == false ) 
-        {
-            Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1 });
-            StartCoroutine(SpawnWaves());
-        }
+        Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1 });
+        StartCoroutine(SpawnWaves());
     }
 
 
@@ -88,7 +59,7 @@ public class WaveSpawner : MonoBehaviour
     }
 
 
-    public void ClearAllEnemies()
+/*    public void ClearAllEnemies()
     {
         // Dừng spawn ngay lập tức
         StopAllCoroutines();
@@ -101,7 +72,7 @@ public class WaveSpawner : MonoBehaviour
         {
             Destroy(enemy.gameObject);
         }
-    }
+    }*/
     private bool IsAnyEnemyAlive()
     {
         return FindObjectsByType<EnemyAI>(FindObjectsSortMode.None).Length > 0;
@@ -113,7 +84,7 @@ public class WaveSpawner : MonoBehaviour
         // - Bật cửa ra next level
         // - Hiện thông báo
         // - Thay đổi trạng thái game
-        waveCompletePanel?.SetActive(true);
+        //waveCompletePanel?.SetActive(true);
     }
     private void ApplyBuffToEnemy(GameObject enemyObj, EnemyData enemyData, int waveIndex)
     {
@@ -131,33 +102,33 @@ public class WaveSpawner : MonoBehaviour
     private GameObject SpawnEnemy(GameObject prefab, Vector3 position)
     {
         GameObject enemy = Instantiate(prefab, position, Quaternion.identity);
-        EnemySpawnUtils(enemy);
+        //EnemySpawnUtils(enemy);
         return enemy;
     }
 
-    private static void EnemySpawnUtils(GameObject enemy)
-    {
-        // 1. Reset physics ngay khi spawn (quan trọng với ragdoll)
-        Rigidbody2D[] rbs = enemy.GetComponentsInChildren<Rigidbody2D>();
-        Rigidbody2D rbParent = enemy.GetComponent<Rigidbody2D>();
-        foreach (var rb in rbs)
-        {
-            rb.linearVelocity = Vector2.zero;
-            rb.angularVelocity = 0f;
-            rb.Sleep(); // Wake up khi cần
-        }
-        rbParent.linearVelocity = Vector2.zero;
-        rbParent.angularVelocity = 0f;
-        rbParent.Sleep(); // Wake up khi cần
+    //private static void EnemySpawnUtils(GameObject enemy)
+    //{
+    //    // 1. Reset physics ngay khi spawn (quan trọng với ragdoll)
+    //    Rigidbody2D[] rbs = enemy.GetComponentsInChildren<Rigidbody2D>();
+    //    Rigidbody2D rbParent = enemy.GetComponent<Rigidbody2D>();
+    //    foreach (var rb in rbs)
+    //    {
+    //        rb.linearVelocity = Vector2.zero;
+    //        rb.angularVelocity = 0f;
+    //        rb.Sleep(); // Wake up khi cần
+    //    }
+    //    rbParent.linearVelocity = Vector2.zero;
+    //    rbParent.angularVelocity = 0f;
+    //    rbParent.Sleep(); // Wake up khi cần
 
-        Collider2D[] colliders = enemy.GetComponentsInChildren<Collider2D>();
-        Collider2D parentCollider = enemy.GetComponent<Collider2D>();
-        foreach (var c in colliders)
-        {
-            c.enabled = true; // đảm bảo collider hoạt động
-        }
-        parentCollider.enabled = true;
-    }
+    //    Collider2D[] colliders = enemy.GetComponentsInChildren<Collider2D>();
+    //    Collider2D parentCollider = enemy.GetComponent<Collider2D>();
+    //    foreach (var c in colliders)
+    //    {
+    //        c.enabled = true; // đảm bảo collider hoạt động
+    //    }
+    //    parentCollider.enabled = true;
+    //}
 
    
 }

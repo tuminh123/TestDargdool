@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 
 public class ItemDeSpawn : MonoBehaviour
 {
-
+    [InjectOptional] private ItemPoolManager itemPoolManager;
     [SerializeField] protected int timeDuration = 5;
     protected ItemBase itemBase;
 
@@ -45,8 +46,8 @@ public class ItemDeSpawn : MonoBehaviour
 
     private void ItemDeSpawnHandle()
     {
-        Transform holder = SingletonManager.Instance.itemPoolManager.Holder;
-        SingletonManager.Instance.itemPoolManager.DeSpawn(itemBase);
-        SingletonManager.Instance.itemPoolManager.SetParent(itemBase, holder);
+        Transform holder = ZenManager.Instance. itemPoolManager.Holder;
+        ZenManager.Instance.itemPoolManager.DeSpawn(itemBase);
+        ZenManager.Instance. itemPoolManager.SetParent(itemBase, holder);
     }
 }

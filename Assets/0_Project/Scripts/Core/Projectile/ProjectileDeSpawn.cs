@@ -1,9 +1,11 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 
 public class ProjectileDeSpawn : MonoBehaviour
 {
+    [InjectOptional] private ProjectilePoolManager projectilePoolManager;
     [SerializeField] protected int timeDuration = 5;
     protected ProjectileBase projectile;
 
@@ -38,6 +40,6 @@ public class ProjectileDeSpawn : MonoBehaviour
     {
         await UniTask.Delay(timeDuration * 1000, cancellationToken: token);
 
-        SingletonManager.Instance.projectilePoolManager.DeSpawn(projectile);
+        ZenManager.Instance. projectilePoolManager.DeSpawn(projectile);
     }
 }

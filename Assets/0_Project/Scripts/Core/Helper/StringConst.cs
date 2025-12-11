@@ -8,8 +8,10 @@ public static class StringConst
     //Enemy
     public const string ENEMY = "Enemy";
 
-    public const string MAINMENU = "MainMenu";
-    public const string GAMEPLAY = "GamePlay";
+    public const string MAINMENUSCENE = "MainMenu";
+    public const string GAMEPLAYSCENE = "GamePlay";
+    public const string UPGRADESCENE = "UpgradeScene";
+    public const string LOADINGSCENE = "LoadingScene";
 
     //Object in game
     public const string GOLD = "Gold";

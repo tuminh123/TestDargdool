@@ -2,8 +2,10 @@
 using System;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 public class ObjectInGameDeSpawn : MonoBehaviour
 {
+    [InjectOptional] private ObjInGamePoolManager objInGamePoolManager;
     [SerializeField] protected int timeDuration;
     protected ObjInGameBase obj;
     private CancellationTokenSource cts;
@@ -37,7 +39,7 @@ public class ObjectInGameDeSpawn : MonoBehaviour
         {
             await UniTask.Delay(timeDuration * 1000, cancellationToken: token);
 
-            SingletonManager.Instance.objInGamePoolManager.DeSpawn(obj);
+            ZenManager.Instance.objInGamePoolManager.DeSpawn(obj);
         }
     }
 

@@ -31,8 +31,6 @@ public class SwipeManagerTest : MonoBehaviour
 
     private void Update()
     {
-        if (SingletonManager.Instance.gameManager.CurrentState != GameState.PLAY) return;
-
         // reset mỗi frame
         Tap = false;
         SwipeLeft = SwipeRight = SwipeUp = SwipeDown = false;

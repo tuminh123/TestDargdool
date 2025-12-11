@@ -15,7 +15,6 @@ public class ObjInGamePoolManager : ObjectPoolManager<ObjInGameBase>
     private void Update()
     {
         time -= Time.deltaTime;
-        if (SingletonManager.Instance.gameManager.CurrentState != GameState.PLAY) return;
         if(time <= 0)
         {
             BoxSpawn();

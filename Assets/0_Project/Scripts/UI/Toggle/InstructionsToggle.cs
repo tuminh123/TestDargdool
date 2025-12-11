@@ -9,6 +9,6 @@ public class InstructionsToggle : ToggleBase
     }
     protected override void OnToggleChanged(bool isOn)
     {
-        SingletonManager.Instance.uiManager.GameInstructionsPanel.SetActive(isOn);
+        //SingletonManager.Instance.uiManager.GameInstructionsPanel.SetActive(isOn);
     }
 }

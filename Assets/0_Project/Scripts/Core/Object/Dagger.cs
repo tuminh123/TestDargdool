@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using Zenject;
 
 public class Dagger : ObjInGameBase
 {
+    [InjectOptional] private ObjInGamePoolManager objInGamePoolManager;
     [SerializeField] private Transform model;
     private WeaponDamage weaponDamage;
     private bool hasHit = false;   // tránh gây damage 2 lần
@@ -23,7 +25,7 @@ public class Dagger : ObjInGameBase
         if (weaponDamage.SenderDamageTo())
         {
             hasHit = true;
-            SingletonManager.Instance.objInGamePoolManager.DeSpawn(this);
+            ZenManager.Instance.objInGamePoolManager.DeSpawn(this);
         }
     }
 

@@ -22,8 +22,6 @@ public class SwipeManager : MonoBehaviour
 
     private void Update()
     {
-        if (SingletonManager.Instance.gameManager.CurrentState != GameState.PLAY) return;
-
 #if UNITY_EDITOR
         HandleMouse();
 #else
