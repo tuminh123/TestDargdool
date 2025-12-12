@@ -49,7 +49,8 @@ public class AttackData
 
         while (elapsed < configSO.AttackDuration)
         {
-            elapsed += Time.fixedDeltaTime;
+            //elapsed += Time.fixedDeltaTime;
+            elapsed += Time.fixedUnscaledDeltaTime;
 
             foreach (var item in attackDatas)
             {
@@ -113,7 +114,8 @@ public class AttackData
         // Xoay vào đúng pose
         while (elapsedPose < poseDuration)
         {
-            elapsedPose += Time.fixedDeltaTime;
+            //elapsedPose += Time.fixedDeltaTime;
+            elapsedPose += Time.fixedUnscaledDeltaTime;
 
             foreach (var item in attackDatas)
             {

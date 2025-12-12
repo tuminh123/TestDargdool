@@ -118,7 +118,8 @@ public class LoadingSceneController : MonoBehaviour
 
         while (!async.isDone)
         {
-            timer += Time.deltaTime;
+            //timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
 
             // progress Unity tối đa = 0.9
             float loadProgress = Mathf.Clamp01(async.progress / 0.9f);
@@ -155,7 +156,8 @@ public class LoadingSceneController : MonoBehaviour
 
         while (t < fadeDuration)
         {
-            t += Time.deltaTime;
+            //t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             c.a = 1 - (t / fadeDuration);
             fadeImage.color = c;
             yield return null;
@@ -174,7 +176,8 @@ public class LoadingSceneController : MonoBehaviour
 
         while (t < fadeDuration)
         {
-            t += Time.deltaTime;
+            //t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             c.a = t / fadeDuration;
             fadeImage.color = c;
             yield return null;

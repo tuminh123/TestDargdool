@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     {
         ZenManager.Instance.timeSlow.gameObject.SetActive(true);
         ZenManager.Instance.timeSlow.DoSlowmotion();
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(3f);
 
         ZenManager.Instance.timeSlow.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.1f);
@@ -65,12 +65,12 @@ public class GameManager : MonoBehaviour
     }
     public void ChangePlayScene()
     {
-        //Time.timeScale = 1f;
+        Time.timeScale = 1f;
         SingletonManager.Instance.sceneLoader.LoadGamePlayScene();
     }
     public void ChangeUpgradeScene()
     {
-        //Time.timeScale = 1f;
+        Time.timeScale = 1f;
         SingletonManager.Instance.sceneLoader.LoadUpgradeScene();
     }
     private void OnApplicationQuit()
