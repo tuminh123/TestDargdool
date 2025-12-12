@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
         GameEventBus.OnGameLose += HandleGameLose;
         GameEventBus.OnGameResume += GameEventBus_OnGameResume;
         GameEventBus.OnGamePause += GameEventBus_OnGamePause;
+        GameEventBus.OnGameRestart += OnRestartGame;
     }
 
     private void OnDisable()
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
         GameEventBus.OnGameLose -= HandleGameLose;
         GameEventBus.OnGameResume -= GameEventBus_OnGameResume;
         GameEventBus.OnGamePause -= GameEventBus_OnGamePause;
+        GameEventBus.OnGameRestart -= OnRestartGame;
     }
     private void GameEventBus_OnGamePause()
     {
@@ -48,15 +50,19 @@ public class GameManager : MonoBehaviour
     {
         ZenManager.Instance.timeSlow.gameObject.SetActive(true);
         ZenManager.Instance.timeSlow.DoSlowmotion();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
 
         ZenManager.Instance.timeSlow.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.1f);
-        Time.timeScale = 0f;
 
+        Time.timeScale = 0f;
         ZenManager.Instance.uIManager.PopupLose.OpenPopup();
     }
-   
+   private void OnRestartGame()
+   {
+        Time.timeScale = 1f;
+
+   }
     public void ChangeMenuScene()
     {
         Time.timeScale = 1f;
@@ -65,7 +71,6 @@ public class GameManager : MonoBehaviour
     }
     public void ChangePlayScene()
     {
-        Time.timeScale = 1f;
         SingletonManager.Instance.sceneLoader.LoadGamePlayScene();
     }
     public void ChangeUpgradeScene()

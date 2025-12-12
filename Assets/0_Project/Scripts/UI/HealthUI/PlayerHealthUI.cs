@@ -21,7 +21,7 @@ public class PlayerHealthUI : HealthUI
 
     private void OnPlayerSpawned(CharacterCtrl player)
     {
-        if (health != null)health.OnHealthChanged -= UpdateBar;
+        if (health != null) health.OnHealthChanged -= UpdateBar;
 
         health = player.healthBase;
         health.InitHealth();
@@ -34,16 +34,23 @@ public class PlayerHealthUI : HealthUI
     {
         base.UpdateBar(current, max);
 
-        if(current < 100)
+        if (current < 100)
         {
             DamageEffectHandle().Forget();
         }
     }
     private async UniTask DamageEffectHandle()
     {
-        damageOverlayImage.enabled = true;
-        await UniTask.Delay(2000);
-        damageOverlayImage.enabled = false;
+        try
+        {
+            damageOverlayImage.enabled = true;
+            await UniTask.Delay(2000);
+            damageOverlayImage.enabled = false;
+        }
+        catch (System.Exception)
+        {
+            //ignore
+        }
+
     }
-    
 }

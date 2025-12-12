@@ -34,7 +34,7 @@ public class MainAttackState : MainCharacterState
     }
     private void Attacking()
     {
-        Debug.Log("Attack");
+        //Debug.Log("Attack");
         //characterCtrl.SendDamage();
         ZenManager.Instance.cameraShaker.ShakeCam();
     }

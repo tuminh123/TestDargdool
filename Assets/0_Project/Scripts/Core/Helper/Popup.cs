@@ -18,14 +18,12 @@ namespace Popup
 
         public void OpenPopup()
         {
-            //Time.timeScale = 0;
             gameObject.SetActive(true);
 
             GameEventBus.RaiseGamePause();
         }
         public void ClosePopup()
         {
-            //Time.timeScale = 1;
             TweenPopupClose();
 
             GameEventBus.RaiseGameResume();

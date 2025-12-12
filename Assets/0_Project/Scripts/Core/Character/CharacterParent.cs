@@ -84,7 +84,7 @@ public abstract class CharacterParent : MonoBehaviour
     }
     private void Start()
     {
-        
+        GameEventBus.OnGameRestart += OnGameRestart;
     }
     public abstract void OnDead();
     protected abstract Vector2 GetKnockDir();
@@ -96,7 +96,6 @@ public abstract class CharacterParent : MonoBehaviour
 
         healthBase.OnTakeDamage += OnTakeDamage;
     }
-
     protected virtual void OnDisable()
     {
         stateMachine.ExitState();
@@ -107,10 +106,22 @@ public abstract class CharacterParent : MonoBehaviour
     }
     protected virtual void OnDestroy()
     {
+        GameEventBus.OnGameRestart -= OnGameRestart;
+
         stateMachine.ExitState();
         if (healthBase == null) return;
 
         healthBase.OnTakeDamage -= OnTakeDamage;
+    }
+
+    private void OnGameRestart()
+    {
+        foreach (var item in childBalance)
+        {
+            if (item == null) continue;
+            item.ResetState();
+        }
+        bodyParent.ResetState();
     }
 
     #region Damage Event

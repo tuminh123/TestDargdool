@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -24,62 +25,168 @@ public class Attack : MonoBehaviour
 
     public AttackData currentAttackData { get; private set; }
 
-    private Coroutine attackRoutine;
+    #region Coutine 
+    /* private Coroutine attackRoutine;
 
-    #region Combat attack
+     #region Combat attack
+     public AttackData GetRandomAttack(bool isRight)
+     {
+         if (!CanAttack()) return null;
+         var list = isRight ? rightAttacks : leftAttacks;
+         return list[Random.Range(0, list.Length)];
+     }
+     public void HandleAttack(Vector2 attackDir)
+     {
+         bool isRight = attackDir.x > 0; 
+         AttackData attack = GetRandomAttack(isRight);
+         if (attack == null) return;
+         currentAttackData = attack;
+
+         //TextCombat
+         int rand = Random.Range(0, texts.Length);
+         string text = texts[rand];
+         Vector3 pos = (Vector3) attackDir + transform.position;
+         textEffect.Spawn(pos,text);
+
+         attackRoutine = StartCoroutine(attack.ExecuteAttack(configSO,attackDir,body));
+     }
+
+     public void StopAttack()
+     {
+         if (attackRoutine != null)
+         {
+             StopCoroutine(attackRoutine);
+             attackRoutine = null;
+         }
+     }
+     public bool CanAttack()
+     {
+         return rightAttacks.Length > 0 && leftAttacks.Length > 0;
+     }
+     #endregion
+
+     #region Weapon attack
+
+     public void HandleWeaponAttack(Vector2 attackDir)
+     {
+         if (attackDir.x > 0)
+         {
+             currentAttackData = weaponRightAttack;
+
+         }
+         else if (attackDir.x < 0) 
+         {
+             currentAttackData = weaponLeftAttack;
+         }
+         if (currentAttackData == null) return;
+         attackRoutine = StartCoroutine(currentAttackData.ExecuteAttack(configSO, attackDir, body));
+     }
+
+     #endregion*/
+    #endregion
+
+    #region UniTask Combat attack
+
+    private CancellationTokenSource attackCTS;
+
+
+    // ============================================================
+    #region Basic Combat Attack
+    // ============================================================
+
     public AttackData GetRandomAttack(bool isRight)
     {
         if (!CanAttack()) return null;
+
         var list = isRight ? rightAttacks : leftAttacks;
         return list[Random.Range(0, list.Length)];
     }
-    public void HandleAttack(Vector2 attackDir)
+
+    public async void HandleAttack(Vector2 attackDir)
     {
-        bool isRight = attackDir.x > 0; 
+        if (!CanAttack()) return;
+
+        bool isRight = attackDir.x > 0;
         AttackData attack = GetRandomAttack(isRight);
+
         if (attack == null) return;
         currentAttackData = attack;
 
-        //TextCombat
-        int rand = Random.Range(0, texts.Length);
-        string text = texts[rand];
-        Vector3 pos = (Vector3) attackDir + transform.position;
-        textEffect.Spawn(pos,text);
+        ShowTextEffect(attackDir);
 
-        attackRoutine = StartCoroutine(attack.ExecuteAttack(configSO,attackDir,body));
+        // CANCEL ATTACK CŨ
+        attackCTS?.Cancel();
+        attackCTS = new CancellationTokenSource();
+
+        // CHẠY ATTACK BẰNG UNITASK
+        await attack.ExecuteAttack(
+            configSO,
+            attackDir,
+            body,
+            attackCTS.Token
+        );
     }
 
     public void StopAttack()
     {
-        if (attackRoutine != null)
+        if (attackCTS != null)
         {
-            StopCoroutine(attackRoutine);
-            attackRoutine = null;
+            attackCTS.Cancel();
+            attackCTS = null;
         }
     }
+
     public bool CanAttack()
     {
         return rightAttacks.Length > 0 && leftAttacks.Length > 0;
     }
+
     #endregion
 
-    #region Weapon attack
 
-    public void HandleWeaponAttack(Vector2 attackDir)
+    // ============================================================
+    #region Weapon Attack
+    // ============================================================
+
+    public async void HandleWeaponAttack(Vector2 attackDir)
     {
         if (attackDir.x > 0)
-        {
             currentAttackData = weaponRightAttack;
-
-        }
-        else if (attackDir.x < 0) 
-        {
+        else if (attackDir.x < 0)
             currentAttackData = weaponLeftAttack;
-        }
+
         if (currentAttackData == null) return;
-        attackRoutine = StartCoroutine(currentAttackData.ExecuteAttack(configSO, attackDir, body));
+
+        ShowTextEffect(attackDir);
+
+        attackCTS?.Cancel();
+        attackCTS = new CancellationTokenSource();
+
+        await currentAttackData.ExecuteAttack(
+            configSO,
+            attackDir,
+            body,
+            attackCTS.Token
+        );
     }
 
     #endregion
 
+
+    // ============================================================
+    #region UI Text Popup
+    // ============================================================
+
+    private void ShowTextEffect(Vector2 attackDir)
+    {
+        int rand = Random.Range(0, texts.Length);
+        string text = texts[rand];
+        Vector3 pos = (Vector3)attackDir + transform.position;
+
+        textEffect.Spawn(pos, text);
+    }
+
+    #endregion
+
+    #endregion
 }

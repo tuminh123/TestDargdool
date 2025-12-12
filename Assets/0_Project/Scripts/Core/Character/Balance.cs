@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Balance : MonoBehaviour
 {
     [SerializeField] private float rot;
@@ -14,9 +15,8 @@ public class Balance : MonoBehaviour
     //[SerializeField] private float smoothTime = 0.1f; // thời gian mượt
     //private float angularVelocity; // lưu velocity giữa các frame
 
-
     [SerializeField] private DefaultBalanceData dataSO;
-    private Rigidbody2D rb;
+    [SerializeField] private Rigidbody2D rb;
     private Collider2D col;
     private bool isTrigger = true;
 
@@ -40,6 +40,10 @@ public class Balance : MonoBehaviour
     //    rotChange = dataSO.Rot;
     //    forceChange = dataSO.Force;
     //}
+    private void Start()
+    {
+        CacheState();
+    }
 
     private void FixedUpdate()
     {
@@ -84,4 +88,42 @@ public class Balance : MonoBehaviour
     {
         this.isTrigger = isTrigger;
     }
+
+    ///////////////////////////////////////////////////////
+
+    private Vector2 startPos;
+    private float startRot;
+    private float startLinearDrag;
+    private float startAngularDrag;
+    private RigidbodyConstraints2D startConstraints;
+    private float startGravity;
+
+    public void CacheState()
+    {
+        startPos = rb.position;
+        startRot = rb.rotation;
+        startLinearDrag = rb.linearDamping;
+        startAngularDrag = rb.angularDamping;
+        startConstraints = rb.constraints;
+        startGravity = rb.gravityScale;
+    }
+
+    public void ResetState()
+    {
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+
+        rb.position = startPos;
+        rb.rotation = startRot;
+
+        rb.linearDamping = startLinearDrag;
+        rb.angularDamping = startAngularDrag;
+        rb.constraints = startConstraints;
+        rb.gravityScale = startGravity;
+
+        // Đảm bảo physics reset
+        rb.Sleep();
+        rb.WakeUp();
+    }
+
 }

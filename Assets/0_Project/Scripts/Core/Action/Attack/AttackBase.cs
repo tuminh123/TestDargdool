@@ -1,65 +1,165 @@
+﻿using Cysharp.Threading.Tasks;
+
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 [System.Serializable]
-public class AttackBase : IAttackHandle
+public class AttackBase
 {
-    [SerializeField] protected List<AttackProperties> balances = new List<AttackProperties>();
-    [SerializeField] protected float speedAttack;
+    // events
+    public System.Action OnAttackEnd;
+    public System.Action OnAttacking;
 
-   
-    #region Attck Handle
-    public void AttackHandle(Vector2 dir)
+    [SerializeField] private List<AttackProperties> attackDatas = new List<AttackProperties>();
+
+    private bool isAttacking;
+    public bool IsAttacking => isAttacking;
+
+    private CancellationTokenSource cts;
+
+    /// <summary>
+    /// Gọi attack (có thể cancel được)
+    /// </summary>
+    public async UniTask ExecuteAttack(
+        AttackDataConfigSO configSO,
+        Vector2 attackDir,
+        Balance body,
+        CancellationToken token
+    )
     {
-        SetTriggerBalance(false);
+        isAttacking = true;
+        cts = CancellationTokenSource.CreateLinkedTokenSource(token);
 
-        Debug.Log("start");
-        foreach (AttackProperties attack in balances)
+        try
         {
-            if (attack == null || attack.Balance == null) continue;
+            // PHASE A: Pose
+            await PostAttack(configSO, body, cts.Token);
 
-            attack.Balance.SetRotation(attack.Rot);
-
+            // PHASE B: Attack
+            OnAttacking?.Invoke();
+            await AttackApply(configSO, attackDir, body, cts.Token);
         }
-        SetAttackSpeedToAttack(dir);
-    }
-    public void AttackEnd()
-    {
-        Debug.Log("End");
-
-        foreach (var item in balances)
+        catch (System.OperationCanceledException)
         {
-            if (item == null || item.Balance==null) continue;
-            item.Balance.ResetData();
-            Debug.Log($"Reset - {item.Balance.name}");
+            // bị cancel thì kết thúc sớm
         }
-        SetTriggerBalance(true);
+
+        isAttacking = false;
+        OnAttackEnd?.Invoke();
     }
-    #endregion
 
-    #region Attack Element
-
-    protected void SetAttackSpeedToAttack(Vector2 attackDir)
+    /// <summary>
+    /// Cancel từ bên ngoài (nếu cần)
+    /// </summary>
+    public void CancelAttack()
     {
-        foreach (var balance in balances)
+        if (cts != null && !cts.IsCancellationRequested)
+            cts.Cancel();
+    }
+
+
+    // ======================================================
+    // PHASE B: ATTACK APPLY
+    // ======================================================
+    private async UniTask AttackApply(
+        AttackDataConfigSO configSO,
+        Vector2 attackDir,
+        Balance body,
+        CancellationToken token
+    )
+    {
+        float elapsed = 0f;
+
+        while (elapsed < configSO.AttackDuration)
         {
-            if(balance ==  null || balance.Balance == null) continue;
-            balance.Balance.Rb.linearVelocity = attackDir * speedAttack;
+            token.ThrowIfCancellationRequested();
+
+            elapsed += Time.fixedDeltaTime;
+
+            foreach (var item in attackDatas)
+            {
+                Balance arm = item.Balance;
+
+                Vector2 targetPos =
+                    (Vector2)body.Rb.position +
+                    attackDir * configSO.AttackReach +
+                    Vector2.Perpendicular(attackDir) * configSO.ProceduralOffset;
+
+                if (elapsed < configSO.LaunchTime)
+                {
+                    arm.Rb.linearVelocity = attackDir * configSO.AttackForce;
+                }
+
+                SmoothMotionHelper.SmoothMoveTowardsLimited(
+                    arm.Rb, targetPos,
+                    configSO.MaxSpeed,
+                    configSO.MaxForce,
+                    configSO.DecelDistance
+                );
+            }
+
+            // Body response
+            body.Rb.linearVelocity = attackDir * configSO.AttackForce * 0.3f;
+
+            SmoothMotionHelper.ApplySoftImpulse(
+                body.Rb,
+                attackDir,
+                configSO.AttackForce * 0.2f,
+                0.5f
+            );
+
+            await UniTask.WaitForFixedUpdate(token);
         }
     }
 
-    public bool CanAttack()
-    {
-        return balances.Count > 0;
-    }
 
-    protected void SetTriggerBalance(bool value)
+    // ======================================================
+    // PHASE A: POSE PREPARATION
+    // ======================================================
+    private async UniTask PostAttack(
+        AttackDataConfigSO configSO,
+        Balance body,
+        CancellationToken token
+    )
     {
-        foreach (var item in balances)
+        float poseDuration = 0.35f;
+        float elapsedPose = 0f;
+
+        foreach (var item in attackDatas)
         {
-            if (item == null || item.Balance) continue;
-            item.Balance.SetIsTrigger(value);
+            item.Balance.Rb.linearDamping = configSO.LinearDrag;
+            item.Balance.Rb.angularDamping = configSO.AngularDrag;
+
+            item.Balance.Rb.linearVelocity = Vector2.zero;
+            item.Balance.Rb.angularVelocity = 0;
+        }
+
+        body.Rb.linearVelocity = Vector2.zero;
+        body.Rb.angularVelocity = 0;
+
+        while (elapsedPose < poseDuration)
+        {
+            token.ThrowIfCancellationRequested();
+
+            elapsedPose += Time.fixedDeltaTime;
+
+            foreach (var item in attackDatas)
+            {
+                Balance part = item.Balance;
+                float targetRot = item.Rot;
+
+                float t = SmoothMotionHelper.SmoothRotateLimited(
+                    part.Rotation,
+                    targetRot,
+                    configSO.RotateSmoothSpeed,
+                    configSO.MaxAngularSpeed
+                );
+
+                part.SetRotation(t);
+            }
+
+            await UniTask.WaitForFixedUpdate(token);
         }
     }
-    #endregion
 }
