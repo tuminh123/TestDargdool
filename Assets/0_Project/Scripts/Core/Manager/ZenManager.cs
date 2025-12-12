@@ -24,6 +24,7 @@ public class ZenManager : MonoBehaviour
     public ItemPoolManager itemPoolManager { get; private set; }
     public TimeSlow timeSlow { get; private set; }
     public CameraShaker cameraShaker { get; private set; }
+    public WaveSpawner waveSpawner { get; private set; }
     private void Awake()
     {
         Instance = this;
@@ -35,7 +36,7 @@ public class ZenManager : MonoBehaviour
         itemPoolManager = GetComponentInChildren<ItemPoolManager>();
         timeSlow = GetComponentInChildren<TimeSlow>();
         cameraShaker = GetComponentInChildren<CameraShaker>();
-
+        waveSpawner = GetComponentInChildren<WaveSpawner>();
     }
     private void Start()
     {

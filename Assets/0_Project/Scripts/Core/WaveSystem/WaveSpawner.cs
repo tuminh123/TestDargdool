@@ -9,23 +9,37 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] private List<Wave> waves;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private GameObject waveCompletePanel;
-    [SerializeField] private bool isSpawn;
+    /*[SerializeField] private bool isSpawn;*/
 
     private int currentWaveIndex = 0;
 
     private void Start()
     {
+        WaveSapwning();
+        GameEventBus.OnGameRestart += OnGameRestart;
+    }
+    private void OnDestroy()
+    {
+        GameEventBus.OnGameRestart -= OnGameRestart;
+    }
+
+    private void OnGameRestart()
+    {
+        WaveSapwning();
+    }
+
+    public void WaveSapwning()
+    {
         Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1 });
         StartCoroutine(SpawnWaves());
     }
 
-
     private IEnumerator SpawnWaves()
     {
-        isSpawn = false;
+        //isSpawn = false;
         yield return new WaitForSeconds(1f);
 
-        isSpawn = true;
+        //isSpawn = true;
         while (currentWaveIndex < waves.Count)
         {
             Wave wave = waves[currentWaveIndex];
@@ -59,12 +73,10 @@ public class WaveSpawner : MonoBehaviour
     }
 
 
-/*    public void ClearAllEnemies()
+    public void ClearAllEnemies()
     {
         // Dừng spawn ngay lập tức
-        StopAllCoroutines();
-        currentWaveIndex = 0;
-        isSpawn = false;
+        ResetWave();
 
         // Xóa toàn bộ enemy đang có trên scene
         EnemyAI[] enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
@@ -72,7 +84,15 @@ public class WaveSpawner : MonoBehaviour
         {
             Destroy(enemy.gameObject);
         }
-    }*/
+    }
+
+    public void ResetWave()
+    {
+        StopAllCoroutines();
+        currentWaveIndex = 0;
+        //isSpawn = false;
+    }
+
     private bool IsAnyEnemyAlive()
     {
         return FindObjectsByType<EnemyAI>(FindObjectsSortMode.None).Length > 0;

@@ -14,6 +14,10 @@ public class BoxHealth : MonoBehaviour, IDamageable
     {
         box= GetComponentInParent<Box>();
     }
+    private void OnEnable()
+    {
+        InitHealth();
+    }
     private void Start()
     {
         InitHealth();
@@ -35,13 +39,20 @@ public class BoxHealth : MonoBehaviour, IDamageable
     }
     public async UniTask BoxDeSpawning()
     {
-        box.ani.Play("explosion");
+        try
+        {
+            box.ani.Play("explosion");
 
-        await UniTask.Delay(500);
+            await UniTask.Delay(500);
 
-        ZenManager.Instance.itemPoolManager.SpawnRandomItem(transform.position);
-        await UniTask.Delay(200);
-        ZenManager.Instance. objInGamePoolManager.DeSpawn(box);
+            ZenManager.Instance.itemPoolManager.SpawnRandomItem(transform.position);
+            await UniTask.Delay(200);
+            ZenManager.Instance.objInGamePoolManager.DeSpawn(box);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"BoxDeSpawning Error: {ex.Message}");
+        }
     }
     public void InitHealth()
     {

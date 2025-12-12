@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public abstract class ItemBase : MonoBehaviour,IObjectPool
+public abstract class ItemBase : MonoBehaviour,IObjectPool,IResettable
 {
     [SerializeField] protected float force = 5f;
     public Rigidbody2D rb { get; private set; }
@@ -16,4 +16,9 @@ public abstract class ItemBase : MonoBehaviour,IObjectPool
         rb.linearVelocity = Vector2.up * force;
     }
     public abstract string GetObjectName();
+
+    public void ResetOnGameRestart()
+    {
+        ZenManager.Instance.itemPoolManager.DeSpawn(this);
+    }
 }

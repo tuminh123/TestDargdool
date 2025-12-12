@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class ProjectileBase : MonoBehaviour, IObjectPool
+public abstract class ProjectileBase : MonoBehaviour, IObjectPool,IResettable
 {
     [SerializeField] protected float speed = 5;
     public Rigidbody2D rb { get; private set; }
@@ -14,4 +14,9 @@ public abstract class ProjectileBase : MonoBehaviour, IObjectPool
         rb.linearVelocity = dir*speed;
     }
     public abstract string GetObjectName();
+
+    public void ResetOnGameRestart()
+    {
+        ZenManager.Instance.projectilePoolManager.DeSpawn(this);
+    }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -12,7 +13,24 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] Transform target;
 
     private Vector3 velocity = Vector3.zero;
- 
+
+    private void Start()
+    {
+        target = CharacterCtrl.Instance.transform;
+
+        GameEventBus.OnGameRestart += OnGameRestart;
+    }
+
+    private void OnGameRestart()
+    {
+        target = CharacterCtrl.Instance.transform;
+    }
+
+    private void OnDestroy()
+    {
+        GameEventBus.OnGameRestart -= OnGameRestart;
+    }
+
     void LateUpdate()
     {
       /*  if (SingletonManager.Instance.gameManager.CurrentState != GameState.PLAY) return;

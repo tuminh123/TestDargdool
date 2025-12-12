@@ -23,7 +23,7 @@ public class Stats
         this.damageBase = damageBase;
     }
 }
-public abstract class CharacterParent : MonoBehaviour
+public abstract class CharacterParent : MonoBehaviour,IResettable
 {
     [InjectOptional]
     private VfxPoolManager vfxPoolManager;
@@ -82,10 +82,6 @@ public abstract class CharacterParent : MonoBehaviour
             item.SetDamageBase(stats.DamageBase);
         }
     }
-    private void Start()
-    {
-        GameEventBus.OnGameRestart += OnGameRestart;
-    }
     public abstract void OnDead();
     protected abstract Vector2 GetKnockDir();
 
@@ -106,22 +102,10 @@ public abstract class CharacterParent : MonoBehaviour
     }
     protected virtual void OnDestroy()
     {
-        GameEventBus.OnGameRestart -= OnGameRestart;
-
         stateMachine.ExitState();
         if (healthBase == null) return;
 
         healthBase.OnTakeDamage -= OnTakeDamage;
-    }
-
-    private void OnGameRestart()
-    {
-        foreach (var item in childBalance)
-        {
-            if (item == null) continue;
-            item.ResetState();
-        }
-        bodyParent.ResetState();
     }
 
     #region Damage Event
@@ -189,4 +173,14 @@ public abstract class CharacterParent : MonoBehaviour
         }
     }
 
+    public void ResetOnGameRestart()
+    {
+        Destroy(gameObject);
+        foreach (var item in childBalance)
+        {
+            if (item == null) continue;
+            Destroy(item.gameObject);
+        }
+        Destroy(bodyParent.gameObject);
+    }
 }

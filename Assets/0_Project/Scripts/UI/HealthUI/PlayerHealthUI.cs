@@ -1,24 +1,36 @@
 ﻿
 
 using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 public class PlayerHealthUI : HealthUI
 {
     [SerializeField] private Image damageOverlayImage;
-    [SerializeField] private CharacterCtrl playerCtrl;
     protected override void Awake()
     {
         base.Awake();
-        health = playerCtrl.healthBase;
+        health = CharacterCtrl.Instance.healthBase;
     }
     protected override void Start()
     {
         base.Start();
+        GameEventBus.OnGameRestart += OnGameRestart;
         if (damageOverlayImage == null) return;
         damageOverlayImage.enabled = false;
     }
 
+   
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        GameEventBus.OnGameRestart -= OnGameRestart;
+    }
+    private void OnGameRestart()
+    {
+        OnPlayerSpawned(CharacterCtrl.Instance);
+    }
     private void OnPlayerSpawned(CharacterCtrl player)
     {
         if (health != null) health.OnHealthChanged -= UpdateBar;

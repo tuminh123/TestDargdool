@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private TimeSlow timeSlow;
     [InjectOptional]
     private UIManager uiManager;
+    [SerializeField] private CharacterCtrl player;
 
     private void Awake()
     {
@@ -58,11 +59,25 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         ZenManager.Instance.uIManager.PopupLose.OpenPopup();
     }
-   private void OnRestartGame()
-   {
+    private void OnRestartGame()
+    {
         Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;   // giá trị mặc định của Unity
 
-   }
+        ZenManager.Instance.waveSpawner.ResetWave();
+
+        var resettableObjects = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
+        foreach (var r in resettableObjects)
+        {
+            if(r==null) continue;
+            if (r is IResettable resetObj) resetObj.ResetOnGameRestart();
+        }
+
+        StopAllCoroutines();
+        ZenManager.Instance.uIManager.PopupLose.ClosePopup();
+        Instantiate(player, Vector3.zero, Quaternion.identity);
+
+    }
     public void ChangeMenuScene()
     {
         Time.timeScale = 1f;
