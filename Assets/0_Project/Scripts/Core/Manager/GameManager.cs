@@ -25,14 +25,32 @@ public class GameManager : MonoBehaviour
         GameEventBus.OnGameResume += GameEventBus_OnGameResume;
         GameEventBus.OnGamePause += GameEventBus_OnGamePause;
         GameEventBus.OnGameRestart += OnRestartGame;
+        GameEventBus.OnPlayerRegeneration += GameEventBus_OnPlayerRegeneration;
     }
-
     private void OnDisable()
     {
         GameEventBus.OnGameLose -= HandleGameLose;
         GameEventBus.OnGameResume -= GameEventBus_OnGameResume;
         GameEventBus.OnGamePause -= GameEventBus_OnGamePause;
         GameEventBus.OnGameRestart -= OnRestartGame;
+        GameEventBus.OnPlayerRegeneration -= GameEventBus_OnPlayerRegeneration;
+    }
+    private void GameEventBus_OnPlayerRegeneration()
+    {
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+        CharacterCtrl player = FindFirstObjectByType<CharacterCtrl>();
+        if (player == null) return;
+        if (player.healthBase == null) return;
+
+        if (player.healthBase.IsDead) 
+        { 
+            player.SetTriggerBalance(true);
+            player.healthBase.InitHealth();
+        }
+
+        ZenManager.Instance.uIManager.PopupLose.ClosePopup();
+
     }
     private void GameEventBus_OnGamePause()
     {
@@ -62,7 +80,7 @@ public class GameManager : MonoBehaviour
     private void OnRestartGame()
     {
         Time.timeScale = 1f;
-        Time.fixedDeltaTime = 0.02f;   // giá trị mặc định của Unity
+        Time.fixedDeltaTime = 0.02f;  
 
         ZenManager.Instance.waveSpawner.ResetWave();
 

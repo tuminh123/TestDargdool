@@ -111,6 +111,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
     #region Damage Event
     public void OnTakeDamage()
     {
+        if(healthBase.IsDead) return;
         isStunned = true;
         VfxBase vfx = ZenManager.Instance.vfxPoolManager.Spawn(StringConst.HURTVFX, transform.position, Quaternion.identity);
 

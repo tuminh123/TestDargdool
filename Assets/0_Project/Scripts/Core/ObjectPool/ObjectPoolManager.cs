@@ -78,6 +78,7 @@ public class ObjectPoolManager<T> : MonoBehaviour where T : MonoBehaviour,IObjec
 
     public void SetParent(T obj, Transform parent)
     {
+        if(obj==null || parent==null) return;
         obj.transform.SetParent(parent);
     }
 }

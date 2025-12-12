@@ -8089,7 +8089,7 @@ MonoBehaviour:
   - waveName: wave 1
     enemies:
     - enemyPrefab: {fileID: 4207200127957107742, guid: 0817a8bc8765e2e418c03b2259daa241, type: 3}
-      count: 3
+      count: 5
       spawnInterval: 3
       healthPerWave: 0.2
       damagePerWave: 0.1
