@@ -53,7 +53,7 @@ public class PlayerData
     {
         name = "player";
         goldCount = 100;
-        maxHp = 500;
+        maxHp = 300;
         damageBase = 30;
         critChance = 0.05f;
         critMultiplier = 1.5f;
@@ -75,17 +75,21 @@ public class DataManager : MonoBehaviour
     [Header("Player Data")]
     [SerializeField] private PlayerData data;
     [Space]
-    [Header("Upgrade Data SO")]
+    [Header("Upgrade Data")]
     [SerializeField] private UpgradeData[] upgrades;
 
     private string keyName = "PlayerData";
+    private string keyUpgrdeName = "UpgradeData";
     private string mainFile = "SaveData.txt";
+    private string mainUpgradeFile = "SaveUpgradeData.txt";
 
     public PlayerData Data => data;
 
+    #region Play Data Save/Load
     public void DataSave()
     {
         ES3.Save(keyName, data, mainFile);
+        ES3.Save(keyUpgrdeName, upgrades, mainUpgradeFile);
     }
 
     public void DataLoad()
@@ -96,6 +100,7 @@ public class DataManager : MonoBehaviour
             {
                 // Load dữ liệu từ file vào data
                 data = ES3.Load<PlayerData>(keyName, mainFile);
+                upgrades = ES3.Load<UpgradeData[]>(keyUpgrdeName, mainUpgradeFile);
                 Debug.Log("Data loaded successfully!");
                 return;
             }
@@ -111,6 +116,13 @@ public class DataManager : MonoBehaviour
 
         // Nếu file không tồn tại hoặc bị hỏng, tạo mới dữ liệu mặc định
         data = new PlayerData(); // khởi tạo dữ liệu mặc định
+        upgrades = new UpgradeData[]
+        {
+            new UpgradeData(UpgradeType.HEALTH,15,1.15f,0.10f),
+             new UpgradeData(UpgradeType.DAMAGEBASE,20,1.15f,0.10f),
+            new UpgradeData(UpgradeType.CRITMULTIPLIER, 25, 1.15f, 0.10f),
+            new UpgradeData(UpgradeType.CRITCHANCE, 30, 1.15f, 0.10f)
+        };
         DataSave(); // lưu lại file
     }
     public void ResetData()
@@ -123,6 +135,9 @@ public class DataManager : MonoBehaviour
     {
         if (ES3.FileExists(mainFile)) ES3.DeleteFile(mainFile);
     }
+    #endregion
+
+    #region Data Upgrades
     public void ResetAllUpgrades()
     {
         foreach (var up in upgrades)
@@ -131,4 +146,14 @@ public class DataManager : MonoBehaviour
             up.ResetToDefault();
         }
     }
+    public UpgradeData GetUpgradeData(UpgradeType type)
+    {
+        foreach (var up in upgrades)
+        {
+            if(up == null) continue;
+            if (up.Type == type) return up;
+        }
+        return null;
+    }
+    #endregion
 }

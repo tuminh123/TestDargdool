@@ -9,7 +9,7 @@ public class UpgradeUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI propertieText;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private Button increaseButton;
-    [SerializeField] private UpgradeData dataUpgrade;
+    [SerializeField] private UpgradeType type;
 
 
     private void Start()
@@ -20,12 +20,14 @@ public class UpgradeUI : MonoBehaviour
 
     private void UpdateText()
     {
+        UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
         goldText.text = dataUpgrade.UpgradeCost.ToString();
         propertieText.text = GetStatText();
     }
 
     private void Upgrade()
     {
+        UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
         var goldMgr = SingletonManager.Instance.goldManager;
 
         if (!goldMgr.MinusGold(dataUpgrade.UpgradeCost))
@@ -39,14 +41,14 @@ public class UpgradeUI : MonoBehaviour
 
         SingletonManager.Instance.dataManager.Data.AddProperties(dataUpgrade.Type, add);
 
-        int cost = Mathf.RoundToInt(dataUpgrade.UpgradeCost *dataUpgrade.CostMultiplier);
-        dataUpgrade.SetUpgradeCost(cost);
+        dataUpgrade.CostIncrease();
         //SingletonManager.Instance.dataManager.DataSave();
         UpdateText();
     }
 
     private string GetStatText()
     {
+        UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
         var data = SingletonManager.Instance.dataManager.Data;
 
         return dataUpgrade.Type switch
@@ -61,6 +63,7 @@ public class UpgradeUI : MonoBehaviour
 
     private float GetCurrentStat()
     {
+        UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
         var data = SingletonManager.Instance.dataManager.Data;
 
         return dataUpgrade.Type switch

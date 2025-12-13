@@ -39,14 +39,16 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
+
         CharacterCtrl player = FindFirstObjectByType<CharacterCtrl>();
         if (player == null) return;
         if (player.healthBase == null) return;
 
         if (player.healthBase.IsDead) 
-        { 
+        {
+            player.transform.position = player.LastPositionBeforeDead;
+
             player.SetTriggerBalance(true);
-            player.healthBase.InitHealth();
         }
 
         ZenManager.Instance.uIManager.PopupLose.ClosePopup();

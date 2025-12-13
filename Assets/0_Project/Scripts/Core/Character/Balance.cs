@@ -16,7 +16,9 @@ public class Balance : MonoBehaviour
     //private float angularVelocity; // lưu velocity giữa các frame
 
     [SerializeField] private DefaultBalanceData dataSO;
-    [SerializeField] private Rigidbody2D rb;
+    public HingeJoint2D hinge { get; private set; }
+
+    private Rigidbody2D rb;
     private Collider2D col;
     private bool isTrigger = true;
 
@@ -34,6 +36,7 @@ public class Balance : MonoBehaviour
         ResetData();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+        hinge = GetComponent<HingeJoint2D>();
     }
     //private void OnValidate()
     //{

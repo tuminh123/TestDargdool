@@ -173,10 +173,36 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
             item.SetDamageBase(stats.DamageBase);
         }
     }
-
+    #region Reset character
+    /* public void ResetBalance()
+     {
+         foreach (var item in childBalance)
+         {
+             if (item == null) continue;
+             item.ResetState();
+         }
+         bodyParent.ResetState();
+         attack.StopAttack();
+     }*/
     public void ResetOnGameRestart()
     {
+       StartCoroutine(ResetCharacter());
+    }
+    private IEnumerator ResetCharacter()
+    {
+        ResetBalance();
+
+        yield return null;
+        yield return new WaitForFixedUpdate();
+
+        DestroyBalance();
+
+        yield return new WaitForSecondsRealtime(0.1f);
         Destroy(gameObject);
+    }
+
+    private void DestroyBalance()
+    {
         foreach (var item in childBalance)
         {
             if (item == null) continue;
@@ -184,4 +210,17 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
         }
         Destroy(bodyParent.gameObject);
     }
+
+    private void ResetBalance()
+    {
+        foreach (var item in childBalance)
+        {
+            if (item == null) continue;
+            item.hinge.enabled = false;
+            item.ResetState();
+        }
+        bodyParent.hinge.enabled = false;
+        bodyParent.ResetState();
+    }
+    #endregion
 }

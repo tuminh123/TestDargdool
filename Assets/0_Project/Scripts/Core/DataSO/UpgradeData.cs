@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Diagnostics;
+using UnityEngine;
 public enum UpgradeType
 {
     NONE = 0,
@@ -7,8 +8,9 @@ public enum UpgradeType
     CRITCHANCE = 3,
     CRITMULTIPLIER = 4
 }
-[CreateAssetMenu(fileName = "UpgradeData", menuName = "Data SO/UpgradeData")]
-public class UpgradeData : ScriptableObject
+
+[System.Serializable]
+public class UpgradeData
 {
     [SerializeField] private UpgradeType type;
     [SerializeField] private int upgradeCost;
@@ -18,16 +20,25 @@ public class UpgradeData : ScriptableObject
     [Header("Static Original Value (never changes)")]
     [SerializeField] private int initialUpgradeCost;
 
+    public UpgradeData(UpgradeType type, int upgradeCost, float statIncreasePercent, float costMultiplier)
+    {
+        this.type = type;
+        this.upgradeCost = upgradeCost;
+        this.statIncreasePercent = statIncreasePercent;
+        this.costMultiplier = costMultiplier;
+        this.initialUpgradeCost = upgradeCost;
+    }
 
     public UpgradeType Type => type;
     public int UpgradeCost => upgradeCost;
     public float StatIncreasePercent => statIncreasePercent;
     public float CostMultiplier => costMultiplier;
 
-    private void OnEnable()
+
+    public void CostIncrease()
     {
-        // Lưu lại giá trị ban đầu chỉ lần đầu tiên
-        if (initialUpgradeCost == 0) initialUpgradeCost = upgradeCost;
+        int cost = Mathf.RoundToInt(upgradeCost * costMultiplier);
+        upgradeCost += cost;
     }
     public void SetUpgradeCost(int upgradeCost)
     {

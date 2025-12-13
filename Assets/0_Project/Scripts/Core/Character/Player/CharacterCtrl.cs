@@ -17,6 +17,7 @@ public class CharacterCtrl : CharacterParent
     public PlayerWeaponEquip weaponEquip { get; private set; }
 
     public WeaponBase currentWeaponBase { get; private set; }
+    public Vector3 LastPositionBeforeDead { get; private set; }
 
     #region  State
     public MainMoveState moveState { get; private set; }
@@ -110,6 +111,8 @@ public class CharacterCtrl : CharacterParent
     }
     public override void OnDead()
     {
+        LastPositionBeforeDead = transform.position;
+
         SetKnockBackBalance();
         SetTriggerBalance(false);
 

@@ -16,18 +16,22 @@ public class PlayerHealthUI : HealthUI
     {
         base.Start();
         GameEventBus.OnGameRestart += OnGameRestart;
+        GameEventBus.OnPlayerRegeneration += GameEventBus_OnPlayerRegeneration;
         if (damageOverlayImage == null) return;
         damageOverlayImage.enabled = false;
     }
-
-   
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
         GameEventBus.OnGameRestart -= OnGameRestart;
+        GameEventBus.OnPlayerRegeneration -= GameEventBus_OnPlayerRegeneration;
     }
     private void OnGameRestart()
+    {
+        OnPlayerSpawned(CharacterCtrl.Instance);
+    }
+    private void GameEventBus_OnPlayerRegeneration()
     {
         OnPlayerSpawned(CharacterCtrl.Instance);
     }
