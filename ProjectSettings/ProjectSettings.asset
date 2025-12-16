@@ -166,6 +166,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.4
   androidMinAspectRatio: 1
   applicationIdentifier:
+    Android: com.ragdoll.fists.ai
     Standalone: com.DefaultCompany.2D-Project
   buildNumber:
     Standalone: 0
@@ -709,7 +710,7 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Android: UNITY_VISUAL_SCRIPTING;ES3_TMPRO;ES3_UGUI;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED
+    Android: UNITY_VISUAL_SCRIPTING;ES3_TMPRO;ES3_UGUI;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;APPLOVIN
     EmbeddedLinux: UNITY_VISUAL_SCRIPTING;ES3_TMPRO;ES3_UGUI
     LinuxHeadlessSimulation: UNITY_VISUAL_SCRIPTING;ES3_TMPRO;ES3_UGUI
     Nintendo Switch: UNITY_VISUAL_SCRIPTING;ES3_TMPRO;ES3_UGUI

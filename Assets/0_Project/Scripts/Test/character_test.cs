@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class Action
+public class ActionCharacter
 {
     public action_type type;
     public List<ActionDataSO> actionDataList;
@@ -29,7 +29,7 @@ public class Action
 }
 public class character_test : MonoBehaviour
 {
-    public Action[] actions;
+    public ActionCharacter[] actions;
     public Balance[] balances;
 
     public character_attack attack_state;
@@ -83,7 +83,7 @@ public class character_test : MonoBehaviour
     }
 
     #region GetData
-    public Action GetAction(action_type type)
+    public ActionCharacter GetAction(action_type type)
     {
         foreach (var item in actions)
         {
@@ -95,7 +95,7 @@ public class character_test : MonoBehaviour
 
     public BalanceData GetBalanceData(action_type type, string actionName, BalanceType balanceType)
     {
-        Action action = GetAction(type);
+        ActionCharacter action = GetAction(type);
         if(action == null) return null;
 
         BalanceData balanceData = action.GetBalanceData(actionName, balanceType);

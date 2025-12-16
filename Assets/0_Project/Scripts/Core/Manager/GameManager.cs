@@ -1,5 +1,6 @@
 ﻿
 using Cysharp.Threading.Tasks;
+using HadesSDK.Ads.Runtime;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -18,6 +19,16 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         SingletonManager.Instance.dataManager.DataLoad();
+        AdManager.Instance.Init();
+    }
+    private void Start()
+    {
+        Invoke(nameof(Show), 1);
+    }
+    private void Show()
+    {
+        if (AdManager.Instance.IsAoaReady())
+            AdManager.Instance.ShowAoa();
     }
     private void OnEnable()
     {

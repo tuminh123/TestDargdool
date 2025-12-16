@@ -205,10 +205,6 @@ namespace Cysharp.Threading.Tasks
                     {
                         TryReturn();
                     }
-                    else
-                    {
-                        TaskTracker.RemoveTracking(this);
-                    }
                 }
             }
 
@@ -247,7 +243,7 @@ namespace Cysharp.Threading.Tasks
 
                 if (progress != null && handle.IsValid())
                 {
-                    progress.Report(handle.GetDownloadStatus().Percent);
+                    progress.Report(handle.PercentComplete);
                 }
 
                 return true;
@@ -408,13 +404,7 @@ namespace Cysharp.Threading.Tasks
                 finally
                 {
                     if (!(cancelImmediately && cancellationToken.IsCancellationRequested))
-                    {
                         TryReturn();
-                    }
-                    else
-                    {
-                        TaskTracker.RemoveTracking(this);
-                    }
                 }
             }
 
@@ -458,7 +448,7 @@ namespace Cysharp.Threading.Tasks
 
                 if (progress != null && handle.IsValid())
                 {
-                    progress.Report(handle.GetDownloadStatus().Percent);
+                    progress.Report(handle.PercentComplete);
                 }
 
                 return true;

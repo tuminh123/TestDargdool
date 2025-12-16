@@ -39,6 +39,7 @@ MonoBehaviour:
     - DamageNumbersPro
     - Lofelt.NiceVibrations
     - Lofelt.NiceVibrations.Demo
+    - MaxSdk.Scripts
     - ParticleImage
     - PrimeTween.Debug
     - PrimeTween.Demo

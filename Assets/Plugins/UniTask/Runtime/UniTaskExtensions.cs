@@ -201,7 +201,6 @@ namespace Cysharp.Threading.Tasks
 
             if (cancellationToken.IsCancellationRequested)
             {
-                task.Forget();
                 return UniTask.FromCanceled(cancellationToken);
             }
 
@@ -225,7 +224,6 @@ namespace Cysharp.Threading.Tasks
 
             if (cancellationToken.IsCancellationRequested)
             {
-                task.Forget();
                 return UniTask.FromCanceled<T>(cancellationToken);
             }
 
