@@ -12,5 +12,8 @@ public abstract class ButtonBase : MonoBehaviour
     {
         button.onClick.AddListener(Clicked);
     }
-    public abstract void Clicked();
+    public virtual void Clicked()
+    {
+        SingletonManager.Instance.soundManager.PlaySound(SoundType.Click);
+    }
 }

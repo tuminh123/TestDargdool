@@ -58,6 +58,7 @@ namespace Popup
         public void OnPointerClick(PointerEventData eventData)
         {
             if (!_button.interactable) return;
+            SingletonManager.Instance.soundManager.PlaySound(SoundType.Click);
         }
 
         private void UpdateButtonState()

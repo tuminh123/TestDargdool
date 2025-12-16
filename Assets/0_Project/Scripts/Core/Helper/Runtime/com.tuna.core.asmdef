@@ -1,0 +1,18 @@
+{
+    "name": "com.tuna.core",
+    "rootNamespace": "",
+    "references": [
+        "GUID:37c9cd74459155a49973df2c1f17eb2f",
+        "GUID:ea4142cc8461a9648bd1247075bd3b85",
+        "GUID:69021c0b59e8ce246a0dd562bf8ff44c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

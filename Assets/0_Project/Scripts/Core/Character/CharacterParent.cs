@@ -116,7 +116,9 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
         VfxBase vfx = ZenManager.Instance.vfxPoolManager.Spawn(StringConst.HURTVFX, transform.position, Quaternion.identity);
 
         ZenManager.Instance.vfxPoolManager.SetParent(vfx, bodyParent.transform);
-        
+
+        SingletonManager.Instance.soundManager.PlaySound(SoundType.Crunch);
+
     }
     public void SetTriggerBalance(bool value)
     {

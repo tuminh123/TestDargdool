@@ -10,6 +10,8 @@ public class SingletonManager : MonoBehaviour
     public SceneLoader sceneLoader { get; private set; }
     public GoldManager goldManager { get; private set; }
     public DataManager dataManager { get; private set; }
+    public SoundManager soundManager { get; private set; }
+    public MusicManager musicManager { get; private set; }
     private void Awake()
     {
         Instance = this;
@@ -18,5 +20,7 @@ public class SingletonManager : MonoBehaviour
         goldManager = GetComponentInChildren<GoldManager>();
         dataManager = GetComponentInChildren<DataManager>();
         sceneLoader = GetComponentInChildren<SceneLoader>();
+        soundManager = GetComponentInChildren<SoundManager>();
+        musicManager = GetComponentInChildren<MusicManager>();
     }
 }

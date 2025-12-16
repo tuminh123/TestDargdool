@@ -6,18 +6,6 @@
       "source": "local-tarball",
       "dependencies": {}
     },
-    "com.tuna.config": {
-      "version": "file:../../TunaCore/com.tuna.config",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
-    },
-    "com.tuna.core": {
-      "version": "file:../../TunaCore/com.tuna.core",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
-    },
     "com.unity.2d.animation": {
       "version": "10.2.1",
       "depth": 1,

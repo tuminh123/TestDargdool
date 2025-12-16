@@ -48,7 +48,6 @@ MonoBehaviour:
     - UniTask.DOTween
     - UniTask.Linq
     - UniTask.TextMeshPro
-    - YadeRuntime
     - Zenject
     - Zenject-IntegrationTests
     - Zenject-IntegrationTests-Editor

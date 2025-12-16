@@ -20,12 +20,14 @@ namespace Popup
         {
             gameObject.SetActive(true);
 
+            SingletonManager.Instance.soundManager.PlaySound(SoundType.Pop);
             GameEventBus.RaiseGamePause();
         }
         public void ClosePopup()
         {
             TweenPopupClose();
 
+            SingletonManager.Instance.soundManager.PlaySound(SoundType.Pop);
             GameEventBus.RaiseGameResume();
         }
 

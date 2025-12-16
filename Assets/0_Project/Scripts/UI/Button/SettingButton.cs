@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using Yade.Editor;
 
 public class SettingButton : ButtonBase
 {

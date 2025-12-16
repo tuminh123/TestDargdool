@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0f;
         ZenManager.Instance.uIManager.PopupLose.OpenPopup();
+        SingletonManager.Instance.soundManager.PlaySound(SoundType.GameFail);
     }
     private void OnRestartGame()
     {
@@ -98,6 +99,7 @@ public class GameManager : MonoBehaviour
         Instantiate(player, Vector3.zero, Quaternion.identity);
 
     }
+    #region Chanage scene
     public void ChangeMenuScene()
     {
         Time.timeScale = 1f;
@@ -113,6 +115,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         SingletonManager.Instance.sceneLoader.LoadUpgradeScene();
     }
+    #endregion
     private void OnApplicationQuit()
     {
         SingletonManager.Instance.dataManager.DataSave();
