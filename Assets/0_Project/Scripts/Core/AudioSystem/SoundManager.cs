@@ -24,44 +24,37 @@ public class SoundManager : AudioManager
 
     private Dictionary<SoundType, AudioClip> soundDict;
 
+    protected override bool IsEnabled => SoundEnabled;
+
+
     protected override void Awake()
     {
         base.Awake();
         LoadSounds();
     }
-    private void Start()
-    {
-        DataSettings.SoundEnabled = ES3.Load(DataSettings.SOUND_KEY, true);
 
-        
-        ApplySetting();
-    }
+
     private void LoadSounds()
     {
         soundDict = new Dictionary<SoundType, AudioClip>();
-
         foreach (var s in sounds)
         {
-            soundDict[s.type] = s.clip;
+            if (!soundDict.ContainsKey(s.type))
+                soundDict.Add(s.type, s.clip);
         }
     }
 
+
     public void PlaySound(SoundType type)
     {
-        if (!DataSettings.SoundEnabled) return;
-        if (!soundDict.ContainsKey(type)) return;
-
-        audioSource.PlayOneShot(soundDict[type]);
+        if (!soundDict.TryGetValue(type, out var clip)) return;
+        audioSource.PlayOneShot(clip);
     }
 
-    public void ToggleSound()
+
+    public void SetSound(bool enabled)
     {
-        DataSettings.SoundEnabled = !DataSettings.SoundEnabled;
+        SoundEnabled = enabled;
         ApplySetting();
-    }
-
-    public override void ApplySetting()
-    {
-        audioSource.mute = !DataSettings.SoundEnabled;
     }
 }

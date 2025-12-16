@@ -25,20 +25,14 @@ public abstract class SlideAudioSwitch : MonoBehaviour, IPointerClickHandler
     [SerializeField] protected float scaleOff = 0.9f;
 
     protected bool isOn;
-
-    private void Start()
+    protected virtual void Start()
     {
         LoadState();
         ApplyVisualInstant();
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Toggle();
-        SingletonManager.Instance.soundManager.PlaySound(SoundType.Click);
-    }
 
-    private void Toggle()
+    public void OnPointerClick(PointerEventData eventData)
     {
         isOn = !isOn;
         SaveState();
@@ -46,12 +40,12 @@ public abstract class SlideAudioSwitch : MonoBehaviour, IPointerClickHandler
         PlayAnimation();
     }
 
-    public abstract void ApplyLogic();
-    public abstract void LoadState();
-    public abstract void SaveState();
+    protected abstract void LoadState();
+    protected abstract void SaveState();
+    protected abstract void ApplyLogic();
 
     #region Tween animtion
-    private void PlayAnimation()
+    protected void PlayAnimation()
     {
         Tween.StopAll(knob);
         Tween.StopAll(background);
@@ -70,7 +64,7 @@ public abstract class SlideAudioSwitch : MonoBehaviour, IPointerClickHandler
         UtilitiesTween.DoSetImageColor(background,false, targetColor,moveDuration,Ease.InOutBack);
     }
 
-    private void ApplyVisualInstant()
+    protected void ApplyVisualInstant()
     {
         knob.anchoredPosition = new Vector2(isOn ? onX : offX, knob.anchoredPosition.y);
         knob.localScale = Vector3.one * (isOn ? scaleOn : scaleOff);

@@ -3,22 +3,23 @@ using UnityEngine.Audio;
 
 public class MusicManager : AudioManager
 {
-    private void Start()
+    protected override bool IsEnabled => MusicEnabled;
+
+    protected override void Awake()
     {
-        DataSettings.MusicEnabled = ES3.Load(DataSettings.MUSIC_KEY,true);
-        ApplySetting();
-    }
-    public void ToggleMusic()
-    {
-        DataSettings.MusicEnabled = !DataSettings.MusicEnabled;
-        ApplySetting();
+        base.Awake();
+        if (IsEnabled && !audioSource.isPlaying)
+            audioSource.Play();
     }
 
-    public override void ApplySetting()
-    {
-        audioSource.mute = !DataSettings.MusicEnabled;
 
-        if (DataSettings.MusicEnabled && !audioSource.isPlaying)
+    public void SetMusic(bool enabled)
+    {
+        MusicEnabled = enabled;
+        ApplySetting();
+
+
+        if (enabled && !audioSource.isPlaying)
             audioSource.Play();
     }
 }

@@ -2,18 +2,20 @@ using UnityEngine;
 
 public class MusicAudioSwitch : SlideAudioSwitch
 {
-    public override void ApplyLogic()
+    protected override void LoadState()
     {
-        SingletonManager.Instance.musicManager.ToggleMusic();
+        isOn = SingletonManager.Instance.musicManager.MusicEnabled;
     }
 
-    public override void LoadState()
+
+    protected override void SaveState()
     {
-        isOn = DataSettings.MusicEnabled;
+        SingletonManager.Instance.musicManager.MusicEnabled = isOn;
     }
 
-    public override void SaveState()
+
+    protected override void ApplyLogic()
     {
-        DataSettings.MusicEnabled = isOn;
+        SingletonManager.Instance.musicManager.SetMusic(isOn);
     }
 }
