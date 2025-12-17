@@ -52,6 +52,7 @@ public class ObjectPoolManager<T> : MonoBehaviour where T : MonoBehaviour,IObjec
         if (obj == null) return null;
 
         T newObj = GetObjectFromPool(obj);
+        if (newObj == null) return null;
 
         SetParent(newObj, holder);
         newObj.gameObject.SetActive(true);

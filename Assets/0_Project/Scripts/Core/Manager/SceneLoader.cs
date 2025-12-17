@@ -9,7 +9,6 @@ public static class SceneLoadData
 
 public class SceneLoader : MonoBehaviour
 {
-
     public void LoadHomeScene()
     {
         LoadScene(StringConst.MAINMENUSCENE);
@@ -29,4 +28,5 @@ public class SceneLoader : MonoBehaviour
         SceneLoadData.NextScene = sceneName;
         SceneManager.LoadScene(StringConst.LOADINGSCENE);
     }
+    
 }

@@ -1,10 +1,12 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
+using HadesSDK.Ads.Core;
+using HadesSDK.Ads.Runtime;
+using System;
 using System.Collections;
 using TMPro;
-
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class LoadingSceneController : MonoBehaviour
 {
     #region Test
@@ -89,8 +91,9 @@ public class LoadingSceneController : MonoBehaviour
             fadeGroup.alpha = 1;
         }*/
     #endregion
-    
-    [SerializeField] private Image loadingBar;          // Image fill
+
+    #region Test 2
+    /*[SerializeField] private Image loadingBar;          // Image fill
     [SerializeField] private TextMeshProUGUI percentText;          // Text hiển thị %
     [SerializeField] private float minLoadTime = 3f;    // thời gian tối thiểu
     private float timer = 0f;
@@ -98,6 +101,9 @@ public class LoadingSceneController : MonoBehaviour
     [Header("Fade UI")]
     [SerializeField] private Image fadeImage;           // Image đen để fade
     [SerializeField] private float fadeDuration = 1f;
+
+    private int count = 0;
+
     void Start()
     {
         StartCoroutine(FadeIn());
@@ -106,6 +112,12 @@ public class LoadingSceneController : MonoBehaviour
 
     IEnumerator LoadNextScene()
     {
+        if (string.IsNullOrEmpty(SceneLoadData.NextScene))
+        {
+            Debug.LogError("NextScene is NULL!");
+            yield break;
+        }
+
         string sceneToLoad = SceneLoadData.NextScene;
 
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneToLoad);
@@ -139,14 +151,26 @@ public class LoadingSceneController : MonoBehaviour
                 // Chỗ này dùng để load ADS
                 // AdsManager.ShowInterstitial(() => async.allowSceneActivation = true);
                 // Bắt đầu fade out
+
                 yield return StartCoroutine(FadeOut());
 
+                AdsManager.Instance.AoaAdHandle();
+
+                yield return new WaitForSecondsRealtime(10f);
                 async.allowSceneActivation = true;
             }
-
+           
             yield return null;
         }
     }
+
+    private void LoadingFirstHandle()
+    {
+        if (count >= 1) return;
+        GameEventBus.RaiseLoadingFirst();
+        count++;
+    }
+
     IEnumerator FadeIn()
     {
         float t = 0;
@@ -185,5 +209,109 @@ public class LoadingSceneController : MonoBehaviour
 
         c.a = 1;
         fadeImage.color = c;
+    }*/
+    #endregion
+
+    [SerializeField] private TextMeshProUGUI _textPercent;
+    [SerializeField] private Image _fillImage;
+
+    [Header("Fade UI")]
+    [SerializeField] private Image fadeImage;           // Image đen để fade
+    [SerializeField] private float fadeDuration = 1f;
+
+    private float currentValue = 0f;
+    private float targetValue = 0f;
+
+    private readonly int[] steps = { 8, 15, 55, 80, 92, 98, 100 };
+
+
+    private void Start()
+    {
+        FadeIn().Forget();
+        FakeLoadingRoutine().Forget();
+    }
+
+    private async UniTask FakeLoadingRoutine()
+    {
+        string sceneToLoad = SceneLoadData.NextScene;
+        var a = SceneManager.LoadSceneAsync(sceneToLoad);
+        a.allowSceneActivation = false;
+
+        foreach (int step in steps)
+        {
+            targetValue = step / 100f;
+
+            while (currentValue < targetValue)
+            {
+                currentValue = Mathf.MoveTowards(currentValue, targetValue, Time.deltaTime * 0.6f);
+                UpdateUI(currentValue);
+                await UniTask.Yield();
+            }
+
+            await UniTask.WaitForSeconds(UnityEngine.Random.Range(0.1f, 0.25f));
+        }
+
+        if (AdsManager.Instance.IsFirstLoad)
+        {
+            await AdsManager.Instance.AoaAdsHandle();
+        }
+
+        if (AdsManager.Instance.IsFirstCheck)
+        {
+            await AdsManager.Instance.InterAdsHandle();
+            Time.fixedDeltaTime = 0.02f;
+        }
+
+        await UniTask.Delay(TimeSpan.FromSeconds(0.15f));
+
+        await FadeOut();
+
+        a.allowSceneActivation = true;
+        // SceneManager.LoadScene("GamePlay");
+    }
+
+   
+    private async UniTask FadeIn()
+    {
+        float t = 0;
+        Color c = fadeImage.color;
+        c.a = 1;
+        fadeImage.color = c;
+
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            //t += Time.unscaledDeltaTime;
+            c.a = 1 - (t / fadeDuration);
+            fadeImage.color = c;
+            await UniTask.Yield();
+        }
+
+        c.a = 0;
+        fadeImage.color = c;
+    }
+    private async UniTask FadeOut()
+    {
+        float t = 0;
+        Color c = fadeImage.color;
+        c.a = 0;
+        fadeImage.color = c;
+
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            //t += Time.unscaledDeltaTime;
+            c.a = t / fadeDuration;
+            fadeImage.color = c;
+            await UniTask.Yield();
+        }
+
+        c.a = 1;
+        fadeImage.color = c;
+    }
+    private void UpdateUI(float value)
+    {
+        _fillImage.fillAmount = value;
+        _textPercent.text = $"{(int)(value * 100)}%";
     }
 }

@@ -15,21 +15,19 @@ public class GameManager : MonoBehaviour
     [InjectOptional]
     private UIManager uiManager;
     [SerializeField] private CharacterCtrl player;
+ 
 
     private void Awake()
     {
         SingletonManager.Instance.dataManager.DataLoad();
-        AdManager.Instance.Init();
     }
+
     private void Start()
     {
-        Invoke(nameof(Show), 1);
+        if (AdsManager.Instance == null) return;
+        AdsManager.Instance.BannerAdsHandle();
     }
-    private void Show()
-    {
-        if (AdManager.Instance.IsAoaReady())
-            AdManager.Instance.ShowAoa();
-    }
+
     private void OnEnable()
     {
         GameEventBus.OnGameLose += HandleGameLose;
@@ -37,6 +35,7 @@ public class GameManager : MonoBehaviour
         GameEventBus.OnGamePause += GameEventBus_OnGamePause;
         GameEventBus.OnGameRestart += OnRestartGame;
         GameEventBus.OnPlayerRegeneration += GameEventBus_OnPlayerRegeneration;
+        //GameEventBus.OnLoadingFirst += GameEventBus_OnLoadingFirst;
     }
     private void OnDisable()
     {
@@ -45,7 +44,17 @@ public class GameManager : MonoBehaviour
         GameEventBus.OnGamePause -= GameEventBus_OnGamePause;
         GameEventBus.OnGameRestart -= OnRestartGame;
         GameEventBus.OnPlayerRegeneration -= GameEventBus_OnPlayerRegeneration;
+        //GameEventBus.OnLoadingFirst -= GameEventBus_OnLoadingFirst;
     }
+
+    /* private void GameEventBus_OnLoadingFirst()
+     {
+         Debug.Log("Loading done. Show aoa ad");
+         AdsManager.Instance.NotifyLoadingFinished();
+     }*/
+
+
+    #region Game event handle
     private void GameEventBus_OnPlayerRegeneration()
     {
         Time.timeScale = 1f;
@@ -90,6 +99,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         ZenManager.Instance.uIManager.PopupLose.OpenPopup();
         SingletonManager.Instance.soundManager.PlaySound(SoundType.GameFail);
+
+        AdsManager.Instance.SetIsFirstCheck(true);
+
     }
     private void OnRestartGame()
     {
@@ -110,6 +122,8 @@ public class GameManager : MonoBehaviour
         Instantiate(player, Vector3.zero, Quaternion.identity);
 
     }
+    #endregion
+
     #region Chanage scene
     public void ChangeMenuScene()
     {

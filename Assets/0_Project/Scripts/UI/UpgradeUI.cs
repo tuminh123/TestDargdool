@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,10 +24,15 @@ public class UpgradeUI : MonoBehaviour
         UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
         goldText.text = dataUpgrade.UpgradeCost.ToString();
         propertieText.text = GetStatText();
+
     }
 
     private void Upgrade()
     {
+        if (!AdsManager.Instance.IsFirstCheck)
+        {
+            AdsManager.Instance.InterAdsHandle().Forget();
+        }
         UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
         var goldMgr = SingletonManager.Instance.goldManager;
 

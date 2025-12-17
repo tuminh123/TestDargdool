@@ -14,7 +14,14 @@ public class SingletonManager : MonoBehaviour
     public MusicManager musicManager { get; private set; }
     private void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
+        DontDestroyOnLoad(Instance);
 
         gameManager = GetComponentInChildren<GameManager>();
         goldManager = GetComponentInChildren<GoldManager>();

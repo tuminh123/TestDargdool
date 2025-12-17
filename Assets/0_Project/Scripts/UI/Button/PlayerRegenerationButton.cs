@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerRegenerationButton : ButtonBase
@@ -6,6 +7,12 @@ public class PlayerRegenerationButton : ButtonBase
     public override void Clicked()
     {
         base.Clicked();
-        GameEventBus.RaisePlayerRegeneration();
+
+        AdsManager.Instance.RewardAdsHandle().Forget();
+        if (AdsManager.Instance.IsReward)
+        {
+            GameEventBus.RaisePlayerRegeneration();
+        }
+        
     }
 }
