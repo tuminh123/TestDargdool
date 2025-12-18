@@ -53,7 +53,7 @@ public class PlayerData
     {
         name = "player";
         goldCount = 100;
-        maxHp = 100;
+        maxHp = 200;
         damageBase = 30;
         critChance = 0.05f;
         critMultiplier = 1.5f;

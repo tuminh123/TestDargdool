@@ -9,89 +9,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class LoadingSceneController : MonoBehaviour
 {
-    #region Test
-    /*    [SerializeField] private Slider loadingBar;
-        [SerializeField] private CanvasGroup fadeGroup;
-
-        private async void Start()
-        {
-            fadeGroup.alpha = 1;
-
-            await FadeIn(0.5f);
-            await LoadNextScene();
-        }
-
-        private async UniTask LoadNextScene()
-        {
-            string next = SceneLoadData.NextScene;
-
-            AsyncOperation op = SceneManager.LoadSceneAsync(next);
-            op.allowSceneActivation = false;
-
-            float minLoadTime = 2f;
-            float timer = 0f;
-
-            while (op.progress < 0.9f || timer < minLoadTime)
-            {
-                timer += Time.deltaTime;
-
-                float progress = Mathf.Clamp01(op.progress / 0.9f);
-                float timeProgress = Mathf.Clamp01(timer / minLoadTime);
-
-                // Lấy giá trị lớn nhất giữa load thật và load theo thời gian
-                //loadingBar.value = Mathf.Max(progress, timeProgress);
-
-                loadingBar.value = Mathf.Lerp(loadingBar.value, Mathf.Max(progress, timeProgress), 0.15f);
-
-                await UniTask.Yield();
-            }
-
-            loadingBar.value = 1f;
-            await FadeOut(0.5f);
-
-            op.allowSceneActivation = true;
-        }
-
-        *//*private async UniTask FadeIn(float duration)
-        {
-            for (float t = 0; t < duration; t += Time.deltaTime)
-            {
-                fadeGroup.alpha = 1 - (t / duration);
-                await UniTask.Yield();
-            }
-            fadeGroup.alpha = 0;
-        }
-
-        private async UniTask FadeOut(float duration)
-        {
-            for (float t = 0; t < duration; t += Time.deltaTime)
-            {
-                fadeGroup.alpha = t / duration;
-                await UniTask.Yield();
-            }
-            fadeGroup.alpha = 1;
-        }*//*
-        private async UniTask FadeIn(float duration)
-        {
-            for (float t = 0; t < duration; t += Time.unscaledDeltaTime)
-            {
-                fadeGroup.alpha = 1 - (t / duration);
-                await UniTask.Yield();
-            }
-            fadeGroup.alpha = 0;
-        }
-
-        private async UniTask FadeOut(float duration)
-        {
-            for (float t = 0; t < duration; t += Time.unscaledDeltaTime)
-            {
-                fadeGroup.alpha = t / duration;
-                await UniTask.Yield();
-            }
-            fadeGroup.alpha = 1;
-        }*/
-    #endregion
-
     #region Test 2
     /*[SerializeField] private Image loadingBar;          // Image fill
     [SerializeField] private TextMeshProUGUI percentText;          // Text hiển thị %
@@ -212,7 +129,8 @@ public class LoadingSceneController : MonoBehaviour
     }*/
     #endregion
 
-    [SerializeField] private TextMeshProUGUI _textPercent;
+    #region Test 3
+    /*[SerializeField] private TextMeshProUGUI _textPercent;
     [SerializeField] private Image _fillImage;
 
     [Header("Fade UI")]
@@ -313,5 +231,187 @@ public class LoadingSceneController : MonoBehaviour
     {
         _fillImage.fillAmount = value;
         _textPercent.text = $"{(int)(value * 100)}%";
+    }*/
+    #endregion
+    
+    [Header("Loading UI")]
+    [SerializeField] private TextMeshProUGUI textPercent;
+    [SerializeField] private Image fillImage;
+
+    [Header("Fade UI")]
+    [SerializeField] private Image fadeImage;
+    [SerializeField] private float fadeDuration = 0.8f;
+
+    [Header("Fake Loading Config")]
+    [SerializeField] private int[] fakeSteps = { 8, 15, 55, 80, 92, 98, 100 };
+    [SerializeField] private float fakeSpeed = 0.6f;
+
+    private float currentValue;
+    private float targetValue;
+
+    private AsyncOperation loadOperation;
+
+    private void Start()
+    {
+        StartAsync().Forget();
     }
+
+    private async UniTaskVoid StartAsync()
+    {
+        AdsManager.Instance.HideBanner();
+        await FadeIn();
+
+        await LoadSceneAsync();
+
+        // Show Ads (an toàn)
+        await ShowAdsSafe();
+
+        await UniTask.Delay(TimeSpan.FromSeconds(0.15f));
+
+        await FadeOut();
+
+        loadOperation.allowSceneActivation = true;
+
+        await UniTask.Delay(TimeSpan.FromSeconds(0.01f));
+        AdsManager.Instance.ShowBanner();
+    }
+
+    #region Scene Loading
+
+    private async UniTask LoadSceneAsync()
+    {
+        string sceneName = SceneLoadData.NextScene;
+
+        loadOperation = SceneManager.LoadSceneAsync(sceneName);
+        loadOperation.allowSceneActivation = false;
+
+        // Fake loading UI
+        await FakeLoadingRoutine();
+
+        // Đảm bảo scene load xong thật
+        await UniTask.WaitUntil(() => loadOperation.progress >= 0.9f);
+
+    }
+
+    #endregion
+
+    #region Fake Loading
+
+    private async UniTask FakeLoadingRoutine()
+    {
+        foreach (int step in fakeSteps)
+        {
+            targetValue = step / 100f;
+
+            while (currentValue < targetValue)
+            {
+                currentValue = Mathf.MoveTowards(
+                    currentValue,
+                    targetValue,
+                    Time.unscaledDeltaTime * fakeSpeed
+                );
+
+                UpdateUI(currentValue);
+                await UniTask.Yield();
+            }
+
+            await UniTask.Delay(
+                TimeSpan.FromSeconds(UnityEngine.Random.Range(0.1f, 0.25f)),
+                DelayType.UnscaledDeltaTime
+            );
+        }
+    }
+
+    private void UpdateUI(float value)
+    {
+        fillImage.fillAmount = value;
+        textPercent.text = $"{Mathf.RoundToInt(value * 100)}%";
+    }
+
+    #endregion
+
+    #region Ads Handling (Safe)
+
+    private async UniTask ShowAdsSafe()
+    {
+        await UniTask.WhenAny(
+               AdsManager.Instance.AoaAdsHandle(),
+               UniTask.Delay(6000)
+        );
+
+        // Interstitial Ads
+        if (AdsManager.Instance.IsFirstCheck)
+        {
+            await UniTask.WhenAny(
+                AdsManager.Instance.InterAdsHandle(),
+                UniTask.Delay(6000)
+            );
+
+            Time.fixedDeltaTime = 0.02f;
+        }
+    }
+
+    #endregion
+
+    #region Fade
+
+    private async UniTask FadeIn()
+    {
+        float t = 0f;
+        Color c = fadeImage.color;
+        c.a = 1;
+        fadeImage.color = c;
+
+        while (t < fadeDuration)
+        {
+            t += Time.unscaledDeltaTime;
+            c.a = 1 - (t / fadeDuration);
+            fadeImage.color = c;
+            await UniTask.Yield();
+        }
+
+        c.a = 0;
+        fadeImage.color = c;
+    }
+
+    private async UniTask FadeOut()
+    {
+        float t = 0f;
+        Color c = fadeImage.color;
+        c.a = 0;
+        fadeImage.color = c;
+
+        while (t < fadeDuration)
+        {
+            t += Time.unscaledDeltaTime;
+            c.a = t / fadeDuration;
+            fadeImage.color = c;
+            await UniTask.Yield();
+        }
+
+        c.a = 1;
+        fadeImage.color = c;
+    }
+    /*private async UniTask Fade(float begin,float end)
+    {
+        float t = 0f;
+        Color c = fadeImage.color;
+        c.a = begin;
+        fadeImage.color = c;
+
+        while (t < fadeDuration)
+        {
+            t += Time.unscaledDeltaTime;
+            c.a = t / fadeDuration;
+            fadeImage.color = c;
+            await UniTask.Yield();
+        }
+
+        c.a = end;
+        fadeImage.color = c;
+    }
+*/
+
+    #endregion
 }
+

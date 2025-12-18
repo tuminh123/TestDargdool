@@ -366,7 +366,9 @@ namespace HadesSDK.Ads.Runtime.AdServices.ApplovinService
             MaxSdk.CreateBanner(_config.bannerID, _config.bannerPosition);
             MaxSdk.SetBannerExtraParameter(_config.bannerID, "adaptive_banner", "false");
             // Set background or background color for banners to be fully functional.
-            MaxSdk.SetBannerBackgroundColor(_config.bannerID, Color.black);
+            Color color = new Color();
+            color.a = 0;
+            MaxSdk.SetBannerBackgroundColor(_config.bannerID,color );
             MaxSdk.SetBannerWidth(_config.bannerID, (float)Screen.width);
             
             Debug.Log("Applovin Start Load Banner");

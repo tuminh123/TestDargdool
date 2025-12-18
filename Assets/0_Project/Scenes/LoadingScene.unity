@@ -227,10 +227,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a64a0ccd8e054f4f8eea8324886fbdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textPercent: {fileID: 1555215834}
-  _fillImage: {fileID: 1537329497}
+  textPercent: {fileID: 1555215834}
+  fillImage: {fileID: 1537329497}
   fadeImage: {fileID: 1995729112}
   fadeDuration: 1
+  fakeSteps: 080000000f00000037000000500000005c0000006200000064000000
+  fakeSpeed: 0.6
 --- !u!4 &336461471
 Transform:
   m_ObjectHideFlags: 0

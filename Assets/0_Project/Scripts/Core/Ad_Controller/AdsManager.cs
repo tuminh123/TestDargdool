@@ -11,18 +11,14 @@ public class AdsManager : MonoBehaviour
     public static AdsManager Instance { get; private set; }
 
     private const float AOA_ADS_LOAD_TIMEOUT = 5f;
-    private const float RWEWARD_LOAD_TIMEOUT = 5f;
+    private const float REWARD_LOAD_TIMEOUT = 5f;
     private const float INTER_ADS_LOAD_TIMEOUT = 3f;
-    private bool isFirstLoad = true;
+    private bool isAoaShowSession = false;
     private bool isFirstCheck = false;
 
-    public bool IsReward { get; private set; }
-    public bool IsFirstLoad => isFirstLoad;
+    //public bool IsReward { get; private set; }
+    public bool IsFirstLoad => isAoaShowSession;
     public bool IsFirstCheck => isFirstCheck;
-    public void SetIsFirstCheck(bool isFirstCheck)
-    {
-        this.isFirstCheck = isFirstCheck;
-    }
 
     private void Awake()
     {
@@ -38,10 +34,16 @@ public class AdsManager : MonoBehaviour
         AdManager.Instance.Init();
 
     }
+
+    public void InterAdsBegin()
+    {
+        isFirstCheck = true;
+    }
+
     #region Reward Ads Handle
 
 
-    public async UniTask RewardAdsHandle()
+  /*  public async UniTask RewardAdsHandle()
     {
         try
         {
@@ -52,21 +54,21 @@ public class AdsManager : MonoBehaviour
             //var adLoadTask = WaitForAdLoad(isRewardReady);
 
             var adLoadTask = WaitForAdLoad(() => AdManager.Instance.IsRewardReady());
-            var timeoutTask = UniTask.WaitForSeconds(RWEWARD_LOAD_TIMEOUT);
+            var timeoutTask = UniTask.WaitForSeconds(REWARD_LOAD_TIMEOUT);
 
             //Select the true conditions for use.
             var completed = await UniTask.WhenAny(adLoadTask, timeoutTask);// return value 0 & 1
 
             if (completed == 0)
             {
-                /* if (FirebaseService.Instance != null)
+                *//* if (FirebaseService.Instance != null)
                  {
                      Debug.Log("ok");
                  }
                  else
                  {
                      Debug.Log("FirebaseService is null");
-                 }*/
+                 }*//*
 
                 AdManager.Instance.ShowReward(OnSuccess, OnFail, "Inter_Show");
                 IsReward = true;
@@ -81,6 +83,37 @@ public class AdsManager : MonoBehaviour
         catch (Exception ex)
         {
             Debug.LogError($"lỗi ad : {ex.Message}");
+        }
+    }*/
+    public async UniTask<bool> RewardAdsHandles()
+    {
+        try
+        {
+            var adLoadTask = WaitForAdLoad(() => AdManager.Instance.IsRewardReady());
+            var timeoutTask = UniTask.WaitForSeconds(REWARD_LOAD_TIMEOUT);
+
+            var completed = await UniTask.WhenAny(adLoadTask, timeoutTask);
+
+            if (completed == 0)
+            {
+                bool rewardGranted = false;
+
+                AdManager.Instance.ShowReward(
+                    () => rewardGranted = true,
+                    () => rewardGranted = false,
+                    "Reward_Show"
+                );
+
+                await UniTask.WaitUntil(() => rewardGranted);
+                return true;
+            }
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"lỗi ad : {ex.Message}");
+            return false;     
         }
     }
 
@@ -111,7 +144,7 @@ public class AdsManager : MonoBehaviour
                  {
                      Debug.Log("FirebaseService is null");
                  }*/
-
+                if (!isFirstCheck) return;
                 AdManager.Instance.ShowInterstitial(OnSuccess, OnFail, "Inter_Show");
             }
             else
@@ -127,24 +160,24 @@ public class AdsManager : MonoBehaviour
     #endregion
 
     #region Banner Ads Handle
-    public void BannerAdsHandle()
+    public void ShowBanner()
     {
-        ShowBanner().Forget();
+        // SDK show banner
+        AdManager.Instance.ShowBanner();
     }
-    private async UniTask ShowBanner()
+
+    public void HideBanner()
     {
-        while (true)
-        {
-            AdManager.Instance.ShowBanner();
-            await UniTask.WaitForSeconds(10000);
-            AdManager.Instance.LoadBanner();
-        }
+        // SDK hide banner
+        AdManager.Instance.HideBanner();
     }
     #endregion
 
     #region Aoa Ads Handle
     public async UniTask AoaAdsHandle()
     {
+
+        if (isAoaShowSession) return;
         try
         {
             // AdManager.Instance.Init();
@@ -170,8 +203,10 @@ public class AdsManager : MonoBehaviour
                      Debug.Log("FirebaseService is null");
                  }*/
 
+
+                isAoaShowSession = true;
                 AdManager.Instance.ShowAoa();
-                isFirstLoad = false;
+                
             }
             else
             {
@@ -217,4 +252,5 @@ public class AdsManager : MonoBehaviour
         Debug.Log("Fail");
     }
     #endregion
+
 }

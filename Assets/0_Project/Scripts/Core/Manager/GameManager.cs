@@ -22,12 +22,6 @@ public class GameManager : MonoBehaviour
         SingletonManager.Instance.dataManager.DataLoad();
     }
 
-    private void Start()
-    {
-        if (AdsManager.Instance == null) return;
-        AdsManager.Instance.BannerAdsHandle();
-    }
-
     private void OnEnable()
     {
         GameEventBus.OnGameLose += HandleGameLose;
@@ -100,7 +94,7 @@ public class GameManager : MonoBehaviour
         ZenManager.Instance.uIManager.PopupLose.OpenPopup();
         SingletonManager.Instance.soundManager.PlaySound(SoundType.GameFail);
 
-        AdsManager.Instance.SetIsFirstCheck(true);
+        AdsManager.Instance.InterAdsBegin();
 
     }
     private void OnRestartGame()

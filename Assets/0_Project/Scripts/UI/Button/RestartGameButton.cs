@@ -1,15 +1,29 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class RestartGameButton : ButtonBase
+public class RestartGameButton : MonoBehaviour
 {
-    public override void Clicked()
+
+    private void Start()
     {
-        base.Clicked();
-        if (!AdsManager.Instance.IsFirstCheck)
+        if (transform.TryGetComponent(out Button button))
         {
-            AdsManager.Instance.InterAdsHandle().Forget();
+            button.onClick.AddListener(Clicked);
         }
-        GameEventBus.RaiseGameRestart();
+    }
+
+    private async void Clicked()
+    {
+        if (AdsManager.Instance.IsFirstCheck)
+        {
+            await UniTask.WhenAny(
+                AdsManager.Instance.InterAdsHandle(),
+                UniTask.Delay(6000)
+            );
+
+            Time.fixedDeltaTime = 0.02f;
+            Time.timeScale = 1;
+        }
     }
 }

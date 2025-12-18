@@ -1,18 +1,30 @@
 using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class AddGoldButton : ButtonBase
+public class AddGoldButton : MonoBehaviour
 {
-    public override void Clicked()
+    
+    private void Start()
     {
-        base.Clicked();
-        AddGoldHandle();
+        if(transform.TryGetComponent(out Button button))
+        {
+            button.onClick.AddListener(Clicked);
+        }
     }
 
-    private void AddGoldHandle()
+    private async void Clicked()
     {
-        AdsManager.Instance.RewardAdsHandle().Forget();
-        SingletonManager.Instance.goldManager.AddGold(100);
+        bool success = await AdsManager.Instance.RewardAdsHandles();
+        if (success)
+        {
+            SingletonManager.Instance.goldManager.AddGold(100);
+        }
+        else
+        {
+            Debug.Log("Loading");
+        }
+        SingletonManager.Instance.soundManager.PlaySound(SoundType.Click);
     }
 }

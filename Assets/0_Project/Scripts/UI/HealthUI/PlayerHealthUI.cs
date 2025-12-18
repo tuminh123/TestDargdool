@@ -7,18 +7,34 @@ using UnityEngine.UI;
 public class PlayerHealthUI : HealthUI
 {
     [SerializeField] private Image damageOverlayImage;
+    CharacterCtrl player;
     protected override void Awake()
     {
         base.Awake();
-        health = CharacterCtrl.Instance.healthBase;
+        bool flowControl = GetPlayer();
+        if (!flowControl)
+        {
+            return;
+        }
     }
+
+    private bool GetPlayer()
+    {
+        player = FindFirstObjectByType<CharacterCtrl>();
+
+        if (player == null) return false;
+        health = player.GetComponentInChildren<HealthBase>();
+        if (health == null) return false;
+
+        damageOverlayImage.gameObject.SetActive(false);
+        return true;
+    }
+
     protected override void Start()
     {
         base.Start();
         GameEventBus.OnGameRestart += OnGameRestart;
         GameEventBus.OnPlayerRegeneration += GameEventBus_OnPlayerRegeneration;
-        if (damageOverlayImage == null) return;
-        damageOverlayImage.enabled = false;
     }
 
     protected override void OnDestroy()
@@ -29,20 +45,21 @@ public class PlayerHealthUI : HealthUI
     }
     private void OnGameRestart()
     {
-        OnPlayerSpawned(CharacterCtrl.Instance);
+        OnPlayerSpawned();
     }
     private void GameEventBus_OnPlayerRegeneration()
     {
-        OnPlayerSpawned(CharacterCtrl.Instance);
+        OnPlayerSpawned();
     }
-    private void OnPlayerSpawned(CharacterCtrl player)
+    private void OnPlayerSpawned()
     {
-        if (health != null) health.OnHealthChanged -= UpdateBar;
+        if (health == null) return;
 
-        health = player.healthBase;
+        if(!GetPlayer()) return;
+        
         health.InitHealth();
         UpdateBar(health.CurrentHealth, health.MaxHealth); // Cập nhật ngay lập tức
-        damageOverlayImage.enabled = false;
+        damageOverlayImage.gameObject.SetActive(false);
         // Đăng ký lại event
         health.OnHealthChanged += UpdateBar;
     }
@@ -50,23 +67,28 @@ public class PlayerHealthUI : HealthUI
     {
         base.UpdateBar(current, max);
 
-        if (current < 100)
+        if (current <= max * 0.5f)
         {
-            DamageEffectHandle().Forget();
+            ShowDamageOverlay().Forget();
+        }
+        else
+        {
+            damageOverlayImage.gameObject.SetActive(false);
         }
     }
-    private async UniTask DamageEffectHandle()
+    private async UniTaskVoid ShowDamageOverlay()
     {
         try
         {
-            damageOverlayImage.enabled = true;
-            await UniTask.Delay(2000);
-            damageOverlayImage.enabled = false;
-        }
-        catch (System.Exception)
-        {
-            //ignore
-        }
+            if (damageOverlayImage.gameObject.activeSelf) return;
 
+            damageOverlayImage.gameObject.SetActive(true);
+            await UniTask.Delay(2000, cancellationToken: this.GetCancellationTokenOnDestroy());
+            damageOverlayImage.gameObject.SetActive(false);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogException(e);
+        }
     }
 }

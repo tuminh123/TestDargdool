@@ -56,6 +56,23 @@ public class CharacterCtrl : CharacterParent
         base.OnEnable();
         healthBase.OnDead += OnDead;
         weaponEquip.OnEquip += WeaponEquip_OnEquip;
+        GameEventBus.OnPlayerSpawn += GameEventBus_OnPlayerSpawn;
+    }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        healthBase.OnDead -= OnDead;
+        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
+        GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
+
+    }
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        healthBase.OnDead -= OnDead;
+        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
+        GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
     }
 
     private void Start()
@@ -70,19 +87,10 @@ public class CharacterCtrl : CharacterParent
     {
         stateMachine.UpdatePhysicState();
     }
-    protected override void OnDisable()
-    {
-        base.OnDisable();
 
-        healthBase.OnDead -= OnDead;
-        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
-
-    }
-    protected override void OnDestroy()
+    private void GameEventBus_OnPlayerSpawn(CharacterCtrl obj)
     {
-        base.OnDestroy();
-        healthBase.OnDead -= OnDead;
-        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
+        obj = this;
     }
 
     // Weapon equipment event
