@@ -7,31 +7,10 @@ using UnityEngine.UI;
 public class PlayerHealthUI : HealthUI
 {
     [SerializeField] private Image damageOverlayImage;
-    CharacterCtrl player;
-    protected override void Awake()
-    {
-        base.Awake();
-        bool flowControl = GetPlayer();
-        if (!flowControl)
-        {
-            return;
-        }
-    }
-
-    private bool GetPlayer()
-    {
-        player = FindFirstObjectByType<CharacterCtrl>();
-
-        if (player == null) return false;
-        health = player.GetComponentInChildren<HealthBase>();
-        if (health == null) return false;
-
-        damageOverlayImage.gameObject.SetActive(false);
-        return true;
-    }
-
+    
     protected override void Start()
     {
+        GetPlayer();
         base.Start();
         GameEventBus.OnGameRestart += OnGameRestart;
         GameEventBus.OnPlayerRegeneration += GameEventBus_OnPlayerRegeneration;
@@ -53,10 +32,10 @@ public class PlayerHealthUI : HealthUI
     }
     private void OnPlayerSpawned()
     {
-        if (health == null) return;
+        GetPlayer();
 
-        if(!GetPlayer()) return;
-        
+        health.OnHealthChanged -= UpdateBar;
+
         health.InitHealth();
         UpdateBar(health.CurrentHealth, health.MaxHealth); // Cập nhật ngay lập tức
         damageOverlayImage.gameObject.SetActive(false);
@@ -90,5 +69,15 @@ public class PlayerHealthUI : HealthUI
         {
             Debug.LogException(e);
         }
+    }
+    private void GetPlayer()
+    {
+        CharacterCtrl player = CharacterCtrl.Instance;
+
+        if (player == null) return;
+        health = player.GetComponentInChildren<HealthBase>();
+        if (health == null) return;
+
+        damageOverlayImage.gameObject.SetActive(false);
     }
 }

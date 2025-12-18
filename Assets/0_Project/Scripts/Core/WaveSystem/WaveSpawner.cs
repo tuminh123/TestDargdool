@@ -15,6 +15,7 @@ public class WaveSpawner : MonoBehaviour
 
     private void Start()
     {
+        waveCompletePanel.SetActive(false);
         WaveSapwning();
         GameEventBus.OnGameRestart += OnGameRestart;
     }
@@ -104,7 +105,7 @@ public class WaveSpawner : MonoBehaviour
         // - Bật cửa ra next level
         // - Hiện thông báo
         // - Thay đổi trạng thái game
-        //waveCompletePanel?.SetActive(true);
+        waveCompletePanel.gameObject.SetActive(true);
     }
     private void ApplyBuffToEnemy(GameObject enemyObj, EnemyData enemyData, int waveIndex)
     {

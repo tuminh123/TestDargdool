@@ -144,7 +144,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
         this.isStunned = isStunned;
     }
 
-    public void SendDamage()
+    public virtual void SendDamage()
     {
         foreach (var item in damageDetect)
         {

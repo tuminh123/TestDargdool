@@ -119,7 +119,7 @@ public class DataManager : MonoBehaviour
         upgrades = new UpgradeData[]
         {
             new UpgradeData(UpgradeType.HEALTH,15,1.15f,0.10f),
-             new UpgradeData(UpgradeType.DAMAGEBASE,20,1.15f,0.10f),
+            new UpgradeData(UpgradeType.DAMAGEBASE,20,1.15f,0.10f),
             new UpgradeData(UpgradeType.CRITMULTIPLIER, 25, 1.15f, 0.10f),
             new UpgradeData(UpgradeType.CRITCHANCE, 30, 1.15f, 0.10f)
         };

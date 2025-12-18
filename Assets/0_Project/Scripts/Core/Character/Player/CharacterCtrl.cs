@@ -135,4 +135,17 @@ public class CharacterCtrl : CharacterParent
         if(enemy == null) return Vector2.up;
         return (transform.position - enemy.transform.position).normalized;
     }
+    public override void SendDamage()
+    {
+        foreach (var item in damageDetect)
+        {
+            if (item == null) continue;
+            item.SetDamageBase(stats.DamageBase);
+            if (item.SenderDamageTo())
+            {
+                break;
+            }
+        }
+
+    }
 }

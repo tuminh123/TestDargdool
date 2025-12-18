@@ -33,6 +33,11 @@ public class AdsManager : MonoBehaviour
 
         AdManager.Instance.Init();
 
+        MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdk.SdkConfiguration sdkConfiguration) => {
+            // Show Mediation Debugger
+            MaxSdk.ShowMediationDebugger();
+        };
+
     }
 
     public void InterAdsBegin()

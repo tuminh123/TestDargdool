@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Playables;
 using Zenject;
+using Zenject.SpaceFighter;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,12 +15,13 @@ public class GameManager : MonoBehaviour
     private TimeSlow timeSlow;
     [InjectOptional]
     private UIManager uiManager;
-    [SerializeField] private CharacterCtrl player;
- 
+    [SerializeField] CharacterCtrl playerPrefab;
+
 
     private void Awake()
     {
         SingletonManager.Instance.dataManager.DataLoad();
+
     }
 
     private void OnEnable()
@@ -54,7 +56,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 
-        CharacterCtrl player = FindFirstObjectByType<CharacterCtrl>();
+        CharacterCtrl player = CharacterCtrl.Instance;
+
         if (player == null) return;
         if (player.healthBase == null) return;
 
@@ -107,13 +110,14 @@ public class GameManager : MonoBehaviour
         var resettableObjects = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
         foreach (var r in resettableObjects)
         {
-            if(r==null) continue;
+            if(r == null) continue;
             if (r is IResettable resetObj) resetObj.ResetOnGameRestart();
         }
 
         StopAllCoroutines();
         ZenManager.Instance.uIManager.PopupLose.ClosePopup();
-        Instantiate(player, Vector3.zero, Quaternion.identity);
+
+        Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
 
     }
     #endregion

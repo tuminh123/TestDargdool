@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DamagePartEnemyCombatState : DamagePartEnemyState
@@ -27,10 +28,19 @@ public class DamagePartEnemyCombatState : DamagePartEnemyState
 
         if (attackTime < 0f)
         {
-            if (Random.value < 0.5f)
+            /*if (Random.value < 0.5f)
                 stateMachine.ChangeState(partEnemy.damagePartEnemyAttackState);
             else
-                stateMachine.ChangeState(partEnemy.damagePartEnemyDefenseState);
+                stateMachine.ChangeState(partEnemy.damagePartEnemyDefenseState);*/
+            IState[] states = new IState[]
+            {
+            partEnemy.damagePartEnemyAttackState,
+            partEnemy.damagePartEnemyDefenseState,
+            partEnemy.damagePartEnemyShootState,
+            };
+
+            int rand = Random.Range(0, states.Length);
+            stateMachine.ChangeState(states[rand]);
 
         }
         else
@@ -38,8 +48,7 @@ public class DamagePartEnemyCombatState : DamagePartEnemyState
             partEnemy.idle.IdelHandle();
         }
 
-        if (partEnemy.disBetweenEnemyAndPlayer > partEnemy.MaxAttackDistance) 
+        if (partEnemy.disBetweenEnemyAndPlayer > partEnemy.MaxAttackDistance)
             stateMachine.ChangeState(partEnemy.damagePartEnemyChaseState);
-
     }
 }

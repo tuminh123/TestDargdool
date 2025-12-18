@@ -11,6 +11,7 @@ public class DamagePartEnemy : EnemyAI
     public DamagePartEnemyStundState damagePartEnemyStund { get; private set; }
     public DamagePartEnemyDeadState damagePartEnemyDeadState { get;private set;}
     public DamagePartEnemyIdleState damagePartEnemyIdleState { get; private set; }
+    public DamagePartEnemyShootState damagePartEnemyShootState { get; private set; }
     #endregion
 
     [SerializeField] Balance right_up_arm;
@@ -21,7 +22,10 @@ public class DamagePartEnemy : EnemyAI
     [SerializeField] Balance left_down_arm;
     [SerializeField] Balance left_hand;
 
+    [SerializeField] private Transform shootPoint;
+
     [SerializeField] private float defenseDuration = 3;
+    [SerializeField] private float shootDuration = 2;
 
     private DamagePartToPlayer damagePartToPlayer;
 
@@ -35,6 +39,7 @@ public class DamagePartEnemy : EnemyAI
         damagePartEnemyStund = new DamagePartEnemyStundState(this, stateMachine, stunnedDuration);
         damagePartEnemyDeadState = new DamagePartEnemyDeadState(this, stateMachine, dieDuration);
         damagePartEnemyIdleState = new DamagePartEnemyIdleState(this, stateMachine);
+        damagePartEnemyShootState = new DamagePartEnemyShootState(this, stateMachine, shootDuration);
 
         damagePartToPlayer = GetComponentInChildren<DamagePartToPlayer>();
     }
@@ -45,6 +50,62 @@ public class DamagePartEnemy : EnemyAI
 
         stateMachine.InitState(damagePartEnemyIdleState);
     }
+
+    #region Shoot
+    public void BeginShoot()
+    {
+        StartCoroutine(ShootBullet());
+    }
+
+    public void StopShoot()
+    {
+        StopCoroutine(ShootBullet());
+    }
+
+
+
+    private IEnumerator ShootBullet()
+    {
+        if (attackDir.x > 0)
+        {
+            right_up_arm.SetRotation(115);
+            right_down_arm.SetRotation(110);
+            right_hand.SetRotation(105);
+        }
+        else if (attackDir.x < 0)
+        {
+            right_up_arm.SetRotation(-115);
+            right_down_arm.SetRotation(-110);
+            right_hand.SetRotation(-105);
+        }
+        yield return new WaitForSeconds(1.4f);
+
+        DaggerHandle();
+
+        Debug.Log("Shoot");
+
+        yield return new WaitForSeconds(3f);
+
+        right_up_arm.ResetData();
+        right_down_arm.ResetData();
+        right_hand.ResetData();
+
+    }
+
+    private void DaggerHandle()
+    {
+        Dagger daggerClone = ZenManager.Instance.objInGamePoolManager.Spawn(StringConst.DAGGER, shootPoint.position, Quaternion.identity) as Dagger;
+        if (daggerClone == null) return;
+
+        if (attackDir.x > 0)
+            daggerClone.SetDaggerAction(Vector2.right, 0);
+
+        else if (attackDir.x < 0)
+            daggerClone.SetDaggerAction(Vector2.left, 180);
+    }
+    #endregion
+
+    #region Defense
     public void BeginDefense()
     {
 
@@ -96,5 +157,6 @@ public class DamagePartEnemy : EnemyAI
         left_hand.ResetData();
 
     }
+    #endregion
 
 }

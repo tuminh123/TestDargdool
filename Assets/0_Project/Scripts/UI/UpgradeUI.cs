@@ -29,10 +29,6 @@ public class UpgradeUI : MonoBehaviour
 
     private void Upgrade()
     {
-        if (!AdsManager.Instance.IsFirstCheck)
-        {
-            AdsManager.Instance.InterAdsHandle().Forget();
-        }
         UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
         var goldMgr = SingletonManager.Instance.goldManager;
 
@@ -43,9 +39,13 @@ public class UpgradeUI : MonoBehaviour
         }
 
         float stat = GetCurrentStat();
-        float add = stat * dataUpgrade.StatIncreasePercent;
+        float add = (stat/3)* dataUpgrade.StatIncreasePercent;
 
-        SingletonManager.Instance.dataManager.Data.AddProperties(dataUpgrade.Type, add);
+        int addInt = Mathf.RoundToInt(add);
+
+        Debug.Log($"{stat} : {add}");
+
+        SingletonManager.Instance.dataManager.Data.AddProperties(dataUpgrade.Type, addInt);
 
         dataUpgrade.CostIncrease();
         //SingletonManager.Instance.dataManager.DataSave();

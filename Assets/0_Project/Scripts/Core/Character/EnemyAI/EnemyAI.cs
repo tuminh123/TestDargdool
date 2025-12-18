@@ -17,6 +17,8 @@ public abstract class EnemyAI : CharacterParent
     [SerializeField] GameObject parent;
     [SerializeField] protected ParticleSystem dieParticle;
 
+    [SerializeField] private Transform headModel;
+
     public CharacterCtrl characterCtrl { get;private set; }
     public PlayerDetect playerDetect { get; private set; }
 
@@ -38,14 +40,24 @@ public abstract class EnemyAI : CharacterParent
     }
     private void Update()
     {
-        
         HandleProperties();
+        HeadRotation();
         stateMachine.UpdateState();
     }
     private void FixedUpdate()
     {
         stateMachine.UpdatePhysicState();
     }
+    private void HeadRotation()
+    {
+        if (characterCtrl == null || characterCtrl.healthBase.IsDead) return;
+        Transform player = characterCtrl.transform;
+        Vector2 dir = -transform.position + player.position;
+
+        if (dir.x > 0) headModel.transform.localScale = new Vector3(1, 1, 1);
+        else if (dir.x < 0) headModel.transform.localScale = new Vector3(-1, 1, 1);
+    }
+
     private void HandleProperties()
     {
         if (characterCtrl == null || characterCtrl.healthBase.IsDead) return;

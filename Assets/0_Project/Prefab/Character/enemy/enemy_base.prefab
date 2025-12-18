@@ -2384,6 +2384,7 @@ MonoBehaviour:
   dieDuration: 4
   parent: {fileID: 4207200127957107742}
   dieParticle: {fileID: 2299053874070731217}
+  headModel: {fileID: 8134861680805615558}
 --- !u!114 &6563268671089781822
 MonoBehaviour:
   m_ObjectHideFlags: 0

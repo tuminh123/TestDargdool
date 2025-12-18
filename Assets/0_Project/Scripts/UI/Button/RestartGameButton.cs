@@ -24,6 +24,8 @@ public class RestartGameButton : MonoBehaviour
 
             Time.fixedDeltaTime = 0.02f;
             Time.timeScale = 1;
+
+            GameEventBus.RaiseGameRestart();
         }
     }
 }
