@@ -537,7 +537,7 @@ GameObject:
   - component: {fileID: 4110992042742661298}
   - component: {fileID: 6571852330120182784}
   - component: {fileID: 6130647219365188330}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: b_upper_arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,7 +668,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: 3c0e1a8ab67bc07448d008a895712b2c, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &2157104033509172376
 GameObject:
   m_ObjectHideFlags: 0
@@ -810,7 +809,7 @@ GameObject:
   - component: {fileID: 1084636375075902105}
   - component: {fileID: 11502323309360970}
   - component: {fileID: 3612774971720491637}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: b_thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -941,7 +940,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: 54c8d7d1f0cce604baf5711ed5d58a01, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &3005094063257562335
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,7 +1039,7 @@ GameObject:
   - component: {fileID: 3156146286018005870}
   - component: {fileID: 692174940073176246}
   - component: {fileID: 8800411165155070003}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MainCharacter_1
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1179,7 +1177,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: fb0b1da773317b3498061209af35ee5b, type: 2}
-  rb: {fileID: 0}
 --- !u!114 &692174940073176246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1255,7 +1252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 640
@@ -1359,7 +1356,7 @@ GameObject:
   - component: {fileID: 5624527392735781296}
   - component: {fileID: 4090379763451870655}
   - component: {fileID: 2333607056412324637}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: f_leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1491,7 +1488,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: e828a7e71a3576c4bbfcb8feeea91cc4, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &4112991576640860530
 GameObject:
   m_ObjectHideFlags: 0
@@ -1592,7 +1588,7 @@ GameObject:
   - component: {fileID: 7664596854310176517}
   - component: {fileID: 1600262601681471732}
   - component: {fileID: 766873153886474604}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: f_forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1724,7 +1720,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: 4708cbef7cea1514ab7c50ec37f2d070, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &4410389537351056126
 GameObject:
   m_ObjectHideFlags: 0
@@ -1873,7 +1868,7 @@ GameObject:
   - component: {fileID: 2072487251985088277}
   - component: {fileID: 2175298764408632572}
   - component: {fileID: 9152666678423266619}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: f_upper_arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2004,7 +1999,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: 4113982cd0a30d84ca37c36c97bbe849, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &4848398323575196710
 GameObject:
   m_ObjectHideFlags: 0
@@ -2050,7 +2044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 640
@@ -2153,7 +2147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 640
@@ -2289,7 +2283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 640
@@ -2393,7 +2387,7 @@ GameObject:
   - component: {fileID: 8430781537848931814}
   - component: {fileID: 3961491115906227227}
   - component: {fileID: 3222836845411370621}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: body_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2523,7 +2517,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: c7e415bade4c0ba42982d2de0e9de556, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &5861510798733415836
 GameObject:
   m_ObjectHideFlags: 0
@@ -2537,7 +2530,7 @@ GameObject:
   - component: {fileID: 8152868135073665642}
   - component: {fileID: 8847733124480709691}
   - component: {fileID: 1702462184695330122}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: b_leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2669,7 +2662,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: f848fb85e5e6d074ab9da9cd3822f113, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &6081706736883227903
 GameObject:
   m_ObjectHideFlags: 0
@@ -2683,7 +2675,7 @@ GameObject:
   - component: {fileID: 4738744541665214826}
   - component: {fileID: 1279164421210763878}
   - component: {fileID: 6752046578400281051}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: f_hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2813,7 +2805,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: d8008052fdb38ee4098b24e080b050cb, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &6153509869997073963
 GameObject:
   m_ObjectHideFlags: 0
@@ -2827,7 +2818,7 @@ GameObject:
   - component: {fileID: 7107250270497960884}
   - component: {fileID: 5862140178963398130}
   - component: {fileID: 8956344569007949312}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: b_forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2959,7 +2950,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: 55db510323479904ca164b232c2ddbfa, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &6199923336375848136
 GameObject:
   m_ObjectHideFlags: 0
@@ -2973,7 +2963,7 @@ GameObject:
   - component: {fileID: 8758704197466493263}
   - component: {fileID: 7450319894234265949}
   - component: {fileID: 8547396525566245039}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: hip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3104,7 +3094,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: 935041f4b1584c341a49e0bea6cdf976, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &6754344765468577162
 GameObject:
   m_ObjectHideFlags: 0
@@ -3379,7 +3368,7 @@ GameObject:
   - component: {fileID: 8717272264628074470}
   - component: {fileID: 5214850802827598433}
   - component: {fileID: 5528805774562441145}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3508,7 +3497,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: 9fd464914e03da8478712599e7f01988, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &7126394984888898007
 GameObject:
   m_ObjectHideFlags: 0
@@ -3941,7 +3929,7 @@ GameObject:
   - component: {fileID: 7099537823582061496}
   - component: {fileID: 2805552498193558659}
   - component: {fileID: 2510788486008588787}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: b_hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4071,7 +4059,6 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: 4f4888f5db312f34b899f4d999020efb, type: 2}
-  rb: {fileID: 0}
 --- !u!1 &7724547632302069250
 GameObject:
   m_ObjectHideFlags: 0
@@ -4117,7 +4104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 640
@@ -4166,7 +4153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 640
@@ -4215,7 +4202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 640
@@ -4433,7 +4420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 640
@@ -4624,7 +4611,7 @@ GameObject:
   - component: {fileID: 1902159556093202529}
   - component: {fileID: 1448669431266102772}
   - component: {fileID: 3126649963749721414}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: f_thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4755,4 +4742,3 @@ MonoBehaviour:
   minRot: -150
   maxRot: 150
   dataSO: {fileID: 11400000, guid: 395b27f3d49c15f42ac7b4c4c3aafdda, type: 2}
-  rb: {fileID: 0}

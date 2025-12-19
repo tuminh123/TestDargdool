@@ -128,6 +128,8 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
             item.SetIsTrigger(value);
         }
         bodyParent.SetIsTrigger(value);
+
+        if (detectCol == null) return;
         detectCol.enabled = value;
     }
     public void SetKnockBackBalance( )

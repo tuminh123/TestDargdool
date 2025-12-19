@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8664551217590440468}
   - component: {fileID: 1315116207247644138}
   - component: {fileID: 1059044266467975254}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: b_leg
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -335,7 +335,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6335938866298572887
 Transform:
   m_ObjectHideFlags: 0
@@ -446,7 +446,7 @@ GameObject:
   - component: {fileID: 5737886307156843859}
   - component: {fileID: 5660782112288491915}
   - component: {fileID: 1024842703808659027}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: f_forearm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -623,7 +623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -655,7 +655,7 @@ Transform:
   m_GameObject: {fileID: 1123233164686779835}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.163, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -849,7 +849,7 @@ GameObject:
   - component: {fileID: 4512575144896223431}
   - component: {fileID: 1451973612414713632}
   - component: {fileID: 9115062941638055835}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: b_upper_arm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1535,7 +1535,7 @@ GameObject:
   - component: {fileID: 1929318769269902538}
   - component: {fileID: 5809567507089735388}
   - component: {fileID: 3376486926691261493}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: f_leg
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1680,7 +1680,7 @@ GameObject:
   - component: {fileID: 2283947073090142086}
   - component: {fileID: 1101581838860631384}
   - component: {fileID: 1935736673569159789}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: b_hand
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1855,7 +1855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -1873,7 +1873,7 @@ GameObject:
   - component: {fileID: 9108444037886727838}
   - component: {fileID: 2755693351782301737}
   - component: {fileID: 993961930599207837}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boss_hot_dog
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2240,7 +2240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -2344,7 +2344,7 @@ GameObject:
   - component: {fileID: 6244902472472070558}
   - component: {fileID: 4057794283618418796}
   - component: {fileID: 6506670008558437320}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: body_2
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2520,7 +2520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -2678,7 +2678,7 @@ GameObject:
   - component: {fileID: 2432750820112358880}
   - component: {fileID: 8832198307959995480}
   - component: {fileID: 6690319202401171192}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: f_upper_arm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2854,7 +2854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -2958,7 +2958,7 @@ GameObject:
   - component: {fileID: 4406298610609084312}
   - component: {fileID: 8830811459986626123}
   - component: {fileID: 4130792693701577908}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: f_thigh
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3221,7 +3221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -3314,7 +3314,7 @@ GameObject:
   - component: {fileID: 2845029253672758411}
   - component: {fileID: 4224382256073553277}
   - component: {fileID: 4837449503463151722}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: b_forearm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3459,7 +3459,7 @@ GameObject:
   - component: {fileID: 8857447550180101362}
   - component: {fileID: 7028505570996391143}
   - component: {fileID: 2349228447441579566}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: head
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3877,7 +3877,7 @@ GameObject:
   - component: {fileID: 4720962060839350940}
   - component: {fileID: 7723816074763263215}
   - component: {fileID: 5052179118096449646}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: hip
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4021,7 +4021,7 @@ GameObject:
   - component: {fileID: 4326863059762072159}
   - component: {fileID: 6189005312508978148}
   - component: {fileID: 2383138004812304172}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: b_thigh
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4197,7 +4197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -4214,7 +4214,7 @@ GameObject:
   - component: {fileID: 725304753361885379}
   - component: {fileID: 7069995722917455725}
   - component: {fileID: 4682798400204038921}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: f_hand
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4650,7 +4650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576

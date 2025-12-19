@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class ItemBase : MonoBehaviour,IObjectPool,IResettable
 {
-    [SerializeField] protected float force = 5f;
+    [SerializeField] protected float force = 10f;
     public Rigidbody2D rb { get; private set; }
 
     protected virtual void Awake()

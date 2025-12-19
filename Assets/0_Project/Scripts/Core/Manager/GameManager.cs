@@ -68,6 +68,8 @@ public class GameManager : MonoBehaviour
             player.SetTriggerBalance(true);
         }
 
+        player.weaponEquip.UnEquipping();
+
         ZenManager.Instance.uIManager.PopupLose.ClosePopup();
 
     }
@@ -97,6 +99,11 @@ public class GameManager : MonoBehaviour
         ZenManager.Instance.uIManager.PopupLose.OpenPopup();
         SingletonManager.Instance.soundManager.PlaySound(SoundType.GameFail);
 
+        if (AdsManager.Instance == null)
+        {
+            Debug.LogWarning("AdsManager.Instance is NULL – skip ads");
+            yield break;
+        }
         AdsManager.Instance.InterAdsBegin();
 
     }
@@ -142,5 +149,14 @@ public class GameManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         SingletonManager.Instance.dataManager.DataSave();
+    }
+    private async void OnApplicationPause(bool pause)
+    {
+       /* if (!pause) // app RESUME
+        {
+            await AdsManager.Instance.AoaAdsHandle();
+            SingletonManager.Instance.dataManager.DataSave();
+        }*/
+        
     }
 }

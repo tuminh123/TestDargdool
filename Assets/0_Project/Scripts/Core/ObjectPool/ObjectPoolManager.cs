@@ -67,6 +67,7 @@ public class ObjectPoolManager<T> : MonoBehaviour where T : MonoBehaviour,IObjec
 
     private T GetObjectFromPool(T obj)
     {
+        if (obj == null) return null;
         string nameObj = obj.GetObjectName();
         if (objDic.ContainsKey(nameObj) && objDic[nameObj].Count > 0)
         {

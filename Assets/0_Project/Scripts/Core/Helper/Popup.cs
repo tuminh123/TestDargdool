@@ -7,13 +7,13 @@ namespace Popup
     {
         private void OnEnable()
         {
-            gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
             TweenPopupOpen();
         }
 
         private void OnDisable()
         {
-            gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+            gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         }
 
         public void OpenPopup()

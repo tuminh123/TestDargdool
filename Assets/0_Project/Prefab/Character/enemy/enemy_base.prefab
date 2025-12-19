@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -303,7 +303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -494,7 +494,7 @@ GameObject:
   - component: {fileID: 5976564456168628555}
   - component: {fileID: 7462651615583794142}
   - component: {fileID: 6871229064184840884}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: b_upper_arm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -725,7 +725,7 @@ GameObject:
   - component: {fileID: 8705382826721895053}
   - component: {fileID: 6104184860685235203}
   - component: {fileID: 2153617033280596339}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: b_forearm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -870,7 +870,7 @@ GameObject:
   - component: {fileID: 8794422972221538735}
   - component: {fileID: 3550945017323140241}
   - component: {fileID: 7810217699915268612}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: body_2
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1013,7 +1013,7 @@ GameObject:
   - component: {fileID: 2950156406882074700}
   - component: {fileID: 2476822232823244461}
   - component: {fileID: 1122884096568571516}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: f_forearm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1158,7 +1158,7 @@ GameObject:
   - component: {fileID: 8681482170291122015}
   - component: {fileID: 2892483877495782095}
   - component: {fileID: 6515113037389968588}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: b_thigh
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1784,7 +1784,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -1975,7 +1975,7 @@ GameObject:
   - component: {fileID: 7458319180737909756}
   - component: {fileID: 5190808752904491215}
   - component: {fileID: 7538606649315765842}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: f_leg
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2152,7 +2152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -2201,7 +2201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -2220,7 +2220,7 @@ GameObject:
   - component: {fileID: 1162648831196049961}
   - component: {fileID: 2545869443994863528}
   - component: {fileID: 6563268671089781822}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: enemy_base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2634,7 +2634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -2772,7 +2772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -2792,7 +2792,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5666123854862926631
 Transform:
   m_ObjectHideFlags: 0
@@ -2858,7 +2858,7 @@ GameObject:
   - component: {fileID: 4965232466378346459}
   - component: {fileID: 5662235708098028789}
   - component: {fileID: 7727984996404789955}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: b_leg
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3003,7 +3003,7 @@ GameObject:
   - component: {fileID: 2078233910222598977}
   - component: {fileID: 3574621494145558282}
   - component: {fileID: 7746475715858875284}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: f_hand
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3265,7 +3265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 0
-  radius: 0.35
+  radius: 0.4
   layer:
     serializedVersion: 2
     m_Bits: 576
@@ -3679,7 +3679,7 @@ GameObject:
   - component: {fileID: 3335263695683319029}
   - component: {fileID: 8595885874233798605}
   - component: {fileID: 4092414029441770832}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: b_hand
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3822,7 +3822,7 @@ GameObject:
   - component: {fileID: 525936909602388729}
   - component: {fileID: 2670992570077079190}
   - component: {fileID: 3030796448611791045}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: f_upper_arm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4053,7 +4053,7 @@ GameObject:
   - component: {fileID: 6561304519119530167}
   - component: {fileID: 5989799437384647388}
   - component: {fileID: 8502238875334297197}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: head
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4249,7 +4249,7 @@ GameObject:
   - component: {fileID: 7935599579980961046}
   - component: {fileID: 3815248520200786116}
   - component: {fileID: 4710953004281183827}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: f_thigh
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4393,7 +4393,7 @@ GameObject:
   - component: {fileID: 190429565001712693}
   - component: {fileID: 5969479755158873568}
   - component: {fileID: 789954234967232311}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: hip
   m_TagString: Player
   m_Icon: {fileID: 0}

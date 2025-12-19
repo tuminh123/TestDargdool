@@ -24,6 +24,8 @@ public class PlayerWeaponEquip : MonoBehaviour
 
         weapon.Equip(hand.Rb);
 
+        weapon.weaponDamage.SetTargetLayer(StringConst.ENEMY);
+
         RotationWeapon(weapon, hand);
 
         isEquipping = true;
@@ -68,5 +70,13 @@ public class PlayerWeaponEquip : MonoBehaviour
     public void SetIsEquipping(bool isEquipping)
     {
         this.isEquipping = isEquipping;
+    }
+    public void UnEquipping()
+    {
+        this.isEquipping=false;
+    }
+    public void Equipping()
+    {
+        this.isEquipping = true;
     }
 }

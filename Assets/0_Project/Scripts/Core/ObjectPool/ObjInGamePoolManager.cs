@@ -25,7 +25,16 @@ public class ObjInGamePoolManager : ObjectPoolManager<ObjInGameBase>
     {
         int index = Random.Range(0, points.Length);
         Vector2 pos = points[index].position;
-        Box box = Spawn(StringConst.BOX, pos, Quaternion.identity) as Box;
+
+        string[] boxTypes =
+        {
+        StringConst.GOLDBOX,
+        StringConst.WEAPONBOX
+    };
+
+        int rand = Random.Range(0, boxTypes.Length);
+
+        Box box = Spawn(boxTypes[rand], pos, Quaternion.identity) as Box;
         box.boxHealth.InitHealth();
     }
 

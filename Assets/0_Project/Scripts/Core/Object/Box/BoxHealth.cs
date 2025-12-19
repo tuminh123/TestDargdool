@@ -2,13 +2,13 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
-public class BoxHealth : MonoBehaviour, IDamageable
+public abstract class BoxHealth : MonoBehaviour, IDamageable
 {
     [InjectOptional] private ObjInGamePoolManager objInGamePoolManager;
     [InjectOptional] private ItemPoolManager itemPoolManager;
     [SerializeField] private float maxHP = 1;
     [SerializeField] private float currentHP;
-    private Box box;
+    protected Box box;
 
     private void Awake()
     {
@@ -45,15 +45,16 @@ public class BoxHealth : MonoBehaviour, IDamageable
 
             await UniTask.Delay(500);
 
-            ZenManager.Instance.itemPoolManager.SpawnRandomItem(transform.position);
-            await UniTask.Delay(200);
-            ZenManager.Instance.objInGamePoolManager.DeSpawn(box);
+            await Spawn();
         }
         catch (System.Exception ex)
         {
             Debug.LogError($"BoxDeSpawning Error: {ex.Message}");
         }
     }
+    // Change the abstract method declaration to remove the 'async' modifier.
+    // The 'async' modifier is not allowed on abstract methods, only on methods with a body.
+    public abstract UniTask Spawn();
     public void InitHealth()
     {
         currentHP = maxHP;

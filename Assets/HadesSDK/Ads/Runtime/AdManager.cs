@@ -44,6 +44,9 @@ namespace HadesSDK.Ads.Runtime
         private FirebaseService _firebaseService;
         private RemoteConfig _remoteConfig;
         private MmpService _mmpService;
+
+        //get
+        public RemoteConfig RemoteConfig => _remoteConfig;
         
         #region Singleton
 

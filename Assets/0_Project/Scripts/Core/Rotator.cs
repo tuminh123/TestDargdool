@@ -24,7 +24,15 @@ public class Rotator : MonoBehaviour
         if (damageable == null) return;
 
         damageable.TakeDamaged(damage);
-        Debug.Log("Rotator deal damage: " + damage);
+        //Debug.Log("Rotator deal damage: " + damage);
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        IDamageable damageable = collision.gameObject.GetComponentInChildren<IDamageable>();
+        if (damageable == null) return;
+
+        damageable.TakeDamaged(damage);
+        //Debug.Log("Rotator deal damage: " + damage);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

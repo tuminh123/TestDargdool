@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using Zenject;
 
@@ -29,6 +30,8 @@ public class CharacterCtrl : CharacterParent
 
     #endregion
 
+    private CancellationTokenSource unWeapon;
+
     //get
     public CameraShaker CameraShaker=>cameraShaker;
     protected override void Awake()
@@ -36,7 +39,7 @@ public class CharacterCtrl : CharacterParent
         base.Awake();
         Instance = this;
 
-        InitPlayerData();
+      
 
         jump = GetComponentInChildren<Jump>();
         zone = GetComponentInChildren<DetectionZone>();
@@ -50,7 +53,7 @@ public class CharacterCtrl : CharacterParent
         stunnedState = new MainStunState(stateMachine, this);
         weaponAttackState = new MainWeaponAttackState(stateMachine, this);
     }
-
+    
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -73,10 +76,14 @@ public class CharacterCtrl : CharacterParent
         healthBase.OnDead -= OnDead;
         weaponEquip.OnEquip -= WeaponEquip_OnEquip;
         GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
+
+        unWeapon?.Cancel();
+        unWeapon?.Dispose();
     }
 
     private void Start()
     {
+        InitPlayerData();
         stateMachine.InitState(idelState);
     }
     private void Update()
@@ -124,6 +131,9 @@ public class CharacterCtrl : CharacterParent
         SetKnockBackBalance();
         SetTriggerBalance(false);
 
+        RemoveWeapon(currentWeaponBase);
+        weaponEquip.Equipping();
+
         GameEventBus.RaisePlayerLose(this);
         //OnDeadWait().Forget();
     }
@@ -147,5 +157,32 @@ public class CharacterCtrl : CharacterParent
             }
         }
 
+    }
+    private void RemoveWeapon(WeaponBase weapon)
+    {
+        if (weapon == null)
+        {
+            Debug.LogWarning("RemoveWeapon called but weapon is NULL");
+            return;
+        }
+        // Cancel task cũ nếu có
+        unWeapon?.Cancel();
+        unWeapon?.Dispose();
+
+        unWeapon = new CancellationTokenSource();
+
+        // Link với lifecycle Character
+        var linkedToken = CancellationTokenSource.CreateLinkedTokenSource(
+            unWeapon.Token,
+            this.GetCancellationTokenOnDestroy()
+        ).Token;
+
+        weaponEquip.UnEquipping();
+
+        UniTaskSafe.Forget(
+            weapon.UnEquip,
+            linkedToken,
+            "Remove Weapon"
+        );
     }
 }

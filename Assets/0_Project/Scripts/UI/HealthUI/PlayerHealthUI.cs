@@ -65,9 +65,9 @@ public class PlayerHealthUI : HealthUI
             await UniTask.Delay(2000, cancellationToken: this.GetCancellationTokenOnDestroy());
             damageOverlayImage.gameObject.SetActive(false);
         }
-        catch (System.Exception e)
+        catch /*(System.Exception e)*/
         {
-            Debug.LogException(e);
+            //Debug.LogException(e);
         }
     }
     private void GetPlayer()

@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using HadesSDK;
 using HadesSDK.Ads.Runtime;
+using HadesSDK.Ads.Runtime.FirebaseServices;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -16,7 +17,11 @@ public class AdsManager : MonoBehaviour
     private bool isAoaShowSession = false;
     private bool isFirstCheck = false;
 
+    private float _timer => Time.realtimeSinceStartup;
+    private float _lastTimeShowInterAd = -999f;
+
     //public bool IsReward { get; private set; }
+    //get
     public bool IsFirstLoad => isAoaShowSession;
     public bool IsFirstCheck => isFirstCheck;
 
@@ -104,7 +109,11 @@ public class AdsManager : MonoBehaviour
                 bool rewardGranted = false;
 
                 AdManager.Instance.ShowReward(
-                    () => rewardGranted = true,
+                    () => 
+                    {
+                        rewardGranted = true;
+                        BlockInterstitial();
+                    },
                     () => rewardGranted = false,
                     "Reward_Show"
                 );
@@ -128,6 +137,7 @@ public class AdsManager : MonoBehaviour
 
     public async UniTask InterAdsHandle()
     {
+        if (!IsInterstitialPassCapping()) return;
         try
         {
 
@@ -150,7 +160,11 @@ public class AdsManager : MonoBehaviour
                      Debug.Log("FirebaseService is null");
                  }*/
                 if (!isFirstCheck) return;
-                AdManager.Instance.ShowInterstitial(OnSuccess, OnFail, "Inter_Show");
+                AdManager.Instance.ShowInterstitial(() =>
+                {
+                    BlockInterstitial();
+                }, 
+                OnFail, "Inter_Show");
             }
             else
             {
@@ -162,6 +176,18 @@ public class AdsManager : MonoBehaviour
             Debug.LogError($"lỗi ad : {ex.Message}");
         }
     }
+
+    private void BlockInterstitial()
+    {
+        _lastTimeShowInterAd = _timer;
+    }
+
+    public bool IsInterstitialPassCapping()
+    {
+        float cappingTime = AdManager.Instance.RemoteConfig.inter_ad_capping_time;
+        return (_timer - _lastTimeShowInterAd) >= cappingTime;
+    }
+
     #endregion
 
     #region Banner Ads Handle
@@ -210,6 +236,8 @@ public class AdsManager : MonoBehaviour
 
 
                 isAoaShowSession = true;
+                BlockInterstitial();
+
                 AdManager.Instance.ShowAoa();
                 
             }

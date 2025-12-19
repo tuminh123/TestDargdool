@@ -16,6 +16,11 @@ public class AddGoldButton : MonoBehaviour
 
     private async void Clicked()
     {
+        if (AdsManager.Instance == null)
+        {
+            Debug.LogWarning("AdsManager.Instance is NULL – skip ads");
+            return;
+        }
         bool success = await AdsManager.Instance.RewardAdsHandles();
         if (success)
         {

@@ -15,17 +15,25 @@ public class RestartGameButton : MonoBehaviour
 
     private async void Clicked()
     {
-        if (AdsManager.Instance.IsFirstCheck)
+        GameEventBus.RaiseGameRestart();
+
+        Time.fixedDeltaTime = 0.02f;
+        Time.timeScale = 1;
+
+        // SAFE CHECK AdsManager
+        if (AdsManager.Instance == null)
         {
-            await UniTask.WhenAny(
-                AdsManager.Instance.InterAdsHandle(),
-                UniTask.Delay(6000)
-            );
-
-            Time.fixedDeltaTime = 0.02f;
-            Time.timeScale = 1;
-
-            GameEventBus.RaiseGameRestart();
+            Debug.LogWarning("AdsManager.Instance is NULL – skip ads");
+            return;
         }
+
+        if (!AdsManager.Instance.IsFirstCheck)
+            return;
+
+        await UniTask.WhenAny(
+            AdsManager.Instance.InterAdsHandle(),
+            UniTask.Delay(6000)
+        );
+
     }
 }

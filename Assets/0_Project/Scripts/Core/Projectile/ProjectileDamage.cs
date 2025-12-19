@@ -7,7 +7,7 @@ public class ProjectileDamage : MonoBehaviour
     private ProjectilePoolManager projectilePoolManager;
     [SerializeField] protected float damage;
     [SerializeField] protected LayerMask targetLayer;
-    public ProjectileBase projectile;
+    public ProjectileBase projectile { get; private set; }
     private void Awake()
     {
         projectile = GetComponentInParent<ProjectileBase>();

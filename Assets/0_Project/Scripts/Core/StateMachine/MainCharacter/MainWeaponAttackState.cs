@@ -1,14 +1,18 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections;
+using System.Threading;
 using UnityEngine;
-
 public class MainWeaponAttackState : MainCharacterState
 {
+    private CancellationTokenSource unWeapon;
     public MainWeaponAttackState(StateMachine stateMachine, CharacterCtrl characterCtrl) : base(stateMachine, characterCtrl)
     {
     }
     public override void Enter()
     {
         base.Enter();
+        unWeapon = new CancellationTokenSource();
+
         characterCtrl.attack.HandleWeaponAttack(characterCtrl.AttackDir);
 
         WeaponBase weapon = characterCtrl?.currentWeaponBase;
@@ -26,6 +30,8 @@ public class MainWeaponAttackState : MainCharacterState
     public override void Exit()
     {
         base.Exit();
+        unWeapon?.Cancel();
+        unWeapon?.Dispose();
 
         characterCtrl.attack.StopAttack();
 
@@ -91,9 +97,32 @@ public class MainWeaponAttackState : MainCharacterState
     }
     private void RemoveWeapon(WeaponBase weapon)
     {
-        characterCtrl.weaponEquip.SetIsEquipping(false);
-        weapon.UnEquip();
+        if (weapon == null)
+        {
+            Debug.LogWarning("RemoveWeapon called but weapon is NULL");
+            return;
+        }
+        // Cancel task cũ nếu có
+        unWeapon?.Cancel();
+        unWeapon?.Dispose();
+
+        unWeapon = new CancellationTokenSource();
+
+        // Link với lifecycle Character
+        var linkedToken = CancellationTokenSource.CreateLinkedTokenSource(
+            unWeapon.Token,
+            characterCtrl.GetCancellationTokenOnDestroy()
+        ).Token;
+
+        characterCtrl.weaponEquip.UnEquipping();
+
+        UniTaskSafe.Forget(
+            weapon.UnEquip,
+            linkedToken,
+            "Remove Weapon"
+        );
     }
+
     private IShoot GetIShootByType(WeaponBase weapon)
     {
         if(weapon.TryGetComponent(out IShoot shoot)) return shoot;

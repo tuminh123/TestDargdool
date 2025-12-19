@@ -134,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   force: 10
   type: 1
+  velocityFly: 20
 --- !u!1 &819766602102926650
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,7 +189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3228774952642154263}
-  - component: {fileID: 8670314471495337049}
+  - component: {fileID: 6043086737211879728}
   m_Layer: 0
   m_Name: damage
   m_TagString: Untagged
@@ -205,13 +206,13 @@ Transform:
   m_GameObject: {fileID: 4604096573882380729}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.4, y: 0, z: 0}
+  m_LocalPosition: {x: 2.82, y: 0.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1310767581773280041}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8670314471495337049
+--- !u!114 &6043086737211879728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,11 +224,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ecb82e72eb2314d833af4419eeb70f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageBase: 30
-  radius: 1.7
+  damageBase: 80
+  radius: 1.38
   layer:
     serializedVersion: 2
-    m_Bits: 640
+    m_Bits: 0
 --- !u!1 &8977764511953324626
 GameObject:
   m_ObjectHideFlags: 0
