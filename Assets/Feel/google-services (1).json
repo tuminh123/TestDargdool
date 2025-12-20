@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "504812685980",
+    "project_id": "radgdollfirstclone",
+    "storage_bucket": "radgdollfirstclone.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504812685980:android:18831a9fefe6c58840fb59",
+        "android_client_info": {
+          "package_name": "com.ragdoll.fists.ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOnDtUI2hwtiVon1hjn-ZyNLywPizEBj0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

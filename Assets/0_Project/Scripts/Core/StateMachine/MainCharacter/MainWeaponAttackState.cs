@@ -66,7 +66,6 @@ public class MainWeaponAttackState : MainCharacterState
 
                 WeaponDamage damage = weapon.weaponDamage;
                 if (damage == null) return;
-
                 if (damage.SenderDamageTo())
                 {
                     RemoveWeapon(weapon);

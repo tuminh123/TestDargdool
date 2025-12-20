@@ -1,5 +1,6 @@
 ﻿
 using Cysharp.Threading.Tasks;
+using HadesSDK.Ads.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -104,7 +105,11 @@ public class CharacterCtrl : CharacterParent
     private void WeaponEquip_OnEquip(WeaponBase obj)
     {
         if (obj == null) return;
+
+        obj.weaponDamage?.SetWeaponDamage(stats.DamageBase);
+
         currentWeaponBase = obj;
+
     }
 
     #region Stats setup
@@ -126,6 +131,7 @@ public class CharacterCtrl : CharacterParent
     }
     public override void OnDead()
     {
+        FirebaseService.Instance.LogEvent("player dead", new EventParameter("time", "2025"));
         LastPositionBeforeDead = transform.position;
 
         SetKnockBackBalance();
@@ -144,19 +150,6 @@ public class CharacterCtrl : CharacterParent
         EnemyAI enemy = zone.GetNearestEnemy(transform);
         if(enemy == null) return Vector2.up;
         return (transform.position - enemy.transform.position).normalized;
-    }
-    public override void SendDamage()
-    {
-        foreach (var item in damageDetect)
-        {
-            if (item == null) continue;
-            item.SetDamageBase(stats.DamageBase);
-            if (item.SenderDamageTo())
-            {
-                break;
-            }
-        }
-
     }
     private void RemoveWeapon(WeaponBase weapon)
     {

@@ -151,6 +151,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
         foreach (var item in damageDetect)
         {
             if (item == null) continue;
+            item.SetDamageBase(stats.DamageBase);
             if (item.SenderDamageTo())
             {
                 break;

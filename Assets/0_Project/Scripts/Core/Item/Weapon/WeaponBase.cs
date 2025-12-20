@@ -54,6 +54,7 @@ public abstract class WeaponBase : ItemBase
         joint.connectedBody = null;
         weaponDeSpawn.gameObject.SetActive(true);
         weaponDamage.ResetLayer();
+        weaponDamage.ResetDamage();
     }
     private void WeaponUnequipAction()
     {
