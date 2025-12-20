@@ -27,24 +27,25 @@ public class AdsManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
         Instance = this;
-        DontDestroyOnLoad(Instance);
+        DontDestroyOnLoad(gameObject);
 
+    }
+    private void Start()
+    {
         AdManager.Instance.Init();
 
         MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdk.SdkConfiguration sdkConfiguration) => {
             // Show Mediation Debugger
             MaxSdk.ShowMediationDebugger();
         };
-
     }
-
     public void InterAdsBegin()
     {
         isFirstCheck = true;
