@@ -18,11 +18,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] CharacterCtrl playerPrefab;
 
 
-    private void Awake()
+    /*private void Awake()
     {
         SingletonManager.Instance.dataManager.DataLoad();
+    }*/
 
-    }
 
     private void OnEnable()
     {

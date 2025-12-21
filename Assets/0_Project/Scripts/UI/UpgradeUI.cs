@@ -22,6 +22,7 @@ public class UpgradeUI : MonoBehaviour
     private void UpdateText()
     {
         UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
+        if (dataUpgrade == null) return; 
         goldText.text = dataUpgrade.UpgradeCost.ToString();
         propertieText.text = GetStatText();
 
@@ -30,6 +31,8 @@ public class UpgradeUI : MonoBehaviour
     private void Upgrade()
     {
         UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
+        if(dataUpgrade == null) return;
+
         var goldMgr = SingletonManager.Instance.goldManager;
 
         if (!goldMgr.MinusGold(dataUpgrade.UpgradeCost))
@@ -55,6 +58,7 @@ public class UpgradeUI : MonoBehaviour
     private string GetStatText()
     {
         UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
+        if (dataUpgrade == null) return string.Empty;
         var data = SingletonManager.Instance.dataManager.Data;
 
         return dataUpgrade.Type switch
@@ -70,6 +74,7 @@ public class UpgradeUI : MonoBehaviour
     private float GetCurrentStat()
     {
         UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
+        if (dataUpgrade == null) return 0;
         var data = SingletonManager.Instance.dataManager.Data;
 
         return dataUpgrade.Type switch

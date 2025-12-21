@@ -82,12 +82,23 @@ public class DataManager : MonoBehaviour
     private string keyUpgrdeName = "UpgradeData";
     private string mainFile = "SaveData.txt";
     private string mainUpgradeFile = "SaveUpgradeData.txt";
-
+    public bool IsLoaded { get; private set; }
     public PlayerData Data => data;
+
+    private void Awake()
+    {
+        DataLoad();
+        IsLoaded = true;
+    }
 
     #region Play Data Save/Load
     public void DataSave()
     {
+        if (!IsLoaded)
+        {
+            Debug.LogWarning("Skip Save – Data not loaded");
+            return;
+        }
         ES3.Save(keyName, data, mainFile);
         ES3.Save(keyUpgrdeName, upgrades, mainUpgradeFile);
     }
@@ -115,7 +126,8 @@ public class DataManager : MonoBehaviour
         }
 
         // Nếu file không tồn tại hoặc bị hỏng, tạo mới dữ liệu mặc định
-        data = new PlayerData(); // khởi tạo dữ liệu mặc định
+        data = new PlayerData();
+        data.ResetData();
         upgrades = new UpgradeData[]
         {
             new UpgradeData(UpgradeType.HEALTH,15,1.15f,0.10f),
