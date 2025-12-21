@@ -49,6 +49,7 @@ MonoBehaviour:
   layer:
     serializedVersion: 2
     m_Bits: 64
+  damageInit: 100
 --- !u!1 &6328262127054029238
 GameObject:
   m_ObjectHideFlags: 0
