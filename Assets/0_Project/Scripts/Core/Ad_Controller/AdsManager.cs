@@ -1,12 +1,11 @@
 ﻿using Cysharp.Threading.Tasks;
-using HadesSDK;
 using HadesSDK.Ads.Runtime;
 using HadesSDK.Ads.Runtime.FirebaseServices;
 using System;
 using System.Collections;
 using UnityEngine;
 
-
+[DefaultExecutionOrder(-1110)]
 public class AdsManager : MonoBehaviour
 {
     public static AdsManager Instance { get; private set; }

@@ -21,7 +21,8 @@ public class UpgradeUI : MonoBehaviour
 
     private void UpdateText()
     {
-        UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
+        if (DataManager.Instance == null) return;
+        UpgradeData dataUpgrade = DataManager.Instance.GetUpgradeData(type);
         if (dataUpgrade == null) return; 
         goldText.text = dataUpgrade.UpgradeCost.ToString();
         propertieText.text = GetStatText();
@@ -30,7 +31,8 @@ public class UpgradeUI : MonoBehaviour
 
     private void Upgrade()
     {
-        UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
+        if (DataManager.Instance == null) return;
+        UpgradeData dataUpgrade = DataManager.Instance.GetUpgradeData(type);
         if(dataUpgrade == null) return;
 
         var goldMgr = SingletonManager.Instance.goldManager;
@@ -48,7 +50,7 @@ public class UpgradeUI : MonoBehaviour
 
         Debug.Log($"{stat} : {add}");
 
-        SingletonManager.Instance.dataManager.Data.AddProperties(dataUpgrade.Type, addInt);
+        DataManager.Instance.Data.AddProperties(dataUpgrade.Type, addInt);
 
         dataUpgrade.CostIncrease();
         //SingletonManager.Instance.dataManager.DataSave();
@@ -57,9 +59,10 @@ public class UpgradeUI : MonoBehaviour
 
     private string GetStatText()
     {
-        UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
+        if (DataManager.Instance == null) return string.Empty;
+        UpgradeData dataUpgrade = DataManager.Instance.GetUpgradeData(type);
         if (dataUpgrade == null) return string.Empty;
-        var data = SingletonManager.Instance.dataManager.Data;
+        var data = DataManager.Instance.Data;
 
         return dataUpgrade.Type switch
         {
@@ -73,9 +76,10 @@ public class UpgradeUI : MonoBehaviour
 
     private float GetCurrentStat()
     {
-        UpgradeData dataUpgrade = SingletonManager.Instance.dataManager.GetUpgradeData(type);
+        if (DataManager.Instance == null) return 0;
+        UpgradeData dataUpgrade = DataManager.Instance.GetUpgradeData(type);
         if (dataUpgrade == null) return 0;
-        var data = SingletonManager.Instance.dataManager.Data;
+        var data = DataManager.Instance.Data;
 
         return dataUpgrade.Type switch
         {

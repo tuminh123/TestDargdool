@@ -4,7 +4,7 @@ public class QuitButton : ButtonBase
 {
     public override void Clicked()
     {
-        SingletonManager.Instance.dataManager.DataSave();
+        DataManager.Instance.DataSave();
         Application.Quit();
     }
 }

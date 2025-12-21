@@ -70,8 +70,10 @@ public class PlayerData
     }
 }
 
+[DefaultExecutionOrder(-1100)]
 public class DataManager : MonoBehaviour
 {
+    public static DataManager Instance {  get; private set; }
     [Header("Player Data")]
     [SerializeField] private PlayerData data;
     [Space]
@@ -87,6 +89,16 @@ public class DataManager : MonoBehaviour
 
     private void Awake()
     {
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         DataLoad();
         IsLoaded = true;
     }

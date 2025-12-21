@@ -111,7 +111,8 @@ public class CharacterCtrl : CharacterParent
     #region Stats setup
     private void InitPlayerData()
     {
-        PlayerData data = SingletonManager.Instance.dataManager.Data;
+        if (DataManager.Instance == null) return;
+        PlayerData data = DataManager.Instance.Data;
         float maxHP = data.Health;
         float finalDamage = data.CalculateDamage();
         stats.SetMaxHealth(maxHP);

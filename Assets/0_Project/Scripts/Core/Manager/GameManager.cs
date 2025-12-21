@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SingletonManager.Instance.sceneLoader.LoadHomeScene();
-        SingletonManager.Instance.dataManager.DataSave();
+        DataManager.Instance.DataSave();
     }
     public void ChangePlayScene()
     {
@@ -161,13 +161,13 @@ public class GameManager : MonoBehaviour
     #endregion
     private void OnApplicationQuit()
     {
-        SingletonManager.Instance.dataManager.DataSave();
+        DataManager.Instance.DataSave();
     }
     private async void OnApplicationPause(bool pause)
     {
         if (!pause) // app RESUME
         {
-            SingletonManager.Instance.dataManager.DataSave();
+            DataManager.Instance.DataSave();
 
             if (AdsManager.Instance != null)
             {
