@@ -1,5 +1,6 @@
 ﻿
 using Cysharp.Threading.Tasks;
+using HadesSDK.Ads.Core;
 using HadesSDK.Ads.Runtime;
 using System;
 using System.Collections;
@@ -53,6 +54,10 @@ public class GameManager : MonoBehaviour
     #region Game event handle
     private void GameEventBus_OnPlayerRegeneration()
     {
+        if (FirebaseService.Instance != null)
+        {
+            FirebaseService.Instance.LogEvent("Regeneration Event", new EventParameter("Regeneration", "player regeneration"));
+        }
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 
@@ -99,12 +104,19 @@ public class GameManager : MonoBehaviour
         ZenManager.Instance.uIManager.OpenPopup(ZenManager.Instance.uIManager.PopupLose);
         SingletonManager.Instance.soundManager.PlaySound(SoundType.GameFail);
 
+        if (FirebaseService.Instance != null)
+        {
+            FirebaseService.Instance.LogEvent("Lose Event", new EventParameter("Lose", "don't complete all wave"));
+        }
+
+
         if (AdsManager.Instance == null)
         {
             Debug.LogWarning("AdsManager.Instance is NULL – skip ads");
             yield break;
         }
         AdsManager.Instance.InterAdsBegin();
+
 
     }
     private void OnRestartGame()
@@ -133,6 +145,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         ZenManager.Instance.uIManager.OpenPopup(ZenManager.Instance.uIManager.PopupWin);
         SingletonManager.Instance.soundManager.PlaySound(SoundType.WinClap);
+
+        if (FirebaseService.Instance != null)
+        {
+            FirebaseService.Instance.LogEvent("Win Event", new EventParameter("Win", "complete all wave"));
+        }
+       
 
         if (AdsManager.Instance == null)
         {
