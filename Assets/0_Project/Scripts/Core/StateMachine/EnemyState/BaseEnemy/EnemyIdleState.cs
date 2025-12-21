@@ -19,7 +19,7 @@ public class EnemyIdleState : EnemyBaseState
         time -= Time.deltaTime;
         if(time <= 0f)
         {
-            stateMachine.ChangeState(enemyBasic.enemyChaseState);
+            stateMachine.ChangeState(enemyBasic.enemyCombatState);
         }
     }
 }

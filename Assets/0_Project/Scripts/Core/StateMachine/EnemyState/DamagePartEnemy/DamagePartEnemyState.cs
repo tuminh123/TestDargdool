@@ -5,6 +5,7 @@ public class DamagePartEnemyState : IState
 {
     protected DamagePartEnemy partEnemy;
     protected StateMachine stateMachine;
+    protected bool isGround;
 
     public DamagePartEnemyState(DamagePartEnemy partEnemy, StateMachine stateMachine)
     {
@@ -17,13 +18,18 @@ public class DamagePartEnemyState : IState
 
     public virtual void Update()
     {
-     /*   GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
-        if (currentGameState == GameState.LOSE)
+        /*   GameState currentGameState = SingletonManager.Instance.gameManager.CurrentState;
+           if (currentGameState == GameState.LOSE)
+           {
+               stateMachine.ChangeState(partEnemy.damagePartEnemyIdleState);
+               return;
+           }*/
+        isGround = partEnemy.groundDetect.IsGround();
+        if (partEnemy.characterCtrl == null || partEnemy.characterCtrl.healthBase.IsDead)
         {
             stateMachine.ChangeState(partEnemy.damagePartEnemyIdleState);
             return;
-        }*/
-
+        }
         if (partEnemy.healthBase.IsDead)
         {
             stateMachine.ChangeState(partEnemy.damagePartEnemyDeadState);

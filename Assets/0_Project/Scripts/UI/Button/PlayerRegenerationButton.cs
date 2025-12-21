@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using HadesSDK.Ads.Core;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,5 +32,6 @@ public class PlayerRegenerationButton : MonoBehaviour
             Debug.Log("Loading");
         }
         SingletonManager.Instance.soundManager.PlaySound(SoundType.Click);
+        FirebaseService.Instance.LogEvent("player regeneration click", new EventParameter("player regeneration", "2025"));
     }
 }

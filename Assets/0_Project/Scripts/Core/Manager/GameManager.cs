@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
         GameEventBus.OnGamePause += GameEventBus_OnGamePause;
         GameEventBus.OnGameRestart += OnRestartGame;
         GameEventBus.OnPlayerRegeneration += GameEventBus_OnPlayerRegeneration;
-        //GameEventBus.OnLoadingFirst += GameEventBus_OnLoadingFirst;
+        GameEventBus.OnGameWin += GameWinHandle;
     }
     private void OnDisable()
     {
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         GameEventBus.OnGamePause -= GameEventBus_OnGamePause;
         GameEventBus.OnGameRestart -= OnRestartGame;
         GameEventBus.OnPlayerRegeneration -= GameEventBus_OnPlayerRegeneration;
-        //GameEventBus.OnLoadingFirst -= GameEventBus_OnLoadingFirst;
+        GameEventBus.OnGameWin -= GameWinHandle;
     }
 
     /* private void GameEventBus_OnLoadingFirst()
@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         Time.timeScale = 0f;
-        ZenManager.Instance.uIManager.PopupLose.OpenPopup();
+        ZenManager.Instance.uIManager.OpenPopup(ZenManager.Instance.uIManager.PopupLose);
         SingletonManager.Instance.soundManager.PlaySound(SoundType.GameFail);
 
         if (AdsManager.Instance == null)
@@ -122,10 +122,23 @@ public class GameManager : MonoBehaviour
         }
 
         StopAllCoroutines();
-        ZenManager.Instance.uIManager.PopupLose.ClosePopup();
+        ZenManager.Instance.uIManager.CloseCurrentPopup();
 
         Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
 
+    }
+    private void GameWinHandle()
+    {
+
+        Time.timeScale = 0f;
+        ZenManager.Instance.uIManager.OpenPopup(ZenManager.Instance.uIManager.PopupWin);
+        SingletonManager.Instance.soundManager.PlaySound(SoundType.WinClap);
+
+        if (AdsManager.Instance == null)
+        {
+            Debug.LogWarning("AdsManager.Instance is NULL – skip ads");
+        }
+        AdsManager.Instance.InterAdsBegin();
     }
     #endregion
 
@@ -152,11 +165,15 @@ public class GameManager : MonoBehaviour
     }
     private async void OnApplicationPause(bool pause)
     {
-       /* if (!pause) // app RESUME
+        if (!pause) // app RESUME
         {
-            await AdsManager.Instance.AoaAdsHandle();
             SingletonManager.Instance.dataManager.DataSave();
-        }*/
-        
+
+            if (AdsManager.Instance != null)
+            {
+                await AdsManager.Instance.AoaAdsHandle();
+            }
+        }
+
     }
 }

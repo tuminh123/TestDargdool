@@ -23,7 +23,7 @@ public class AgileEnemy : EnemyAI
     [SerializeField] private Balance right_up_arm;
     [SerializeField] private Balance right_down_arm;
     [SerializeField] private Balance right_hand;
-    public Jump jump { get; private set; }
+    
 
     [SerializeField] float timeComebackCombat = 5;
 
@@ -40,7 +40,6 @@ public class AgileEnemy : EnemyAI
         agileEnemyDeadState = new AgileEnemyDeadState(this,stateMachine,dieDuration);
         agileEnemyIdleState = new AgileEnemyIdleState(this, stateMachine);
 
-        jump = GetComponentInChildren<Jump>();
     }
 
     protected override void Start()

@@ -13,8 +13,7 @@ public class CharacterCtrl : CharacterParent
     [InjectOptional]
     private CameraShaker cameraShaker;
     public static CharacterCtrl Instance { get; private set; }
-    
-    public Jump jump {  get; private set; } 
+
     public DetectionZone zone { get; private set; }
     public PlayerWeaponEquip weaponEquip { get; private set; }
 
@@ -40,9 +39,6 @@ public class CharacterCtrl : CharacterParent
         base.Awake();
         Instance = this;
 
-      
-
-        jump = GetComponentInChildren<Jump>();
         zone = GetComponentInChildren<DetectionZone>();
         weaponEquip = GetComponentInChildren<PlayerWeaponEquip>();
         //state init

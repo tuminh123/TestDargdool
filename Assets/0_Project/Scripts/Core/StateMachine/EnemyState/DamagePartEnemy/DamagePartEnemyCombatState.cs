@@ -24,14 +24,22 @@ public class DamagePartEnemyCombatState : DamagePartEnemyState
         base.Update();
 
         attackTime -= Time.deltaTime;
-        
 
-        if (attackTime < 0f)
+
+        if (partEnemy.disBetweenEnemyAndPlayer > partEnemy.MaxAttackDistance * 3)
         {
-            /*if (Random.value < 0.5f)
-                stateMachine.ChangeState(partEnemy.damagePartEnemyAttackState);
-            else
-                stateMachine.ChangeState(partEnemy.damagePartEnemyDefenseState);*/
+            stateMachine.ChangeState(partEnemy.damagePartEnemyJumpState);
+            return;
+        }
+
+        if (partEnemy.disBetweenEnemyAndPlayer > partEnemy.MaxAttackDistance)
+        {
+            stateMachine.ChangeState(partEnemy.damagePartEnemyChaseState);
+            return;
+        }
+
+        if (attackTime <= 0f)
+        {
             IState[] states = new IState[]
             {
             partEnemy.damagePartEnemyAttackState,
@@ -41,14 +49,9 @@ public class DamagePartEnemyCombatState : DamagePartEnemyState
 
             int rand = Random.Range(0, states.Length);
             stateMachine.ChangeState(states[rand]);
-
-        }
-        else
-        {
-            partEnemy.idle.IdelHandle();
+            return;
         }
 
-        if (partEnemy.disBetweenEnemyAndPlayer > partEnemy.MaxAttackDistance)
-            stateMachine.ChangeState(partEnemy.damagePartEnemyChaseState);
+        partEnemy.idle.IdelHandle();
     }
 }

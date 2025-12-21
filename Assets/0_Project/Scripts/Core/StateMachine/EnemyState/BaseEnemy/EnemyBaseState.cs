@@ -5,7 +5,7 @@ public class EnemyBaseState : IState
 {
     protected EnemyBasic enemyBasic;
     protected StateMachine stateMachine;
-
+    protected bool isGround;
     public EnemyBaseState(StateMachine stateMachine,EnemyBasic enemyBasic)
     {
         this.stateMachine = stateMachine;
@@ -17,7 +17,8 @@ public class EnemyBaseState : IState
 
     public virtual void Update()
     {
-        if(enemyBasic.characterCtrl == null || enemyBasic.characterCtrl.healthBase.IsDead)
+        isGround = enemyBasic.groundDetect.IsGround();
+        if (enemyBasic.characterCtrl == null || enemyBasic.characterCtrl.healthBase.IsDead)
         {
             stateMachine.ChangeState(enemyBasic.enemyIdleState);
             return;

@@ -4227,14 +4227,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   body: {fileID: 7810217699915268612}
-  body_2: {fileID: 0}
-  hip: {fileID: 0}
+  body_2: {fileID: 7810217699915268612}
+  hip: {fileID: 789954234967232311}
   leftLeg: {fileID: 7727984996404789955}
   rightLeg: {fileID: 7538606649315765842}
-  leftHipLeg: {fileID: 0}
-  rightHipLeg: {fileID: 0}
-  jumpHeight: 5
-  bodyForce: 5
+  leftHipLeg: {fileID: 6515113037389968588}
+  rightHipLeg: {fileID: 4710953004281183827}
+  jumpHeight: 3
+  bodyForce: 3
   forwardForce: 3
 --- !u!1 &8811010327029147864
 GameObject:

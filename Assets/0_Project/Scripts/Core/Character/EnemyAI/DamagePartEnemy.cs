@@ -12,6 +12,7 @@ public class DamagePartEnemy : EnemyAI
     public DamagePartEnemyDeadState damagePartEnemyDeadState { get;private set;}
     public DamagePartEnemyIdleState damagePartEnemyIdleState { get; private set; }
     public DamagePartEnemyShootState damagePartEnemyShootState { get; private set; }
+    public DamagePartEnemyJumpState damagePartEnemyJumpState { get; private set; }
     #endregion
 
     [SerializeField] Balance right_up_arm;
@@ -40,7 +41,7 @@ public class DamagePartEnemy : EnemyAI
         damagePartEnemyDeadState = new DamagePartEnemyDeadState(this, stateMachine, dieDuration);
         damagePartEnemyIdleState = new DamagePartEnemyIdleState(this, stateMachine);
         damagePartEnemyShootState = new DamagePartEnemyShootState(this, stateMachine, shootDuration);
-
+        damagePartEnemyJumpState = new DamagePartEnemyJumpState(this, stateMachine);
         damagePartToPlayer = GetComponentInChildren<DamagePartToPlayer>();
     }
     protected override void Start()

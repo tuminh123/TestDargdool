@@ -19,7 +19,7 @@ public class DamagePartEnemyIdleState : DamagePartEnemyState
         time -= Time.deltaTime;
         if (time <= 0f)
         {
-            stateMachine.ChangeState(partEnemy.damagePartEnemyChaseState);
+            stateMachine.ChangeState(partEnemy.damagePartEnemyCombatState);
         }
     }
 }

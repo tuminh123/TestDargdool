@@ -498,7 +498,7 @@ GameObject:
   - component: {fileID: 3657750930889326883}
   - component: {fileID: 2640800951460532871}
   - component: {fileID: 8016012147739739662}
-  - component: {fileID: 8151274647235347476}
+  - component: {fileID: 1315350764564463728}
   m_Layer: 5
   m_Name: bg_WinPanel
   m_TagString: Untagged
@@ -564,7 +564,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8151274647235347476
+--- !u!114 &1315350764564463728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -573,7 +573,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4364287150631822839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db8041cc7c5b56a4aa27bcc27d2fb5b3, type: 3}
+  m_Script: {fileID: 11500000, guid: 7cc294a20e1797e42b38d3e1356905fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5884086251016843757

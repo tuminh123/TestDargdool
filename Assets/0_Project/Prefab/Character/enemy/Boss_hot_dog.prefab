@@ -2569,14 +2569,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   body: {fileID: 6506670008558437320}
-  body_2: {fileID: 0}
-  hip: {fileID: 0}
+  body_2: {fileID: 6506670008558437320}
+  hip: {fileID: 5052179118096449646}
   leftLeg: {fileID: 1059044266467975254}
   rightLeg: {fileID: 3376486926691261493}
-  leftHipLeg: {fileID: 0}
-  rightHipLeg: {fileID: 0}
-  jumpHeight: 5
-  bodyForce: 5
+  leftHipLeg: {fileID: 2383138004812304172}
+  rightHipLeg: {fileID: 4130792693701577908}
+  jumpHeight: 3
+  bodyForce: 3
   forwardForce: 3
 --- !u!1 &5570610851902311619
 GameObject:

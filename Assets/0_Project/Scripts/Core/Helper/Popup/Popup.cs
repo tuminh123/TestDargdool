@@ -5,6 +5,7 @@ namespace Popup
 {
     public class Popup : MonoBehaviour
     {
+        public bool IsOpen { get; private set; }
         private void OnEnable()
         {
             gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
@@ -18,17 +19,22 @@ namespace Popup
 
         public void OpenPopup()
         {
-            gameObject.SetActive(true);
+            IsOpen = true;
 
             SingletonManager.Instance.soundManager.PlaySound(SoundType.Pop);
             GameEventBus.RaiseGamePause();
+
+            gameObject.SetActive(true);
         }
         public void ClosePopup()
         {
-            TweenPopupClose();
+            IsOpen = false;
 
             SingletonManager.Instance.soundManager.PlaySound(SoundType.Pop);
             GameEventBus.RaiseGameResume();
+
+            TweenPopupClose();
+            gameObject.SetActive(false);
         }
 
         private void TweenPopupOpen()

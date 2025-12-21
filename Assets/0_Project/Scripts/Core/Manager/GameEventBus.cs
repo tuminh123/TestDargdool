@@ -11,6 +11,7 @@ public static class GameEventBus
     public static event System.Action OnPlayerRegeneration;
     public static event System.Action OnLoading;
     public static event System.Action OnLoadingDone;
+    public static event System.Action OnGameWin;
     public static void RaisePlayerLose(CharacterCtrl ctrl) => OnGameLose?.Invoke(ctrl);
     public static void RaisePlayerUpgrade(CharacterCtrl ctrl) => OnPlayerUpgrade?.Invoke(ctrl);
     public static void RaisePlayerSpawn(CharacterCtrl ctrl) => OnPlayerSpawn?.Invoke(ctrl);
@@ -20,4 +21,6 @@ public static class GameEventBus
     public static void RaisePlayerRegeneration() => OnPlayerRegeneration?.Invoke();
     public static void RaiseLoading() => OnLoading?.Invoke();
     public static void RaiseLoadingDone() => OnLoadingDone?.Invoke();
+    public static void RaiseGameWin() => OnGameWin?.Invoke();
+
 }

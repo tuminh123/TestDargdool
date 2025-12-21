@@ -23,17 +23,24 @@ public class EnemyCombatState : EnemyBaseState
 
         attackTime -= Time.deltaTime;
 
+        if (enemyBasic.disBetweenEnemyAndPlayer > enemyBasic.MaxAttackDistance * 3)
+        {
+            stateMachine.ChangeState(enemyBasic.enemyJumpState);
+            return;
+        }
 
-        if(attackTime < 0f)
+        if (enemyBasic.disBetweenEnemyAndPlayer > enemyBasic.MaxAttackDistance)
+        {
+            stateMachine.ChangeState(enemyBasic.enemyChaseState);
+            return;
+        }
+
+        if (attackTime <= 0f)
         {
             stateMachine.ChangeState(enemyBasic.enemyAttackState);
-        }
-        else
-        {
-            enemyBasic.idle.IdelHandle();
+            return;
         }
 
-        if (enemyBasic.disBetweenEnemyAndPlayer > enemyBasic.MaxAttackDistance) stateMachine.ChangeState(enemyBasic.enemyChaseState);
-
+        enemyBasic.idle.IdelHandle();
     }
 }

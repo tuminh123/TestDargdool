@@ -8,14 +8,12 @@ public class WaveSpawner : MonoBehaviour
 {
     [SerializeField] private List<Wave> waves;
     [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private GameObject waveCompletePanel;
     /*[SerializeField] private bool isSpawn;*/
 
     private int currentWaveIndex = 0;
 
     private void Start()
     {
-        waveCompletePanel.SetActive(false);
         WaveSapwning();
         GameEventBus.OnGameRestart += OnGameRestart;
     }
@@ -105,7 +103,7 @@ public class WaveSpawner : MonoBehaviour
         // - Bật cửa ra next level
         // - Hiện thông báo
         // - Thay đổi trạng thái game
-        waveCompletePanel.gameObject.SetActive(true);
+        GameEventBus.RaiseGameWin();
     }
     private void ApplyBuffToEnemy(GameObject enemyObj, EnemyData enemyData, int waveIndex)
     {

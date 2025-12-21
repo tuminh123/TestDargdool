@@ -2,6 +2,7 @@ using DamageNumbersPro;
 using System.Collections;
 using UnityEngine;
 using Zenject;
+#region Stats Character
 
 [System.Serializable]
 public class Stats
@@ -23,6 +24,8 @@ public class Stats
         this.damageBase = damageBase;
     }
 }
+
+#endregion
 public abstract class CharacterParent : MonoBehaviour,IResettable
 {
     [InjectOptional]
@@ -31,6 +34,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
     #region Child component
     public Move move { get; private set; }
     public Attack attack { get; private set; }
+    public Jump jump { get; private set; }
     public Idle idle { get; private set; }
     public HealthBase healthBase { get; private set; }
     public GroundDetect groundDetect { get; private set; }
@@ -64,6 +68,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
 
         idle = GetComponentInChildren<Idle>();
         move = GetComponentInChildren<Move>();
+        jump = GetComponentInChildren<Jump>();
         attack = GetComponentInChildren<Attack>();
         groundDetect = GetComponentInChildren<GroundDetect>();
 

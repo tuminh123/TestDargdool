@@ -23,6 +23,7 @@ public abstract class EnemyAI : CharacterParent
     public PlayerDetect playerDetect { get; private set; }
 
     public float disBetweenEnemyAndPlayer { get; private set; }
+
     //get
     public float MaxAttackDistance => maxAttackDistance;
     protected override void Awake()
