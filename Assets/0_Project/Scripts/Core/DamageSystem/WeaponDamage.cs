@@ -10,7 +10,7 @@ public class WeaponDamage : DamageBase
     }
     public void ResetLayer()
     {
-        SetTargetLayer("Nothing");
+        SetTargetLayer(StringConst.NOTHING);
     }
     public void SetTargetLayer(string layer)
     {

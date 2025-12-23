@@ -10,10 +10,13 @@ public class EnemyAttackState : EnemyBaseState
     {
         base.Enter();
 
+       /* UniTaskSafe.Forget
+        (
+        );*/
         enemyBasic.attack.HandleAttack(enemyBasic.AttackDir);
 
         if (enemyBasic.attack.currentAttackData == null) return;
-        enemyBasic.attack.currentAttackData.OnAttackEnd += OnAttackEnd;
+        enemyBasic.attack.currentAttackData.OnAttacking += OnAttackEnd;
     }
 
     
@@ -22,7 +25,7 @@ public class EnemyAttackState : EnemyBaseState
         enemyBasic.attack.StopAttack();
 
         if (enemyBasic.attack.currentAttackData == null) return;
-        enemyBasic.attack.currentAttackData.OnAttackEnd -= OnAttackEnd;
+        enemyBasic.attack.currentAttackData.OnAttacking -= OnAttackEnd;
     }
 
     private void OnAttackEnd()

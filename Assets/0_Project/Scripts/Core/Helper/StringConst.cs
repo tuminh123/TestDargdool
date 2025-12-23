@@ -45,4 +45,7 @@ public static class StringConst
 
     public const string MODEL = "model";
     public const string DEFAULT = "Default";
+    public const string NOTHING = "Nothing";
+    public const string HORIZONTAL = "Horizontal";
+    public const string VERTICAL = "Vertical";
 }

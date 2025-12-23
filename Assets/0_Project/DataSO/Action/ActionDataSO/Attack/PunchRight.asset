@@ -15,14 +15,11 @@ MonoBehaviour:
   actionName: punch_right
   balanceDatas:
   - type: 3
-    rotChange: 115
+    rotChange: 100
     forceChange: 50
   - type: 4
-    rotChange: 110
-    forceChange: 55
-  - type: 5
-    rotChange: 105
-    forceChange: 60
+    rotChange: 100
+    forceChange: 50
   - type: 15
     rotChange: -30
     forceChange: 30
@@ -35,6 +32,6 @@ MonoBehaviour:
   - type: 12
     rotChange: -30
     forceChange: 30
-  - type: 13
-    rotChange: -20
+  - type: 11
+    rotChange: 20
     forceChange: 30

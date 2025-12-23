@@ -3,25 +3,28 @@
 public class MainStunState : MainCharacterState
 {
     private float stunTime;
+    private float time;
 
-    public MainStunState(StateMachine stateMachine, CharacterCtrl characterCtrl) : base(stateMachine, characterCtrl)
+    public MainStunState(StateMachine stateMachine, CharacterCtrl characterCtrl,float stunTime) : base(stateMachine, characterCtrl)
     {
+        this.stunTime = stunTime;
     }
 
     public override void Enter()
     {
         base.Enter();
-        stunTime = 2;
-        characterCtrl.SetKnockBackBalance();
+        time = stunTime;
         characterCtrl.SetTriggerBalance(false);
+        characterCtrl.SetKnockBackBalance();
+        
         
     }
     public override void Update()
     {
         base.Update();
-        stunTime -= Time.deltaTime;
+        time -= Time.deltaTime;
 
-        if (stunTime <= 0)
+        if (time <= 0)
         {
             stateMachine.ChangeState(characterCtrl.idelState);
         }

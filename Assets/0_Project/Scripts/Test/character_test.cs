@@ -132,6 +132,7 @@ public class character_test : MonoBehaviour
     public void ResetBalance(BalanceType type)
     {
         Balance balance = GetBalance(type);
+        if(balance == null) return;
         balance.ResetData();
     }
     #endregion

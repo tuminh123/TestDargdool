@@ -11,6 +11,12 @@ public class DetectionZone : MonoBehaviour
         if (enemy == null) return;
         if (!enemiesInside.Contains(enemy)) enemiesInside.Add(enemy);
     }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        EnemyAI enemy = collision.GetComponentInParent<EnemyAI>();
+        if (enemy == null) return;
+        if (!enemiesInside.Contains(enemy)) enemiesInside.Add(enemy);
+    }
     private void OnTriggerExit2D(Collider2D collision)
     {
         EnemyAI enemy = collision.GetComponentInParent<EnemyAI>();

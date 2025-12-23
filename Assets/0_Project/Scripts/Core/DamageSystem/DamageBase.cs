@@ -15,23 +15,45 @@ public abstract class DamageBase : MonoBehaviour
         this.damageBase = damageBase;
     }
 
-    public bool SenderDamageTo()
+    public virtual bool SenderDamageTo()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius,layer);
+        #region test
+        /*  Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius,layer);
+          foreach (Collider2D collider in colliders)
+          {
+              if(collider == null) continue;
+              if(collider.TryGetComponent(out IDamageable health))
+              {
+                  if (health.IsDead) return false;
+                  DamageHandle(health);
+                  return true;
+              }
+          }
+          return false;*/
+        #endregion
+
+        Collider2D[] colliders =
+       Physics2D.OverlapCircleAll(transform.position, radius, layer);
+
         foreach (Collider2D collider in colliders)
         {
-            if(collider == null) continue;
-            if(collider.TryGetComponent(out IDamageable health))
-            {
-                if (health.IsDead) return false;
-                DamageHandle(health);
-                return true;
-            }
-        }
-        return false; 
-    }
+            if (collider == null) continue;
 
-    private void DamageHandle(IDamageable health)
+            if (!collider.TryGetComponent(out IDamageable health))
+                continue;
+
+            if (health.IsDead)
+                continue;
+
+            DamageHandle(health);
+            return true;
+        }
+
+        return false;
+
+    }
+    
+    protected void DamageHandle(IDamageable health)
     {
         //Debug.Log($"1 ");
         health.TakeDamaged(damageBase);

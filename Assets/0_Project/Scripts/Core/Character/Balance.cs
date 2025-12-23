@@ -9,8 +9,8 @@ public class Balance : MonoBehaviour
     [SerializeField] private float rot;
     [SerializeField] private float force;
 
-    [SerializeField] private float minRot = -150f;
-    [SerializeField] private float maxRot = 150f;
+    [SerializeField] private float minRot = -180f;
+    [SerializeField] private float maxRot = 180f;
 
     //[SerializeField] private float smoothTime = 0.1f; // thời gian mượt
     //private float angularVelocity; // lưu velocity giữa các frame
@@ -72,6 +72,7 @@ public class Balance : MonoBehaviour
     public void ResetData()
     {
         //Debug.Log("Reset");
+        if (dataSO == null) return;
         dataSO.Init(out rot,out force);
     }
     public void SetPropertie(float targetRotation,float force)

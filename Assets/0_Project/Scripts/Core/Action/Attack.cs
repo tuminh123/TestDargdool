@@ -1,4 +1,5 @@
-﻿using DamageNumbersPro;
+﻿using Cysharp.Threading.Tasks;
+using DamageNumbersPro;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -102,7 +103,7 @@ public class Attack : MonoBehaviour
         return list[Random.Range(0, list.Length)];
     }
 
-    public async void HandleAttack(Vector2 attackDir)
+    public async UniTask HandleAttack(Vector2 attackDir)
     {
         if (!CanAttack()) return;
 
@@ -148,7 +149,7 @@ public class Attack : MonoBehaviour
     #region Weapon Attack
     // ============================================================
 
-    public async void HandleWeaponAttack(Vector2 attackDir)
+    public async UniTask HandleWeaponAttack(Vector2 attackDir)
     {
         if (attackDir.x > 0)
             currentAttackData = weaponRightAttack;

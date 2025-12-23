@@ -168,12 +168,13 @@ public class AttackData
 
         try
         {
-            // PHASE A: Pose
+            
+            await AttackApply(configSO, attackDir, body, cts.Token);
+            OnAttacking?.Invoke();
             await PostAttack(configSO, body, cts.Token);
 
-            // PHASE B: Attack
-            OnAttacking?.Invoke();
-            await AttackApply(configSO, attackDir, body, cts.Token);
+           
+
         }
         catch (System.OperationCanceledException)
         {
@@ -184,9 +185,6 @@ public class AttackData
         OnAttackEnd?.Invoke();
     }
 
-    /// <summary>
-    /// Cancel từ bên ngoài (nếu cần)
-    /// </summary>
     public void CancelAttack()
     {
         if (cts != null && !cts.IsCancellationRequested)
@@ -194,9 +192,6 @@ public class AttackData
     }
 
 
-    // ======================================================
-    // PHASE B: ATTACK APPLY
-    // ======================================================
     private async UniTask AttackApply(
         AttackDataConfigSO configSO,
         Vector2 attackDir,
@@ -248,10 +243,6 @@ public class AttackData
         }
     }
 
-
-    // ======================================================
-    // PHASE A: POSE PREPARATION
-    // ======================================================
     private async UniTask PostAttack(
         AttackDataConfigSO configSO,
         Balance body,

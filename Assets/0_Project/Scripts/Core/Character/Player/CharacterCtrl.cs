@@ -12,8 +12,10 @@ public class CharacterCtrl : CharacterParent
 {
     [InjectOptional]
     private CameraShaker cameraShaker;
+    
     public static CharacterCtrl Instance { get; private set; }
 
+    [SerializeField] private float stunTime = 4;
     public DetectionZone zone { get; private set; }
     public PlayerWeaponEquip weaponEquip { get; private set; }
 
@@ -47,7 +49,7 @@ public class CharacterCtrl : CharacterParent
         idelState = new MainIdelState(stateMachine, this);
         attackState = new MainAttackState(stateMachine, this);
         jumpState = new MainJumpState(stateMachine, this);
-        stunnedState = new MainStunState(stateMachine, this);
+        stunnedState = new MainStunState(stateMachine, this,stunTime);
         weaponAttackState = new MainWeaponAttackState(stateMachine, this);
     }
     

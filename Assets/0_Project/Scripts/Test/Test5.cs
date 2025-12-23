@@ -3,13 +3,31 @@ using System.Collections;
 using UnityEngine;
 
 
-public class Test5 : MonoBehaviour
+public class Test5 : ObjectController
 {
+   /* public Balance[] balances;
 
-
-        void Update()
+    private void Start()
+    {
+        foreach (var item in balances)
         {
-            Tween.ShakeCamera(Camera.main, 10, 0.5f, 20, 0, 0, false);
+            if (item == null) continue;
+            item.SetIsTrigger(false);
+        }
+    }*/
 
-    } 
+    public string GetNameObj()
+    {
+        return "Test5";
+    }
+
+    protected override void OnPressed()
+    {
+        Debug.Log("Press");
+    }
+
+    protected override void OnTapped()
+    {
+        Debug.Log("Tap");
+    }
 }

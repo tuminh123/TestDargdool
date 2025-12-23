@@ -55,7 +55,7 @@ public class SwipeManager : MonoBehaviour
     private void BeginTouch(Vector2 pos)
     {
         startTouch = pos;
-        startTime = Time.time;
+        startTime = Time.unscaledTime;
         tapCandidate = true;
         isTouching = true;
     }
@@ -63,7 +63,7 @@ public class SwipeManager : MonoBehaviour
     private void EndTouch(Vector2 endPos)
     {
         isTouching = false;
-        float held = Time.time - startTime;
+        float held = Time.unscaledTime - startTime;
         float dist = (endPos - startTouch).magnitude;
 
         if (tapCandidate && held <= tapTime && dist <= tapMaxMovement)

@@ -9,12 +9,12 @@ public abstract class EnemyAI : CharacterParent
     [InjectOptional]
     private ItemPoolManager itemPoolManager;
 
-    [SerializeField] protected float maxAttackDistance = 5;
+    [SerializeField] protected float maxAttackDistance = 3;
     //Time change state
-    [SerializeField] protected float attackDuration = 3;
+    [SerializeField] protected float attackDuration = 1;
     [SerializeField] protected float stunnedDuration = 4;
     [SerializeField] protected float dieDuration = 3;
-    [SerializeField] GameObject parent;
+
     [SerializeField] protected ParticleSystem dieParticle;
 
     [SerializeField] private Transform headModel;
@@ -64,14 +64,15 @@ public abstract class EnemyAI : CharacterParent
         if (characterCtrl == null || characterCtrl.healthBase.IsDead) return;
         Transform player = characterCtrl.transform;
 
-        attackDir = (player.position - bodyParent.transform.position).normalized;
-        disBetweenEnemyAndPlayer = Vector2.Distance(bodyParent.transform.position, player.position);
+        attackDir = (player.position - transform.position).normalized;
+        disBetweenEnemyAndPlayer = Vector2.Distance(transform.position, player.position);
     }
     public override void OnDead()
     {
-        Destroy(parent);
+        Destroy(gameObject);
         //Destroy(bodyParent.gameObject);
 
+        if(ZenManager.Instance.itemPoolManager == null || ZenManager.Instance == null) return;
         ZenManager.Instance. itemPoolManager.SpawnRandomItem(transform.position);
 
     }

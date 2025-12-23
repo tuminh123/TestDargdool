@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using HadesSDK.Ads.Core;
 using HadesSDK.Ads.Runtime;
+using HadesSDK.Ads.Runtime.FirebaseServices;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -42,6 +43,15 @@ public class GameManager : MonoBehaviour
         GameEventBus.OnGameRestart -= OnRestartGame;
         GameEventBus.OnPlayerRegeneration -= GameEventBus_OnPlayerRegeneration;
         GameEventBus.OnGameWin -= GameWinHandle;
+        bool isBannerOn = FirebaseService.Instance.GetRemoteConfig<RemoteConfig>().banner_ad_on;
+        if (isBannerOn)
+        {
+            // ShowBanner
+        }
+        else
+        {
+            // Hide Banner
+        }
     }
 
     /* private void GameEventBus_OnLoadingFirst()

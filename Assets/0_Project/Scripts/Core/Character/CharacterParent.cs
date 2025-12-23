@@ -46,7 +46,6 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
     public StateMachine stateMachine { get; private set; }
 
     //Balance
-    [SerializeField]protected Balance bodyParent;
     protected Balance[] childBalance;
 
     [SerializeField] protected float knockBackForce;
@@ -118,10 +117,12 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
     {
         if(healthBase.IsDead) return;
         isStunned = true;
+        if (ZenManager.Instance == null) return;
         VfxBase vfx = ZenManager.Instance.vfxPoolManager.Spawn(StringConst.HURTVFX, transform.position, Quaternion.identity);
 
-        ZenManager.Instance.vfxPoolManager.SetParent(vfx, bodyParent.transform);
+        ZenManager.Instance.vfxPoolManager.SetParent(vfx, transform);
 
+        if (SingletonManager.Instance == null || SingletonManager.Instance.soundManager == null) return;
         SingletonManager.Instance.soundManager.PlaySound(SoundType.Crunch);
 
     }
@@ -132,7 +133,6 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
             if(item == null) continue;
             item.SetIsTrigger(value);
         }
-        bodyParent.SetIsTrigger(value);
 
         if (detectCol == null) return;
         detectCol.enabled = value;
@@ -142,9 +142,10 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
         Vector2 knockBackDir = GetKnockDir();
         foreach (var item in childBalance)
         {
+            if(item == null) continue ;
             item.Rb.linearVelocity = knockBackDir * knockBackForce; ;
+            //item.Rb.AddForce(knockBackDir*knockBackForce,ForceMode2D.Impulse);
         }
-        bodyParent.Rb.linearVelocity = knockBackDir * knockBackForce; ;
     }
     public void SetIsStunned(bool isStunned)
     {
@@ -218,7 +219,6 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
             if (item == null) continue;
             Destroy(item.gameObject);
         }
-        Destroy(bodyParent.gameObject);
     }
 
     private void ResetBalance()
@@ -229,8 +229,6 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
             item.hinge.enabled = false;
             item.ResetState();
         }
-        bodyParent.hinge.enabled = false;
-        bodyParent.ResetState();
     }
     #endregion
 }

@@ -36,12 +36,15 @@ public class MainAttackState : MainCharacterState
     {
         //Debug.Log("Attack");
         //characterCtrl.SendDamage();
-        ZenManager.Instance.cameraShaker.ShakeCam();
+        /* if (ZenManager.Instance.cameraShaker == null || ZenManager.Instance == null) return;
+         ZenManager.Instance.cameraShaker.ShakeCam();*/
+        characterCtrl.SendDamage();
+        stateMachine.ChangeState(characterCtrl.idelState);
     }
     private void EndAttack()
     {
-        characterCtrl.SendDamage();
-        stateMachine.ChangeState(characterCtrl.idelState);
+        //characterCtrl.SendDamage();
+        //stateMachine.ChangeState(characterCtrl.idelState);
     }
     
 }

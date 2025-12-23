@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Terresquall;
 using UnityEngine;
 
 public class MainCharacterState : IState
@@ -18,13 +19,13 @@ public class MainCharacterState : IState
 
     public virtual void Enter()
     {
-        SwipeManager.OnTap += HandleTap;
+        InputManager.OnTap += HandleTap;
         //SwipeManager.OnSwipe += HandleSwipe;
     }
 
     public virtual void Exit()
     {
-        SwipeManager.OnTap -= HandleTap;
+        InputManager.OnTap -= HandleTap;
         //SwipeManager.OnSwipe -= HandleSwipe;
         //characterCtrl.moveVer2.SetMoveDirection(Vector2.zero);
     }
@@ -94,7 +95,10 @@ public class MainCharacterState : IState
             stateMachine.ChangeState(characterCtrl.stunnedState);
         }
 
-        x = SwipeManagerTest.MoveDirection;
+        x = VirtualJoystick.GetAxis(StringConst.HORIZONTAL);
+        float y = VirtualJoystick.GetAxis(StringConst.VERTICAL);
+
+
 
         isGround = characterCtrl.groundDetect.IsGround();
 
@@ -108,7 +112,7 @@ public class MainCharacterState : IState
             stateMachine.ChangeState(characterCtrl.attackState);
         }
         else*/
-        if (SwipeManagerTest.SwipeUp && isGround)
+        if (y > 0 && isGround)
         {
             stateMachine.ChangeState(characterCtrl.jumpState);
         }
