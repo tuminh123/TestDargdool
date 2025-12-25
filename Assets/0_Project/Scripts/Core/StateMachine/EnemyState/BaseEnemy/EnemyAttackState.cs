@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using System;
+using UnityEngine;
 
 public class EnemyAttackState : EnemyBaseState
 {
@@ -10,25 +12,29 @@ public class EnemyAttackState : EnemyBaseState
     {
         base.Enter();
 
-       /* UniTaskSafe.Forget
-        (
-        );*/
         enemyBasic.attack.HandleAttack(enemyBasic.AttackDir);
 
         if (enemyBasic.attack.currentAttackData == null) return;
-        enemyBasic.attack.currentAttackData.OnAttacking += OnAttackEnd;
+    
+        enemyBasic.attack.currentAttackData.OnAttacking += OnAttacking;
+        enemyBasic.attack.currentAttackData.OnEndAttack += OnAttackEnd;
     }
 
     
     public override void Exit()
     {
-        enemyBasic.attack.StopAttack();
-
+        base.Exit();
         if (enemyBasic.attack.currentAttackData == null) return;
-        enemyBasic.attack.currentAttackData.OnAttacking -= OnAttackEnd;
+        enemyBasic.attack.currentAttackData.OnAttacking -= OnAttacking;
+        enemyBasic.attack.currentAttackData.OnEndAttack -= OnAttackEnd;
     }
 
     private void OnAttackEnd()
+    {
+        enemyBasic.attack.StopAttack();
+    }
+
+    private void OnAttacking()
     {
         enemyBasic.SendDamage();
 

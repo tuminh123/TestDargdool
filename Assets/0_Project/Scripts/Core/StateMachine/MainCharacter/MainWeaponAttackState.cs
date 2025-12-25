@@ -23,7 +23,7 @@ public class MainWeaponAttackState : MainCharacterState
         if (characterCtrl.attack.currentAttackData == null) return;
 
         characterCtrl.attack.currentAttackData.OnAttacking += Attacking;
-        characterCtrl.attack.currentAttackData.OnAttackEnd += EndAttack;
+        characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
 
     }
 
@@ -38,7 +38,7 @@ public class MainWeaponAttackState : MainCharacterState
         if (characterCtrl.attack.currentAttackData == null) return;
 
         characterCtrl.attack.currentAttackData.OnAttacking -= Attacking;
-        characterCtrl.attack.currentAttackData.OnAttackEnd -= EndAttack;
+        characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
 
     }
     private void Attacking()

@@ -14,7 +14,7 @@ public class DamagePartEnemyAttackState : DamagePartEnemyState
        partEnemy.attack.HandleAttack(partEnemy.AttackDir);
 
         if (partEnemy.attack.currentAttackData == null) return;
-       partEnemy.attack.currentAttackData.OnAttackEnd += OnAttackEnd;
+       //partEnemy.attack.currentAttackData.OnAttackEnd += OnAttackEnd;
     }
 
 
@@ -23,7 +23,7 @@ public class DamagePartEnemyAttackState : DamagePartEnemyState
        partEnemy.attack.StopAttack();
 
         if (partEnemy.attack.currentAttackData == null) return;
-       partEnemy.attack.currentAttackData.OnAttackEnd -= OnAttackEnd;
+       //partEnemy.attack.currentAttackData.OnAttackEnd -= OnAttackEnd;
     }
 
     private void OnAttackEnd()

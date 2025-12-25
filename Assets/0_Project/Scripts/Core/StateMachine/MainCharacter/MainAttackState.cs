@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections;
 using UnityEngine;
 
 public class MainAttackState : MainCharacterState
@@ -15,7 +16,7 @@ public class MainAttackState : MainCharacterState
         if (characterCtrl.attack.currentAttackData == null) return;
 
         characterCtrl.attack.currentAttackData.OnAttacking += Attacking;
-        characterCtrl.attack.currentAttackData.OnAttackEnd += EndAttack;
+        characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
 
         
 
@@ -24,27 +25,29 @@ public class MainAttackState : MainCharacterState
     {
         base.Exit();
 
-        characterCtrl.attack.StopAttack();
-
+       
         if (characterCtrl.attack.currentAttackData == null) return;
 
         characterCtrl.attack.currentAttackData.OnAttacking -= Attacking;
-        characterCtrl.attack.currentAttackData.OnAttackEnd -= EndAttack;
+        characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
 
     }
     private void Attacking()
     {
         //Debug.Log("Attack");
         //characterCtrl.SendDamage();
-        /* if (ZenManager.Instance.cameraShaker == null || ZenManager.Instance == null) return;
-         ZenManager.Instance.cameraShaker.ShakeCam();*/
+
         characterCtrl.SendDamage();
+
         stateMachine.ChangeState(characterCtrl.idelState);
+
     }
     private void EndAttack()
     {
         //characterCtrl.SendDamage();
         //stateMachine.ChangeState(characterCtrl.idelState);
+        characterCtrl.attack.StopAttack();
+
     }
-    
+
 }

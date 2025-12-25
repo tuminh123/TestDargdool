@@ -10,8 +10,7 @@ using Zenject;
 
 public class CharacterCtrl : CharacterParent
 {
-    [InjectOptional]
-    private CameraShaker cameraShaker;
+    [SerializeField]private CameraShaker cameraShaker;
     
     public static CharacterCtrl Instance { get; private set; }
 

@@ -14,7 +14,7 @@ public class AgileEnemyAttackState : AgileEnemyState
         agileEnemy.attack.HandleAttack(agileEnemy.AttackDir);
 
         if (agileEnemy.attack.currentAttackData == null) return;
-        agileEnemy.attack.currentAttackData.OnAttackEnd += OnAttackEnd;
+        //agileEnemy.attack.currentAttackData.OnAttackEnd += OnAttackEnd;
     }
 
 
@@ -23,7 +23,7 @@ public class AgileEnemyAttackState : AgileEnemyState
         agileEnemy.attack.StopAttack();
 
         if (agileEnemy.attack.currentAttackData == null) return;
-        agileEnemy.attack.currentAttackData.OnAttackEnd -= OnAttackEnd;
+        //agileEnemy.attack.currentAttackData.OnAttackEnd -= OnAttackEnd;
     }
 
     private void OnAttackEnd()

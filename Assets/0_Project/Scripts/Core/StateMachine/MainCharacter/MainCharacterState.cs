@@ -43,12 +43,12 @@ public class MainCharacterState : IState
 
         if (!isGround)
         {
-            if (airTapCount >= 3)
+           /* if (airTapCount >= 3)
             {
                 Debug.Log("Air tap limit reached!");
                 return;
             }
-
+*/
             airTapCount++;
             Debug.Log("Air tap count: " + airTapCount);
         }
