@@ -13,7 +13,7 @@ public class AgileEnemyStunnedState : AgileEnemyState
         base.Enter();
         stunTime = stunDuration;
         agileEnemy.SetKnockBackBalance();
-        agileEnemy.SetTriggerBalance(false); 
+        agileEnemy.DisableBalance(); 
     }
     public override void Update()
     {
@@ -29,6 +29,6 @@ public class AgileEnemyStunnedState : AgileEnemyState
     {
         base.Exit();
         agileEnemy.SetIsStunned(false);
-        agileEnemy.SetTriggerBalance(true);
+        agileEnemy.EnableBalance();
     }
 }

@@ -11,7 +11,7 @@ public class EnemyAttackState : EnemyBaseState
     public override void Enter()
     {
         base.Enter();
-
+        enemyBasic.attackContext.EnableAttack();
         enemyBasic.attack.HandleAttack(enemyBasic.AttackDir);
 
         if (enemyBasic.attack.currentAttackData == null) return;
@@ -24,6 +24,7 @@ public class EnemyAttackState : EnemyBaseState
     public override void Exit()
     {
         base.Exit();
+        enemyBasic.attackContext.DisableAttack();
         if (enemyBasic.attack.currentAttackData == null) return;
         enemyBasic.attack.currentAttackData.OnAttacking -= OnAttacking;
         enemyBasic.attack.currentAttackData.OnEndAttack -= OnAttackEnd;
@@ -32,13 +33,14 @@ public class EnemyAttackState : EnemyBaseState
     private void OnAttackEnd()
     {
         enemyBasic.attack.StopAttack();
+        stateMachine.ChangeState(enemyBasic.enemyCombatState);
     }
 
     private void OnAttacking()
     {
         enemyBasic.SendDamage();
 
-        stateMachine.ChangeState(enemyBasic.enemyCombatState);
+        
     }
 
 }

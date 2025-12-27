@@ -9,9 +9,7 @@ using UnityEngine;
 using Zenject;
 
 public class CharacterCtrl : CharacterParent
-{
-    [SerializeField]private CameraShaker cameraShaker;
-    
+{    
     public static CharacterCtrl Instance { get; private set; }
 
     [SerializeField] private float stunTime = 4;
@@ -33,8 +31,6 @@ public class CharacterCtrl : CharacterParent
 
     private CancellationTokenSource unWeapon;
 
-    //get
-    public CameraShaker CameraShaker=>cameraShaker;
     protected override void Awake()
     {
         base.Awake();
@@ -116,8 +112,13 @@ public class CharacterCtrl : CharacterParent
         PlayerData data = DataManager.Instance.Data;
         float maxHP = data.Health;
         float finalDamage = data.CalculateDamage();
+        float critChane = data.CritChance;
+        float critMultiplier = data.CritMultiplier;
+
         stats.SetMaxHealth(maxHP);
         stats.SetDamageBase(finalDamage);
+        stats.SetCritChane(critChane);
+        stats.SetCritMultiplier(critMultiplier);
     }
     #endregion
 
@@ -133,7 +134,7 @@ public class CharacterCtrl : CharacterParent
         LastPositionBeforeDead = transform.position;
 
         SetKnockBackBalance();
-        SetTriggerBalance(false);
+        DisableBalance();
 
         RemoveWeapon(currentWeaponBase);
         weaponEquip.Equipping();

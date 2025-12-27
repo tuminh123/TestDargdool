@@ -80,10 +80,11 @@ public class DataManager : MonoBehaviour
     [Header("Upgrade Data")]
     [SerializeField] private UpgradeData[] upgrades;
 
-    private string keyName = "PlayerData";
-    private string keyUpgrdeName = "UpgradeData";
-    private string mainFile = "SaveData.txt";
-    private string mainUpgradeFile = "SaveUpgradeData.txt";
+    private const string STATS_DATA = "PlayerData";
+    private const string UPGRADE_DATA = "UpgradeData";
+
+    private const string mainFile = "SaveData.txt";
+    private const string mainUpgradeFile = "SaveUpgradeData.txt";
     public bool IsLoaded { get; private set; }
     public PlayerData Data => data;
 
@@ -112,8 +113,8 @@ public class DataManager : MonoBehaviour
             Debug.LogWarning("Skip Save – Data not loaded");
             return;
         }
-        ES3.Save(keyName, data, mainFile);
-        ES3.Save(keyUpgrdeName, upgrades, mainUpgradeFile);
+        ES3.Save(STATS_DATA, data, mainFile);
+        ES3.Save(UPGRADE_DATA, upgrades, mainUpgradeFile);
     }
 
     public void DataLoad()
@@ -123,8 +124,8 @@ public class DataManager : MonoBehaviour
             try
             {
                 // Load dữ liệu từ file vào data
-                data = ES3.Load<PlayerData>(keyName, mainFile);
-                upgrades = ES3.Load<UpgradeData[]>(keyUpgrdeName, mainUpgradeFile);
+                data = ES3.Load<PlayerData>(STATS_DATA, mainFile);
+                upgrades = ES3.Load<UpgradeData[]>(UPGRADE_DATA, mainUpgradeFile);
                 Debug.Log("Data loaded successfully!");
                 return;
             }

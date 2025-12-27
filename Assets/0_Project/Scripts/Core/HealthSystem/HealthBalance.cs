@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 public enum Faction { none=0,player =1,enemy=2, }
 public class HealthBalance : MonoBehaviour
@@ -32,9 +33,9 @@ public class HealthBalance : MonoBehaviour
     }
     private IEnumerator SetBalanceTrigger()
     {
-        balance.SetIsTrigger(false);
+        balance.DisablePose();
         yield return new WaitForSeconds(durationAffected);
-        balance.SetIsTrigger(true);
+        balance.EnablePose();
     }
    
 }

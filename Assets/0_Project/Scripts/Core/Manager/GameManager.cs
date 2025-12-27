@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         {
             player.transform.position = player.LastPositionBeforeDead;
 
-            player.SetTriggerBalance(true);
+            player.EnableBalance();
         }
 
         player.weaponEquip.UnEquipping();

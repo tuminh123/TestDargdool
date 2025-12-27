@@ -33,10 +33,9 @@ public class AttackBase
 
         try
         {
-            // PHASE A: Pose
-            await PostAttack(configSO, body, cts.Token);
+           /* 
+            await PostAttack(configSO, body, cts.Token);*/
 
-            // PHASE B: Attack
             OnAttacking?.Invoke();
             await AttackApply(configSO, attackDir, body, cts.Token);
         }

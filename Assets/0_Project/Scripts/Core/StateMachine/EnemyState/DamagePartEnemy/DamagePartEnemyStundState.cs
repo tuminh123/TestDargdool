@@ -16,7 +16,7 @@ public class DamagePartEnemyStundState : DamagePartEnemyState
         base.Enter();
         stunTime = stunDuration;
         partEnemy.SetKnockBackBalance();
-        partEnemy.SetTriggerBalance(false);
+        partEnemy.DisableBalance();
         
     }
     public override void Update()
@@ -33,6 +33,6 @@ public class DamagePartEnemyStundState : DamagePartEnemyState
     {
         base.Exit();
         partEnemy.SetIsStunned(false);
-        partEnemy.SetTriggerBalance(true);
+        partEnemy.EnableBalance();
     }
 }

@@ -11,6 +11,7 @@ public class MainAttackState : MainCharacterState
     public override void Enter()
     {
         base.Enter();
+        characterCtrl.attackContext.EnableAttack();
         characterCtrl.attack.HandleAttack(characterCtrl.AttackDir);
 
         if (characterCtrl.attack.currentAttackData == null) return;
@@ -25,7 +26,8 @@ public class MainAttackState : MainCharacterState
     {
         base.Exit();
 
-       
+        characterCtrl.attackContext.DisableAttack();
+
         if (characterCtrl.attack.currentAttackData == null) return;
 
         characterCtrl.attack.currentAttackData.OnAttacking -= Attacking;
@@ -39,7 +41,7 @@ public class MainAttackState : MainCharacterState
 
         characterCtrl.SendDamage();
 
-        stateMachine.ChangeState(characterCtrl.idelState);
+       
 
     }
     private void EndAttack()
@@ -47,7 +49,7 @@ public class MainAttackState : MainCharacterState
         //characterCtrl.SendDamage();
         //stateMachine.ChangeState(characterCtrl.idelState);
         characterCtrl.attack.StopAttack();
-
+        stateMachine.ChangeState(characterCtrl.idelState);
     }
 
 }

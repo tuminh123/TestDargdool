@@ -85,6 +85,7 @@ public class Move :MonoBehaviour
     //limit Handle
     private void LimitVelocity(Rigidbody2D rb)
     {
+        if (rb == null) return;
         if (Mathf.Abs(rb.linearVelocityX) > maxSpeed)
         {
             rb.linearVelocity = new Vector2(Mathf.Sign(rb.linearVelocityX) * maxSpeed, rb.linearVelocityY);

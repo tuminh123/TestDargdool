@@ -78,7 +78,7 @@ public class character_test : MonoBehaviour
         foreach (Balance b in balances)
         {
             if (b == null) continue;
-            b.SetIsTrigger(value);
+            //b.SetIsTrigger(value);
         }
     }
 

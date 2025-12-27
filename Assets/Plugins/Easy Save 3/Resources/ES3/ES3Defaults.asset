@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
     _location: 0
-    path: SaveData.txt
+    path: SaveData.es3
     encryptionType: 1
     compressionType: 1
     encryptionPassword: password
@@ -38,8 +38,6 @@ MonoBehaviour:
     - Assembly-CSharp-firstpass
     - DamageNumbersPro
     - IngameDebugConsole.Runtime
-    - Lofelt.NiceVibrations
-    - Lofelt.NiceVibrations.Demo
     - MaxSdk.Scripts
     - ParticleImage
     - PrimeTween.Debug

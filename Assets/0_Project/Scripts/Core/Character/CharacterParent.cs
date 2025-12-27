@@ -9,12 +9,14 @@ public class Stats
 {
     [SerializeField] private float maxHealth;
     [SerializeField] private float damageBase;
-    //[SerializeField] private float scritDamage;
+    [SerializeField] private float critChane;
+    [SerializeField] private float critMultiplier;
 
     //get
     public float MaxHealth => maxHealth;
     public float DamageBase => damageBase;
-
+    public float CritChane => critChane;
+    public float CritMultiplier => critMultiplier;
     public void SetMaxHealth(float maxHealth)
     {
         this.maxHealth = maxHealth;
@@ -22,6 +24,14 @@ public class Stats
     public void SetDamageBase(float damageBase)
     {
         this.damageBase = damageBase;
+    }
+    public void SetCritChane(float critChane)
+    {
+        this.critChane = critChane;
+    }
+    public void SetCritMultiplier(float critMultiplier)
+    {
+        this.critMultiplier = critMultiplier;
     }
 }
 
@@ -37,11 +47,12 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
     public Jump jump { get; private set; }
     public Idle idle { get; private set; }
     public HealthBase healthBase { get; private set; }
+    public RagdollController ragdollController { get; private set; }
+    public AttackContext attackContext { get; private set; }
     public GroundDetect groundDetect { get; private set; }
     public CharacterDamage[] damageDetect { get; private set; }
     #endregion
     [SerializeField] protected Stats stats;
-    [SerializeField] protected Collider2D detectCol;
 
     public StateMachine stateMachine { get; private set; }
 
@@ -60,7 +71,6 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
     public Vector2 AttackDir=> attackDir;
     public bool IsStunned => isStunned;
     public Stats Stats => stats;
-    public Collider2D DetectCol => detectCol;
 
     protected virtual void Awake()
     {
@@ -71,7 +81,10 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
         attack = GetComponentInChildren<Attack>();
         groundDetect = GetComponentInChildren<GroundDetect>();
 
-        healthBase = GetComponentInChildren<HealthBase>();
+        healthBase = GetComponent<HealthBase>();
+        ragdollController = GetComponent<RagdollController>();
+        attackContext = GetComponent<AttackContext>();
+
         damageDetect = GetComponentsInChildren<CharacterDamage>();
 
         //bodyParent = transform.GetComponent<Balance>();
@@ -126,17 +139,23 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
         SingletonManager.Instance.soundManager.PlaySound(SoundType.Crunch);
 
     }
-    public void SetTriggerBalance(bool value)
+    public void EnableBalance()
     {
         foreach (var item in childBalance)
         {
             if(item == null) continue;
-            item.SetIsTrigger(value);
+            item.EnablePose();
         }
-
-        if (detectCol == null) return;
-        detectCol.enabled = value;
     }
+    public void DisableBalance()
+    {
+        foreach (var item in childBalance)
+        {
+            if (item == null) continue;
+            item.DisablePose();
+        }
+    }
+
     public void SetKnockBackBalance( )
     {
         Vector2 knockBackDir = GetKnockDir();

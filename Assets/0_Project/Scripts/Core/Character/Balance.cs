@@ -20,7 +20,7 @@ public class Balance : MonoBehaviour
 
     private Rigidbody2D rb;
     private Collider2D col;
-    private bool isTrigger = true;
+    private bool isPoseActive = true;
 
 
     //get
@@ -56,7 +56,7 @@ public class Balance : MonoBehaviour
     private void HandleBalance()
     {
         
-        if (isTrigger)
+        if (isPoseActive)
         {
             float clampedRot = Mathf.Clamp(rot, minRot, maxRot);
             rb.MoveRotation(Mathf.LerpAngle(rb.rotation, clampedRot, force * Time.fixedDeltaTime));
@@ -68,7 +68,8 @@ public class Balance : MonoBehaviour
         //    rb.MoveRotation(newRotation);
         //}
     }
-
+    public void EnablePose() => isPoseActive = true;
+    public void DisablePose() => isPoseActive = false;
     public void ResetData()
     {
         //Debug.Log("Reset");
@@ -87,10 +88,6 @@ public class Balance : MonoBehaviour
     public void SetForce(float force)
     {
         this.force = force;
-    }
-    public void SetIsTrigger(bool isTrigger)
-    {
-        this.isTrigger = isTrigger;
     }
 
     ///////////////////////////////////////////////////////

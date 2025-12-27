@@ -15,7 +15,7 @@ public class EnemyStunState : EnemyBaseState
         base.Enter();
         stunTime = stunDuration;
         enemyBasic.SetKnockBackBalance();
-        enemyBasic.SetTriggerBalance(false);
+        enemyBasic.DisableBalance();
         
     }
     public override void Update()
@@ -32,7 +32,7 @@ public class EnemyStunState : EnemyBaseState
     {
         base.Exit();
         enemyBasic.SetIsStunned(false);
-        enemyBasic.SetTriggerBalance(true);
+        enemyBasic.EnableBalance();
     }
 
 

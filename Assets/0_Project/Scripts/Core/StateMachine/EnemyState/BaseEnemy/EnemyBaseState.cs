@@ -17,7 +17,14 @@ public class EnemyBaseState : IState
 
     public virtual void Update()
     {
-        isGround = enemyBasic.groundDetect.IsGround();
+        if (enemyBasic.groundDetect != null)
+        {
+            isGround = enemyBasic.groundDetect.IsGround();
+        }
+        else
+        {
+            return;
+        }
         if (enemyBasic.characterCtrl == null || enemyBasic.characterCtrl.healthBase.IsDead)
         {
             stateMachine.ChangeState(enemyBasic.enemyIdleState);
@@ -27,10 +34,12 @@ public class EnemyBaseState : IState
         if (enemyBasic.healthBase.IsDead)
         {
             stateMachine.ChangeState(enemyBasic.enemyDieState);
+            return;
         }
         else if(enemyBasic.IsStunned)
         {
             stateMachine.ChangeState(enemyBasic.enemyStunState);
+            return;
         }
     }
 

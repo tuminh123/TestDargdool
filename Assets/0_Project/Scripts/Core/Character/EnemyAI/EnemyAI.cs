@@ -53,8 +53,11 @@ public abstract class EnemyAI : CharacterParent
     {
         if (characterCtrl == null || characterCtrl.healthBase.IsDead) return;
         Transform player = characterCtrl.transform;
+
+        if(player == null) return;
         Vector2 dir = -transform.position + player.position;
 
+        if (headModel == null) return;
         if (dir.x > 0) headModel.transform.localScale = new Vector3(1, 1, 1);
         else if (dir.x < 0) headModel.transform.localScale = new Vector3(-1, 1, 1);
     }
@@ -85,8 +88,12 @@ public abstract class EnemyAI : CharacterParent
     }  
     public void EnemyDieHandle()
     {
-        SetTriggerBalance(false);
+        DisableBalance();
+        
         SetKnockBackBalance();
+
+        ragdollController?.Explode();
+
         StartCoroutine(SetDieParticle());
     }
     private IEnumerator SetDieParticle()

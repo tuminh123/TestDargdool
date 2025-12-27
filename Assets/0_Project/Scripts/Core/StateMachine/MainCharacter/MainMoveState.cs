@@ -11,9 +11,6 @@ public class MainMoveState : MainCharacterState
     {
         base.Enter();
         //characterCtrl.SetLayerBalance("None");
-        //characterCtrl.SetBalanceColSkip(true);
-        if (characterCtrl.DetectCol == null) return;
-        characterCtrl.DetectCol.enabled = false;
     }
     public override void Update()
     {
@@ -31,10 +28,5 @@ public class MainMoveState : MainCharacterState
     {
         base.Exit();
         characterCtrl.move.StopMoveCoroutine();
-
-        if (characterCtrl.DetectCol == null) return;
-        characterCtrl.DetectCol.enabled = true;
-        //characterCtrl.SetLayerBalance("Player");
-        // characterCtrl.SetBalanceColSkip(false);
     }
 }

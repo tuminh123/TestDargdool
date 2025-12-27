@@ -19,14 +19,14 @@ public class MainCharacterState : IState
 
     public virtual void Enter()
     {
-        InputManager.OnTap += HandleTap;
-        //SwipeManager.OnSwipe += HandleSwipe;
+        //InputManager.OnTap += HandleTap;
+        SwipeManager.OnTap += HandleTap;
     }
 
     public virtual void Exit()
     {
-        InputManager.OnTap -= HandleTap;
-        //SwipeManager.OnSwipe -= HandleSwipe;
+        //InputManager.OnTap -= HandleTap;
+        SwipeManager.OnTap -= HandleTap;
         //characterCtrl.moveVer2.SetMoveDirection(Vector2.zero);
     }
 
@@ -37,6 +37,7 @@ public class MainCharacterState : IState
         if (characterCtrl.IsStunned)
         {
             stateMachine.ChangeState(characterCtrl.stunnedState);
+            return;
         }
 
         isGround = characterCtrl.groundDetect.IsGround();
@@ -65,27 +66,6 @@ public class MainCharacterState : IState
         }
     }
 
-    //private void HandleSwipe(Vector2 delta)
-    //{
-    //    if (characterCtrl.healthBase.IsDead || characterCtrl.IsStunned) return;
-
-    //    if (delta.magnitude < 30f) return; // tránh swipe quá nhỏ
-
-    //    Vector2 dir = delta.normalized;
-
-    //    if (dir.y > 0.6f && characterCtrl.groundDetect.IsGround())
-    //    {
-    //        stateMachine.ChangeState(characterCtrl.jumpState);
-    //        return;
-    //    }
-
-    //    // chỉ lấy hướng ngang
-    //    Vector2 move = new Vector2(dir.x, 0);
-
-    //    characterCtrl.moveVer2.SetMoveDirection(move);
-    //    stateMachine.ChangeState(characterCtrl.moveState);
-    //}
-
     public virtual void Update()
     {
         if (characterCtrl.healthBase.IsDead) return;
@@ -93,14 +73,22 @@ public class MainCharacterState : IState
         if (characterCtrl.IsStunned)
         {
             stateMachine.ChangeState(characterCtrl.stunnedState);
+            return;
         }
 
-        x = VirtualJoystick.GetAxis(StringConst.HORIZONTAL);
-        float y = VirtualJoystick.GetAxis(StringConst.VERTICAL);
+        /*  x = VirtualJoystick.GetAxis(StringConst.HORIZONTAL);
+          float y = VirtualJoystick.GetAxis(StringConst.VERTICAL);*/
 
+        x = SwipeManagerTest.MoveDirection;
 
-
-        isGround = characterCtrl.groundDetect.IsGround();
+        if (characterCtrl.groundDetect != null)
+        {
+            isGround = characterCtrl.groundDetect.IsGround();
+        }
+        else
+        {
+            return;
+        }
 
         if (isGround)
         {
@@ -112,7 +100,7 @@ public class MainCharacterState : IState
             stateMachine.ChangeState(characterCtrl.attackState);
         }
         else*/
-        if (y > 0 && isGround)
+        if (/*y > 0*/ SwipeManagerTest.SwipeUp && isGround)
         {
             stateMachine.ChangeState(characterCtrl.jumpState);
         }
