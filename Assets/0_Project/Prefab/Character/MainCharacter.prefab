@@ -3404,6 +3404,8 @@ MonoBehaviour:
   stats:
     maxHealth: 300
     damageBase: 30
+    critChane: 0
+    critMultiplier: 0
   knockBackForce: 15
   stunTime: 3
 --- !u!114 &8389883581199735159
@@ -3449,6 +3451,9 @@ MonoBehaviour:
   - {fileID: 7788024271420242708}
   - {fileID: 645215324915956397}
   knockdownThreshold: 10
+  explosionForce: 25
+  torqueForce: 15
+  cameraBias: 0.6
 --- !u!114 &6350644334061289037
 MonoBehaviour:
   m_ObjectHideFlags: 0

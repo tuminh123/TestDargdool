@@ -11,15 +11,50 @@ public class WaveSpawner : MonoBehaviour
     /*[SerializeField] private bool isSpawn;*/
 
     private int currentWaveIndex = 0;
+    private int totalEnemiesInWave;
+    private int aliveEnemies;
 
     private void Start()
     {
         WaveSapwning();
+
+        //TÍNH TỔNG ENEMY TRONG WAVE
+        Wave wave = waves[currentWaveIndex];
+        totalEnemiesInWave = 0;
+        foreach (var enemyData in wave.Enemies)
+        {
+            totalEnemiesInWave += enemyData.Count;
+        }
+
+        aliveEnemies = totalEnemiesInWave;
+
+        // Gửi UI
+        Global.Send(new SignalEnemyCount
+        {
+            Current = aliveEnemies,
+            Total = totalEnemiesInWave
+        });
+
+
         GameEventBus.OnGameRestart += OnGameRestart;
+        GameEventBus.OnEnemyDead += OnEnemyDead;
     }
+
     private void OnDestroy()
     {
         GameEventBus.OnGameRestart -= OnGameRestart;
+        GameEventBus.OnEnemyDead += OnEnemyDead;
+    }
+
+    private void OnEnemyDead()
+    {
+        aliveEnemies--;
+
+        Global.Send(new SignalEnemyCount
+        {
+            Current = aliveEnemies,
+            Total = totalEnemiesInWave
+        });
     }
 
     private void OnGameRestart()
@@ -56,7 +91,7 @@ public class WaveSpawner : MonoBehaviour
             }
 
             // ⚠️ CHỜ TẤT CẢ ENEMY CHẾT MỚI QUA WAVE TIẾP THEO
-            while (IsAnyEnemyAlive())
+            while (/*IsAnyEnemyAlive()*/aliveEnemies > 0)
             {
                 yield return new WaitForSeconds(0.2f);
             }

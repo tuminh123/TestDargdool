@@ -12,6 +12,7 @@ public class MainAttackState : MainCharacterState
     {
         base.Enter();
         characterCtrl.attackContext.EnableAttack();
+        characterCtrl.attackContext.EnableAttackPhysics(characterCtrl.AttackDir);
         characterCtrl.attack.HandleAttack(characterCtrl.AttackDir);
 
         if (characterCtrl.attack.currentAttackData == null) return;
@@ -27,6 +28,7 @@ public class MainAttackState : MainCharacterState
         base.Exit();
 
         characterCtrl.attackContext.DisableAttack();
+        characterCtrl.attackContext.ResetPhysics();
 
         if (characterCtrl.attack.currentAttackData == null) return;
 

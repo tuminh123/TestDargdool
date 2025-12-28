@@ -74,8 +74,9 @@ public abstract class EnemyAI : CharacterParent
     {
         Destroy(gameObject);
         //Destroy(bodyParent.gameObject);
+        GameEventBus.RaiseEnemyDead();
 
-        if(ZenManager.Instance.itemPoolManager == null || ZenManager.Instance == null) return;
+        if (ZenManager.Instance.itemPoolManager == null || ZenManager.Instance == null) return;
         ZenManager.Instance. itemPoolManager.SpawnRandomItem(transform.position);
 
     }

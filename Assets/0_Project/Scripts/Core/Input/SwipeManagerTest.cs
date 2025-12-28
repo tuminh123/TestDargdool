@@ -61,11 +61,26 @@ public class SwipeManagerTest : MonoBehaviour
     // --------------------
     // Input Handling
     // --------------------
+    private bool IsPointerOverUI()
+    {
+#if UNITY_EDITOR
+        return EventSystem.current != null &&
+               EventSystem.current.IsPointerOverGameObject();
+#else
+        if (EventSystem.current == null) return false;
+
+        if (Input.touchCount > 0)
+            return EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
+
+        return false;
+#endif
+    }
 
     private void HandleMouse()
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (IsPointerOverUI()) return;
             BeginTouch(Input.mousePosition);
         }
         else if (Input.GetMouseButton(0))
@@ -86,7 +101,10 @@ public class SwipeManagerTest : MonoBehaviour
         Touch t = Input.GetTouch(0);
 
         if (t.phase == TouchPhase.Began)
+        {
+            if (IsPointerOverUI()) return;
             BeginTouch(t.position);
+        }
         else if (t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
             IsTouching = true;
         else if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled)

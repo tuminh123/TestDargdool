@@ -177,7 +177,7 @@ public class Move :MonoBehaviour
 
 
             data.Walk_1();
-            //data.data.LeftLeg.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
+            //playerData.playerData.LeftLeg.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
             SmoothMotionHelper.SmoothMoveTowards(data.LeftLeg.Rb, data.LeftLeg.Rb.position + Vector2.left * speed * Time.fixedDeltaTime, maxSpeed);
 
             yield return new WaitForSeconds(seconds);

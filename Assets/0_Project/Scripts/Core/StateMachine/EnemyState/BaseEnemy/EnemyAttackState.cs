@@ -12,6 +12,7 @@ public class EnemyAttackState : EnemyBaseState
     {
         base.Enter();
         enemyBasic.attackContext.EnableAttack();
+        enemyBasic.attackContext.EnableAttackPhysics(enemyBasic.AttackDir);
         enemyBasic.attack.HandleAttack(enemyBasic.AttackDir);
 
         if (enemyBasic.attack.currentAttackData == null) return;
@@ -25,6 +26,8 @@ public class EnemyAttackState : EnemyBaseState
     {
         base.Exit();
         enemyBasic.attackContext.DisableAttack();
+        enemyBasic.attackContext.ResetPhysics();
+
         if (enemyBasic.attack.currentAttackData == null) return;
         enemyBasic.attack.currentAttackData.OnAttacking -= OnAttacking;
         enemyBasic.attack.currentAttackData.OnEndAttack -= OnAttackEnd;

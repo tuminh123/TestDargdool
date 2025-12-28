@@ -75,18 +75,24 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager Instance {  get; private set; }
     [Header("Player Data")]
-    [SerializeField] private PlayerData data;
+    [SerializeField] private PlayerData playerData;
     [Space]
     [Header("Upgrade Data")]
     [SerializeField] private UpgradeData[] upgrades;
+    [Space]
+    [Header("Progress Data")]
+    [SerializeField] private PlayerProgressData progressData;
 
-    private const string STATS_DATA = "PlayerData";
-    private const string UPGRADE_DATA = "UpgradeData";
+    private const string PLAYER_KEY = "PlayerData";
+    private const string UPGRADE_KEY = "UpgradeData";
+    private const string PROGRESS_KEY = "PlayerProgressData";
 
-    private const string mainFile = "SaveData.txt";
-    private const string mainUpgradeFile = "SaveUpgradeData.txt";
+    private const string SAVE_FILE = "SaveData.es3";
     public bool IsLoaded { get; private set; }
-    public PlayerData Data => data;
+    // ================= GETTER =================
+    public PlayerData PlayerData => playerData;
+    public PlayerProgressData ProgressData => progressData;
+    public UpgradeData[] Upgrades => upgrades;
 
     private void Awake()
     {
@@ -110,56 +116,70 @@ public class DataManager : MonoBehaviour
     {
         if (!IsLoaded)
         {
-            Debug.LogWarning("Skip Save – Data not loaded");
+            Debug.LogWarning("Save skipped – data not loaded yet");
             return;
         }
-        ES3.Save(STATS_DATA, data, mainFile);
-        ES3.Save(UPGRADE_DATA, upgrades, mainUpgradeFile);
+
+        ES3.Save(PLAYER_KEY, playerData, SAVE_FILE);
+        ES3.Save(PROGRESS_KEY, progressData, SAVE_FILE);
+        ES3.Save(UPGRADE_KEY, upgrades, SAVE_FILE);
+
+        Debug.Log("Game Saved");
     }
 
     public void DataLoad()
     {
-        if (ES3.FileExists(mainFile))
+        if (!ES3.FileExists(SAVE_FILE))
         {
-            try
-            {
-                // Load dữ liệu từ file vào data
-                data = ES3.Load<PlayerData>(STATS_DATA, mainFile);
-                upgrades = ES3.Load<UpgradeData[]>(UPGRADE_DATA, mainUpgradeFile);
-                Debug.Log("Data loaded successfully!");
-                return;
-            }
-            catch
-            {
-                Debug.LogWarning("Main save file corrupted, creating new save...");
-            }
-        }
-        else
-        {
-            Debug.Log("Save file not found. Creating new save...");
+            CreateDefaultData();
+            DataSave();
+            return;
         }
 
-        // Nếu file không tồn tại hoặc bị hỏng, tạo mới dữ liệu mặc định
-        data = new PlayerData();
-        data.ResetData();
+        try
+        {
+            playerData = ES3.Load<PlayerData>(PLAYER_KEY, SAVE_FILE);
+            upgrades = ES3.Load<UpgradeData[]>(UPGRADE_KEY, SAVE_FILE);
+            progressData = ES3.Load<PlayerProgressData>(PROGRESS_KEY, SAVE_FILE);
+        }
+        catch
+        {
+            Debug.LogWarning("Save corrupted → reset");
+            CreateDefaultData();
+            DataSave();
+        }
+    }
+    private void CreateDefaultData()
+    {
+        // Player stat
+        playerData = new PlayerData();
+        playerData.ResetData();
+
+        // Level / EXP
+        progressData = new PlayerProgressData();
+
+        // Upgrade
         upgrades = new UpgradeData[]
         {
-            new UpgradeData(UpgradeType.HEALTH,15,1.15f,0.10f),
-            new UpgradeData(UpgradeType.DAMAGEBASE,20,1.15f,0.10f),
+            new UpgradeData(UpgradeType.HEALTH,         15, 1.15f, 0.10f),
+            new UpgradeData(UpgradeType.DAMAGEBASE,     20, 1.15f, 0.10f),
             new UpgradeData(UpgradeType.CRITMULTIPLIER, 25, 1.15f, 0.10f),
-            new UpgradeData(UpgradeType.CRITCHANCE, 30, 1.15f, 0.10f)
+            new UpgradeData(UpgradeType.CRITCHANCE,     30, 1.15f, 0.10f)
         };
-        DataSave(); // lưu lại file
     }
     public void ResetData()
     {
-        data.ResetData();
+        playerData.ResetData();
+        progressData.Reset();
+
         ResetAllUpgrades();
         DataSave();
+
+        Debug.Log("All data reset");
     }
     public void DeleteAllData()
     {
-        if (ES3.FileExists(mainFile)) ES3.DeleteFile(mainFile);
+        if (ES3.FileExists(SAVE_FILE)) ES3.DeleteFile(SAVE_FILE);
     }
     #endregion
 
