@@ -51,28 +51,48 @@ public class CharacterCtrl : CharacterParent
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        GameEventBus.OnPlayerSpawn += GameEventBus_OnPlayerSpawn;
+
         healthBase.OnDead += OnDead;
         weaponEquip.OnEquip += WeaponEquip_OnEquip;
-        GameEventBus.OnPlayerSpawn += GameEventBus_OnPlayerSpawn;
+
+        if (currentWeaponBase == null || currentWeaponBase.weaponDamage == null) return;
+        currentWeaponBase.weaponDamage.OnDealDamage += WeaponDamage_OnDealDamage;
+
     }
     protected override void OnDisable()
     {
         base.OnDisable();
 
-        healthBase.OnDead -= OnDead;
-        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
         GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
 
-    }
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
         healthBase.OnDead -= OnDead;
         weaponEquip.OnEquip -= WeaponEquip_OnEquip;
-        GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
 
         unWeapon?.Cancel();
         unWeapon?.Dispose();
+
+        if (currentWeaponBase == null || currentWeaponBase.weaponDamage == null) return;
+        currentWeaponBase.weaponDamage.OnDealDamage -= WeaponDamage_OnDealDamage;
+
+    }
+
+   
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
+
+        healthBase.OnDead -= OnDead;
+        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
+
+        unWeapon?.Cancel();
+        unWeapon?.Dispose();
+
+        if (currentWeaponBase == null || currentWeaponBase.weaponDamage == null) return;
+        currentWeaponBase.weaponDamage.OnDealDamage -= WeaponDamage_OnDealDamage;
     }
 
     private void Start()
@@ -99,17 +119,20 @@ public class CharacterCtrl : CharacterParent
     {
         if (obj == null) return;
 
-        obj.weaponDamage?.SetWeaponDamage(stats.DamageBase);
+        //obj.weaponDamage?.SetWeaponDamage(stats.DamageBase);
 
         currentWeaponBase = obj;
 
     }
-
+    private void WeaponDamage_OnDealDamage(AttackContext obj)
+    {
+        obj = attackContext;
+    }
     #region Stats setup
     private void InitPlayerData()
     {
         if (DataManager.Instance == null) return;
-        PlayerData data = DataManager.Instance.Data;
+        PlayerData data = DataManager.Instance.PlayerData;
         float maxHP = data.Health;
         float finalDamage = data.CalculateDamage();
         float critChane = data.CritChance;

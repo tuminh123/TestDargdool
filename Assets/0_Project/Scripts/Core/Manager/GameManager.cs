@@ -43,7 +43,8 @@ public class GameManager : MonoBehaviour
         GameEventBus.OnGameRestart -= OnRestartGame;
         GameEventBus.OnPlayerRegeneration -= GameEventBus_OnPlayerRegeneration;
         GameEventBus.OnGameWin -= GameWinHandle;
-        bool isBannerOn = FirebaseService.Instance.GetRemoteConfig<RemoteConfig>().banner_ad_on;
+
+       /* bool isBannerOn = FirebaseService.Instance.GetRemoteConfig<RemoteConfig>().banner_ad_on;
         if (isBannerOn)
         {
             // ShowBanner
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour
         else
         {
             // Hide Banner
-        }
+        }*/
     }
 
     /* private void GameEventBus_OnLoadingFirst()
@@ -59,7 +60,6 @@ public class GameManager : MonoBehaviour
          Debug.Log("Loading done. Show aoa ad");
          AdsManager.Instance.NotifyLoadingFinished();
      }*/
-
 
     #region Game event handle
     private void GameEventBus_OnPlayerRegeneration()

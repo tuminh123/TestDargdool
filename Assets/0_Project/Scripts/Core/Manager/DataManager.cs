@@ -111,6 +111,12 @@ public class DataManager : MonoBehaviour
         IsLoaded = true;
     }
 
+    private void Start()
+    {
+        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null) return;
+        ZenManager.Instance.levelManager.Init(progressData);
+    }
+
     #region Play Data Save/Load
     public void DataSave()
     {

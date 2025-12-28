@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿ using UnityEngine;
 
 [RequireComponent (typeof(Collider2D),typeof(Rigidbody2D))]
-public class PhysicsDamageDealer : MonoBehaviour
+public class PhysicsCharacterDamageDealer : MonoBehaviour
 {
     [SerializeField] float minImpact = 3f;
     [SerializeField] float damageMultiplier = 0.05f;

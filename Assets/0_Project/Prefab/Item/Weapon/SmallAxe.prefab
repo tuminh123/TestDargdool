@@ -241,6 +241,7 @@ GameObject:
   - component: {fileID: 8103092196781603511}
   - component: {fileID: 311516925672973500}
   - component: {fileID: 4379352432197919744}
+  - component: {fileID: 3726767946749131677}
   m_Layer: 0
   m_Name: model
   m_TagString: Untagged
@@ -386,3 +387,22 @@ PolygonCollider2D:
       - {x: 1.88, y: -0.31}
       - {x: 1.74, y: 0.02}
   m_UseDelaunayMesh: 0
+--- !u!114 &3726767946749131677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8977764511953324626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1960e6df5de2aa44aa1ac80308cbfa11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minImpact: 20
+  damageMultiplier: 0.05
+  maxDamage: 100
+  layer:
+    serializedVersion: 2
+    m_Bits: 0
+  rb: {fileID: 2581199471579178898}

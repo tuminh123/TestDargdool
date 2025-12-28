@@ -50,7 +50,7 @@ public class UpgradeUI : MonoBehaviour
 
         Debug.Log($"{stat} : {add}");
 
-        DataManager.Instance.Data.AddProperties(dataUpgrade.Type, addInt);
+        DataManager.Instance.PlayerData.AddProperties(dataUpgrade.Type, addInt);
 
         dataUpgrade.CostIncrease();
         //SingletonManager.Instance.dataManager.DataSave();
@@ -62,7 +62,7 @@ public class UpgradeUI : MonoBehaviour
         if (DataManager.Instance == null) return string.Empty;
         UpgradeData dataUpgrade = DataManager.Instance.GetUpgradeData(type);
         if (dataUpgrade == null) return string.Empty;
-        var data = DataManager.Instance.Data;
+        var data = DataManager.Instance.PlayerData;
 
         return dataUpgrade.Type switch
         {
@@ -79,7 +79,7 @@ public class UpgradeUI : MonoBehaviour
         if (DataManager.Instance == null) return 0;
         UpgradeData dataUpgrade = DataManager.Instance.GetUpgradeData(type);
         if (dataUpgrade == null) return 0;
-        var data = DataManager.Instance.Data;
+        var data = DataManager.Instance.PlayerData;
 
         return dataUpgrade.Type switch
         {

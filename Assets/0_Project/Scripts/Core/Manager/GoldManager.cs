@@ -7,7 +7,7 @@ public class GoldManager : MonoBehaviour
 
     public bool AddGold(int count)
     {
-        if (DataManager.Instance.Data.AddGold(count))
+        if (DataManager.Instance.PlayerData.AddGold(count))
         {
             OnGoldAmountChanged?.Invoke();
             return true;
@@ -16,7 +16,7 @@ public class GoldManager : MonoBehaviour
     }
     public bool MinusGold(int count)
     {
-        if (DataManager.Instance.Data.MinusGold(count))
+        if (DataManager.Instance.PlayerData.MinusGold(count))
         {
             OnGoldAmountChanged?.Invoke();
             return true;

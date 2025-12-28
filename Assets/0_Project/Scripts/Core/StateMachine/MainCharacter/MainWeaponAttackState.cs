@@ -11,6 +11,7 @@ public class MainWeaponAttackState : MainCharacterState
     public override void Enter()
     {
         base.Enter();
+        characterCtrl.attackContext.EnableAttack();
         unWeapon = new CancellationTokenSource();
 
         characterCtrl.attack.HandleWeaponAttack(characterCtrl.AttackDir);
@@ -30,6 +31,7 @@ public class MainWeaponAttackState : MainCharacterState
     public override void Exit()
     {
         base.Exit();
+        characterCtrl.attackContext.DisableAttack();
         unWeapon?.Cancel();
         unWeapon?.Dispose();
 
@@ -64,12 +66,7 @@ public class MainWeaponAttackState : MainCharacterState
             default:
             case WeaponType.MELE:
 
-                WeaponDamage damage = weapon.weaponDamage;
-                if (damage == null) return;
-                if (damage.SenderDamageTo())
-                {
-                    RemoveWeapon(weapon);
-                }
+               /* if(characterCtrl.healthBase.i)*/
 
                 break;
             case WeaponType.RANGE:

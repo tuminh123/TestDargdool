@@ -14,6 +14,7 @@ public abstract class HealthUI : MonoBehaviour
     {
         if (health == null) return;
         health.OnHealthChanged += UpdateBar;
+        UpdateBar(health.CurrentHealth, health.MaxHealth);
     }
     protected virtual void OnDestroy()
     {

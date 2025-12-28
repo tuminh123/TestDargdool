@@ -1,6 +1,6 @@
 ﻿
 using UnityEngine;
-public abstract class DamageBase : MonoBehaviour
+public class DamageBase : MonoBehaviour
 {
     [SerializeField] protected float damageBase;
     [SerializeField] protected float radius;

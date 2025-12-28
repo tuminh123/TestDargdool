@@ -17,7 +17,7 @@ public abstract class WeaponBase : ItemBase
     [SerializeField] protected float velocityFly = 20f;
     public Transform model {  get; private set; }
     public ItemDeSpawn weaponDeSpawn {  get; protected set; }
-    public WeaponDamage weaponDamage { get; protected set; }
+    public PhysicsObjectDamageDealer weaponDamage { get; protected set; }
     public FixedJoint2D joint { get; protected set; }
 
     //get
@@ -31,7 +31,7 @@ public abstract class WeaponBase : ItemBase
     {
         base.Awake();
         weaponDeSpawn = GetComponentInChildren<ItemDeSpawn>();
-        weaponDamage = GetComponentInChildren<WeaponDamage>();
+        weaponDamage = GetComponentInChildren<PhysicsObjectDamageDealer>();
         joint = GetComponentInChildren<FixedJoint2D>();
         model = transform.Find(StringConst.MODEL);
     }
@@ -54,7 +54,7 @@ public abstract class WeaponBase : ItemBase
         joint.connectedBody = null;
         weaponDeSpawn.gameObject.SetActive(true);
         weaponDamage.ResetLayer();
-        weaponDamage.ResetDamage();
+        //weaponDamage.ResetDamage();
     }
     private void WeaponUnequipAction()
     {

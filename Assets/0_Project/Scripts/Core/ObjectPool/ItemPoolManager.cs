@@ -24,7 +24,6 @@ public class ItemPoolManager : ObjectPoolManager<ItemBase>
     {
         WeaponBase weapon = GetWeapon(pos);
         if (weapon == null) return;
-        weapon.weaponDamage.ResetDamage();
         weapon.SetVelocity();
     }
 

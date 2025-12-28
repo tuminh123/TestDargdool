@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   force: 10
   type: 2
+  velocityFly: 20
 --- !u!1 &819766602102926650
 GameObject:
   m_ObjectHideFlags: 0

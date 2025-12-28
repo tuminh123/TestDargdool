@@ -2,12 +2,14 @@
 
 using Cysharp.Threading.Tasks;
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 public class PlayerHealthUI : HealthUI
 {
     [SerializeField] private Image damageOverlayImage;
-    
+    [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private ExpBarUI expBarUI;
     protected override void Start()
     {
         GetPlayer();
@@ -34,6 +36,8 @@ public class PlayerHealthUI : HealthUI
     {
         GetPlayer();
 
+        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null) return;
+
         health.OnHealthChanged -= UpdateBar;
 
         health.InitHealth();
@@ -45,6 +49,10 @@ public class PlayerHealthUI : HealthUI
     protected override void UpdateBar(float current, float max)
     {
         base.UpdateBar(current, max);
+
+        if (text == null || damageOverlayImage == null) return;
+
+        text.text = $"{current} / {max}";
 
         if (current <= max * 0.5f)
         {
@@ -75,7 +83,7 @@ public class PlayerHealthUI : HealthUI
         CharacterCtrl player = CharacterCtrl.Instance;
 
         if (player == null) return;
-        health = player.GetComponentInChildren<HealthBase>();
+        health = player.healthBase;
         if (health == null) return;
 
         damageOverlayImage.gameObject.SetActive(false);

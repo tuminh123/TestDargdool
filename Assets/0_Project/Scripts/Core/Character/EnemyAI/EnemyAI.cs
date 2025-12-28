@@ -96,6 +96,9 @@ public abstract class EnemyAI : CharacterParent
         ragdollController?.Explode();
 
         StartCoroutine(SetDieParticle());
+
+        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null) return;
+        ZenManager.Instance.levelManager.AddExp(100);
     }
     private IEnumerator SetDieParticle()
     {
