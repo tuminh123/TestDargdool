@@ -97,8 +97,8 @@ public abstract class EnemyAI : CharacterParent
 
         StartCoroutine(SetDieParticle());
 
-        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null) return;
-        ZenManager.Instance.levelManager.AddExp(100);
+        if (LevelManager.Instance == null) return;
+        LevelManager.Instance.AddExp(100);
     }
     private IEnumerator SetDieParticle()
     {

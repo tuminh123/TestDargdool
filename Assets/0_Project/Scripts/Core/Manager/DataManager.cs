@@ -113,9 +113,11 @@ public class DataManager : MonoBehaviour
 
     private void Start()
     {
-        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null)return;
-        ZenManager.Instance.levelManager.Init(progressData);
+        if ( LevelManager.Instance == null)return;
+        LevelManager.Instance.Init(progressData);
+
     }
+
 
     #region Play Data Save/Load
     public void DataSave()
@@ -181,8 +183,8 @@ public class DataManager : MonoBehaviour
         ResetAllUpgrades();
         DataSave();
 
-        if (ZenManager.Instance != null && ZenManager.Instance.levelManager != null)
-            ZenManager.Instance.levelManager.Init(progressData);
+        if (ZenManager.Instance != null && LevelManager.Instance != null)
+            LevelManager.Instance.Init(progressData);
 
         Debug.Log("All data reset");
     }

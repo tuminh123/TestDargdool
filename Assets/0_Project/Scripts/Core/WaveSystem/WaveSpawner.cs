@@ -20,20 +20,7 @@ public class WaveSpawner : MonoBehaviour
 
         //TÍNH TỔNG ENEMY TRONG WAVE
         Wave wave = waves[currentWaveIndex];
-        totalEnemiesInWave = 0;
-        foreach (var enemyData in wave.Enemies)
-        {
-            totalEnemiesInWave += enemyData.Count;
-        }
-
-        aliveEnemies = totalEnemiesInWave;
-
-        // Gửi UI
-        Global.Send(new SignalEnemyCount
-        {
-            Current = aliveEnemies,
-            Total = totalEnemiesInWave
-        });
+      ResetEnemyCount(wave);
 
 
         GameEventBus.OnGameRestart += OnGameRestart;
@@ -43,12 +30,12 @@ public class WaveSpawner : MonoBehaviour
     private void OnDestroy()
     {
         GameEventBus.OnGameRestart -= OnGameRestart;
-        GameEventBus.OnEnemyDead += OnEnemyDead;
+        GameEventBus.OnEnemyDead -= OnEnemyDead;
     }
 
     private void OnEnemyDead()
     {
-        aliveEnemies--;
+        aliveEnemies = Mathf.Max(0, aliveEnemies - 1);
 
         Global.Send(new SignalEnemyCount
         {
@@ -61,7 +48,23 @@ public class WaveSpawner : MonoBehaviour
     {
         WaveSapwning();
     }
+    private void ResetEnemyCount(Wave wave)
+    {
+        totalEnemiesInWave = 0;
 
+        foreach (var enemyData in wave.Enemies)
+        {
+            totalEnemiesInWave += enemyData.Count;
+        }
+
+        aliveEnemies = totalEnemiesInWave;
+
+        Global.Send(new SignalEnemyCount
+        {
+            Current = aliveEnemies,
+            Total = totalEnemiesInWave
+        });
+    }
     public void WaveSapwning()
     {
         Global.Send(new SignalTextWave() { WaveIndex = currentWaveIndex + 1 });
@@ -77,6 +80,8 @@ public class WaveSpawner : MonoBehaviour
         while (currentWaveIndex < waves.Count)
         {
             Wave wave = waves[currentWaveIndex];
+
+            ResetEnemyCount(wave);
 
             // Spawn toàn bộ enemy của wave
             foreach (var enemyData in wave.Enemies)

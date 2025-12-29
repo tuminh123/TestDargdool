@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
 public class PhysicsObjectDamageDealer : MonoBehaviour
 {
     public event System.Action<AttackContext> OnDealDamage;
@@ -10,7 +12,11 @@ public class PhysicsObjectDamageDealer : MonoBehaviour
     [SerializeField] LayerMask layer;
 
     [SerializeField]Rigidbody2D rb;
+
+    HashSet<GameObject> damagedTargets = new HashSet<GameObject>();
+
     AttackContext attackContext;
+
     public void ResetLayer()
     {
         SetTargetLayer(StringConst.NOTHING);
@@ -38,6 +44,8 @@ public class PhysicsObjectDamageDealer : MonoBehaviour
         if (impact < minImpact) return;
 
         float damage = Mathf.Clamp(impact * damageMultiplier, 0, maxDamage);
+
+        Debug.Log(damage);
 
         hitBox.ReceiveHit(damage, col.relativeVelocity);
 

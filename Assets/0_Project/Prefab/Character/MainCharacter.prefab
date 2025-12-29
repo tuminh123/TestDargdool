@@ -245,6 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!1 &420290501043940379
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,6 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!1 &803885405071951440
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,6 +828,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!1 &2065977769118357692
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,6 +1044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!1 &2544380659387656718
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,6 +1252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!114 &8724150046487531405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1260,7 +1265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4332b6a69eacaf844988c7ae22a730f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minImpact: 3
+  minImpact: 30
   damageMultiplier: 0.05
   maxDamage: 50
   targetLayer:
@@ -1578,9 +1583,9 @@ MonoBehaviour:
   rightLeg: {fileID: 7788024271420242708}
   leftHipLeg: {fileID: 1101523747829907126}
   rightHipLeg: {fileID: 645215324915956397}
-  jumpHeight: 3
-  bodyForce: 5
-  forwardForce: 3
+  jumpHeight: 5
+  bodyForce: 4
+  forwardForce: 4
 --- !u!1 &3770298092290317782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1968,6 +1973,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!114 &1052164068765611257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1980,7 +1986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4332b6a69eacaf844988c7ae22a730f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minImpact: 3
+  minImpact: 30
   damageMultiplier: 0.05
   maxDamage: 50
   targetLayer:
@@ -2144,6 +2150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!1 &5238650851443364374
 GameObject:
   m_ObjectHideFlags: 0
@@ -2302,6 +2309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!1 &5573888553693363974
 GameObject:
   m_ObjectHideFlags: 0
@@ -2460,6 +2468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!1 &5878754660460154498
 GameObject:
   m_ObjectHideFlags: 0
@@ -2618,6 +2627,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!1 &6240681224859103126
 GameObject:
   m_ObjectHideFlags: 0
@@ -3087,6 +3097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!114 &1033781239114436284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3099,7 +3110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4332b6a69eacaf844988c7ae22a730f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minImpact: 3
+  minImpact: 30
   damageMultiplier: 0.05
   maxDamage: 50
   targetLayer:
@@ -3263,6 +3274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!1 &6669772184692264424
 GameObject:
   m_ObjectHideFlags: 0
@@ -3419,7 +3431,7 @@ GameObject:
   m_Layer: 6
   m_Name: MainCharacter
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3557,7 +3569,12 @@ MonoBehaviour:
     critChane: 0
     critMultiplier: 0
   knockBackForce: 15
-  stunTime: 3
+  levelStatModifier:
+    hpPercentPerLevel: 0.1
+    damagePercentPerLevel: 0.08
+    critChanceFlatPerLevel: 0.01
+    critMultiplierFlatPerLevel: 0.05
+  stunTime: 2
 --- !u!114 &8389883581199735159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3990,6 +4007,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!1 &7511625751560166778
 GameObject:
   m_ObjectHideFlags: 0
@@ -4372,6 +4390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 7832273347662737051}
 --- !u!114 &5727553889600488762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4384,7 +4403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4332b6a69eacaf844988c7ae22a730f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minImpact: 3
+  minImpact: 30
   damageMultiplier: 0.05
   maxDamage: 50
   targetLayer:
@@ -4647,4 +4666,4 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 2
+  m_Radius: 4

@@ -2,11 +2,21 @@
 
 public class LimbHitBox : MonoBehaviour
 {
-    [SerializeField] float damageScale = 1f; // đầu = 2, tay = 1, chân = 0.7
-    private CharacterParent parent;
+    [SerializeField] float damageScale = 1f;
+    [SerializeField] private CharacterParent parent;
+
+    //get
+    public CharacterParent Parent => parent;
     private void Awake()
     {
-        parent = GetComponentInParent<CharacterParent>();
+        if (parent == null)
+        {
+            parent = transform.GetComponentInParent<CharacterParent>();
+        }
+    }
+    private void Reset()
+    {
+        parent = transform.GetComponentInParent<CharacterParent>();
     }
     public void ReceiveHit(float rawDamage, Vector2 force)
     {
@@ -14,6 +24,7 @@ public class LimbHitBox : MonoBehaviour
 
         float finalDamage = DamageCaculate(rawDamage);
 
+        Debug.Log(finalDamage);
         parent.healthBase.TakeDamaged(finalDamage);
 
         parent.ragdollController.OnHit(force, rawDamage);
@@ -25,7 +36,10 @@ public class LimbHitBox : MonoBehaviour
 
         float baseDamage = rawDamage * parent.Stats.DamageBase;
 
+        Debug.Log(parent.Stats.DamageBase);
+        Debug.Log(baseDamage);
         bool isCrit = Random.value < parent.Stats.CritChane;
+        Debug.Log(isCrit);
         if (isCrit)
         {
             baseDamage *= parent.Stats.CritMultiplier;

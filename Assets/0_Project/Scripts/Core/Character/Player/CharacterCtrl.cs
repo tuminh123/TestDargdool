@@ -1,6 +1,7 @@
 ﻿
 using Cysharp.Threading.Tasks;
 using HadesSDK.Ads.Core;
+using Lofelt.NiceVibrations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -103,7 +104,14 @@ public class CharacterCtrl : CharacterParent
     private void Start()
     {
         InitPlayerData();
+
+        if (LevelManager.Instance != null)
+        {
+            ApplyLevel(LevelManager.Instance.Level);
+        }
+
         stateMachine.InitState(idelState);
+
     }
     private void Update()
     {
@@ -141,6 +149,8 @@ public class CharacterCtrl : CharacterParent
         {
             if (ZenManager.Instance == null || ZenManager.Instance.cameraShaker == null) return;
             ZenManager.Instance.cameraShaker.ShakeCam();
+
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.SoftImpact);
         }
     }
     #region Stats setup
@@ -149,9 +159,14 @@ public class CharacterCtrl : CharacterParent
         if (DataManager.Instance == null) return;
         PlayerData data = DataManager.Instance.PlayerData;
         float maxHP = data.Health;
-        float finalDamage = data.CalculateDamage();
+        float finalDamage = data.Damage;
         float critChane = data.CritChance;
         float critMultiplier = data.CritMultiplier;
+
+        Debug.Log(maxHP);
+        Debug.Log(finalDamage);
+        Debug.Log(critChane);
+        Debug.Log(critMultiplier);
 
         stats.SetMaxHealth(maxHP);
         stats.SetDamageBase(finalDamage);
@@ -219,7 +234,7 @@ public class CharacterCtrl : CharacterParent
     }
     public void ApplyLevel(int level)
     {
-        if (DataManager.Instance == null) return;
+        if (DataManager.Instance == null || !DataManager.Instance.IsLoaded) return;
 
         float oldMax = healthBase.MaxHealth;
         float oldPercent = healthBase.CurrentHealth / oldMax;

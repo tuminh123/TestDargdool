@@ -15,10 +15,9 @@ public class ExpBarUI : MonoBehaviour
     protected virtual void Start()
     {
         GameEventBus.OnGameRestart += OnPlayerSpawned;
-        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null)
-            return;
+        if (LevelManager.Instance == null) return;
 
-        var lm = ZenManager.Instance.levelManager;
+        var lm = LevelManager.Instance;
 
         SyncUI(lm.CurrentExp, lm.ExpToNext);
 
@@ -30,17 +29,16 @@ public class ExpBarUI : MonoBehaviour
     {
         GameEventBus.OnGameRestart -= OnPlayerSpawned;
 
-        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null)return;
+        if (LevelManager.Instance == null)return;
 
-        ZenManager.Instance.levelManager.OnExpChanged -= OnExpChanged;
+        LevelManager.Instance.OnExpChanged -= OnExpChanged;
     }
 
     private void OnPlayerSpawned()
     {
-        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null)
-            return;
+        if (LevelManager.Instance == null) return;
 
-        var lm = ZenManager.Instance.levelManager;
+        var lm = LevelManager.Instance;
 
         // ✅ Sync lại UI sau restart
         SyncUI(lm.CurrentExp, lm.ExpToNext);

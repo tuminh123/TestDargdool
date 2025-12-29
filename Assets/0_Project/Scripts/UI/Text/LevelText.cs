@@ -4,11 +4,11 @@ public class LevelText : TextBase
 {
     private void Start()
     {
-        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null) return;
+        if (LevelManager.Instance == null) return;
         GameEventBus.OnLevelUp += GameEventBus_OnLevelUp;
 
         if (DataManager.Instance == null) return;
-        GameEventBus_OnLevelUp(/*DataManager.Instance.ProgressData.level*/ZenManager.Instance.levelManager.Level);
+        GameEventBus_OnLevelUp(LevelManager.Instance.Level);
     }
 
     private void OnDestroy()

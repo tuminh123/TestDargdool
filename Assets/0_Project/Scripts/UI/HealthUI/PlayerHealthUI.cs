@@ -35,9 +35,6 @@ public class PlayerHealthUI : HealthUI
     private void OnPlayerSpawned()
     {
         GetPlayer();
-
-        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null) return;
-
         health.OnHealthChanged -= UpdateBar;
 
         health.InitHealth();

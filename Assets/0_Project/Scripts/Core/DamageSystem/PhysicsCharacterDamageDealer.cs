@@ -1,4 +1,5 @@
-﻿ using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [RequireComponent (typeof(Collider2D),typeof(Rigidbody2D))]
 public class PhysicsCharacterDamageDealer : MonoBehaviour
@@ -10,7 +11,12 @@ public class PhysicsCharacterDamageDealer : MonoBehaviour
 
     Rigidbody2D rb;
     AttackContext attackContext;
+    HashSet<GameObject> damagedTargets = new HashSet<GameObject>();
 
+    void OnEnable()
+    {
+        damagedTargets.Clear();
+    }
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -23,6 +29,9 @@ public class PhysicsCharacterDamageDealer : MonoBehaviour
 
         if (!col.collider.TryGetComponent(out LimbHitBox hitBox)) return;
 
+        GameObject targetRoot = hitBox.Parent.gameObject; // nhân vật gốc
+        if (damagedTargets.Contains(targetRoot)) return;
+        Debug.Log(targetRoot.name);
         if (!targetLayer.Contains(hitBox.gameObject.layer)) return;
 
         // float impact = rb.mass * col.relativeVelocity.sqrMagnitude;
@@ -32,7 +41,8 @@ public class PhysicsCharacterDamageDealer : MonoBehaviour
 
         float damage = Mathf.Clamp( impact * damageMultiplier,0,maxDamage);
         //float rawDamage = impact * damageMultiplier;
-
+        Debug.Log(damage);
         hitBox.ReceiveHit(damage, col.relativeVelocity);
+        damagedTargets.Add(targetRoot);
     }
 }

@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ef5ba9704a39eb48ab0a7d51708537d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
+  playerData:
     name: player
     goldCount: 100
     maxHp: 500
@@ -305,6 +305,9 @@ MonoBehaviour:
     critChance: 0.05
     critMultiplier: 1.5
   upgrades: []
+  progressData:
+    level: 1
+    currentExp: 0
 --- !u!4 &652385669
 Transform:
   m_ObjectHideFlags: 0
@@ -364,6 +367,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618c5a901ade4c944ab1a501d7dfd6b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1809540921
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1809540922}
+  - component: {fileID: 1809540923}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1809540922
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809540921}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1809540923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809540921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9776a2fe411c76c46bb939cdedc0b6bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  expCurve: {fileID: 11400000, guid: 4aed8459768bb104cab7562a945e2499, type: 2}
+  Level: 0
 --- !u!1 &2107180409
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,3 +466,4 @@ SceneRoots:
   - {fileID: 2107180411}
   - {fileID: 652385669}
   - {fileID: 126357006}
+  - {fileID: 1809540922}

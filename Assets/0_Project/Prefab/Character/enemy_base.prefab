@@ -332,6 +332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!1 &945636398926552063
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,6 +578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!1 &1839830272966723892
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,6 +737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!1 &1974753879764385836
 GameObject:
   m_ObjectHideFlags: 0
@@ -1584,6 +1587,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!1 &4562721034168650435
 GameObject:
   m_ObjectHideFlags: 0
@@ -1742,6 +1746,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!114 &1637909549885141873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1754,12 +1759,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4332b6a69eacaf844988c7ae22a730f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minImpact: 3
+  minImpact: 15
   damageMultiplier: 0.05
-  maxDamage: 50
+  maxDamage: 30
   targetLayer:
     serializedVersion: 2
-    m_Bits: 576
+    m_Bits: 64
 --- !u!1 &4805503761001325097
 GameObject:
   m_ObjectHideFlags: 0
@@ -1917,6 +1922,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!114 &7689327331095341919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1929,12 +1935,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4332b6a69eacaf844988c7ae22a730f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minImpact: 3
+  minImpact: 15
   damageMultiplier: 0.05
-  maxDamage: 50
+  maxDamage: 30
   targetLayer:
     serializedVersion: 2
-    m_Bits: 576
+    m_Bits: 64
 --- !u!1 &5263583415410338104
 GameObject:
   m_ObjectHideFlags: 0
@@ -2093,6 +2099,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!1 &5279766123377862112
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,6 +2258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!1 &5726159014531051325
 GameObject:
   m_ObjectHideFlags: 0
@@ -2406,7 +2414,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     maxHealth: 150
-    damageBase: 20
+    damageBase: 2
+    critChane: 0.1
+    critMultiplier: 0.15
   knockBackForce: 15
   maxAttackDistance: 3.5
   attackDuration: 1
@@ -2457,6 +2467,9 @@ MonoBehaviour:
   - {fileID: 568700186048886924}
   - {fileID: 1623283853061451977}
   knockdownThreshold: 10
+  explosionForce: 25
+  torqueForce: 15
+  cameraBias: 0.6
 --- !u!114 &4246217132269943647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2469,6 +2482,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a75bb97190cd23498e3e914cfaf06fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  massMultiplier: 1.5
+  gravityMultiplier: 2
+  impulseForce: 8
 --- !u!1 &5732299632782293186
 GameObject:
   m_ObjectHideFlags: 0
@@ -7466,6 +7482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!1 &6125761302743896357
 GameObject:
   m_ObjectHideFlags: 0
@@ -7624,6 +7641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!114 &7731847400613045030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7636,12 +7654,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4332b6a69eacaf844988c7ae22a730f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minImpact: 3
+  minImpact: 15
   damageMultiplier: 0.05
-  maxDamage: 50
+  maxDamage: 30
   targetLayer:
     serializedVersion: 2
-    m_Bits: 576
+    m_Bits: 64
 --- !u!1 &6525144529557639563
 GameObject:
   m_ObjectHideFlags: 0
@@ -7973,6 +7991,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!114 &3721698020679921540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7985,12 +8004,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4332b6a69eacaf844988c7ae22a730f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minImpact: 3
+  minImpact: 15
   damageMultiplier: 0.05
-  maxDamage: 50
+  maxDamage: 30
   targetLayer:
     serializedVersion: 2
-    m_Bits: 576
+    m_Bits: 64
 --- !u!1 &7152448661312546412
 GameObject:
   m_ObjectHideFlags: 0
@@ -8149,6 +8168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!1 &7237613382373374847
 GameObject:
   m_ObjectHideFlags: 0
@@ -8481,6 +8501,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!1 &7457861462717046056
 GameObject:
   m_ObjectHideFlags: 0
@@ -8580,9 +8601,9 @@ MonoBehaviour:
   rightLeg: {fileID: 568700186048886924}
   leftHipLeg: {fileID: 1699293087208909330}
   rightHipLeg: {fileID: 1623283853061451977}
-  jumpHeight: 3
-  bodyForce: 3
-  forwardForce: 3
+  jumpHeight: 5
+  bodyForce: 5
+  forwardForce: 5
 --- !u!1 &7563058691532248929
 GameObject:
   m_ObjectHideFlags: 0
@@ -8950,6 +8971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageScale: 1
+  parent: {fileID: 2076704582253588096}
 --- !u!1 &8767568096537833804
 GameObject:
   m_ObjectHideFlags: 0

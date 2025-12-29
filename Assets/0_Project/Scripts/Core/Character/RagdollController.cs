@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using Lofelt.NiceVibrations;
 public class RagdollController : MonoBehaviour
 {
     [SerializeField] List<Balance> balances;
@@ -65,6 +65,8 @@ public class RagdollController : MonoBehaviour
 
             if (ZenManager.Instance == null || ZenManager.Instance.cameraShaker == null) return;
             ZenManager.Instance.cameraShaker.ShakeCam();
+
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.SoftImpact);
         }
     }
 }
