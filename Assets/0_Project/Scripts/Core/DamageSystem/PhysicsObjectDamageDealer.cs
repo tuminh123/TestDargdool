@@ -22,7 +22,11 @@ public class PhysicsObjectDamageDealer : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
+
+        if (attackContext == null) return;
+
         OnDealDamage?.Invoke(attackContext);
+
         if (!attackContext.IsAttacking) return;
 
         if (!col.collider.TryGetComponent(out LimbHitBox hitBox)) return;
@@ -36,5 +40,7 @@ public class PhysicsObjectDamageDealer : MonoBehaviour
         float damage = Mathf.Clamp(impact * damageMultiplier, 0, maxDamage);
 
         hitBox.ReceiveHit(damage, col.relativeVelocity);
+
+        
     }
 }

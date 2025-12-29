@@ -25,11 +25,13 @@ public class PhysicsCharacterDamageDealer : MonoBehaviour
 
         if (!targetLayer.Contains(hitBox.gameObject.layer)) return;
 
-        float impact = rb.mass * col.relativeVelocity.sqrMagnitude;
+        // float impact = rb.mass * col.relativeVelocity.sqrMagnitude;
+        float impact = rb.mass * col.relativeVelocity.magnitude;
 
         if (impact < minImpact) return;
 
         float damage = Mathf.Clamp( impact * damageMultiplier,0,maxDamage);
+        //float rawDamage = impact * damageMultiplier;
 
         hitBox.ReceiveHit(damage, col.relativeVelocity);
     }

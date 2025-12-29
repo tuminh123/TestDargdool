@@ -12,6 +12,8 @@ public class CharacterCtrl : CharacterParent
 {    
     public static CharacterCtrl Instance { get; private set; }
 
+    [SerializeField] private LevelStatModifier levelStatModifier;
+
     [SerializeField] private float stunTime = 4;
     public DetectionZone zone { get; private set; }
     public PlayerWeaponEquip weaponEquip { get; private set; }
@@ -53,6 +55,7 @@ public class CharacterCtrl : CharacterParent
         base.OnEnable();
 
         GameEventBus.OnPlayerSpawn += GameEventBus_OnPlayerSpawn;
+        GameEventBus.OnLevelUp += ApplyLevel;
 
         healthBase.OnDead += OnDead;
         weaponEquip.OnEquip += WeaponEquip_OnEquip;
@@ -66,6 +69,7 @@ public class CharacterCtrl : CharacterParent
         base.OnDisable();
 
         GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
+        GameEventBus.OnLevelUp -= ApplyLevel;
 
         healthBase.OnDead -= OnDead;
         weaponEquip.OnEquip -= WeaponEquip_OnEquip;
@@ -84,6 +88,7 @@ public class CharacterCtrl : CharacterParent
     {
         base.OnDestroy();
         GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
+        GameEventBus.OnLevelUp -= ApplyLevel;
 
         healthBase.OnDead -= OnDead;
         weaponEquip.OnEquip -= WeaponEquip_OnEquip;
@@ -128,6 +133,16 @@ public class CharacterCtrl : CharacterParent
     {
         obj = attackContext;
     }
+    public override void OnTakeDamage()
+    {
+        base.OnTakeDamage();
+
+        if(healthBase.CurrentHealth < healthBase.MaxHealth * 0.3f)
+        {
+            if (ZenManager.Instance == null || ZenManager.Instance.cameraShaker == null) return;
+            ZenManager.Instance.cameraShaker.ShakeCam();
+        }
+    }
     #region Stats setup
     private void InitPlayerData()
     {
@@ -142,6 +157,8 @@ public class CharacterCtrl : CharacterParent
         stats.SetDamageBase(finalDamage);
         stats.SetCritChane(critChane);
         stats.SetCritMultiplier(critMultiplier);
+
+        healthBase.SetMaxHealth(stats.MaxHealth, true);
     }
     #endregion
 
@@ -200,4 +217,25 @@ public class CharacterCtrl : CharacterParent
             "Remove Weapon"
         );
     }
+    public void ApplyLevel(int level)
+    {
+        if (DataManager.Instance == null) return;
+
+        float oldMax = healthBase.MaxHealth;
+        float oldPercent = healthBase.CurrentHealth / oldMax;
+
+        StatsCalculator.ApplyLevelStats(
+            stats,
+            DataManager.Instance.PlayerData,
+            level,
+            levelStatModifier
+        );
+
+        healthBase.SetMaxHealth(stats.MaxHealth);
+        healthBase.SetCurrentHealth(stats.MaxHealth * oldPercent);
+
+        foreach (var dmg in damageDetect)
+            dmg.SetDamageBase(stats.DamageBase);
+    }
+
 }

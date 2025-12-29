@@ -24,45 +24,37 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField] private SimpleExpCurve expCurve;
 
-    private PlayerProgressData progress;
+    private LevelService service;
 
-    public int Level => progress.level;
-    public int CurrentExp => progress.currentExp;
-    public int ExpToNext { get; private set; }
+    public int Level => service.Runtime.Level;
+    public int CurrentExp => service.Runtime.CurrentExp;
+    public int ExpToNext => service.Runtime.ExpToNext;
 
     public event Action<int, int> OnExpChanged;
-    public event Action<int> OnLevelUp;
 
-  /*  private void Start()
+    public void Init(PlayerProgressData saveData)
     {
-        if (DataManager.Instance == null) return;
-        Init(DataManager.Instance.ProgressData);
-    }*/
-
-    public void Init(PlayerProgressData data)
-    {
-        progress = data;
-        ExpToNext = expCurve.GetExpToNextLevel(progress.level);
-        OnExpChanged?.Invoke(CurrentExp, ExpToNext);
+        service = new LevelService(saveData, expCurve);
+        RaiseExpChanged();
     }
 
     public void AddExp(int amount)
     {
-        progress.currentExp += amount;
+        service.AddExp(amount);
+        RaiseExpChanged();
+    }
 
-        while (progress.currentExp >= ExpToNext)
-        {
-            progress.currentExp -= ExpToNext;
-            LevelUp();
-        }
-
+    private void RaiseExpChanged()
+    {
         OnExpChanged?.Invoke(CurrentExp, ExpToNext);
     }
 
-    private void LevelUp()
+    public void ResetLevel()
     {
-        progress.level++;
-        ExpToNext = expCurve.GetExpToNextLevel(progress.level);
-        OnLevelUp?.Invoke(progress.level);
+        service.Reset();
+        RaiseExpChanged();
+        GameEventBus.RaiseLevelUp(Level);
     }
 }
+
+

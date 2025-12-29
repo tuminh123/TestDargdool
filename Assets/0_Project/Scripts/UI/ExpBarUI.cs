@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,45 +15,64 @@ public class ExpBarUI : MonoBehaviour
     protected virtual void Start()
     {
         GameEventBus.OnGameRestart += OnPlayerSpawned;
-       
-        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null) return;
-        ZenManager.Instance.levelManager.OnExpChanged += LevelManager_OnExpChanged;
-        UpdateBar(ZenManager.Instance.levelManager.CurrentExp, ZenManager.Instance.levelManager.ExpToNext);
+        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null)
+            return;
+
+        var lm = ZenManager.Instance.levelManager;
+
+        SyncUI(lm.CurrentExp, lm.ExpToNext);
+
+        lm.OnExpChanged += OnExpChanged;
+
     }
 
     protected virtual void OnDestroy()
     {
         GameEventBus.OnGameRestart -= OnPlayerSpawned;
 
-        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null) return;
-        ZenManager.Instance.levelManager.OnExpChanged -= LevelManager_OnExpChanged;
+        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null)return;
+
+        ZenManager.Instance.levelManager.OnExpChanged -= OnExpChanged;
     }
 
     private void OnPlayerSpawned()
     {
-        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null) return;
-        ZenManager.Instance.levelManager.OnExpChanged -= LevelManager_OnExpChanged;
-        ZenManager.Instance.levelManager.OnExpChanged += LevelManager_OnExpChanged;
+        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null)
+            return;
+
+        var lm = ZenManager.Instance.levelManager;
+
+        // ✅ Sync lại UI sau restart
+        SyncUI(lm.CurrentExp, lm.ExpToNext);
     }
 
-    public void LevelManager_OnExpChanged(int arg1, int arg2)
+    private void OnExpChanged(int current, int max)
     {
-        UpdateBar(arg1,arg2);
-        UpdateText(arg1, arg2);
+        UpdateBar(current, max);
+        UpdateText(current, max);
     }
+
+    private void SyncUI(int current, int max)
+    {
+        fill.fillAmount = max > 0 ? (float)current / max : 0f;
+        UpdateText(current, max);
+    }
+
     protected virtual void UpdateBar(float current, float max)
     {
-        float targetFill = max <= 0 ? 0f : (float)current / max;
+        float targetFill = max <= 0 ? 0f : current / max;
 
         if (fillRoutine != null)
             StopCoroutine(fillRoutine);
 
         fillRoutine = StartCoroutine(AnimateFill(targetFill));
     }
+
     private void UpdateText(float current, float max)
     {
         expText.text = $"{current} / {max}";
     }
+
     private IEnumerator AnimateFill(float target)
     {
         float start = fill.fillAmount;

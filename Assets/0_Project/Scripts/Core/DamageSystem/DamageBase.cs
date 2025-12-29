@@ -37,6 +37,7 @@ public class DamageBase : MonoBehaviour
 
         foreach (Collider2D collider in colliders)
         {
+            Debug.Log("1");
             if (collider == null) continue;
 
             if (!collider.TryGetComponent(out IDamageable health))
@@ -44,7 +45,7 @@ public class DamageBase : MonoBehaviour
 
             if (health.IsDead)
                 continue;
-
+            Debug.Log("2");
             DamageHandle(health);
             return true;
         }

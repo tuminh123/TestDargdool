@@ -38,13 +38,8 @@ public class MainAttackState : MainCharacterState
     }
     private void Attacking()
     {
-        //Debug.Log("Attack");
-        //characterCtrl.SendDamage();
-
+        Debug.Log("Attack");
         characterCtrl.SendDamage();
-
-       
-
     }
     private void EndAttack()
     {

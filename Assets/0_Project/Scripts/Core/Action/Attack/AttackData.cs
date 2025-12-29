@@ -44,12 +44,6 @@ public class AttackData
     {
         isAttacking = true;
 
-        // ===================== PHASE A: POSE =====================
-
-
-        // ===================== PHASE B: ATTACK =====================
-
-
         yield return AttackApply(configSO, attackDir);
         OnAttacking?.Invoke();
         yield return PostAttack(configSO);

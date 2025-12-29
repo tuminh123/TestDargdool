@@ -29,7 +29,7 @@ public abstract class EnemyAI : CharacterParent
     protected override void Awake()
     {
         base.Awake();
-        
+        healthBase.SetMaxHealth(stats.MaxHealth);
         playerDetect = GetComponentInChildren<PlayerDetect>();
         //state init
     }
@@ -77,7 +77,7 @@ public abstract class EnemyAI : CharacterParent
         GameEventBus.RaiseEnemyDead();
 
         if (ZenManager.Instance.itemPoolManager == null || ZenManager.Instance == null) return;
-        ZenManager.Instance. itemPoolManager.SpawnRandomItem(transform.position);
+        ZenManager.Instance.itemPoolManager.SpawnGoldItem(transform.position);
 
     }
     protected override Vector2 GetKnockDir()

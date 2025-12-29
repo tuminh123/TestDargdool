@@ -92,7 +92,6 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
 
         stateMachine = new StateMachine();
 
-        healthBase.SetMaxHealth(stats.MaxHealth);
         foreach (var item in damageDetect)
         {
             if (item == null) continue;
@@ -126,7 +125,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
     }
 
     #region Damage Event
-    public void OnTakeDamage()
+    public virtual void OnTakeDamage()
     {
         if(healthBase.IsDead) return;
         isStunned = true;

@@ -113,7 +113,7 @@ public class DataManager : MonoBehaviour
 
     private void Start()
     {
-        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null) return;
+        if (ZenManager.Instance == null || ZenManager.Instance.levelManager == null)return;
         ZenManager.Instance.levelManager.Init(progressData);
     }
 
@@ -180,6 +180,9 @@ public class DataManager : MonoBehaviour
 
         ResetAllUpgrades();
         DataSave();
+
+        if (ZenManager.Instance != null && ZenManager.Instance.levelManager != null)
+            ZenManager.Instance.levelManager.Init(progressData);
 
         Debug.Log("All data reset");
     }

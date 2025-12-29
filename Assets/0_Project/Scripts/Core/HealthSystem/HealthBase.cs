@@ -32,7 +32,7 @@ public class HealthBase : MonoBehaviour,IDamageable,IHeal
     public void InitHealth()
     {
         currentHealth = maxHealth;
-        //OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
     public void TakeDamaged(float damage)
@@ -61,11 +61,25 @@ public class HealthBase : MonoBehaviour,IDamageable,IHeal
         OnDead?.Invoke();
     }
 
-    public void SetMaxHealth(float maxHealth)
+    public void SetMaxHealth(float max, bool fullHeal = false)
     {
-        this.maxHealth = maxHealth;
-    }
+        maxHealth = max;
 
+        if (fullHeal)
+            currentHealth = MaxHealth;
+        else
+            currentHealth = Mathf.Min(CurrentHealth, MaxHealth);
+
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+    public void SetCurrentHealth(float currentHealth)
+    {
+        this.currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+
+        if (IsDead)
+            OnDead?.Invoke();
+    }
     public void Heal(float add)
     {
         if (IsDead) return;
