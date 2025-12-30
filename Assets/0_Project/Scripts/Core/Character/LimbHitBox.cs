@@ -1,50 +1,38 @@
-﻿using UnityEngine;
+﻿using Core;
+using UnityEngine;
 
-public class LimbHitBox : MonoBehaviour
+public class LimbHitBox : GameElement,IReceive<SignalSendDamage>,IPhysicReceiveDamage
 {
     [SerializeField] float damageScale = 1f;
-    [SerializeField] private CharacterParent parent;
+    private float damage;
+    CharacterParent owner;
 
-    //get
-    public CharacterParent Parent => parent;
-    private void Awake()
+    GameObject IPhysicReceiveDamage.Owner => owner.gameObject;
+
+    public void Init(CharacterParent owner)
     {
-        if (parent == null)
+        if (this.owner != null && this.owner != owner)
         {
-            parent = transform.GetComponentInParent<CharacterParent>();
+            Debug.LogError($"[Limb ERROR] Owner changed from {this.owner.name} to {owner.name}");
+            return;
         }
+        this.owner = owner;
     }
-    private void Reset()
+
+    public void Receive(in SignalSendDamage signal)
     {
-        parent = transform.GetComponentInParent<CharacterParent>();
+        damage = signal.damaged;
     }
+
     public void ReceiveHit(float rawDamage, Vector2 force)
     {
-        if (parent == null) return;
+        if (owner == null) return;
+        float finalDamage = damage * damageScale * rawDamage;
 
-        float finalDamage = DamageCaculate(rawDamage);
+        owner.healthBase.TakeDamaged(finalDamage);
 
-        Debug.Log(finalDamage);
-        parent.healthBase.TakeDamaged(finalDamage);
-
-        parent.ragdollController.OnHit(force, rawDamage);
+        owner.ragdollController.OnHit(force, rawDamage);
+        
     }
 
-    private float DamageCaculate(float rawDamage)
-    {
-        if (parent == null || parent.Stats == null) return 0;
-
-        float baseDamage = rawDamage * parent.Stats.DamageBase;
-
-        Debug.Log(parent.Stats.DamageBase);
-        Debug.Log(baseDamage);
-        bool isCrit = Random.value < parent.Stats.CritChane;
-        Debug.Log(isCrit);
-        if (isCrit)
-        {
-            baseDamage *= parent.Stats.CritMultiplier;
-        }
-        float finalDamage = baseDamage * damageScale;
-        return finalDamage;
-    }
 }

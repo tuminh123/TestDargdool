@@ -1,4 +1,5 @@
 ﻿
+using Core;
 using Cysharp.Threading.Tasks;
 using HadesSDK.Ads.Core;
 using Lofelt.NiceVibrations;
@@ -37,6 +38,12 @@ public class CharacterCtrl : CharacterParent
     protected override void Awake()
     {
         base.Awake();
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogError("Multiple CharacterCtrl detected!");
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
 
         zone = GetComponentInChildren<DetectionZone>();
@@ -101,8 +108,9 @@ public class CharacterCtrl : CharacterParent
         currentWeaponBase.weaponDamage.OnDealDamage -= WeaponDamage_OnDealDamage;
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         InitPlayerData();
 
         if (LevelManager.Instance != null)
@@ -162,11 +170,6 @@ public class CharacterCtrl : CharacterParent
         float finalDamage = data.Damage;
         float critChane = data.CritChance;
         float critMultiplier = data.CritMultiplier;
-
-        Debug.Log(maxHP);
-        Debug.Log(finalDamage);
-        Debug.Log(critChane);
-        Debug.Log(critMultiplier);
 
         stats.SetMaxHealth(maxHP);
         stats.SetDamageBase(finalDamage);
@@ -252,5 +255,24 @@ public class CharacterCtrl : CharacterParent
         foreach (var dmg in damageDetect)
             dmg.SetDamageBase(stats.DamageBase);
     }
+   /* public void SendDamageBase()
+    {
+        Global.Send(new SignalSendDamage
+        {
+            damaged = DamageCaculate()
+        });
+    }
+    private float DamageCaculate()
+    {
+        float baseDamage = stats.DamageBase;
 
+        bool isCrit = UnityEngine.Random.value < stats.CritChane;
+
+        if (isCrit)
+        {
+            baseDamage *= stats.CritMultiplier;
+        }
+      
+        return baseDamage;
+    }*/
 }

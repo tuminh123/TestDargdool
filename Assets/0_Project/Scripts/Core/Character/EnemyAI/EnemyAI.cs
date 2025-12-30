@@ -1,4 +1,5 @@
 ﻿
+using Core;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -34,8 +35,9 @@ public abstract class EnemyAI : CharacterParent
         //state init
     }
 
-    protected virtual void Start()
+    protected override void Start()
     {
+        base.Start();
         characterCtrl = CharacterCtrl.Instance;
         dieParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
@@ -111,4 +113,25 @@ public abstract class EnemyAI : CharacterParent
         base.OnDestroy();
         StopCoroutine(SetDieParticle());
     }
+
+    /*public void SendDamageBase()
+    {
+        Global.Send(new SignalSendDamage
+        {
+            damaged = DamageCaculate()
+        });
+    }
+    private float DamageCaculate()
+    {
+        float baseDamage = stats.DamageBase;
+
+        bool isCrit = UnityEngine.Random.value < stats.CritChane;
+
+        if (isCrit)
+        {
+            baseDamage *= stats.CritMultiplier;
+        }
+
+        return baseDamage;
+    }*/
 }

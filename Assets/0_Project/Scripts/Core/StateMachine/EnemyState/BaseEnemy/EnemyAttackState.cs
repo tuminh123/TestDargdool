@@ -13,7 +13,9 @@ public class EnemyAttackState : EnemyBaseState
         base.Enter();
         enemyBasic.attackContext.EnableAttack();
         enemyBasic.attackContext.EnableAttackPhysics(enemyBasic.AttackDir);
-        enemyBasic.attack.HandleAttack(enemyBasic.AttackDir);
+        enemyBasic.attack.HandleAttack(enemyBasic.AttackDir).Forget();
+
+        enemyBasic.SendDamageBase();
 
         if (enemyBasic.attack.currentAttackData == null) return;
     

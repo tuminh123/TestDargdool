@@ -13,7 +13,9 @@ public class MainAttackState : MainCharacterState
         base.Enter();
         characterCtrl.attackContext.EnableAttack();
         characterCtrl.attackContext.EnableAttackPhysics(characterCtrl.AttackDir);
-        characterCtrl.attack.HandleAttack(characterCtrl.AttackDir);
+        characterCtrl.attack.HandleAttack(characterCtrl.AttackDir).Forget();
+
+        characterCtrl.SendDamageBase();
 
         if (characterCtrl.attack.currentAttackData == null) return;
 

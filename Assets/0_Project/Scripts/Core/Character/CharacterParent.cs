@@ -1,6 +1,8 @@
+using Core;
 using DamageNumbersPro;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.U2D.IK;
 using Zenject;
 #region Stats Character
 
@@ -58,6 +60,8 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
 
     //Balance
     protected Balance[] childBalance;
+    protected LimbHitBox[] limbHitBoxs;
+    protected PhysicsDamageDealer[] physicsCharacterDamageDealers; 
 
     [SerializeField] protected float knockBackForce;
 
@@ -72,9 +76,12 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
     public bool IsStunned => isStunned;
     public Stats Stats => stats;
 
+    public abstract void OnDead();
+    protected abstract Vector2 GetKnockDir();
+
     protected virtual void Awake()
     {
-
+        
         idle = GetComponentInChildren<Idle>();
         move = GetComponentInChildren<Move>();
         jump = GetComponentInChildren<Jump>();
@@ -89,6 +96,8 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
 
         //bodyParent = transform.GetComponent<Balance>();
         childBalance = transform.GetComponentsInChildren<Balance>();
+        limbHitBoxs = transform.GetComponentsInChildren<LimbHitBox>();
+        physicsCharacterDamageDealers = transform.GetComponentsInChildren<PhysicsDamageDealer>();
 
         stateMachine = new StateMachine();
 
@@ -98,10 +107,11 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
             item.SetDamageBase(stats.DamageBase);
         }
     }
-    public abstract void OnDead();
-    protected abstract Vector2 GetKnockDir();
-
-   
+    protected virtual void Start()
+    {
+        InitLimbs();
+        InitPhysicDamageDeal();
+    }
     protected virtual void OnEnable()
     {
         if (healthBase == null) return;
@@ -124,6 +134,24 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
         healthBase.OnTakeDamage -= OnTakeDamage;
     }
 
+    void InitLimbs()
+    {
+        foreach (var limb in limbHitBoxs)
+        {
+            if(limb == null) continue;
+            limb.Init(this);
+        }
+    }
+
+    void InitPhysicDamageDeal()
+    {
+        Debug.Log($"[InitWeapons] attackContext = {attackContext}");
+        foreach (var dealer in physicsCharacterDamageDealers)
+        {
+            if (dealer == null) continue;
+            dealer.Init(this,attackContext);
+        }
+    }
     #region Damage Event
     public virtual void OnTakeDamage()
     {
@@ -249,4 +277,25 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
         }
     }
     #endregion
+
+    public void SendDamageBase()
+    {
+        Global.Send(new SignalSendDamage
+        {
+            damaged = DamageCaculate()
+        });
+    }
+    private float DamageCaculate()
+    {
+        float baseDamage = stats.DamageBase;
+
+        bool isCrit = UnityEngine.Random.value < stats.CritChane;
+
+        if (isCrit)
+        {
+            baseDamage *= stats.CritMultiplier;
+        }
+
+        return baseDamage;
+    }
 }

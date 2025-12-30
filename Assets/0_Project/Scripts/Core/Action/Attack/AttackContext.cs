@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackContext : MonoBehaviour
+public class AttackContext : MonoBehaviour,IAttackContext
 {
     #region Physic attack attibute
     [Header("Attack Physics Buff")]

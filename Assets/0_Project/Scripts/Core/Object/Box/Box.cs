@@ -1,15 +1,61 @@
+using Core;
 using System;
 using System.Collections;
 using UnityEngine;
 using Zenject.SpaceFighter;
 
-public abstract class Box : ObjInGameBase
+public abstract class Box : ObjInGameBase,IPhysicReceiveDamage,IGameElement,IReceive<SignalSendDamage>
 {
     public Animator ani { get; private set; }
     public BoxHealth boxHealth { get;private set; }
+
+    public GameObject Owner => GetOwner();
+
+    public bool HasSetup { get; private set; }
+
+    public abstract void ReceiveHit(float rawDamage, Vector2 force);
+    public abstract void Receive(in SignalSendDamage signal);
+    public abstract GameObject GetOwner();
+
     private void Awake()
     {
         ani = GetComponentInChildren<Animator>();
-        boxHealth = GetComponentInChildren<BoxHealth>();
+        boxHealth = GetComponent<BoxHealth>();
+    }
+    private void OnEnable()
+    {
+        EnableSetup();
+    }
+    private void OnDisable()
+    {
+        DisableSetup();
+    }
+
+    public void EnableSetup()
+    {
+        if (!HasSetup)
+        {
+            HasSetup = true;
+            Global.Add(this);
+        }
+        Enable();
+    }
+
+    public void DisableSetup()
+    {
+        if (HasSetup)
+        {
+            HasSetup = false;
+            Global.Remove(this);
+        }
+        Disable();
+    }
+
+    public virtual void Enable()
+    {
+    }
+
+    public virtual void Disable()
+    {
     }
 }

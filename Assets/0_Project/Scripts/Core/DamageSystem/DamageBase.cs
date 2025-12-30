@@ -32,20 +32,15 @@ public class DamageBase : MonoBehaviour
           return false;*/
         #endregion
 
-        Collider2D[] colliders =
-       Physics2D.OverlapCircleAll(transform.position, radius, layer);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, layer);
 
         foreach (Collider2D collider in colliders)
         {
-            Debug.Log("1");
             if (collider == null) continue;
 
-            if (!collider.TryGetComponent(out IDamageable health))
-                continue;
+            if (!collider.TryGetComponent(out IDamageable health)) continue;
 
-            if (health.IsDead)
-                continue;
-            Debug.Log("2");
+            if (health.IsDead) continue;
             DamageHandle(health);
             return true;
         }
