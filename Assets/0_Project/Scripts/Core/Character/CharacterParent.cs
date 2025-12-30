@@ -38,7 +38,7 @@ public class Stats
 }
 
 #endregion
-public abstract class CharacterParent : MonoBehaviour,IResettable
+public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
 {
     [InjectOptional]
     private VfxPoolManager vfxPoolManager;
@@ -75,6 +75,8 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
     public Vector2 AttackDir=> attackDir;
     public bool IsStunned => isStunned;
     public Stats Stats => stats;
+
+    public GameObject OnjSend => transform.gameObject;
 
     public abstract void OnDead();
     protected abstract Vector2 GetKnockDir();
@@ -272,7 +274,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable
         foreach (var item in childBalance)
         {
             if (item == null) continue;
-            item.hinge.enabled = false;
+            //item.hinge.enabled = false;
             item.ResetState();
         }
     }

@@ -12,7 +12,7 @@ using Zenject;
 
 public class CharacterCtrl : CharacterParent
 {    
-    public static CharacterCtrl Instance { get; private set; }
+    public static CharacterCtrl Instance { get; set; }
 
     [SerializeField] private LevelStatModifier levelStatModifier;
 
@@ -69,28 +69,9 @@ public class CharacterCtrl : CharacterParent
         weaponEquip.OnEquip += WeaponEquip_OnEquip;
 
         if (currentWeaponBase == null || currentWeaponBase.weaponDamage == null) return;
-        currentWeaponBase.weaponDamage.OnDealDamage += WeaponDamage_OnDealDamage;
+        //currentWeaponBase.weaponDamage.OnDealDamage += WeaponDamage_OnDealDamage;
 
-    }
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-
-        GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
-        GameEventBus.OnLevelUp -= ApplyLevel;
-
-        healthBase.OnDead -= OnDead;
-        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
-
-        unWeapon?.Cancel();
-        unWeapon?.Dispose();
-
-        if (currentWeaponBase == null || currentWeaponBase.weaponDamage == null) return;
-        currentWeaponBase.weaponDamage.OnDealDamage -= WeaponDamage_OnDealDamage;
-
-    }
-
-   
+    }   
 
     protected override void OnDestroy()
     {
@@ -101,11 +82,14 @@ public class CharacterCtrl : CharacterParent
         healthBase.OnDead -= OnDead;
         weaponEquip.OnEquip -= WeaponEquip_OnEquip;
 
-        unWeapon?.Cancel();
-        unWeapon?.Dispose();
+        if (unWeapon != null)
+        {
+            unWeapon?.Cancel();
+            unWeapon?.Dispose();
+        }
 
         if (currentWeaponBase == null || currentWeaponBase.weaponDamage == null) return;
-        currentWeaponBase.weaponDamage.OnDealDamage -= WeaponDamage_OnDealDamage;
+        //currentWeaponBase.weaponDamage.OnDealDamage -= WeaponDamage_OnDealDamage;
     }
 
     protected override void Start()

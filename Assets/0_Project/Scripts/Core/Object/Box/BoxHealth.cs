@@ -4,7 +4,7 @@ using Zenject;
 
 public abstract class BoxHealth : MonoBehaviour, IDamageable
 {
-    [InjectOptional] private ObjInGamePoolManager objInGamePoolManager;
+    [InjectOptional] protected ObjInGamePoolManager objInGamePoolManager;
     [InjectOptional] private ItemPoolManager itemPoolManager;
     [SerializeField] private float maxHP = 1;
     [SerializeField] private float currentHP;
@@ -41,6 +41,17 @@ public abstract class BoxHealth : MonoBehaviour, IDamageable
     {
         try
         {
+            if (box == null)
+            {
+                Debug.LogError("BoxDeSpawning: box is NULL");
+                return;
+            }
+
+            if (box.ani == null)
+            {
+                Debug.LogError("BoxDeSpawning: box.ani is NULL");
+                return;
+            }
             box.ani.Play("explosion");
 
             await UniTask.Delay(500);

@@ -9,19 +9,18 @@ public abstract class Box : ObjInGameBase,IPhysicReceiveDamage,IGameElement,IRec
     public Animator ani { get; private set; }
     public BoxHealth boxHealth { get;private set; }
 
-    public GameObject Owner => GetOwner();
+    public GameObject Owner => transform.gameObject;
 
     public bool HasSetup { get; private set; }
 
-    public abstract void ReceiveHit(float rawDamage, Vector2 force);
-    public abstract void Receive(in SignalSendDamage signal);
-    public abstract GameObject GetOwner();
+    private float damage;
 
     private void Awake()
     {
         ani = GetComponentInChildren<Animator>();
         boxHealth = GetComponent<BoxHealth>();
     }
+    #region Signal Event
     private void OnEnable()
     {
         EnableSetup();
@@ -57,5 +56,19 @@ public abstract class Box : ObjInGameBase,IPhysicReceiveDamage,IGameElement,IRec
 
     public virtual void Disable()
     {
+    }
+    #endregion
+
+
+    public void Receive(in SignalSendDamage signal)
+    {
+        damage = signal.damaged;
+    }
+
+    public  void ReceiveHit(float rawDamage, Vector2 force)
+    {
+        float finalDamage = damage * rawDamage;
+
+        boxHealth.TakeDamaged(finalDamage);
     }
 }

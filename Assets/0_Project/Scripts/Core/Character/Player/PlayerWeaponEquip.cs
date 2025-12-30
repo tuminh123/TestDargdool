@@ -24,7 +24,7 @@ public class PlayerWeaponEquip : MonoBehaviour
 
         weapon.Equip(hand.Rb);
 
-        weapon.weaponDamage.SetTargetLayer(StringConst.ENEMY);
+        //weapon.weaponDamage.SetTargetLayer(StringConst.ENEMY);
 
         RotationWeapon(weapon, hand);
 

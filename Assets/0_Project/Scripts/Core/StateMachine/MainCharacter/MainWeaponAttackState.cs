@@ -14,12 +14,15 @@ public class MainWeaponAttackState : MainCharacterState
         characterCtrl.attackContext.EnableAttack();
         unWeapon = new CancellationTokenSource();
 
-        characterCtrl.attack.HandleWeaponAttack(characterCtrl.AttackDir);
+        characterCtrl.attack.HandleWeaponAttack(characterCtrl.AttackDir).Forget();
 
         WeaponBase weapon = characterCtrl?.currentWeaponBase;
         if (weapon == null) return;
 
         WeaponRotationHandle(weapon);
+
+        weapon.EnableAttack();
+        weapon.rb.linearVelocity = characterCtrl.AttackDir * 15f;
 
         if (characterCtrl.attack.currentAttackData == null) return;
 
@@ -31,7 +34,13 @@ public class MainWeaponAttackState : MainCharacterState
     public override void Exit()
     {
         base.Exit();
+
         characterCtrl.attackContext.DisableAttack();
+
+        WeaponBase weapon = characterCtrl?.currentWeaponBase;
+        if (weapon == null) return;
+        weapon.DisableAttack();
+
         unWeapon?.Cancel();
         unWeapon?.Dispose();
 
@@ -66,7 +75,10 @@ public class MainWeaponAttackState : MainCharacterState
             default:
             case WeaponType.MELE:
 
-               /* if(characterCtrl.healthBase.i)*/
+                if (!weapon.IsAttacking)
+                {
+                    RemoveWeapon(weapon);
+                }
 
                 break;
             case WeaponType.RANGE:

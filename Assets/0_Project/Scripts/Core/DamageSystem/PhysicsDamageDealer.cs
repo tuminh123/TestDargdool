@@ -2,23 +2,23 @@
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent (typeof(Collider2D),typeof(Rigidbody2D))]
 public class PhysicsDamageDealer : MonoBehaviour
 {
     [SerializeField] float minImpact = 3f;
     [SerializeField] float damageMultiplier = 0.05f;
     [SerializeField] float maxDamage = 50f;
     [SerializeField] LayerMask targetLayer;
+    [SerializeField] Rigidbody2D rb;
 
-    CharacterParent owner;
-    Rigidbody2D rb;
     IAttackContext attackContext;
-    HashSet<GameObject> damagedTargets = new();
+    IObjSendDamage objSendDamage;
 
-    public void Init(CharacterParent owner, IAttackContext attackContext)
+    HashSet<GameObject> damagedTargets = new();
+    
+    public void Init(IObjSendDamage objSendDamage, IAttackContext attackContext)
     {
         Debug.Log($"[InitWeapons] attackContext = {attackContext}");
-        this.owner = owner;
+        this.objSendDamage = objSendDamage;
         this.attackContext = attackContext;
     }
 
@@ -26,20 +26,17 @@ public class PhysicsDamageDealer : MonoBehaviour
     {
         damagedTargets.Clear();
     }
-    void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
+
     void OnCollisionEnter2D(Collision2D col)
     {
         if (attackContext == null || !attackContext.IsAttacking) return;
 
-        if (!owner) return;
+        if (objSendDamage == null) return;
 
         if (!col.transform.TryGetComponent(out IPhysicReceiveDamage hitBox)) return;
 
         GameObject target = hitBox.Owner;
-        if (!target || target == owner) return;
+        if (!target || target == objSendDamage.OnjSend) return;
         if (damagedTargets.Contains(target)) return;
 
         if (!targetLayer.Contains(target.layer)) return;

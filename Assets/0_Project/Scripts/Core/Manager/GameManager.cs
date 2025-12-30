@@ -146,6 +146,13 @@ public class GameManager : MonoBehaviour
         StopAllCoroutines();
         ZenManager.Instance.uIManager.CloseCurrentPopup();
 
+        if (CharacterCtrl.Instance != null)
+        {
+            Destroy(CharacterCtrl.Instance.gameObject);
+            CharacterCtrl.Instance = null;
+        }
+
+        // 🟢 TẠO PLAYER MỚI
         Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
 
     }
