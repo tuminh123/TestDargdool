@@ -56,11 +56,12 @@ public class MainCharacterState : IState
 
         characterCtrl.SetAttackDirection(pos);
 
-       /* if (characterCtrl.weaponEquip.IsEquipping)
+        if (characterCtrl.weaponEquip.HasWeapon)
         {
             stateMachine.ChangeState(characterCtrl.weaponAttackState);
+            return;
         }
-        else*/ if (characterCtrl.attack.CanAttack())
+        else if (characterCtrl.attack.CanAttack())
         {
             stateMachine.ChangeState(characterCtrl.attackState);
         }

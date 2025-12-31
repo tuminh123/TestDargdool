@@ -191,8 +191,8 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         foreach (var item in childBalance)
         {
             if(item == null) continue ;
-            item.Rb.linearVelocity = knockBackDir * knockBackForce; ;
-            //item.Rb.AddForce(knockBackDir*knockBackForce,ForceMode2D.Impulse);
+            //item.Rb.linearVelocity = knockBackDir * knockBackForce; ;
+            item.Rb.AddForce(knockBackDir*knockBackForce,ForceMode2D.Impulse);
         }
     }
     public void SetIsStunned(bool isStunned)

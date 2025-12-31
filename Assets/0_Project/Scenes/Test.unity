@@ -239,6 +239,7 @@ GameObject:
   - component: {fileID: 23179837}
   - component: {fileID: 23179836}
   - component: {fileID: 23179838}
+  - component: {fileID: 23179839}
   m_Layer: 6
   m_Name: GameObject
   m_TagString: Untagged
@@ -319,8 +320,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b53d041bc715f254980142d417f4a72b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handJoint: {fileID: 23179836}
   armRb: {fileID: 23179837}
+  weaponJoint: {fileID: 23179839}
+--- !u!233 &23179839
+HingeJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23179834}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_BreakAction: 3
+  m_AutoConfigureConnectedAnchor: 1
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: -4.05, y: -1.2320001}
+  m_UseConnectedAnchor: 1
+  m_UseMotor: 0
+  m_Motor:
+    m_MotorSpeed: 0
+    m_MaximumMotorForce: 10000
+  m_UseLimits: 0
+  m_AngleLimits:
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!4 &151624778 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3309624122350779629, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
@@ -5665,6 +5692,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 468884336445959980, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 744638186897192572, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1897399038127398580, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.05
@@ -5705,9 +5740,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2806765791930708329, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4124709497700794959, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: -0.004000187
+      objectReference: {fileID: 0}
+    - target: {fileID: 6350644334061289037, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6359975693805599760, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
       propertyPath: handLeft
@@ -5733,9 +5776,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainCharacter
       objectReference: {fileID: 0}
+    - target: {fileID: 7126484105956948662, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7832273347662737051, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7832273347662737051, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
+      propertyPath: knockBackForce
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 7956420861025533313, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: 0.004000187
+      objectReference: {fileID: 0}
+    - target: {fileID: 8389883581199735159, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8453133634605160188, guid: 19bb6aaeeaef6d240a328fdfbc6d833e, type: 3}
       propertyPath: m_ConnectedAnchor.x
@@ -6013,6 +6072,7 @@ GameObject:
   - component: {fileID: 2135162493}
   - component: {fileID: 2135162492}
   - component: {fileID: 2135162494}
+  - component: {fileID: 2135162495}
   m_Layer: 6
   m_Name: GameObject
   m_TagString: Untagged
@@ -6093,8 +6153,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b53d041bc715f254980142d417f4a72b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handJoint: {fileID: 2135162492}
   armRb: {fileID: 2135162493}
+  weaponJoint: {fileID: 2135162495}
+--- !u!233 &2135162495
+HingeJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135162490}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_BreakAction: 3
+  m_AutoConfigureConnectedAnchor: 1
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: -4.05, y: -1.2320001}
+  m_UseConnectedAnchor: 1
+  m_UseMotor: 0
+  m_Motor:
+    m_MotorSpeed: 0
+    m_MaximumMotorForce: 10000
+  m_UseLimits: 0
+  m_AngleLimits:
+    m_LowerAngle: 0
+    m_UpperAngle: 359
 --- !u!212 &311516926166017507
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6198,9 +6284,9 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 1
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -6264,7 +6350,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.19, y: 0}
+  m_Offset: {x: 0.22, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -6274,7 +6360,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3, y: 0.7}
+  m_Size: {x: 2.4, y: 0.45}
   m_EdgeRadius: 0
 --- !u!4 &5923680577120223875
 Transform:
@@ -6304,6 +6390,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   force: 10
+  rb: {fileID: 987057773905770081}
+  spinMultiplier: 1.2
+  handPivot: {x: 0, y: 0}
+  maxAngularVelocity: 720
 --- !u!58 &7995324645890957254
 CircleCollider2D:
   m_ObjectHideFlags: 0

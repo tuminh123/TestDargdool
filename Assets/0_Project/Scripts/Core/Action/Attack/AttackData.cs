@@ -208,7 +208,8 @@ public class AttackData
 
                 if (elapsed < configSO.LaunchTime)
                 {
-                    arm.Rb.linearVelocity = attackDir * configSO.AttackForce;
+                    //arm.Rb.linearVelocity = attackDir * configSO.AttackForce;
+                    arm.Rb.AddForce(attackDir * configSO.AttackForce,ForceMode2D.Impulse);
                 }
 
                 SmoothMotionHelper.SmoothMoveTowardsLimited(
