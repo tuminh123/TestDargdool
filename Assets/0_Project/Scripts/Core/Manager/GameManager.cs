@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
             player.EnableBalance();
         }
 
-        player.weaponEquip.UnEquipping();
+        //player.weaponEquip.UnEquipping();
 
         ZenManager.Instance.uIManager.PopupLose.ClosePopup();
 

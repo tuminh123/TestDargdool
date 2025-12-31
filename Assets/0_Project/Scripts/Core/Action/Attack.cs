@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 
 public class Attack : MonoBehaviour
 {
-    
+    public event Action<Vector2> OnAttack;
     [SerializeField] private Balance body;
     [SerializeField] private AttackDataConfigSO configSO;
 
@@ -127,7 +127,7 @@ public class Attack : MonoBehaviour
             linkToken
         );
 
-
+        OnAttack?.Invoke(attackDir);
     }
 
     public void StopAttack()

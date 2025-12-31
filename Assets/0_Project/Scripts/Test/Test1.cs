@@ -3,20 +3,20 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets._0_Data.Scripts.Test
+public class Test1 : MonoBehaviour
 {
-    public class Test1 : MonoBehaviour
-    {
 
-        [SerializeField] private Button _test;
-        [SerializeField] private int damage;
-        void Start()
-        {
-            _test.onClick.AddListener(()=>
-            {
-                Global.Send(new SignalTakeDamage() { damaged = damage });
-                Global.Send(new SignalRun());
-            });
-        }
+    public WeaponEquipController2D equip;
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+            equip.SetMode(EquipMode2D.StrongHinge);
+
+        if (Input.GetMouseButtonUp(0))
+            equip.SetMode(EquipMode2D.HardParent);
+
+        if (Input.GetKeyDown(KeyCode.G))
+            equip.DropWeapon();
     }
 }

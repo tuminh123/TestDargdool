@@ -159,14 +159,10 @@ public class AttackData
         try
         {
 
-            await AttackApply(configSO, attackDir, cts.Token);
-
-
-            //await PostMass(configSO,cts.Token);
-            //await PostAttack(configSO, cts.Token);
+            //await AttackApply(configSO, attackDir, cts.Token);
 
             OnAttacking?.Invoke();
-
+            await UniTask.WhenAll(AttackApply(configSO, attackDir, cts.Token), PostAttack(configSO, cts.Token));
 
 
         }

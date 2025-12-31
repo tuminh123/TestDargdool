@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +13,9 @@ public class AttackContext : MonoBehaviour,IAttackContext
     private Rigidbody2D[] bodies;
     private Dictionary<Rigidbody2D, float> originMass = new();
     private Dictionary<Rigidbody2D, float> originGravity = new();
-#endregion
+
+    public event Action OnAttackStart;
+    #endregion
 
     public bool IsAttacking { get; private set; }
 
@@ -30,6 +33,7 @@ public class AttackContext : MonoBehaviour,IAttackContext
     public void EnableAttack()
     {
         IsAttacking = true;
+        OnAttackStart?.Invoke();
     }
 
     public void DisableAttack()

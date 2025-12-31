@@ -17,12 +17,27 @@ public class PhysicsDamageDealer : MonoBehaviour
     
     public void Init(IObjSendDamage objSendDamage, IAttackContext attackContext)
     {
-        Debug.Log($"[InitWeapons] attackContext = {attackContext}");
+        //Debug.Log($"[InitWeapons] attackContext = {attackContext}");
         this.objSendDamage = objSendDamage;
         this.attackContext = attackContext;
+
+        attackContext.OnAttackStart += AttackContext_OnAttackStart;
+    }
+    private void OnDestroy()
+    {
+        attackContext.OnAttackStart -= AttackContext_OnAttackStart;
+    }
+    private void AttackContext_OnAttackStart()
+    {
+        ClearTarget();
     }
 
     void OnEnable()
+    {
+        ClearTarget();
+    }
+
+    public void ClearTarget()
     {
         damagedTargets.Clear();
     }
@@ -49,8 +64,8 @@ public class PhysicsDamageDealer : MonoBehaviour
         float damage = Mathf.Clamp(impact * damageMultiplier, 0, maxDamage);
         //float rawDamage = impact * damageMultiplier;
 
-        hitBox.ReceiveHit(damage, col.relativeVelocity);
-
         damagedTargets.Add(target);
+
+        hitBox.ReceiveHit(damage, col.relativeVelocity);
     }
 }

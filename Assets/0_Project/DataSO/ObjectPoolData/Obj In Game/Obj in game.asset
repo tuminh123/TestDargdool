@@ -15,4 +15,3 @@ MonoBehaviour:
   objList:
   - {fileID: 11400000, guid: 5b85032266701934b8c40380790c78a4, type: 2}
   - {fileID: 11400000, guid: 5cfb56b4d885c774ea0093b9776f9678, type: 2}
-  - {fileID: 11400000, guid: f1dc6b48f8c8dd549b2094e6907630ab, type: 2}

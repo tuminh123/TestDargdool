@@ -20,7 +20,6 @@ public class CharacterCtrl : CharacterParent
     public DetectionZone zone { get; private set; }
     public PlayerWeaponEquip weaponEquip { get; private set; }
 
-    public WeaponBase currentWeaponBase { get; private set; }
     public Vector3 LastPositionBeforeDead { get; private set; }
 
     #region  State
@@ -33,7 +32,6 @@ public class CharacterCtrl : CharacterParent
 
     #endregion
 
-    private CancellationTokenSource unWeapon;
 
     protected override void Awake()
     {
@@ -64,12 +62,7 @@ public class CharacterCtrl : CharacterParent
 
         GameEventBus.OnPlayerSpawn += GameEventBus_OnPlayerSpawn;
         GameEventBus.OnLevelUp += ApplyLevel;
-
         healthBase.OnDead += OnDead;
-        weaponEquip.OnEquip += WeaponEquip_OnEquip;
-
-        if (currentWeaponBase == null || currentWeaponBase.weaponDamage == null) return;
-        //currentWeaponBase.weaponDamage.OnDealDamage += WeaponDamage_OnDealDamage;
 
     }   
 
@@ -78,18 +71,7 @@ public class CharacterCtrl : CharacterParent
         base.OnDestroy();
         GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
         GameEventBus.OnLevelUp -= ApplyLevel;
-
         healthBase.OnDead -= OnDead;
-        weaponEquip.OnEquip -= WeaponEquip_OnEquip;
-
-        if (unWeapon != null)
-        {
-            unWeapon?.Cancel();
-            unWeapon?.Dispose();
-        }
-
-        if (currentWeaponBase == null || currentWeaponBase.weaponDamage == null) return;
-        //currentWeaponBase.weaponDamage.OnDealDamage -= WeaponDamage_OnDealDamage;
     }
 
     protected override void Start()
@@ -103,8 +85,9 @@ public class CharacterCtrl : CharacterParent
         }
 
         stateMachine.InitState(idelState);
-
     }
+    
+
     private void Update()
     {
         stateMachine.UpdateState();
@@ -119,20 +102,6 @@ public class CharacterCtrl : CharacterParent
         obj = this;
     }
 
-    // Weapon equipment event
-    private void WeaponEquip_OnEquip(WeaponBase obj)
-    {
-        if (obj == null) return;
-
-        //obj.weaponDamage?.SetWeaponDamage(stats.DamageBase);
-
-        currentWeaponBase = obj;
-
-    }
-    private void WeaponDamage_OnDealDamage(AttackContext obj)
-    {
-        obj = attackContext;
-    }
     public override void OnTakeDamage()
     {
         base.OnTakeDamage();
@@ -177,9 +146,7 @@ public class CharacterCtrl : CharacterParent
 
         SetKnockBackBalance();
         DisableBalance();
-
-        RemoveWeapon(currentWeaponBase);
-        weaponEquip.Equipping();
+        //weaponEquip.Equipping();
 
         GameEventBus.RaisePlayerLose(this);
         //OnDeadWait().Forget();
@@ -192,33 +159,7 @@ public class CharacterCtrl : CharacterParent
         if(enemy == null) return Vector2.up;
         return (transform.position - enemy.transform.position).normalized;
     }
-    private void RemoveWeapon(WeaponBase weapon)
-    {
-        if (weapon == null)
-        {
-            Debug.LogWarning("RemoveWeapon called but weapon is NULL");
-            return;
-        }
-        // Cancel task cũ nếu có
-        unWeapon?.Cancel();
-        unWeapon?.Dispose();
 
-        unWeapon = new CancellationTokenSource();
-
-        // Link với lifecycle Character
-        var linkedToken = CancellationTokenSource.CreateLinkedTokenSource(
-            unWeapon.Token,
-            this.GetCancellationTokenOnDestroy()
-        ).Token;
-
-        weaponEquip.UnEquipping();
-
-        UniTaskSafe.Forget(
-            weapon.UnEquip,
-            linkedToken,
-            "Remove Weapon"
-        );
-    }
     public void ApplyLevel(int level)
     {
         if (DataManager.Instance == null || !DataManager.Instance.IsLoaded) return;

@@ -1,82 +1,115 @@
-﻿using Cysharp.Threading.Tasks;
-using System.Threading;
-using UnityEngine;
-
+﻿using UnityEngine;
+public enum EquipState
+{
+    Idle,
+    Pulling,
+    Holding
+}
 public class PlayerWeaponEquip : MonoBehaviour
 {
     public event System.Action<WeaponBase> OnEquip;
+    public event System.Action OnDrop;
+    public event System.Action<HandController> OnHand;
 
-    [SerializeField] private Balance handRight, handLeft;
-    [SerializeField] private bool isEquipping = false;
+    [Header("Hands")]
+    [SerializeField] HandController leftHand;
+    [SerializeField] HandController rightHand;
 
-    private CharacterCtrl ctrl;
-    //get
-    public bool IsEquipping => isEquipping; 
+    [Header("Pull Params")]
+    [SerializeField] float grabForce = 2000f;
+    [SerializeField] float grabDistance = 0.05f;
 
-    private void Awake()
+    EquipState state = EquipState.Idle;
+
+    WeaponBase currentWeapon;
+    HandController activeHand;
+    TargetJoint2D grabJoint;
+
+    #region Unity
+
+    void FixedUpdate()
     {
-        ctrl = GetComponentInParent<CharacterCtrl>();
+        if (state == EquipState.Pulling)
+            UpdatePulling();
     }
 
-    private void EquipHandle(WeaponBase weapon)
+    void OnTriggerEnter2D(Collider2D col)
     {
-        Balance hand = GetHandBalance();
+        if (state != EquipState.Idle) return;
 
-        weapon.Equip(hand.Rb);
-
-        //weapon.weaponDamage.SetTargetLayer(StringConst.ENEMY);
-
-        RotationWeapon(weapon, hand);
-
-        isEquipping = true;
-
-        OnEquip?.Invoke(weapon);
+        if (col.TryGetComponent(out WeaponBase weapon))
+            BeginEquip(weapon);
     }
 
-    private void RotationWeapon(WeaponBase weapon, Balance hand)
+    #endregion
+
+    #region Equip Flow
+
+    void BeginEquip(WeaponBase weapon)
     {
-        if (hand == handLeft)
-        {
-            WeaponSetup(weapon, hand, -1);
-        }
-        else if (hand == handRight)
-        {
-            WeaponSetup(weapon, hand, 1);
-        }
+        state = EquipState.Pulling;
+        currentWeapon = weapon;
+
+        activeHand = ChooseHand();
+        OnHand?.Invoke(activeHand);
+
+        grabJoint = weapon.gameObject.AddComponent<TargetJoint2D>();
+        grabJoint.autoConfigureTarget = false;
+        grabJoint.target = activeHand.transform.position;
+        grabJoint.maxForce = grabForce;
+        grabJoint.frequency = 10f;
+        grabJoint.dampingRatio = 1f;
     }
 
-    private void WeaponSetup(WeaponBase weapon, Balance hand,float rot)
+    void UpdatePulling()
     {
-        weapon.transform.localScale = new Vector3(rot, 1, 1);
-        weapon.transform.position = (hand.transform.position+new Vector3(0.1f,-0.4f,0));
+        if (!currentWeapon || !activeHand) return;
+
+        grabJoint.target = activeHand.transform.position;
+
+        float dist = Vector2.Distance(
+            currentWeapon.rb.position,
+            activeHand.transform.position
+        );
+
+        if (dist <= grabDistance)
+            CompleteEquip();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void CompleteEquip()
     {
-        if (collision == null) return;
-        if (collision.TryGetComponent(out WeaponBase weapon))
-        {
-            if(isEquipping) return;
-            EquipHandle(weapon);
-        }
+        Destroy(grabJoint);
 
+        activeHand.AttachWeapon(currentWeapon);
+
+        state = EquipState.Holding;
+        OnEquip?.Invoke(currentWeapon);
     }
-    public Balance GetHandBalance()
+
+    public void DropWeapon()
     {
-        Balance[] randHand = new Balance[] { handLeft, handRight };
-        int index = Random.Range(0, randHand.Length);
-        return randHand[index];
+        if (state != EquipState.Holding) return;
+
+        activeHand.DetachWeapon();
+
+        currentWeapon = null;
+        activeHand = null;
+
+        state = EquipState.Idle;
+        OnDrop?.Invoke();
     }
-    public void SetIsEquipping(bool isEquipping)
+
+    #endregion
+
+    #region Helpers
+
+    public HandController ChooseHand()
     {
-        this.isEquipping = isEquipping;
+        if (!leftHand.IsHolding) return leftHand;
+        if (!rightHand.IsHolding) return rightHand;
+
+        return Random.value > 0.5f ? leftHand : rightHand;
     }
-    public void UnEquipping()
-    {
-        this.isEquipping=false;
-    }
-    public void Equipping()
-    {
-        this.isEquipping = true;
-    }
+
+    #endregion
 }

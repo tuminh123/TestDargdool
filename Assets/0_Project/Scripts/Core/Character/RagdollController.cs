@@ -63,10 +63,10 @@ public class RagdollController : MonoBehaviour
             rb.AddForce(force, ForceMode2D.Impulse);
             rb.AddTorque(Random.Range(-torqueForce, torqueForce));
 
-            if (ZenManager.Instance == null || ZenManager.Instance.cameraShaker == null) return;
-            ZenManager.Instance.cameraShaker.ShakeCam();
-
-            HapticPatterns.PlayPreset(HapticPatterns.PresetType.SoftImpact);
         }
+        if (ZenManager.Instance == null || ZenManager.Instance.cameraShaker == null) return;
+        ZenManager.Instance.cameraShaker.ShakeCam();
+
+        HapticPatterns.PlayPreset(HapticPatterns.PresetType.SoftImpact);
     }
 }

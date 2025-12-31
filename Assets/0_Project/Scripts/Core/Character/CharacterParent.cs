@@ -147,7 +147,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
 
     void InitPhysicDamageDeal()
     {
-        Debug.Log($"[InitWeapons] attackContext = {attackContext}");
+        //Debug.Log($"[InitWeapons] attackContext = {attackContext}");
         foreach (var dealer in physicsCharacterDamageDealers)
         {
             if (dealer == null) continue;
@@ -211,6 +211,27 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
                 break;
             }
         }
+    }
+
+    public void SendDamageBase()
+    {
+        Global.Send(new SignalSendDamage
+        {
+            damaged = DamageCaculate()
+        });
+    }
+    private float DamageCaculate()
+    {
+        float baseDamage = stats.DamageBase;
+
+        bool isCrit = UnityEngine.Random.value < stats.CritChane;
+
+        if (isCrit)
+        {
+            baseDamage *= stats.CritMultiplier;
+        }
+
+        return baseDamage;
     }
     #endregion
 
@@ -280,24 +301,5 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     }
     #endregion
 
-    public void SendDamageBase()
-    {
-        Global.Send(new SignalSendDamage
-        {
-            damaged = DamageCaculate()
-        });
-    }
-    private float DamageCaculate()
-    {
-        float baseDamage = stats.DamageBase;
-
-        bool isCrit = UnityEngine.Random.value < stats.CritChane;
-
-        if (isCrit)
-        {
-            baseDamage *= stats.CritMultiplier;
-        }
-
-        return baseDamage;
-    }
+    
 }

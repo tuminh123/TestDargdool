@@ -27,12 +27,10 @@ public class LimbHitBox : GameElement,IReceive<SignalSendDamage>,IPhysicReceiveD
     public void ReceiveHit(float rawDamage, Vector2 force)
     {
         if (owner == null) return;
-        float finalDamage = damage * damageScale * rawDamage;
+        float finalDamage = damage * damageScale + rawDamage;
 
         owner.healthBase.TakeDamaged(finalDamage);
-
         owner.ragdollController.OnHit(force, rawDamage);
-        
     }
 
 }
