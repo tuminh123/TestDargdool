@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
+using System.Collections;
 using System.Threading;
 using UnityEngine;
 using Zenject;
@@ -13,29 +14,19 @@ public enum WeaponType
 
 public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
 {
-    public ItemDeSpawn weaponDeSpawn {  get; protected set; }
+    [SerializeField] protected WeaponType weaponType = WeaponType.MELE;
+    [SerializeField] protected FixedJoint2D fixedJoint2D;
+    [SerializeField] protected ItemDeSpawn weaponDeSpawn;
 
     public bool IsAttacking => throw new NotImplementedException();
 
     public GameObject OnjSend => throw new NotImplementedException();
 
     public event Action OnAttackStart;
-
-    [Header("Physics")]
-    public Rigidbody2D rb;
-
-    [Tooltip("Độ dễ xoay – kiếm cao, búa thấp")]
-    public float spinMultiplier = 1.2f;
-
-    [Tooltip("Pivot tại chuôi vũ khí (local space)")]
-    public Vector2 handPivot;
-
-    public float maxAngularVelocity = 720f; // độ/giây
-
-    protected override void Awake()
+    Coroutine moveCoroutine;
+    private void OnEnable()
     {
-        base.Awake();
-        //weaponDeSpawn = GetComponentInChildren<ItemDeSpawn>();
+        //ResetWeapon();
     }
 
     public void DisableAttack()
@@ -47,20 +38,50 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
     {
         throw new NotImplementedException();
     }
-    public void FaceDirection(float direction)
+    public void MoveToHand(HandController hand)
     {
-        // direction: 1 = phải, -1 = trái
-        float angle = direction > 0 ? 0f : 180f;
-        rb.MoveRotation(angle);
-    }
-    public void AttachToHand(HandController hand)
-    {
-        // Lấy rotation của tay
-        /*float targetRotation =
-            hand.transform.eulerAngles.z +
-            hand.WeaponRotationOffset;
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
 
-        rb.MoveRotation(targetRotation);*/
+        moveCoroutine = StartCoroutine(MoveRoutine(hand));
     }
 
+    IEnumerator MoveRoutine(HandController hand)
+    {
+        rb.simulated = false;
+
+        while (Vector2.Distance(transform.position, hand.transform.position) > 0.05f)
+        {
+            Vector3 targetPos = hand.transform.position - transform.position;
+
+            transform.position = Vector3.Lerp(
+                transform.position,
+                targetPos,
+                Time.deltaTime * 20
+            );
+
+            yield return null;
+        }
+    }
+
+    public void ResetWeapon()
+    {
+       
+        if (fixedJoint2D == null || weaponDeSpawn == null) return;
+        fixedJoint2D.enabled = false;
+        weaponDeSpawn.gameObject.SetActive(true);
+
+        fixedJoint2D.connectedBody = null;
+    }
+    public void Equipping(Rigidbody2D rb)
+    {
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+
+        if (fixedJoint2D == null || weaponDeSpawn == null) return;
+        fixedJoint2D.enabled = true;
+        weaponDeSpawn.gameObject.SetActive(false);
+
+        fixedJoint2D.connectedBody = rb;
+    }
 }

@@ -19,11 +19,11 @@ public class EnemyChaseState : EnemyBaseState
     {
         base.UpdatePhysic();
 
-        enemyBasic.move.MoveHandle(Mathf.Sign(enemyBasic.AttackDir.x));
+        //enemyBasic.move.MoveHandle(Mathf.Sign(enemyBasic.AttackDir.x));
     }
 
     public override void Exit()
     {
-        enemyBasic.move.StopMoveCoroutine();
+        //enemyBasic.move.StopMoveCoroutine();
     }
 }

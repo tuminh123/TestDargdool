@@ -11,7 +11,7 @@ public class EnemyIdleState : EnemyBaseState
     {
         base.Enter();
         time = 2f;
-        enemyBasic.idle.IdelHandle();
+        //enemyBasic.idle.IdelHandle();
     }
     public override void Update()
     {

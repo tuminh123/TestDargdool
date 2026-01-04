@@ -7,15 +7,17 @@ using UnityEngine;
 #region Attack Data
 
 [System.Serializable]
-public class AttackProperties
+public class AttackImpulse
 {
     [SerializeField] private Balance balance;
-    [SerializeField] private float rot;
-    [SerializeField] private float force;
+    [SerializeField] private float force = 10f;
+    [SerializeField] private float torque = 5f;
+    [SerializeField] private float balanceMultiplier = 1.5f;
 
     public Balance Balance => balance;
-    public float Rot => rot;
+    public float Torque => torque;
     public float Force => force;
+    public float BalanceMultiplier => balanceMultiplier;
     public void ResetBalance()
     {
         balance.Rb.gravityScale = 1f;
@@ -36,7 +38,7 @@ public class AttackData
      public System.Action OnAttacking;
      public System.Action OnEndAttack;
 
-     [SerializeField] private List<AttackProperties> attackDatas = new List<AttackProperties>();
+     [SerializeField] private List<AttackImpulse> attackDatas = new List<AttackImpulse>();
      private bool isAttacking;
      public bool IsAttacking => isAttacking;
      public IEnumerator ExecuteAttack(AttackDataConfigSO configSO, Vector2 attackDir)
@@ -114,7 +116,7 @@ public class AttackData
              foreach (var item in attackDatas)
              {
                  Balance part = item.Balance;
-                 float targetRot = item.Rot;
+                 float targetRot = item.Torque;
                  float t = SmoothMotionHelper.SmoothRotateLimited(
                      part.Rotation,
                      targetRot,
@@ -136,7 +138,77 @@ public class AttackData
     public System.Action OnEndAttack;
     public System.Action OnAttacking;
 
-    [SerializeField] private List<AttackProperties> attackDatas = new List<AttackProperties>();
+    public List<AttackImpulse> impulses = new();
+
+    public float windupTime = 0.05f;
+    public float recoveryTime = 0.3f;
+
+    public async UniTask Execute(Vector2 dir, CancellationToken token)
+    {
+        dir = dir.normalized;
+
+        // 1️⃣ Windup
+        await UniTask.Delay(
+            Mathf.RoundToInt(windupTime * 1000),
+            cancellationToken: token
+        );
+
+        foreach (var i in impulses)
+        {
+            if (i.Balance == null) continue;
+
+            Rigidbody2D rb = i.Balance.Rb;
+            if (rb == null) continue;
+
+            // ===============================
+            // 2️⃣ XOAY TRƯỚC (an toàn cho ragdoll)
+            // ===============================
+
+            float torqueDir = -Mathf.Sign(dir.x);
+
+            rb.AddTorque(
+                torqueDir * i.Torque,
+                ForceMode2D.Force   // ❗ Force thay vì Impulse
+            );
+
+            // Cho physics chạy ổn định 1–2 frame
+            await UniTask.WaitForFixedUpdate(token);
+            await UniTask.WaitForFixedUpdate(token);
+
+            // Giới hạn tốc độ xoay để tránh bung joint
+            rb.angularVelocity = Mathf.Clamp(
+                rb.angularVelocity,
+                -250f,
+                250f
+            );
+
+            // ===============================
+            // 3️⃣ ĐẨY SAU (Impulse)
+            // ===============================
+
+            rb.AddForce(
+                dir * i.Force,
+                ForceMode2D.Impulse
+            );
+
+            // ===============================
+            // 4️⃣ Balance
+            // ===============================
+
+            i.Balance.Apply(i.BalanceMultiplier);
+        }
+
+        // 5️⃣ Recovery
+        await UniTask.Delay(
+            Mathf.RoundToInt(recoveryTime * 1000),
+            cancellationToken: token
+        );
+
+        foreach (var i in impulses)
+            i.Balance?.Recover();
+    }
+
+    /*[SerializeField] private List<AttackImpulse> attackDatas = new List<AttackImpulse>();
 
     private bool isAttacking;
     public bool IsAttacking => isAttacking;
@@ -161,9 +233,9 @@ public class AttackData
 
             //await AttackApply(configSO, attackDir, cts.Token);
 
-            OnAttacking?.Invoke();
+           
             await UniTask.WhenAll(AttackApply(configSO, attackDir, cts.Token), PostAttack(configSO, cts.Token));
-
+            OnAttacking?.Invoke();
 
         }
         catch (System.OperationCanceledException)
@@ -275,7 +347,7 @@ public class AttackData
                 if (item == null) continue;
                 Balance part = item.Balance;
                 if (part == null) continue;
-                float targetRot = item.Rot;
+                float targetRot = item.Torque;
 
                 float t = SmoothMotionHelper.SmoothRotateLimited(
                     part.Rotation,
@@ -291,7 +363,7 @@ public class AttackData
             await UniTask.WaitForFixedUpdate(token);
         }
     }
-    #endregion
+    #endregion*/
 
     #endregion
 

@@ -11,7 +11,7 @@ public class AttackBase
     public System.Action OnAttackEnd;
     public System.Action OnAttacking;
 
-    [SerializeField] private List<AttackProperties> attackDatas = new List<AttackProperties>();
+    [SerializeField] private List<AttackImpulse> attackDatas = new List<AttackImpulse>();
 
     private bool isAttacking;
     public bool IsAttacking => isAttacking;
@@ -146,7 +146,7 @@ public class AttackBase
             foreach (var item in attackDatas)
             {
                 Balance part = item.Balance;
-                float targetRot = item.Rot;
+                float targetRot = item.Torque;
 
                 float t = SmoothMotionHelper.SmoothRotateLimited(
                     part.Rotation,

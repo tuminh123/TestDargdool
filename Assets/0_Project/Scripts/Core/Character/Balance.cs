@@ -40,7 +40,7 @@ public class Balance : MonoBehaviour
     }
     //private void OnValidate()
     //{
-    //    rotChange = dataSO.Rot;
+    //    rotChange = dataSO.Torque;
     //    forceChange = dataSO.Force;
     //}
     private void Start()
@@ -50,7 +50,7 @@ public class Balance : MonoBehaviour
 
     private void FixedUpdate()
     {
-        HandleBalance();
+        //HandleBalance();
     }
 
     private void HandleBalance()
@@ -125,6 +125,36 @@ public class Balance : MonoBehaviour
         // Đảm bảo physics reset
         rb.Sleep();
         rb.WakeUp();
+    }
+    /////////////////////////////////////////////////////////////////////
+
+
+    private float baseMass;
+    private float baseGravity;
+    private float baseLinearDrag;
+    private float baseAngularDrag;
+
+    /// <summary>
+    /// Làm bộ phận mất thăng bằng
+    /// multiplier càng cao → càng nặng → càng khó kiểm soát
+    /// </summary>
+    public void Apply(float multiplier)
+    {
+        rb.mass = baseMass * multiplier;
+        rb.gravityScale = baseGravity * multiplier;
+        rb.linearDamping = baseLinearDrag * multiplier;
+        rb.angularDamping = baseAngularDrag * multiplier;
+    }
+
+    /// <summary>
+    /// Trả lại trạng thái ổn định
+    /// </summary>
+    public void Recover()
+    {
+        rb.mass = baseMass;
+        rb.gravityScale = baseGravity;
+        rb.linearDamping = baseLinearDrag;
+        rb.angularDamping = baseAngularDrag;
     }
 
 }

@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-[System.Serializable]
+//[System.Serializable]
 public class MoveData
 {
     [SerializeField] private Balance rightLeg,rightThigh,rightUpArm,rightLowArm,rightHand;
@@ -53,137 +53,197 @@ public class MoveData
 
 public class Move :MonoBehaviour
 {
-    [SerializeField] private MoveData data;
-    
-    [SerializeField] float speed = 2f;
-    [SerializeField] float legWait = .5f;
+    /* [SerializeField] private MoveData data;
+
+     [SerializeField] float speed = 2f;
+     [SerializeField] float legWait = .5f;
+     [SerializeField] private float maxSpeed = 5f;
+     [SerializeField] float bodyForce = 2f;
+     //[SerializeField] float damping = 0.85f; // giảm nhẹ, tự nhiên
+
+     private Coroutine moveCoroutine;
+     private bool isMovingRight = false;
+     private bool isMovingLeft = false;
+
+     //get
+     public bool IsMovingRight => isMovingRight;
+     public bool IsMovingLeft => isMovingLeft;
+
+     #region  Utils
+
+     private void FixedUpdate()
+     {
+         LimitMoving();
+     }
+
+     public void LimitMoving()
+     {
+         LimitVelocity(data.Body.Rb);
+         LimitVelocity(data.LeftLeg.Rb);
+         LimitVelocity(data.RightLeg.Rb);
+     }
+     //limit Handle
+     private void LimitVelocity(Rigidbody2D rb)
+     {
+         if (rb == null) return;
+         if (Mathf.Abs(rb.linearVelocityX) > maxSpeed)
+         {
+             rb.linearVelocity = new Vector2(Mathf.Sign(rb.linearVelocityX) * maxSpeed, rb.linearVelocityY);
+         }
+     }
+
+     #endregion
+
+     #region Moving handle
+
+       public void MoveHandle(float x)
+     {
+         //if (isAttacking) return;
+         if (Mathf.Abs(x) != 0)
+         {
+
+             if (x > 0)
+             {
+                 data.Body.Rb.AddForce(Vector2.right * bodyForce, ForceMode2D.Impulse);
+                 if (!isMovingRight)
+                 {
+
+                     isMovingRight = true;
+                     isMovingLeft = false;
+                     if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+                     moveCoroutine = StartCoroutine(MoveRight(legWait));
+                 }
+             }
+             else
+             {
+                 data.Body.Rb.AddForce(Vector2.left * bodyForce, ForceMode2D.Impulse);
+                 if (!isMovingLeft)
+                 {
+
+                     isMovingLeft = true;
+                     isMovingRight = false;
+                     if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+                     moveCoroutine = StartCoroutine(MoveLeft(legWait)); ;
+                 }
+
+             }
+
+         }
+     }
+
+     public void StopMoveCoroutine()
+     {
+         if (moveCoroutine != null)
+         {
+             StopCoroutine(moveCoroutine);
+             moveCoroutine = null;
+         }
+
+         isMovingLeft = false;
+         isMovingRight = false;
+     }
+     IEnumerator MoveRight(float seconds)
+     {
+         while (isMovingRight)
+         {
+             //Debug.Log("Move right");
+
+             data.Walk_1();
+             //leftLeg.Rb.AddForce(Vector2.right * (speed * 1000) * Time.fixedDeltaTime);
+             SmoothMotionHelper.SmoothMoveTowards(data.RightLeg.Rb, data.RightLeg.Rb.position + Vector2.right * speed * Time.fixedDeltaTime, maxSpeed);
+
+             yield return new WaitForSeconds(seconds);
+
+             data.Walk_2();
+             // rightLeg.Rb.AddForce(Vector2.right * (speed * 1000) * Time.fixedDeltaTime);
+             SmoothMotionHelper.SmoothMoveTowards(data.LeftLeg.Rb, data.LeftLeg.Rb.position + Vector2.right * speed * Time.fixedDeltaTime, maxSpeed);
+
+             yield return new WaitForSeconds(seconds);
+         }
+     }
+
+     IEnumerator MoveLeft(float seconds)
+     {
+         while (isMovingLeft)
+         {
+
+             //Debug.Log("Move Left");
+
+             data.Walk_2();
+             //rightLeg.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
+             SmoothMotionHelper.SmoothMoveTowards(data.RightLeg.Rb, data.RightLeg.Rb.position + Vector2.left * speed * Time.fixedDeltaTime, maxSpeed);
+
+             yield return new WaitForSeconds(seconds);
+
+
+             data.Walk_1();
+             //playerData.playerData.LeftLeg.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
+             SmoothMotionHelper.SmoothMoveTowards(data.LeftLeg.Rb, data.LeftLeg.Rb.position + Vector2.left * speed * Time.fixedDeltaTime, maxSpeed);
+
+             yield return new WaitForSeconds(seconds);
+         }
+     }
+
+     #endregion*/
+    [Header("Physics")]
+    [SerializeField] private Rigidbody2D body;
+    [SerializeField] private float moveForce = 2f;
     [SerializeField] private float maxSpeed = 5f;
-    [SerializeField] float bodyForce = 2f;
-    //[SerializeField] float damping = 0.85f; // giảm nhẹ, tự nhiên
-    
-    private Coroutine moveCoroutine;
-    private bool isMovingRight = false;
-    private bool isMovingLeft = false;
 
-    //get
-    public bool IsMovingRight => isMovingRight;
-    public bool IsMovingLeft => isMovingLeft;
+    [Header("Pose Motors")]
+    [SerializeField] private PoseMotor rightLeg;
+    [SerializeField] private PoseMotor leftLeg;
+    [SerializeField] private PoseMotor rightArm;
+    [SerializeField] private PoseMotor leftArm;
 
-    #region  Utils
+    private bool step;
 
-    private void FixedUpdate()
+    public void Tick(float dir)
     {
-        LimitMoving();
-    }
+        // 1. Add force di chuyển
+        body.AddForce(Vector2.right * dir * moveForce, ForceMode2D.Impulse);
 
-    public void LimitMoving()
-    {
-        LimitVelocity(data.Body.Rb);
-        LimitVelocity(data.LeftLeg.Rb);
-        LimitVelocity(data.RightLeg.Rb);
-    }
-    //limit Handle
-    private void LimitVelocity(Rigidbody2D rb)
-    {
-        if (rb == null) return;
-        if (Mathf.Abs(rb.linearVelocityX) > maxSpeed)
+        LimitSpeed();
+
+        // 2. Pose bước chân
+        if (Mathf.Abs(body.linearVelocity.x) > 0.2f)
         {
-            rb.linearVelocity = new Vector2(Mathf.Sign(rb.linearVelocityX) * maxSpeed, rb.linearVelocityY);
-        }
-    }
+            step = !step;
 
-    #endregion
-
-    #region Moving handle
-
-      public void MoveHandle(float x)
-    {
-        //if (isAttacking) return;
-        if (Mathf.Abs(x) != 0)
-        {
-
-            if (x > 0)
+            if (step)
             {
-                data.Body.Rb.AddForce(Vector2.right * bodyForce, ForceMode2D.Impulse);
-                if (!isMovingRight)
-                {
+                rightLeg.SetTargetRotation(40 * Mathf.Sign(dir));
+                leftLeg.SetTargetRotation(-30 * Mathf.Sign(dir));
 
-                    isMovingRight = true;
-                    isMovingLeft = false;
-                    if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-                    moveCoroutine = StartCoroutine(MoveRight(legWait));
-                }
+                rightArm.SetTargetRotation(-30 * Mathf.Sign(dir));
+                leftArm.SetTargetRotation(30 * Mathf.Sign(dir));
             }
             else
             {
-                data.Body.Rb.AddForce(Vector2.left * bodyForce, ForceMode2D.Impulse);
-                if (!isMovingLeft)
-                {
+                rightLeg.SetTargetRotation(-30 * Mathf.Sign(dir));
+                leftLeg.SetTargetRotation(40 * Mathf.Sign(dir));
 
-                    isMovingLeft = true;
-                    isMovingRight = false;
-                    if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-                    moveCoroutine = StartCoroutine(MoveLeft(legWait)); ;
-                }
-
+                rightArm.SetTargetRotation(30 * Mathf.Sign(dir));
+                leftArm.SetTargetRotation(-30 * Mathf.Sign(dir));
             }
-
         }
+
+        rightLeg.Enable();
+        leftLeg.Enable();
+        rightArm.Enable();
+        leftArm.Enable();
     }
-      
-    public void StopMoveCoroutine()
+
+    private void LimitSpeed()
     {
-        if (moveCoroutine != null)
+        if (Mathf.Abs(body.linearVelocity.x) > maxSpeed)
         {
-            StopCoroutine(moveCoroutine);
-            moveCoroutine = null;
-        }
-
-        isMovingLeft = false;
-        isMovingRight = false;
-    }
-    IEnumerator MoveRight(float seconds)
-    {
-        while (isMovingRight)
-        {
-            //Debug.Log("Move right");
-
-            data.Walk_1();
-            //leftLeg.Rb.AddForce(Vector2.right * (speed * 1000) * Time.fixedDeltaTime);
-            SmoothMotionHelper.SmoothMoveTowards(data.RightLeg.Rb, data.RightLeg.Rb.position + Vector2.right * speed * Time.fixedDeltaTime, maxSpeed);
-
-            yield return new WaitForSeconds(seconds);
-
-            data.Walk_2();
-            // rightLeg.Rb.AddForce(Vector2.right * (speed * 1000) * Time.fixedDeltaTime);
-            SmoothMotionHelper.SmoothMoveTowards(data.LeftLeg.Rb, data.LeftLeg.Rb.position + Vector2.right * speed * Time.fixedDeltaTime, maxSpeed);
-
-            yield return new WaitForSeconds(seconds);
+            body.linearVelocity = new Vector2(
+                Mathf.Sign(body.linearVelocity.x) * maxSpeed,
+                body.linearVelocity.y
+            );
         }
     }
 
-    IEnumerator MoveLeft(float seconds)
-    {
-        while (isMovingLeft)
-        {
 
-            //Debug.Log("Move Left");
-
-            data.Walk_2();
-            //rightLeg.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
-            SmoothMotionHelper.SmoothMoveTowards(data.RightLeg.Rb, data.RightLeg.Rb.position + Vector2.left * speed * Time.fixedDeltaTime, maxSpeed);
-
-            yield return new WaitForSeconds(seconds);
-
-
-            data.Walk_1();
-            //playerData.playerData.LeftLeg.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
-            SmoothMotionHelper.SmoothMoveTowards(data.LeftLeg.Rb, data.LeftLeg.Rb.position + Vector2.left * speed * Time.fixedDeltaTime, maxSpeed);
-
-            yield return new WaitForSeconds(seconds);
-        }
-    }
-
-    #endregion
-  
 }

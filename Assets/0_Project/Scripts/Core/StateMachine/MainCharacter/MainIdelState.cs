@@ -9,7 +9,7 @@ public class MainIdelState : MainCharacterState
     public override void Enter()
     {
         base.Enter();
-        characterCtrl.idle.IdelHandle();
+        characterCtrl.idle.Enter();
     }
     public override void Update()
     {

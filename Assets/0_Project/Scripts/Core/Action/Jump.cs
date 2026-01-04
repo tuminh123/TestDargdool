@@ -2,7 +2,7 @@
 
 public class Jump : MonoBehaviour
 {
-    [SerializeField] private Balance body;
+    /*[SerializeField] private Balance body;
     [SerializeField] private Balance body_2;
     [SerializeField] private Balance hip;
     [SerializeField] private Balance leftLeg;
@@ -51,6 +51,29 @@ public class Jump : MonoBehaviour
     public void SetBodyForce(float bodyForce)
     {
         this.bodyForce = bodyForce;
+    }*/
+    [SerializeField] private Rigidbody2D body;
+    [SerializeField] private Balance balance;
+
+    [SerializeField] private float jumpForce = 8f;
+    [SerializeField] private float forwardForce = 3f;
+
+    public void Execute(float dir)
+    {
+        // 1. Làm mất cân bằng khi nhảy
+        balance.Apply(1.5f);
+
+        // 2. Add lực
+        Vector2 force =
+            Vector2.up * jumpForce +
+            Vector2.right * dir * forwardForce;
+
+        body.AddForce(force, ForceMode2D.Impulse);
     }
-    
+
+    public void Recover()
+    {
+        balance.Recover();
+    }
+
 }

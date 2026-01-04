@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[System.Serializable]
+//[System.Serializable]
 public class IdleData
 {
     [SerializeField] private Balance rightLeg, leftLeg, body, rightDownLeg, leftDownLeg;
@@ -45,18 +45,45 @@ public class IdleData
 
 public class Idle : MonoBehaviour
 {
-    [SerializeField] private IdleData data;
-    [SerializeField] float damping = 0.85f; // giảm nhẹ, tự nhiên
-    public void IdelHandle()
-    {
-        data.ResetData();
+    /* [SerializeField] private IdleData data;
+     [SerializeField] float damping = 0.85f; // giảm nhẹ, tự nhiên
+     public void IdelHandle()
+     {
+         data.ResetData();
 
-        data.SetRot(50, 30, 25);
+         data.SetRot(50, 30, 25);
 
-        data.Body.Rb.linearVelocity = new Vector2(data.Body.Rb.linearVelocity.x * damping, data.Body.Rb.linearVelocity.y);
-    }
-    public void StopMove()
+         data.Body.Rb.linearVelocity = new Vector2(data.Body.Rb.linearVelocity.x * damping, data.Body.Rb.linearVelocity.y);
+     }
+     public void StopMove()
+     {
+         data.Body.Rb.linearVelocity = new Vector2(data.Body.Rb.linearVelocity.x * damping, data.Body.Rb.linearVelocity.y);
+     }*/
+    [Header("Pose Motors")]
+    [SerializeField] private PoseMotor body;
+    [SerializeField] private PoseMotor rightLeg;
+    [SerializeField] private PoseMotor leftLeg;
+    [SerializeField] private PoseMotor rightArm;
+    [SerializeField] private PoseMotor leftArm;
+
+    public void Enter()
     {
-        data.Body.Rb.linearVelocity = new Vector2(data.Body.Rb.linearVelocity.x * damping, data.Body.Rb.linearVelocity.y);
+        // Body thẳng
+        body.SetTargetRotation(0);
+        body.Enable();
+
+        // Chân đứng nhẹ
+        rightLeg.SetTargetRotation(10);
+        leftLeg.SetTargetRotation(-10);
+
+        rightLeg.Enable();
+        leftLeg.Enable();
+
+        // Tay thả lỏng
+        rightArm.SetTargetRotation(20);
+        leftArm.SetTargetRotation(-20);
+
+        rightArm.Enable();
+        leftArm.Enable();
     }
 }

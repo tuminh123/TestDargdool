@@ -32,7 +32,9 @@ public class CharacterCtrl : CharacterParent
 
     #endregion
 
+    private PoseMotor[] poseMotors;
 
+    public PoseMotor[] PoseMotors => poseMotors;
     protected override void Awake()
     {
         base.Awake();
@@ -54,6 +56,8 @@ public class CharacterCtrl : CharacterParent
         jumpState = new MainJumpState(stateMachine, this);
         stunnedState = new MainStunState(stateMachine, this,stunTime);
         weaponAttackState = new MainWeaponAttackState(stateMachine, this);
+
+        poseMotors = GetComponentsInChildren<PoseMotor>();
     }
     
     protected override void OnEnable()

@@ -11,32 +11,43 @@ public class MainAttackState : MainCharacterState
     public override void Enter()
     {
         base.Enter();
-        characterCtrl.attackContext.EnableAttack();
-        characterCtrl.attackContext.EnableAttackPhysics(characterCtrl.AttackDir);
-        characterCtrl.attack.HandleAttack(characterCtrl.AttackDir).Forget();
+        /* characterCtrl.attackContext.EnableAttack();
+         characterCtrl.attackContext.EnableAttackPhysics(characterCtrl.AttackDir);
+         characterCtrl.attack.HandleAttack(characterCtrl.AttackDir).Forget();
 
-        characterCtrl.SendDamageBase();
+         characterCtrl.SendDamageBase();
 
-        if (characterCtrl.attack.currentAttackData == null) return;
+         if (characterCtrl.attack.currentAttackData == null) return;
 
-        characterCtrl.attack.currentAttackData.OnAttacking += Attacking;
-        characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
+         characterCtrl.attack.currentAttackData.OnAttacking += Attacking;
+         characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;*/
 
-        
+        foreach (var pose in characterCtrl.PoseMotors)
+            pose.Disable();
+
+        characterCtrl.attack
+        .HandleAttack(characterCtrl.AttackDir);
+        /*.Forget();*/
+
+        characterCtrl.attack.OnAttackEnd += EndAttack;
 
     }
     public override void Exit()
     {
         base.Exit();
 
-        characterCtrl.attackContext.DisableAttack();
-        characterCtrl.attackContext.ResetPhysics();
+        /*  characterCtrl.attackContext.DisableAttack();
+          characterCtrl.attackContext.ResetPhysics();
 
-        if (characterCtrl.attack.currentAttackData == null) return;
+          if (characterCtrl.attack.currentAttackData == null) return;
 
-        characterCtrl.attack.currentAttackData.OnAttacking -= Attacking;
-        characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
+          characterCtrl.attack.currentAttackData.OnAttacking -= Attacking;
+          characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;*/
+        foreach (var pose in characterCtrl.PoseMotors)
+            pose.Enable();
 
+        //characterCtrl.attack.CancelAttack();
+        characterCtrl.attack.OnAttackEnd -= EndAttack;
     }
     private void Attacking()
     {
@@ -47,7 +58,8 @@ public class MainAttackState : MainCharacterState
     {
         //characterCtrl.SendDamage();
         //stateMachine.ChangeState(characterCtrl.idelState);
-        characterCtrl.attack.StopAttack();
+
+        //characterCtrl.attack.CancelAttack();
         stateMachine.ChangeState(characterCtrl.idelState);
     }
 

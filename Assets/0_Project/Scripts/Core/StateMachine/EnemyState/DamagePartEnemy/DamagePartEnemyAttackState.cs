@@ -11,18 +11,18 @@ public class DamagePartEnemyAttackState : DamagePartEnemyState
     {
         base.Enter();
 
-       partEnemy.attack.HandleAttack(partEnemy.AttackDir);
+      /* partEnemy.attack.HandleAttack(partEnemy.AttackDir);
 
-        if (partEnemy.attack.currentAttackData == null) return;
+        if (partEnemy.attack.currentAttackData == null) return;*/
        //partEnemy.attack.currentAttackData.OnAttackEnd += OnAttackEnd;
     }
 
 
     public override void Exit()
     {
-       partEnemy.attack.StopAttack();
+      /* partEnemy.attack.CancelAttack();
 
-        if (partEnemy.attack.currentAttackData == null) return;
+        if (partEnemy.attack.currentAttackData == null) return;*/
        //partEnemy.attack.currentAttackData.OnAttackEnd -= OnAttackEnd;
     }
 

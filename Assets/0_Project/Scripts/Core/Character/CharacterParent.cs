@@ -262,7 +262,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
              item.ResetState();
          }
          bodyParent.ResetState();
-         attack.StopAttack();
+         attack.CancelAttack();
      }*/
     public void ResetOnGameRestart()
     {
