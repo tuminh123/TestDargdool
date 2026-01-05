@@ -12,7 +12,7 @@ public class EnemyCombatState : EnemyBaseState
     public override void Enter()
     {
         base.Enter();
-        //enemyBasic.idle.IdelHandle();
+        enemyBasic.idle.IdelHandle();
         attackTime = attackDuration;
         //Debug.Log(attackTime);
     }
@@ -41,6 +41,6 @@ public class EnemyCombatState : EnemyBaseState
             return;
         }
 
-        //enemyBasic.idle.IdelHandle();
+        enemyBasic.idle.IdelHandle();
     }
 }

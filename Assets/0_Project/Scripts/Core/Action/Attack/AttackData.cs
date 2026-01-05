@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -14,19 +15,29 @@ public class AttackImpulse
     [SerializeField] private float torque = 5f;
     [SerializeField] private float balanceMultiplier = 1.5f;
 
+    private bool balanceApplied;
+
     public Balance Balance => balance;
     public float Torque => torque;
+   
     public float Force => force;
-    public float BalanceMultiplier => balanceMultiplier;
-    public void ResetBalance()
+
+    public void ApplyBalanceOnce()
     {
-        balance.Rb.gravityScale = 1f;
-        balance.Rb.mass = 1f;
-    }
-    public void ApplyBalance()
-    {
+        if (balanceApplied || balance == null) return;
+
         balance.Rb.gravityScale = 3f;
         balance.Rb.mass = 2f;
+        balanceApplied = true;
+    }
+
+    public void ResetBalance()
+    {
+        if (balance == null) return;
+
+        balance.Rb.gravityScale = 1f;
+        balance.Rb.mass = 1f;
+        balanceApplied = false;
     }
 }
 
@@ -134,89 +145,24 @@ public class AttackData
     #endregion
 
     #region Unitask
-    // events
-    public System.Action OnEndAttack;
+    #region Events
+
     public System.Action OnAttacking;
+    public System.Action OnEndAttack;
 
-    public List<AttackImpulse> impulses = new();
+    #endregion
 
-    public float windupTime = 0.05f;
-    public float recoveryTime = 0.3f;
-
-    public async UniTask Execute(Vector2 dir, CancellationToken token)
-    {
-        dir = dir.normalized;
-
-        // 1️⃣ Windup
-        await UniTask.Delay(
-            Mathf.RoundToInt(windupTime * 1000),
-            cancellationToken: token
-        );
-
-        foreach (var i in impulses)
-        {
-            if (i.Balance == null) continue;
-
-            Rigidbody2D rb = i.Balance.Rb;
-            if (rb == null) continue;
-
-            // ===============================
-            // 2️⃣ XOAY TRƯỚC (an toàn cho ragdoll)
-            // ===============================
-
-            float torqueDir = -Mathf.Sign(dir.x);
-
-            rb.AddTorque(
-                torqueDir * i.Torque,
-                ForceMode2D.Force   // ❗ Force thay vì Impulse
-            );
-
-            // Cho physics chạy ổn định 1–2 frame
-            await UniTask.WaitForFixedUpdate(token);
-            await UniTask.WaitForFixedUpdate(token);
-
-            // Giới hạn tốc độ xoay để tránh bung joint
-            rb.angularVelocity = Mathf.Clamp(
-                rb.angularVelocity,
-                -250f,
-                250f
-            );
-
-            // ===============================
-            // 3️⃣ ĐẨY SAU (Impulse)
-            // ===============================
-
-            rb.AddForce(
-                dir * i.Force,
-                ForceMode2D.Impulse
-            );
-
-            // ===============================
-            // 4️⃣ Balance
-            // ===============================
-
-            i.Balance.Apply(i.BalanceMultiplier);
-        }
-
-        // 5️⃣ Recovery
-        await UniTask.Delay(
-            Mathf.RoundToInt(recoveryTime * 1000),
-            cancellationToken: token
-        );
-
-        foreach (var i in impulses)
-            i.Balance?.Recover();
-    }
-
-    /*[SerializeField] private List<AttackImpulse> attackDatas = new List<AttackImpulse>();
+    [SerializeField] private List<AttackImpulse> attackDatas = new();
 
     private bool isAttacking;
     public bool IsAttacking => isAttacking;
 
     private CancellationTokenSource cts;
 
+    #region Public API
+
     /// <summary>
-    /// Gọi attack (có thể cancel được)
+    /// Execute attack (cancellable)
     /// </summary>
     public async UniTask ExecuteAttack(
         AttackDataConfigSO configSO,
@@ -224,26 +170,31 @@ public class AttackData
         CancellationToken token
     )
     {
+        if (isAttacking) return;
+
         isAttacking = true;
         cts = CancellationTokenSource.CreateLinkedTokenSource(token);
 
-
         try
         {
-
-            //await AttackApply(configSO, attackDir, cts.Token);
-
-           
-            await UniTask.WhenAll(AttackApply(configSO, attackDir, cts.Token), PostAttack(configSO, cts.Token));
             OnAttacking?.Invoke();
 
+            // Apply physics + motion song song
+            await UniTask.WhenAll(
+                AttackApply(configSO, attackDir, cts.Token),
+                PostAttack(configSO, cts.Token)
+            );
         }
-        catch (System.OperationCanceledException)
+        catch (OperationCanceledException)
         {
-            // bị cancel thì kết thúc sớm
+            // Attack bị cancel
         }
-        isAttacking = false;
-        OnEndAttack?.Invoke();
+        finally
+        {
+            Cleanup();
+            isAttacking = false;
+            OnEndAttack?.Invoke();
+        }
     }
 
     public void CancelAttack()
@@ -252,6 +203,9 @@ public class AttackData
             cts.Cancel();
     }
 
+    #endregion
+
+    #region Core Logic
 
     private async UniTask AttackApply(
         AttackDataConfigSO configSO,
@@ -259,60 +213,49 @@ public class AttackData
         CancellationToken token
     )
     {
-        Debug.Log("start");
         float elapsed = 0f;
+
+        // ✅ Apply balance 1 lần duy nhất
+        foreach (var item in attackDatas)
+        {
+            item?.ApplyBalanceOnce();
+        }
 
         while (elapsed < configSO.AttackDuration)
         {
             token.ThrowIfCancellationRequested();
-
             elapsed += Time.fixedDeltaTime;
 
             foreach (var item in attackDatas)
             {
+                if (item?.Balance == null) continue;
 
-                if (item == null) continue;
                 Balance arm = item.Balance;
-                if (arm == null) continue;
+
                 Vector2 targetPos =
                     attackDir * configSO.AttackReach +
                     Vector2.Perpendicular(attackDir) * configSO.ProceduralOffset;
 
+                // Launch force
                 if (elapsed < configSO.LaunchTime)
                 {
-                    //arm.Rb.linearVelocity = attackDir * configSO.AttackForce;
-                    arm.Rb.AddForce(attackDir * configSO.AttackForce,ForceMode2D.Impulse);
+                    arm.Rb.AddForce(
+                        attackDir * configSO.AttackForce,
+                        ForceMode2D.Impulse
+                    );
                 }
 
                 SmoothMotionHelper.SmoothMoveTowardsLimited(
-                    arm.Rb, targetPos,
+                    arm.Rb,
+                    targetPos,
                     configSO.MaxSpeed,
                     configSO.MaxForce,
                     configSO.DecelDistance
                 );
-
-                item.ApplyBalance();
             }
 
             await UniTask.WaitForFixedUpdate(token);
         }
-    }
-
-    #region don't need ?
-    private async UniTask PostMass(AttackDataConfigSO configSO, CancellationToken token)
-    {
-
-        foreach (var item in attackDatas)
-        {
-            item.Balance.Rb.linearDamping = configSO.LinearDrag;
-            item.Balance.Rb.angularDamping = configSO.AngularDrag;
-
-            item.Balance.Rb.linearVelocity = Vector2.zero;
-            item.Balance.Rb.angularVelocity = 0;
-            item.ResetBalance();
-        }
-
-        await UniTask.WaitForFixedUpdate(token);
     }
 
     private async UniTask PostAttack(
@@ -321,52 +264,62 @@ public class AttackData
     )
     {
         float poseDuration = 0.35f;
-        float elapsedPose = 0f;
+        float elapsed = 0f;
 
+        // Freeze motion + reset physics
         foreach (var item in attackDatas)
         {
-            item.Balance.Rb.linearDamping = configSO.LinearDrag;
-            item.Balance.Rb.angularDamping = configSO.AngularDrag;
+            if (item?.Balance == null) continue;
 
-            item.Balance.Rb.linearVelocity = Vector2.zero;
-            item.Balance.Rb.angularVelocity = 0;
+            var rb = item.Balance.Rb;
+            rb.linearDamping = configSO.LinearDrag;
+            rb.angularDamping = configSO.AngularDrag;
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+
             item.ResetBalance();
         }
 
-
-        while (elapsedPose < poseDuration)
+        while (elapsed < poseDuration)
         {
-            Debug.Log("1");
             token.ThrowIfCancellationRequested();
-
-            elapsedPose += Time.fixedDeltaTime;
+            elapsed += Time.fixedDeltaTime;
 
             foreach (var item in attackDatas)
             {
-                Debug.Log("2");
-                if (item == null) continue;
+                if (item?.Balance == null) continue;
+
                 Balance part = item.Balance;
-                if (part == null) continue;
-                float targetRot = item.Torque;
 
                 float t = SmoothMotionHelper.SmoothRotateLimited(
                     part.Rotation,
-                    targetRot,
+                    item.Torque,
                     configSO.RotateSmoothSpeed,
                     configSO.MaxAngularSpeed
                 );
 
                 part.SetRotation(t);
-                Debug.Log("3");
             }
 
             await UniTask.WaitForFixedUpdate(token);
         }
     }
-    #endregion*/
 
     #endregion
 
+    #region Cleanup
+
+    private void Cleanup()
+    {
+        if (cts == null) return;
+
+        cts.Dispose();
+        cts = null;
+    }
+
+    #endregion
 }
+    #endregion
+
 
 #endregion

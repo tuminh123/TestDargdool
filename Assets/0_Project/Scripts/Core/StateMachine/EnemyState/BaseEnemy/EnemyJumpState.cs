@@ -10,7 +10,7 @@ public class EnemyJumpState : EnemyBaseState
     {
         base.Enter();
         float x = enemyBasic.AttackDir.x;
-        //enemyBasic.jump.JumpHandle(x);
+        enemyBasic.jump.JumpHandle(x);
     }
     public override void Update()
     {

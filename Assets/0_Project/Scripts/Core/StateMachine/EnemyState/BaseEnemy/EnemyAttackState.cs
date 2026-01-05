@@ -10,7 +10,7 @@ public class EnemyAttackState : EnemyBaseState
 
     public override void Enter()
     {
-     /*   base.Enter();
+        base.Enter();
         enemyBasic.attackContext.EnableAttack();
         enemyBasic.attackContext.EnableAttackPhysics(enemyBasic.AttackDir);
         enemyBasic.attack.HandleAttack(enemyBasic.AttackDir).Forget();
@@ -18,9 +18,9 @@ public class EnemyAttackState : EnemyBaseState
         enemyBasic.SendDamageBase();
 
         if (enemyBasic.attack.currentAttackData == null) return;
-    
+
         enemyBasic.attack.currentAttackData.OnAttacking += OnAttacking;
-        enemyBasic.attack.currentAttackData.OnEndAttack += OnAttackEnd;*/
+        enemyBasic.attack.currentAttackData.OnEndAttack += OnAttackEnd;
     }
 
     
@@ -29,16 +29,16 @@ public class EnemyAttackState : EnemyBaseState
         base.Exit();
         enemyBasic.attackContext.DisableAttack();
         enemyBasic.attackContext.ResetPhysics();
-/*
+
         if (enemyBasic.attack.currentAttackData == null) return;
         enemyBasic.attack.currentAttackData.OnAttacking -= OnAttacking;
-        enemyBasic.attack.currentAttackData.OnEndAttack -= OnAttackEnd;*/
+        enemyBasic.attack.currentAttackData.OnEndAttack -= OnAttackEnd;
     }
 
     private void OnAttackEnd()
     {
-       /* enemyBasic.attack.CancelAttack();
-        stateMachine.ChangeState(enemyBasic.enemyCombatState);*/
+        enemyBasic.attack.CancelAttack();
+        stateMachine.ChangeState(enemyBasic.enemyCombatState);
     }
 
     private void OnAttacking()

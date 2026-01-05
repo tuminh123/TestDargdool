@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Lofelt.NiceVibrations;
+using Cysharp.Threading.Tasks;
 public class RagdollController : MonoBehaviour
 {
     [SerializeField] List<Balance> balances;
@@ -40,7 +41,7 @@ public class RagdollController : MonoBehaviour
 
     
 
-    public void Explode()
+    public async UniTask Explode()
     {
         Vector2 camDir =  ((Vector2)Camera.main.transform.position - (Vector2)transform.position).normalized;
 
@@ -63,6 +64,7 @@ public class RagdollController : MonoBehaviour
             rb.AddForce(force, ForceMode2D.Impulse);
             rb.AddTorque(Random.Range(-torqueForce, torqueForce));
 
+            await UniTask.DelayFrame(1);
         }
         if (ZenManager.Instance == null || ZenManager.Instance.cameraShaker == null) return;
         ZenManager.Instance.cameraShaker.ShakeCam();

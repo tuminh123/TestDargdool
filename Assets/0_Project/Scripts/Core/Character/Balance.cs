@@ -50,7 +50,7 @@ public class Balance : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //HandleBalance();
+        HandleBalance();
     }
 
     private void HandleBalance()

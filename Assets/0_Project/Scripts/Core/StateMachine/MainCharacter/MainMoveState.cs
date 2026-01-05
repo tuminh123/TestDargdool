@@ -21,12 +21,12 @@ public class MainMoveState : MainCharacterState
     public override void UpdatePhysic()
     {
         base.UpdatePhysic();
-        characterCtrl.move.Tick(x);
+        characterCtrl.move.MoveHandle(x);
     }
 
     public override void Exit()
     {
         base.Exit();
-        //characterCtrl.move.StopMoveCoroutine();
+        characterCtrl.move.StopMoveCoroutine();
     }
 }

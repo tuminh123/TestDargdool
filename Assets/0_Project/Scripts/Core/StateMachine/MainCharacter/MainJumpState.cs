@@ -9,7 +9,7 @@ public class MainJumpState :MainCharacterState
     public override void Enter()
     {
         base.Enter();
-        characterCtrl.jump.Execute(Vector2.up.y);
+        characterCtrl.jump.JumpHandle(Vector2.up.y); ;
     }
 
     public override void Update()
@@ -17,7 +17,6 @@ public class MainJumpState :MainCharacterState
         base.Update();
         if (isGround)
         {
-            characterCtrl.jump.Recover();
             stateMachine.ChangeState(characterCtrl.idelState);
         }
     }
