@@ -1,11 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.XR;
+using static HadesSDK.Ads.Core.AdService;
 
-public enum EquipState
+/*public enum EquipState
 {
     Idle,      // Không cầm gì
     Pulling,   // Đang hút/kéo vũ khí về tay
     Holding    // Đã cầm vũ khí
+}*/
+public enum AttackMode
+{
+    BareHand,     // đánh tay
+    WeaponPull,   // đánh khi vũ khí đang bay
+    WeaponHold    // đánh khi đã cầm
 }
 public class PlayerWeaponEquip : MonoBehaviour
 {
@@ -16,109 +23,170 @@ public class PlayerWeaponEquip : MonoBehaviour
     [Header("Hands")]
     [SerializeField] HandController leftHand;
     [SerializeField] HandController rightHand;
-    [Header("Pull Params")]
-    [SerializeField] float grabForce = 2000f; 
-    [SerializeField] float grabDistance = 0.05f; 
-    EquipState state = EquipState.Idle; 
-    HandController activeHand; 
-    TargetJoint2D grabJoint;
-    public WeaponBase currentWeapon { get; private set; }
 
-    public bool HasWeapon => state == EquipState.Holding;
+    [Header("Pull Physics")]
+    [SerializeField] float grabForce = 2000f;
+    [SerializeField] float grabDistance = 0.05f;
 
-    void FixedUpdate() 
+    //EquipState state = EquipState.Idle;
+    HandController activeHand;
+    TargetJoint2D pullJoint;
+
+    WeaponBase pullingWeapon;   // đang kéo
+    WeaponBase holdingWeapon;   // đang cầm
+
+    //get
+    public WeaponBase CurrentWeapon => holdingWeapon;
+    public bool HasWeapon => holdingWeapon != null;
+
+    public AttackMode CurrentAttackMode
     {
-        if (state == EquipState.Pulling) UpdatePulling(); 
+        get
+        {
+            if (holdingWeapon != null)
+                return AttackMode.WeaponHold;
+
+            if (pullingWeapon != null)
+                return AttackMode.WeaponPull;
+
+            return AttackMode.BareHand;
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) { 
-        if (state != EquipState.Idle) return; 
+    /*public bool HasWeapon { get;private set; }*/
 
+    private void FixedUpdate()
+    {
+        /* if (state == EquipState.Pulling)
+             UpdatePulling();*/
+        if (pullingWeapon != null)
+            UpdatePulling();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        /*if (state != EquipState.Idle) return;
         if (!collision.TryGetComponent(out WeaponBase weapon)) return;
-
-        BeginEquip(weapon);
-
-     /*   currentWeapon = weapon;
-        HandController currentHand = GetHand();
-
-        if (currentHand == null) return;
-        weapon.MoveToHand(currentHand);
-        weapon.Equipping(currentHand.Rb);
 
         HasWeapon = true;
 
-        SetRotWhenEquip(currentHand);*/
+        BeginEquip(weapon);*/
 
+        if (pullingWeapon || holdingWeapon) return;
+        if (!collision.TryGetComponent(out WeaponBase weapon)) return;
+
+        BeginEquip(weapon);
     }
 
-    #region Equip Flow
+    void BeginEquip(WeaponBase weapon)
+    {
+        pullingWeapon = weapon;
+        activeHand = ChooseHand();
 
-    private void BeginEquip(WeaponBase weapon)
-    {
-        state = EquipState.Pulling; 
-        currentWeapon = weapon; 
-        activeHand = ChooseHand(); 
-        OnHand?.Invoke(activeHand); 
-        grabJoint = weapon.gameObject.AddComponent<TargetJoint2D>(); 
-        grabJoint.autoConfigureTarget = false; 
-        grabJoint.target = activeHand.transform.position; 
-        grabJoint.maxForce = grabForce;
-        grabJoint.frequency = 10f;
-        grabJoint.dampingRatio = 1f;
-    }
-    private void UpdatePulling()
-    {
-        if (!currentWeapon || !activeHand) return;
-        grabJoint.target = activeHand.transform.position;
-        float dist = Vector2.Distance(currentWeapon.rb.position, activeHand.transform.position);
-        if (dist <= grabDistance) CompleteEquip();
+        pullJoint = weapon.gameObject.AddComponent<TargetJoint2D>();
+        pullJoint.autoConfigureTarget = false;
+        pullJoint.target = activeHand.transform.position;
+        pullJoint.maxForce = grabForce;
+        pullJoint.frequency = 8f;
+        pullJoint.dampingRatio = 1f;
+
+        /*currentWeapon = weapon;
+        activeHand = ChooseHand();
+        state = EquipState.Pulling;
+
+        pullJoint = weapon.gameObject.AddComponent<TargetJoint2D>();
+        pullJoint.autoConfigureTarget = false;
+        pullJoint.target = activeHand.transform.position;
+        pullJoint.maxForce = grabForce;
+        pullJoint.frequency = 8f;
+        pullJoint.dampingRatio = 1f;*/
     }
 
-    private void CompleteEquip()
+    void UpdatePulling()
     {
-        Destroy(grabJoint);
+        if (!pullingWeapon || !activeHand) return;
 
-        state = EquipState.Holding;
-        activeHand.EquipWeapon(currentWeapon);
-        //SetRotWhenEquip(activeHand);
-        //currentWeapon.Equipping(activeHand.Rb);
-        OnEquip?.Invoke(currentWeapon);
+        pullJoint.target = activeHand.transform.position;
+
+        float dist = Vector2.Distance(
+            pullingWeapon.rb.position,
+            activeHand.transform.position
+        );
+
+        if (dist <= grabDistance)
+            CompleteEquip();
+
+        /*if (!currentWeapon || !activeHand) return;
+
+        pullJoint.target = activeHand.transform.position;
+
+        float dist = Vector2.Distance(
+            currentWeapon.rb.position,
+            activeHand.transform.position
+        );
+
+        if (dist <= grabDistance) CompleteEquip();*/
     }
-    private HandController ChooseHand()
+
+    void CompleteEquip()
     {
-        if (!leftHand.IsHolding) return leftHand; 
-        if (!rightHand.IsHolding) return rightHand; 
+        Destroy(pullJoint);
+
+        activeHand.AttachWeapon_Physics(pullingWeapon);
+        holdingWeapon = pullingWeapon;
+        pullingWeapon = null;
+
+        /*Destroy(pullJoint);
+
+        activeHand.AttachWeapon_Physics(currentWeapon);
+
+        state = EquipState.Holding;*/
+    }
+
+    public void DropWeapon()
+    {
+        if (!holdingWeapon) return;
+
+        WeaponBase dropped = activeHand.DetachWeapon_Physics();
+        holdingWeapon = null;
+        activeHand = null;
+    }
+
+    public void SetFaceWeaponAttack(Vector2 dir)
+    {
+        if(holdingWeapon == null) return;
+        holdingWeapon.transform.localScale = dir.x < 0 ? new Vector3(-1, 1, 1) : new Vector3(1,1,1);
+    }
+    public void BoostPull(float forceMultiplier = 1.5f)
+    {
+        if (pullJoint != null)
+            pullJoint.maxForce *= forceMultiplier;
+    }
+    /*public void Unequip()
+    {
+        if (state != EquipState.Holding) return;
+        if (!activeHand || !activeHand.IsHolding) return;
+
+        WeaponBase dropped = activeHand.DetachWeapon_Physics();
+        if (!dropped) return;
+
+        ResetWeaponPhysics(dropped);
+
+        state = EquipState.Idle;
+        activeHand = null;
+
+        HasWeapon = false;
+    }*/
+
+    void ResetWeaponPhysics(WeaponBase weapon)
+    {
+        weapon.rb.linearVelocity = Vector2.zero;
+        weapon.rb.angularVelocity = 0f;
+    }
+    HandController ChooseHand()
+    {
+        if (!leftHand.IsHolding) return leftHand;
+        if (!rightHand.IsHolding) return rightHand;
         return Random.value > 0.5f ? leftHand : rightHand;
-    }
-    #endregion
-
-    public void UnEquipWeapon()
-    {
-        if (currentWeapon == null) return;
-        //HasWeapon = false;
-        currentWeapon.ResetWeapon();
-    }
-
-    #region Weapon Rot Handle
-    public void SetRotWhenEquip(HandController hand)
-    {
-        if(hand == null || currentWeapon == null || hand.HandType == HandType.None) return;
-        if (hand.HandType == HandType.Left) currentWeapon.transform.localScale = new Vector3(-1, 1, 1);
-
-        if (hand.HandType == HandType.Right) currentWeapon.transform.localScale = new Vector3(1, 1, 1);
-    }
-    public void SetRotWhenAttack(Vector2 dir)
-    {
-        if ( currentWeapon == null) return;
-        if (dir.x < 0) currentWeapon.transform.localScale = new Vector3(-1, 1, 1);
-
-        if (dir.x > 0) currentWeapon.transform.localScale = new Vector3(1, 1, 1);
-    }
-    #endregion
-    public HandController GetHand()
-    {
-        HandController[] hands = new HandController[] { leftHand, rightHand };
-        return hands[Random.Range(0, hands.Length)];
-
     }
 }

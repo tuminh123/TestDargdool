@@ -24,30 +24,31 @@ public class MainWeaponAttackState : MainCharacterState
 
         cts = new CancellationTokenSource();
 
-        /*characterCtrl.attack.HandleWeaponAttack(characterCtrl.AttackDir).Forget();
-        characterCtrl.weaponEquip.SetRotWhenAttack(characterCtrl.AttackDir);
-
-        characterCtrl.SendDamageBase();
+        characterCtrl.attack.HandleWeaponAttack(characterCtrl.AttackDir).Forget();
+        characterCtrl.weaponEquip.SetFaceWeaponAttack(characterCtrl.AttackDir);
+        Debug.Log("Enter weapon attack");
 
         if (characterCtrl.attack.currentAttackData == null) return;
 
         characterCtrl.attack.currentAttackData.OnAttacking += OnAttacking;
-        characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;*/
+        characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
     }
 
-    private void OnAttacking()
-    {
-        //AttackAsync(cts.Token).Forget();
-    }
+   
 
     public override void Exit()
     {
       
         base.Exit();
 
-      /*  if (characterCtrl.attack.currentAttackData == null) return;
+        if (characterCtrl.attack.currentAttackData == null) return;
         characterCtrl.attack.currentAttackData.OnAttacking -= OnAttacking;
-        characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;*/
+        characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
+    }
+
+    private void OnAttacking()
+    {
+        //AttackAsync(cts.Token).Forget();
     }
     private void EndAttack()
     {

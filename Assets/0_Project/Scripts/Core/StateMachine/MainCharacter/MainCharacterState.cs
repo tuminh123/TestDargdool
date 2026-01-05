@@ -51,20 +51,40 @@ public class MainCharacterState : IState
             }
 */
             airTapCount++;
-            Debug.Log("Air tap count: " + airTapCount);
+            //Debug.Log("Air tap count: " + airTapCount);
         }
 
         characterCtrl.SetAttackDirection(pos);
 
-      /*  if (characterCtrl.weaponEquip.HasWeapon)
+        TryAttack();
+    }
+
+    private void TryAttack()
+    {
+        if (!characterCtrl.attack.CanAttack())
+            return;
+
+        if (characterCtrl.weaponEquip.HasWeapon)
         {
             stateMachine.ChangeState(characterCtrl.weaponAttackState);
-            return;
         }
-        else*/ if (/*characterCtrl.attack.CanAttack()*/ true)
+        else
         {
             stateMachine.ChangeState(characterCtrl.attackState);
         }
+
+        /* if (!characterCtrl.attack.CanAttack())
+             return;
+
+         if (characterCtrl.weaponEquip.HasWeapon &&
+             characterCtrl.weaponEquip.CurrentWeapon != null)
+         {
+             stateMachine.ChangeState(characterCtrl.weaponAttackState);
+         }
+         else
+         {
+             stateMachine.ChangeState(characterCtrl.attackState);
+         }*/
     }
 
     public virtual void Update()

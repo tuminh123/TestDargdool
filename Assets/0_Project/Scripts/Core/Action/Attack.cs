@@ -167,7 +167,7 @@ public class Attack : MonoBehaviour
     #region Weapon Attack
     // ============================================================
 
-/*    public async UniTask HandleWeaponAttack(Vector2 attackDir)
+    public async UniTask HandleWeaponAttack(Vector2 attackDir)
     {
         CancelAttack();
 
@@ -189,9 +189,9 @@ public class Attack : MonoBehaviour
 
         if (attack == null) return;
 
-        await attack.Execute(attackDir, token);
+        await attack.ExecuteAttack(configSO,attackDir, token);
     }
-*/
+
     #endregion
 
     #endregion
