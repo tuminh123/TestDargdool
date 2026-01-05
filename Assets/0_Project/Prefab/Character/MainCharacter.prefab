@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0ff2c28fb8753d34db9b2bb0b5b14968, type: 3}
   m_Color: {r: 0.88235295, g: 0.2627451, b: 0.29803923, a: 1}
   m_FlipX: 0
@@ -478,7 +478,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 73440596d00c08f4da5ab29f65b85641, type: 3}
   m_Color: {r: 0.41568628, g: 0.45882353, b: 0.49411765, a: 1}
   m_FlipX: 0
@@ -1243,7 +1243,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 62ee4462599f13e4da8f883c46c5d62a, type: 3}
   m_Color: {r: 0.9150943, g: 0.082013145, b: 0.082013145, a: 1}
   m_FlipX: 0
@@ -1330,7 +1330,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 9281a62c1f5ffb840a20c46a6bccc96f, type: 3}
   m_Color: {r: 0.41568628, g: 0.45882353, b: 0.49411765, a: 1}
   m_FlipX: 0
@@ -1417,7 +1417,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 09061a5b64d57f04f9048a0adcddefd8, type: 3}
   m_Color: {r: 0.81960785, g: 0.85882354, b: 0.89411765, a: 1}
   m_FlipX: 0
@@ -1700,7 +1700,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -6
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 37f04c8763917a44d804bd6e89276de5, type: 3}
   m_Color: {r: 0.8018868, g: 0.13238695, b: 0.13238695, a: 1}
   m_FlipX: 0
@@ -2569,97 +2569,125 @@ MonoBehaviour:
   leftAttacks:
   - attackDatas:
     - balance: {fileID: 3476451649188624042}
-      rot: -115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 5925602059496892401}
-      rot: -110
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 2561980182965168351}
-      rot: -105
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 3661525433494619887}
-      rot: 30
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
   - attackDatas:
     - balance: {fileID: 7937270859483242525}
-      rot: -115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 1101523747829907126}
-      rot: -115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 3661525433494619887}
-      rot: -30
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 3577238966891893792}
-      rot: -20
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
   rightAttacks:
   - attackDatas:
     - balance: {fileID: 3240763069021601951}
-      rot: 115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 5538702373862409364}
-      rot: 110
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 861439043421103074}
-      rot: 105
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 3661525433494619887}
-      rot: -30
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
   - attackDatas:
     - balance: {fileID: 7788024271420242708}
-      rot: 115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 645215324915956397}
-      rot: 115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 861439043421103074}
-      rot: 30
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 3661525433494619887}
-      rot: 20
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
   weaponLeftAttack:
     attackDatas:
     - balance: {fileID: 3476451649188624042}
-      rot: -100
       force: 50
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 5925602059496892401}
-      rot: -100
       force: 50
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 2561980182965168351}
-      rot: 20
       force: 15
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 3240763069021601951}
-      rot: -100
       force: 50
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 5538702373862409364}
-      rot: -100
       force: 50
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 861439043421103074}
-      rot: 20
       force: 15
+      torque: 5
+      balanceMultiplier: 1.5
   weaponRightAttack:
     attackDatas:
     - balance: {fileID: 3476451649188624042}
-      rot: 100
       force: 50
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 5925602059496892401}
-      rot: 100
       force: 50
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 2561980182965168351}
-      rot: -20
       force: 15
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 3240763069021601951}
-      rot: 100
       force: 50
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 5538702373862409364}
-      rot: 100
       force: 50
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 861439043421103074}
-      rot: -20
       force: 15
+      torque: 5
+      balanceMultiplier: 1.5
   textEffect: {fileID: 5160297317622529263, guid: 9310b0803d351cb41957e2d53b743476, type: 3}
 --- !u!1 &6284689430660979589
 GameObject:
@@ -2736,7 +2764,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 2f0d240aef1e76b41a5454fcb6fd7195, type: 3}
   m_Color: {r: 0.41568628, g: 0.45882353, b: 0.49411765, a: 1}
   m_FlipX: 0
@@ -3240,7 +3268,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 45cadfb6be5abc247ae5e0db0c508408, type: 3}
   m_Color: {r: 0.81960785, g: 0.85882354, b: 0.89411765, a: 1}
   m_FlipX: 0
@@ -3552,7 +3580,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 131f025bce866d64c8dcd19a2dc2f536, type: 3}
   m_Color: {r: 0.41568628, g: 0.45882353, b: 0.49411765, a: 1}
   m_FlipX: 0
@@ -3639,7 +3667,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f0dbea56eff6ce3469af15d503183f24, type: 3}
   m_Color: {r: 0.9245283, g: 0.92322725, b: 0.9114454, a: 1}
   m_FlipX: 0
@@ -3923,7 +3951,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: f66f3fdda870d84479f724a8f6412542, type: 3}
   m_Color: {r: 0.76862746, g: 0.80784315, b: 0.84313726, a: 1}
   m_FlipX: 0
@@ -4010,7 +4038,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: d906c33873e07f448be3799261c11292, type: 3}
   m_Color: {r: 0.76862746, g: 0.80784315, b: 0.84313726, a: 1}
   m_FlipX: 0
@@ -4274,7 +4302,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a1f7844256dad0b4d8eb65d4bce7bf83, type: 3}
   m_Color: {r: 0.85882354, g: 0.8980392, b: 0.93333334, a: 1}
   m_FlipX: 0
@@ -4361,7 +4389,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6ea4a5b748a55e34da8e80b7cabdcf2a, type: 3}
   m_Color: {r: 0.91764706, g: 0.95686275, b: 0.99215686, a: 1}
   m_FlipX: 0
@@ -4418,9 +4446,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e37898f29cbbd4aa16b798e4714cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handRight: {fileID: 861439043421103074}
-  handLeft: {fileID: 2561980182965168351}
-  isEquipping: 0
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
+  grabForce: 2000
+  grabDistance: 0.05
 --- !u!58 &8927072329225296416
 CircleCollider2D:
   m_ObjectHideFlags: 0

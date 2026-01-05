@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 131f025bce866d64c8dcd19a2dc2f536, type: 3}
   m_Color: {r: 0.41568628, g: 0.45882353, b: 0.49411765, a: 1}
   m_FlipX: 0
@@ -407,7 +407,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: f66f3fdda870d84479f724a8f6412542, type: 3}
   m_Color: {r: 0.8156863, g: 0.85882354, b: 0.89411765, a: 1}
   m_FlipX: 0
@@ -972,7 +972,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0ff2c28fb8753d34db9b2bb0b5b14968, type: 3}
   m_Color: {r: 0.7490196, g: 0.7921569, b: 0.827451, a: 1}
   m_FlipX: 0
@@ -1033,57 +1033,73 @@ MonoBehaviour:
   leftAttacks:
   - attackDatas:
     - balance: {fileID: 4274528764668997419}
-      rot: -115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 4391450398088396417}
-      rot: -110
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 3215383594656336280}
-      rot: -105
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 8122281631265126126}
-      rot: 30
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
   - attackDatas:
     - balance: {fileID: 5273771004012807173}
-      rot: -115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 1699293087208909330}
-      rot: -115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 8122281631265126126}
-      rot: -30
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 4507406908857403956}
-      rot: -20
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
   rightAttacks:
   - attackDatas:
     - balance: {fileID: 5457233196310758582}
-      rot: 115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 5473216635398005237}
-      rot: 110
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 1050546080089201485}
-      rot: 105
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 8122281631265126126}
-      rot: -30
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
   - attackDatas:
     - balance: {fileID: 568700186048886924}
-      rot: 115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 1623283853061451977}
-      rot: 115
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 1050546080089201485}
-      rot: 30
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
     - balance: {fileID: 8122281631265126126}
-      rot: 20
       force: 0
+      torque: 5
+      balanceMultiplier: 1.5
   weaponLeftAttack:
     attackDatas: []
   weaponRightAttack:
@@ -7815,7 +7831,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 73440596d00c08f4da5ab29f65b85641, type: 3}
   m_Color: {r: 0.41568628, g: 0.45882353, b: 0.49411765, a: 1}
   m_FlipX: 0
@@ -8323,7 +8339,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 45cadfb6be5abc247ae5e0db0c508408, type: 3}
   m_Color: {r: 0.8156863, g: 0.85882354, b: 0.89411765, a: 1}
   m_FlipX: 0
@@ -8705,7 +8721,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 62ee4462599f13e4da8f883c46c5d62a, type: 3}
   m_Color: {r: 0.5647059, g: 0.60784316, b: 0.6431373, a: 1}
   m_FlipX: 0
@@ -9126,7 +9142,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -6
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 37f04c8763917a44d804bd6e89276de5, type: 3}
   m_Color: {r: 0.5647059, g: 0.60784316, b: 0.6431373, a: 1}
   m_FlipX: 0
