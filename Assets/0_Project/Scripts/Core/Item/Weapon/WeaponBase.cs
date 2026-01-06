@@ -4,6 +4,7 @@ using System.Collections;
 using System.Threading;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public enum WeaponType
 {
@@ -17,10 +18,11 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
     [SerializeField] protected WeaponType weaponType = WeaponType.MELE;
     //[SerializeField] protected FixedJoint2D fixedJoint2D;
     [SerializeField] protected ItemDeSpawn weaponDeSpawn;
-    [SerializeField] protected float damage;
-    public bool IsAttacking => throw new NotImplementedException();
+    [SerializeField] protected float damage = 100;
+    [SerializeField] protected WeaponPhysicDamageDealer damageDealer;
+    public bool IsAttacking { get;private set; }
 
-    public GameObject OnjSend => throw new NotImplementedException();
+    public GameObject OnjSend => gameObject;
 
     public event Action OnAttackStart;
     //Coroutine moveCoroutine;
@@ -28,14 +30,66 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
     //get
     public float Damage => damage;
 
+    private void Start()
+    {
+        if (damageDealer == null)
+        {
+            damageDealer = GetComponentInChildren<WeaponPhysicDamageDealer>();
+        }
+        damageDealer.Init(this, this);
+    }
+
     public void DisableAttack()
     {
-        throw new NotImplementedException();
+        IsAttacking = false;
     }
 
     public void EnableAttack()
     {
-        throw new NotImplementedException();
+        IsAttacking = true;
+        OnAttackStart?.Invoke();
+    }
+    public void Equipping()
+    {
+        if (rb == null) return;
+
+        if (rb == null) return;
+
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+
+        if (weaponDeSpawn == null) return;
+        weaponDeSpawn.gameObject.SetActive(false);
+    }
+    public void UnEquipping()
+    {
+        if (rb == null) return;
+
+        if (rb == null) return;
+
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+
+        if (weaponDeSpawn == null) return;
+        weaponDeSpawn.gameObject.SetActive(true);
+    }
+    public void WeaponFly(Vector2 hitDirection)
+    {
+        rb.simulated = true;
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+
+        // Lực văng ra
+        float throwForce = 50f;
+        Vector2 force = hitDirection.normalized * throwForce + Vector2.up * 100f; // thêm lực lên để tạo vòng cung
+
+        rb.AddForce(force, ForceMode2D.Impulse);
+
+        // Lực xoay
+        float torque = Random.Range(-15f, 15f);
+        rb.AddTorque(torque, ForceMode2D.Impulse);
     }
     #region Old System
     /*   public void MoveToHand(HandController hand)

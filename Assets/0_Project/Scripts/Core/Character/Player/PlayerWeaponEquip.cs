@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.XR;
 using static HadesSDK.Ads.Core.AdService;
 
@@ -26,7 +27,7 @@ public class PlayerWeaponEquip : MonoBehaviour
 
     [Header("Pull Physics")]
     [SerializeField] float grabForce = 2000f;
-    [SerializeField] float grabDistance = 0.05f;
+    [SerializeField] float grabDistance = 0.2f;
 
     //EquipState state = EquipState.Idle;
     HandController activeHand;
@@ -78,6 +79,7 @@ public class PlayerWeaponEquip : MonoBehaviour
         BeginEquip(weapon);
     }
 
+    #region Equip
     void BeginEquip(WeaponBase weapon)
     {
         pullingWeapon = weapon;
@@ -114,7 +116,10 @@ public class PlayerWeaponEquip : MonoBehaviour
         );
 
         if (dist <= grabDistance)
+        {
             CompleteEquip();
+            return;
+        }
 
         /*if (!currentWeapon || !activeHand) return;
 
@@ -142,14 +147,18 @@ public class PlayerWeaponEquip : MonoBehaviour
 
         state = EquipState.Holding;*/
     }
+    #endregion
 
-    public void DropWeapon()
+    #region UnEquip
+    public void DropWeapon(Vector2 dir)
     {
         if (!holdingWeapon) return;
 
-        WeaponBase dropped = activeHand.DetachWeapon_Physics();
+        WeaponBase dropped = activeHand.DetachWeapon_Physics(dir);
         holdingWeapon = null;
         activeHand = null;
+
+        OnDrop?.Invoke();
     }
 
     public void SetFaceWeaponAttack(Vector2 dir)
@@ -157,32 +166,33 @@ public class PlayerWeaponEquip : MonoBehaviour
         if(holdingWeapon == null) return;
         holdingWeapon.transform.localScale = dir.x < 0 ? new Vector3(-1, 1, 1) : new Vector3(1,1,1);
     }
-    public void BoostPull(float forceMultiplier = 1.5f)
-    {
-        if (pullJoint != null)
-            pullJoint.maxForce *= forceMultiplier;
-    }
-    /*public void Unequip()
-    {
-        if (state != EquipState.Holding) return;
-        if (!activeHand || !activeHand.IsHolding) return;
+    //public void BoostPull(float forceMultiplier = 1.5f)
+    //{
+    //    if (pullJoint != null)
+    //        pullJoint.maxForce *= forceMultiplier;
+    //}
+    //public void Unequip()
+    //{
+    //    if (state != EquipState.Holding) return;
+    //    if (!activeHand || !activeHand.IsHolding) return;
 
-        WeaponBase dropped = activeHand.DetachWeapon_Physics();
-        if (!dropped) return;
+    //    WeaponBase dropped = activeHand.DetachWeapon_Physics();
+    //    if (!dropped) return;
 
-        ResetWeaponPhysics(dropped);
+    //    ResetWeaponPhysics(dropped);
 
-        state = EquipState.Idle;
-        activeHand = null;
+    //    state = EquipState.Idle;
+    //    activeHand = null;
 
-        HasWeapon = false;
-    }*/
+    //    HasWeapon = false;
+    //}
 
-    void ResetWeaponPhysics(WeaponBase weapon)
-    {
-        weapon.rb.linearVelocity = Vector2.zero;
-        weapon.rb.angularVelocity = 0f;
-    }
+    //void ResetWeaponPhysics(WeaponBase weapon)
+    //{
+    //    weapon.rb.linearVelocity = Vector2.zero;
+    //    weapon.rb.angularVelocity = 0f;
+    //}
+    #endregion
     HandController ChooseHand()
     {
         if (!leftHand.IsHolding) return leftHand;

@@ -71,7 +71,12 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     protected bool isStunned =false;
     protected bool balanceColSkip;
 
+    //Flip
+    protected float dirFace = 1;
+    protected bool isFacingRight = true;
+
     //get
+    public Vector2 DirFace => new Vector2(dirFace, 1);
     public Vector2 AttackDir=> attackDir;
     public bool IsStunned => isStunned;
     public Stats Stats => stats;
@@ -301,5 +306,17 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     }
     #endregion
 
-    
+    public void FlipSystem(float x,Transform transform)
+    {
+        if (x > 0 && !isFacingRight) Flip(transform);
+        else if (x < 0 && isFacingRight) Flip(transform);
+        else return;
+    }
+
+    public void Flip(Transform transform)
+    {
+        dirFace *= 1;
+        isFacingRight = !isFacingRight;
+        transform.Rotate(0, 180, 0);
+    }
 }

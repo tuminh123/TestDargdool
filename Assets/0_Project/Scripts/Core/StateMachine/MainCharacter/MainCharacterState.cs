@@ -116,6 +116,12 @@ public class MainCharacterState : IState
             airTapCount = 0;
         }
 
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            //characterCtrl.weaponEquip.DropWeapon(characterCtrl.DirFace);
+        }
+
         /*if (SwipeManager.Tap && characterCtrl.attack.CanAttack() && !characterCtrl.IsStunned)
         {
             stateMachine.ChangeState(characterCtrl.attackState);

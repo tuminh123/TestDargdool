@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WeaponPhysicDamageDealer : MonoBehaviour
 {
-    [SerializeField] float minImpact = 3f;
+    //[SerializeField] float minImpact = 3f;
     [SerializeField] float damageMultiplier = 0.05f;
     [SerializeField] float maxDamage = 50f;
     [SerializeField] LayerMask targetLayer;
@@ -50,6 +50,9 @@ public class WeaponPhysicDamageDealer : MonoBehaviour
         if (!col.transform.TryGetComponent(out IPhysicReceiveDamage hitBox)) return;
 
         GameObject target = hitBox.Owner;
+
+        Debug.Log(target.name);
+
         if (!target || target == objSendDamage.OnjSend) return;
         if (damagedTargets.Contains(target)) return;
 
@@ -58,12 +61,15 @@ public class WeaponPhysicDamageDealer : MonoBehaviour
         // float impact = rb.mass * col.relativeVelocity.sqrMagnitude;
         float impact = rb.mass * col.forceReceiveLayers;
 
-        if (impact < minImpact) return;
+        //if (impact < minImpact) return;
 
         float damage = Mathf.Clamp(impact * damageMultiplier, 0, maxDamage);
         //float rawDamage = impact * damageMultiplier;
 
+        Debug.Log("1");
         damagedTargets.Add(target);
+
+        Debug.Log("2");
 
         hitBox.ReceiveHit(damage, Vector2.up);
     }

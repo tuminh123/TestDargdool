@@ -14,6 +14,7 @@ public class CharacterCtrl : CharacterParent
 {    
     public static CharacterCtrl Instance { get; set; }
 
+    [SerializeField] private Transform head;
     [SerializeField] private LevelStatModifier levelStatModifier;
 
     [SerializeField] private float stunTime = 4;
@@ -35,6 +36,7 @@ public class CharacterCtrl : CharacterParent
     private PoseMotor[] poseMotors;
 
     public PoseMotor[] PoseMotors => poseMotors;
+    public Transform Head => head;
     protected override void Awake()
     {
         base.Awake();
@@ -95,6 +97,7 @@ public class CharacterCtrl : CharacterParent
     private void Update()
     {
         stateMachine.UpdateState();
+
     }
     private void FixedUpdate()
     {
@@ -109,6 +112,14 @@ public class CharacterCtrl : CharacterParent
     public override void OnTakeDamage()
     {
         base.OnTakeDamage();
+
+        if(weaponEquip != null )
+        {
+            Vector2[] dirs = new Vector2[] {Vector2.left,Vector2.right};
+            Vector2 dir = dirs [UnityEngine.Random.Range(0, dirs.Length) ];
+
+            weaponEquip.DropWeapon(dir);
+        }
 
         if(healthBase.CurrentHealth < healthBase.MaxHealth * 0.3f)
         {
@@ -184,11 +195,13 @@ public class CharacterCtrl : CharacterParent
         foreach (var dmg in damageDetect)
             dmg.SetDamageBase(stats.DamageBase);
     }
-   /* public void SendDamageBase()
+    public void SendWeaponDamageBase()
     {
+        if (weaponEquip == null || weaponEquip.CurrentWeapon == null) return;
+        
         Global.Send(new SignalSendDamage
         {
-            damaged = DamageCaculate()
+            damaged = DamageCaculate() + weaponEquip.CurrentWeapon.Damage
         });
     }
     private float DamageCaculate()
@@ -201,7 +214,7 @@ public class CharacterCtrl : CharacterParent
         {
             baseDamage *= stats.CritMultiplier;
         }
-      
+
         return baseDamage;
-    }*/
+    }
 }

@@ -25,12 +25,15 @@ public class HandController : MonoBehaviour
 
     public void AttachWeapon_Physics(WeaponBase newWeapon)
     {
+        if (newWeapon == null) return;
         weapon = newWeapon;
 
         weapon.transform.SetParent(transform);
         weapon.transform.position = transform.position;
 
+        weapon.Equipping();
         ApplyHandFlip(weapon);
+
 
         joint.connectedBody = weapon.rb;
         joint.breakForce = Mathf.Infinity;
@@ -42,7 +45,7 @@ public class HandController : MonoBehaviour
 
     #region UNEQUIP
 
-    public WeaponBase DetachWeapon_Physics()
+    public WeaponBase DetachWeapon_Physics(Vector2 dir)
     {
         if (!weapon) return null;
 
@@ -50,6 +53,9 @@ public class HandController : MonoBehaviour
         joint.connectedBody = null;
 
         weapon.transform.SetParent(null);
+        weapon.UnEquipping();
+
+        weapon.WeaponFly(dir);
 
         WeaponBase dropped = weapon;
         weapon = null;
@@ -61,7 +67,7 @@ public class HandController : MonoBehaviour
 
     void ApplyHandFlip(WeaponBase weapon)
     {
-        weapon.transform.localScale = handType == HandType.Left ? new Vector3(-1, 1, 1) : Vector3.one;
+        weapon.transform.localScale = handType == HandType.Left ? new Vector3(-1, 1, 1) : new Vector3(1,1,1);
     }
 
 }

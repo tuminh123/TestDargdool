@@ -15,7 +15,9 @@ public class MainMoveState : MainCharacterState
     public override void Update()
     {
         base.Update();
-        
+
+        characterCtrl.FlipSystem(x,characterCtrl.Head);
+
         if(x==0) stateMachine.ChangeState(characterCtrl.idelState);
     }
     public override void UpdatePhysic()

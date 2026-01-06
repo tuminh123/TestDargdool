@@ -16,6 +16,7 @@ public class MainWeaponAttackState : MainCharacterState
     {
         base.Enter();
 
+        if (characterCtrl.weaponEquip == null || characterCtrl.attack == null) return;
         if (!characterCtrl.weaponEquip.HasWeapon)
         {
             stateMachine.ChangeState(characterCtrl.idelState);
@@ -24,14 +25,18 @@ public class MainWeaponAttackState : MainCharacterState
 
         cts = new CancellationTokenSource();
 
+        if (characterCtrl.weaponEquip.CurrentWeapon == null) return;
+        characterCtrl.weaponEquip.CurrentWeapon.EnableAttack();
+        characterCtrl.SendWeaponDamageBase();
+
         characterCtrl.attack.HandleWeaponAttack(characterCtrl.AttackDir).Forget();
         characterCtrl.weaponEquip.SetFaceWeaponAttack(characterCtrl.AttackDir);
-        Debug.Log("Enter weapon attack");
 
         if (characterCtrl.attack.currentAttackData == null) return;
 
         characterCtrl.attack.currentAttackData.OnAttacking += OnAttacking;
         characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
+        characterCtrl.weaponEquip.OnDrop += EndAttack;
     }
 
    
@@ -41,9 +46,13 @@ public class MainWeaponAttackState : MainCharacterState
       
         base.Exit();
 
+        if (characterCtrl.weaponEquip.CurrentWeapon == null) return;
+        characterCtrl.weaponEquip.CurrentWeapon.DisableAttack();
+
         if (characterCtrl.attack.currentAttackData == null) return;
         characterCtrl.attack.currentAttackData.OnAttacking -= OnAttacking;
         characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
+        characterCtrl.weaponEquip.OnDrop -= EndAttack;
     }
 
     private void OnAttacking()
