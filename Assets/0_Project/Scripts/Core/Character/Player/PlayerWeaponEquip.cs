@@ -22,8 +22,7 @@ public class PlayerWeaponEquip : MonoBehaviour
     public event System.Action<HandController> OnHand;
 
     [Header("Hands")]
-    [SerializeField] HandController leftHand;
-    [SerializeField] HandController rightHand;
+    [SerializeField] HandController[] hands;
 
     [Header("Pull Physics")]
     [SerializeField] float grabForce = 2000f;
@@ -39,6 +38,7 @@ public class PlayerWeaponEquip : MonoBehaviour
     //get
     public WeaponBase CurrentWeapon => holdingWeapon;
     public bool HasWeapon => holdingWeapon != null;
+    //public 
 
     public AttackMode CurrentAttackMode
     {
@@ -160,7 +160,28 @@ public class PlayerWeaponEquip : MonoBehaviour
 
         OnDrop?.Invoke();
     }
+    public void ThrowWeapon(Vector2 throwDir, float force = 30f)
+    {
+        if (!holdingWeapon) return;
+        if (!activeHand || !activeHand.IsHolding) return;
 
+        WeaponBase weapon = activeHand.DetachWeapon_Physics();
+        if (!weapon) return;
+
+        weapon.rb.linearVelocity = Vector2.zero;
+        weapon.rb.angularVelocity = 0f;
+
+        //weapon.rb.AddForce(throwDir.normalized * force, ForceMode2D.Impulse);
+        weapon.rb.linearVelocity = throwDir.normalized * force;
+        // Lực xoay
+        float torque = Random.Range(-720f, 720f);
+        weapon.rb.AddTorque(torque, ForceMode2D.Impulse);
+
+        holdingWeapon = null;
+        activeHand = null;
+
+        OnDrop?.Invoke();
+    }
     public void SetFaceWeaponAttack(Vector2 dir)
     {
         if(holdingWeapon == null) return;
@@ -195,8 +216,7 @@ public class PlayerWeaponEquip : MonoBehaviour
     #endregion
     HandController ChooseHand()
     {
-        if (!leftHand.IsHolding) return leftHand;
-        if (!rightHand.IsHolding) return rightHand;
-        return Random.value > 0.5f ? leftHand : rightHand;
+        if (hands.Length <= 0) return null;
+        return hands[Random.Range(0,hands.Length)];
     }
 }

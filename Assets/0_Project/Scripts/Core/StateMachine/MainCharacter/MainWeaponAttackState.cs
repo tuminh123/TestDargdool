@@ -36,10 +36,13 @@ public class MainWeaponAttackState : MainCharacterState
 
         characterCtrl.attack.currentAttackData.OnAttacking += OnAttacking;
         characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
-        characterCtrl.weaponEquip.OnDrop += EndAttack;
+        characterCtrl.weaponEquip.OnDrop += WeaponEquip_OnDrop;
     }
 
-   
+    private void WeaponEquip_OnDrop()
+    {
+        stateMachine.ChangeState(characterCtrl.idelState);
+    }
 
     public override void Exit()
     {
@@ -52,7 +55,7 @@ public class MainWeaponAttackState : MainCharacterState
         if (characterCtrl.attack.currentAttackData == null) return;
         characterCtrl.attack.currentAttackData.OnAttacking -= OnAttacking;
         characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
-        characterCtrl.weaponEquip.OnDrop -= EndAttack;
+        characterCtrl.weaponEquip.OnDrop -= WeaponEquip_OnDrop; 
     }
 
     private void OnAttacking()
@@ -65,8 +68,11 @@ public class MainWeaponAttackState : MainCharacterState
         //stateMachine.ChangeState(characterCtrl.idelState);
         //characterCtrl.attack.CancelAttack();
 
-        cts?.Cancel();
-        cts?.Dispose();
+        if (cts != null)
+        {
+            cts?.Cancel();
+            cts?.Dispose();
+        }
 
         stateMachine.ChangeState(characterCtrl.idelState);
     }

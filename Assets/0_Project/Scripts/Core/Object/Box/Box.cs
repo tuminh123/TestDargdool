@@ -67,7 +67,7 @@ public abstract class Box : ObjInGameBase,IPhysicReceiveDamage,IGameElement,IRec
 
     public  void ReceiveHit(float rawDamage, Vector2 force)
     {
-        float finalDamage = damage * rawDamage;
+        float finalDamage = damage + rawDamage;
 
         boxHealth.TakeDamaged(finalDamage);
     }

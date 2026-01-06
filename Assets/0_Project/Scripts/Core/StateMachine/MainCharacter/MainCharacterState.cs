@@ -19,13 +19,11 @@ public class MainCharacterState : IState
 
     public virtual void Enter()
     {
-        //InputManager.OnTap += HandleTap;
         SwipeManager.OnTap += HandleTap;
     }
 
     public virtual void Exit()
     {
-        //InputManager.OnTap -= HandleTap;
         SwipeManager.OnTap -= HandleTap;
         //characterCtrl.moveVer2.SetMoveDirection(Vector2.zero);
     }
@@ -119,7 +117,7 @@ public class MainCharacterState : IState
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            //characterCtrl.weaponEquip.DropWeapon(characterCtrl.DirFace);
+            characterCtrl.weaponEquip.ThrowWeapon(characterCtrl.DirFace);
         }
 
         /*if (SwipeManager.Tap && characterCtrl.attack.CanAttack() && !characterCtrl.IsStunned)

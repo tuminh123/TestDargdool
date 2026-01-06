@@ -1,4 +1,5 @@
 using Core;
+using Cysharp.Threading.Tasks;
 using DamageNumbersPro;
 using System.Collections;
 using UnityEngine;
@@ -72,11 +73,19 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     protected bool balanceColSkip;
 
     //Flip
-    protected float dirFace = 1;
+    [SerializeField] protected float dirFace = 1;
     protected bool isFacingRight = true;
 
-    //get
-    public Vector2 DirFace => new Vector2(dirFace, 1);
+    // Replace the problematic auto-property with a standard property implementation
+
+    public Vector2 DirFace
+    {
+        get
+        {
+            Vector2 dir = dirFace == 1 ? Vector2.right : Vector2.left;
+            return dir;
+        }
+    }
     public Vector2 AttackDir=> attackDir;
     public bool IsStunned => isStunned;
     public Stats Stats => stats;
@@ -315,7 +324,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
 
     public void Flip(Transform transform)
     {
-        dirFace *= 1;
+        dirFace *= -1;
         isFacingRight = !isFacingRight;
         transform.Rotate(0, 180, 0);
     }

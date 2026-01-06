@@ -62,7 +62,21 @@ public class HandController : MonoBehaviour
 
         return dropped;
     }
+    public WeaponBase DetachWeapon_Physics()
+    {
+        if (!weapon) return null;
 
+        joint.enabled = false;
+        joint.connectedBody = null;
+
+        weapon.transform.SetParent(null);
+        weapon.UnEquipping();
+
+        WeaponBase dropped = weapon;
+        weapon = null;
+
+        return dropped;
+    }
     #endregion
 
     void ApplyHandFlip(WeaponBase weapon)
