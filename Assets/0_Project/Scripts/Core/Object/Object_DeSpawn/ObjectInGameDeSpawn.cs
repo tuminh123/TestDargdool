@@ -26,8 +26,12 @@ public class ObjectInGameDeSpawn : MonoBehaviour
     private void OnDisable()
     {
         // Hủy task khi disable
-        cts.Cancel();
-        cts.Dispose();
+        if (cts != null)
+        {
+            cts.Cancel();
+            cts.Dispose();
+            cts = null;
+        }
     }
     private void Awake()
     {
@@ -35,12 +39,14 @@ public class ObjectInGameDeSpawn : MonoBehaviour
     }
     public async UniTask WaitForDeSpawn(CancellationToken token)
     {
-        while (!token.IsCancellationRequested)
+        try
         {
             await UniTask.Delay(timeDuration * 1000, cancellationToken: token);
 
-            ZenManager.Instance.objInGamePoolManager.DeSpawn(obj);
+            if (!token.IsCancellationRequested && obj != null) ZenManager.Instance.objInGamePoolManager.DeSpawn(obj);
+
         }
+        catch (OperationCanceledException) { }
     }
 
 }

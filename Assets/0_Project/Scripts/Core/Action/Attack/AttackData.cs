@@ -153,7 +153,7 @@ public class AttackData
     #endregion
 
     [SerializeField] private List<AttackImpulse> attackDatas = new();
-
+    [SerializeField] TrailRenderer[] trails;
     private bool isAttacking;
     public bool IsAttacking => isAttacking;
 
@@ -318,8 +318,19 @@ public class AttackData
     }
 
     #endregion
-}
+
+    public void EnableEffect(bool enable)
+    {
+        if (trails.Length <= 0) return;
+        foreach (var item in trails)
+        {
+            if (item == null) continue;
+            item.emitting = enable;
+        }
+    }
+
     #endregion
+}
 
 
 #endregion

@@ -19,6 +19,7 @@ public class MainAttackState : MainCharacterState
 
         if (characterCtrl.attack.currentAttackData == null) return;
 
+        characterCtrl.attack.currentAttackData.EnableEffect(true);
         characterCtrl.attack.currentAttackData.OnAttacking += Attacking;
         characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
 
@@ -41,6 +42,7 @@ public class MainAttackState : MainCharacterState
 
         if (characterCtrl.attack.currentAttackData == null) return;
 
+        characterCtrl.attack.currentAttackData.EnableEffect(false);
         characterCtrl.attack.currentAttackData.OnAttacking -= Attacking;
         characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
         /* foreach (var pose in characterCtrl.PoseMotors)
@@ -51,8 +53,8 @@ public class MainAttackState : MainCharacterState
     }
     private void Attacking()
     {
-        Debug.Log("Attack");
-        characterCtrl.SendDamage();
+       /* Debug.Log("Attack");
+        characterCtrl.SendDamage();*/
     }
     private void EndAttack()
     {

@@ -20,9 +20,11 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
     [SerializeField] protected ItemDeSpawn weaponDeSpawn;
     [SerializeField] protected float damage = 100;
     [SerializeField] protected WeaponPhysicDamageDealer damageDealer;
+    [SerializeField] protected TrailRenderer[] trails; 
     public bool IsAttacking { get;private set; }
 
     public GameObject OnjSend => gameObject;
+    public WeaponPhysicDamageDealer DamageDealer => damageDealer;
 
     public event Action OnAttackStart;
     //Coroutine moveCoroutine;
@@ -53,28 +55,31 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
     {
         if (rb == null) return;
 
-        if (rb == null) return;
-
-        rb.bodyType = RigidbodyType2D.Kinematic;
-        rb.linearVelocity = Vector2.zero;
-        rb.angularVelocity = 0f;
+        SetRb2d(RigidbodyType2D.Kinematic);
 
         if (weaponDeSpawn == null) return;
         weaponDeSpawn.gameObject.SetActive(false);
     }
+
+   
+
     public void UnEquipping()
     {
         if (rb == null) return;
 
-        if (rb == null) return;
-
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.linearVelocity = Vector2.zero;
-        rb.angularVelocity = 0f;
+        SetRb2d(RigidbodyType2D.Dynamic);
 
         if (weaponDeSpawn == null) return;
         weaponDeSpawn.gameObject.SetActive(true);
     }
+
+    private void SetRb2d(RigidbodyType2D type2D)
+    {
+        rb.bodyType = type2D;
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+    }
+
     public void WeaponFly(Vector2 hitDirection)
     {
         rb.simulated = true;
@@ -82,8 +87,8 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
         rb.angularVelocity = 0f;
 
         // Lực văng ra
-        float throwForce = 50f;
-        Vector2 force = hitDirection.normalized * throwForce + Vector2.up * 100f; // thêm lực lên để tạo vòng cung
+        float throwForce = 30f;
+        Vector2 force = hitDirection.normalized * throwForce + Vector2.up * 50f; // thêm lực lên để tạo vòng cung
 
         rb.AddForce(force, ForceMode2D.Impulse);
 
@@ -91,6 +96,17 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
         float torque = Random.Range(-15f, 15f);
         rb.AddTorque(torque, ForceMode2D.Impulse);
     }
+
+    public void EnableEffect(bool enable)
+    {
+        if (trails.Length <= 0) return;
+        foreach (var item in trails)
+        {
+            if (item == null) continue;
+            item.emitting = enable;
+        }
+    }
+
     #region Old System
     /*   public void MoveToHand(HandController hand)
        {

@@ -39,15 +39,28 @@ public class MainWeaponAttackState : MainCharacterState
         characterCtrl.weaponEquip.OnDrop += WeaponEquip_OnDrop;
     }
 
-    private void WeaponEquip_OnDrop()
+    /*public override void Update()
     {
-        stateMachine.ChangeState(characterCtrl.idelState);
-    }
+        base.Update();
 
+        if (characterCtrl.weaponEquip.CurrentWeapon.DamageDealer.IsSendDamage)
+        {
+
+        }
+    }*/
+   
     public override void Exit()
     {
       
         base.Exit();
+
+
+        if (cts != null)
+        {
+            cts?.Cancel();
+            cts?.Dispose();
+            cts = null;
+        }
 
         if (characterCtrl.weaponEquip.CurrentWeapon == null) return;
         characterCtrl.weaponEquip.CurrentWeapon.DisableAttack();
@@ -56,6 +69,10 @@ public class MainWeaponAttackState : MainCharacterState
         characterCtrl.attack.currentAttackData.OnAttacking -= OnAttacking;
         characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
         characterCtrl.weaponEquip.OnDrop -= WeaponEquip_OnDrop; 
+    }
+    private void WeaponEquip_OnDrop()
+    {
+        stateMachine.ChangeState(characterCtrl.idelState);
     }
 
     private void OnAttacking()
@@ -67,12 +84,6 @@ public class MainWeaponAttackState : MainCharacterState
         //characterCtrl.SendDamage();
         //stateMachine.ChangeState(characterCtrl.idelState);
         //characterCtrl.attack.CancelAttack();
-
-        if (cts != null)
-        {
-            cts?.Cancel();
-            cts?.Dispose();
-        }
 
         stateMachine.ChangeState(characterCtrl.idelState);
     }

@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Threading;
 using UnityEngine;
@@ -28,8 +29,12 @@ public class ItemDeSpawn : MonoBehaviour
     private void OnDisable()
     {
         // Hủy task khi disable
-        cts.Cancel();
-        cts.Dispose();
+        if (cts != null)
+        {
+            cts.Cancel();
+            cts.Dispose();
+            cts = null;
+        }
     }
 
     private void Awake()
@@ -39,9 +44,13 @@ public class ItemDeSpawn : MonoBehaviour
 
     public async UniTask WaitForDeSpawn(CancellationToken token)
     {
-        await UniTask.Delay(timeDuration * 1000, cancellationToken: token);
+        try
+        {
+            await UniTask.Delay(timeDuration * 1000, cancellationToken: token);
 
-        ItemDeSpawnHandle();
+            if (!token.IsCancellationRequested && itemBase != null) ItemDeSpawnHandle();
+        }
+        catch (OperationCanceledException) { }
     }
 
     private void ItemDeSpawnHandle()

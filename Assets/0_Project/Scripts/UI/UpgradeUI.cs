@@ -3,15 +3,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-
 public class UpgradeUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI propertieText;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private Button increaseButton;
     [SerializeField] private UpgradeType type;
-
+    [SerializeField] private Popup.Popup popPanel;
 
     private void Start()
     {
@@ -40,6 +38,7 @@ public class UpgradeUI : MonoBehaviour
         if (!goldMgr.MinusGold(dataUpgrade.UpgradeCost))
         {
             Debug.Log("Not enough gold!");
+            popPanel.OpenPopup();
             return;
         }
 

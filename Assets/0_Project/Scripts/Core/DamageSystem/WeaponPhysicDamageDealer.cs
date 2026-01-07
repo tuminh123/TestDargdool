@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class WeaponPhysicDamageDealer : MonoBehaviour
 {
+    public event System.Action OnIsSendDamage;
+
     //[SerializeField] float minImpact = 3f;
     [SerializeField] float damageMultiplier = 0.05f;
     [SerializeField] float maxDamage = 50f;
@@ -11,7 +13,6 @@ public class WeaponPhysicDamageDealer : MonoBehaviour
 
     IAttackContext attackContext;
     IObjSendDamage objSendDamage;
-
     HashSet<GameObject> damagedTargets = new();
 
     public void Init(IObjSendDamage objSendDamage, IAttackContext attackContext)
@@ -51,26 +52,23 @@ public class WeaponPhysicDamageDealer : MonoBehaviour
 
         GameObject target = hitBox.Owner;
 
-        Debug.Log(target.name);
+        //Debug.Log(target.name);
 
         if (!target || target == objSendDamage.OnjSend) return;
         if (damagedTargets.Contains(target)) return;
 
         if (!targetLayer.Contains(target.layer)) return;
-
-        // float impact = rb.mass * col.relativeVelocity.sqrMagnitude;
-        float impact = rb.mass * col.forceReceiveLayers;
-
-        //if (impact < minImpact) return;
-
-        float damage = Mathf.Clamp(impact * damageMultiplier, 0, maxDamage);
-        //float rawDamage = impact * damageMultiplier;
-
-        Debug.Log("1");
+        //Debug.Log("1");
         damagedTargets.Add(target);
 
-        Debug.Log("2");
+        OnIsSendDamage?.Invoke();
 
+        float impact = rb.mass * rb.linearVelocity.magnitude;
+        //if (impact < minImpact) return;
+        float damage = Mathf.Clamp(impact * damageMultiplier, 0, maxDamage);
+        //float rawDamage = impact * damageMultiplier;
+        //Debug.Log("2");
         hitBox.ReceiveHit(damage, Vector2.up);
+
     }
 }

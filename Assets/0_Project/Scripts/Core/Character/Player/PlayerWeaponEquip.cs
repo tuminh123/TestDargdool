@@ -56,6 +56,11 @@ public class PlayerWeaponEquip : MonoBehaviour
 
     /*public bool HasWeapon { get;private set; }*/
 
+    private void DamageDealer_OnIsSendDamage()
+    {
+        DropWeapon();
+    }
+
     private void FixedUpdate()
     {
         /* if (state == EquipState.Pulling)
@@ -141,6 +146,8 @@ public class PlayerWeaponEquip : MonoBehaviour
         holdingWeapon = pullingWeapon;
         pullingWeapon = null;
 
+        if (holdingWeapon == null || holdingWeapon.DamageDealer == null) return;
+        holdingWeapon.DamageDealer.OnIsSendDamage += DamageDealer_OnIsSendDamage;
         /*Destroy(pullJoint);
 
         activeHand.AttachWeapon_Physics(currentWeapon);
@@ -150,15 +157,23 @@ public class PlayerWeaponEquip : MonoBehaviour
     #endregion
 
     #region UnEquip
-    public void DropWeapon(Vector2 dir)
+    public void DropWeapon()
     {
         if (!holdingWeapon) return;
+
+        Vector2[] dirs = new Vector2[] { Vector2.left, Vector2.right };
+        Vector2 dir = dirs[UnityEngine.Random.Range(0, dirs.Length)];
 
         WeaponBase dropped = activeHand.DetachWeapon_Physics(dir);
         holdingWeapon = null;
         activeHand = null;
 
+        if (holdingWeapon == null || holdingWeapon.DamageDealer == null) return;
+        holdingWeapon.DamageDealer.OnIsSendDamage -= DamageDealer_OnIsSendDamage;
+
         OnDrop?.Invoke();
+
+
     }
     public void ThrowWeapon(Vector2 throwDir, float force = 30f)
     {

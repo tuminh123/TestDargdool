@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using Random = UnityEngine.Random;
-
+/*
 [System.Serializable]
 public class AttackProfileSO 
 {
@@ -24,7 +24,7 @@ public class AttackProfileSO
     [Header("Damping")]
     public float attackDrag = 4f;
     public float attackAngularDrag = 6f;
-}
+}*/
 public class Attack : MonoBehaviour
 {
     public event Action<Vector2> OnAttack;

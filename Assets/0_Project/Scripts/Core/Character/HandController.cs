@@ -34,6 +34,7 @@ public class HandController : MonoBehaviour
         weapon.Equipping();
         ApplyHandFlip(weapon);
 
+        weapon.EnableEffect(true);
 
         joint.connectedBody = weapon.rb;
         joint.breakForce = Mathf.Infinity;
@@ -56,6 +57,7 @@ public class HandController : MonoBehaviour
         weapon.UnEquipping();
 
         weapon.WeaponFly(dir);
+        weapon.EnableEffect(false);
 
         WeaponBase dropped = weapon;
         weapon = null;
@@ -71,6 +73,7 @@ public class HandController : MonoBehaviour
 
         weapon.transform.SetParent(null);
         weapon.UnEquipping();
+        weapon.EnableEffect(false);
 
         WeaponBase dropped = weapon;
         weapon = null;

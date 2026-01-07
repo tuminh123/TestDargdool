@@ -19,6 +19,7 @@ public class EnemyAttackState : EnemyBaseState
 
         if (enemyBasic.attack.currentAttackData == null) return;
 
+        enemyBasic.attack.currentAttackData.EnableEffect(true);
         enemyBasic.attack.currentAttackData.OnAttacking += OnAttacking;
         enemyBasic.attack.currentAttackData.OnEndAttack += OnAttackEnd;
     }
@@ -31,6 +32,8 @@ public class EnemyAttackState : EnemyBaseState
         enemyBasic.attackContext.ResetPhysics();
 
         if (enemyBasic.attack.currentAttackData == null) return;
+
+        enemyBasic.attack.currentAttackData.EnableEffect(false);
         enemyBasic.attack.currentAttackData.OnAttacking -= OnAttacking;
         enemyBasic.attack.currentAttackData.OnEndAttack -= OnAttackEnd;
     }
@@ -44,7 +47,6 @@ public class EnemyAttackState : EnemyBaseState
     private void OnAttacking()
     {
         enemyBasic.SendDamage();
-
         
     }
 

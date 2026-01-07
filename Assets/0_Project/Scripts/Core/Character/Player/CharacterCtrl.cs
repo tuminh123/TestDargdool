@@ -37,6 +37,7 @@ public class CharacterCtrl : CharacterParent
 
     public PoseMotor[] PoseMotors => poseMotors;
     public Transform Head => head;
+    public bool IsSendDamage { get; private set; } = false;
     protected override void Awake()
     {
         base.Awake();
@@ -115,10 +116,7 @@ public class CharacterCtrl : CharacterParent
 
         if(weaponEquip != null )
         {
-            Vector2[] dirs = new Vector2[] {Vector2.left,Vector2.right};
-            Vector2 dir = dirs [UnityEngine.Random.Range(0, dirs.Length) ];
-
-            weaponEquip.DropWeapon(dir);
+            weaponEquip.DropWeapon();
         }
 
         if(healthBase.CurrentHealth < healthBase.MaxHealth * 0.3f)
