@@ -22,11 +22,11 @@ public class DamagePartEnemyChaseState : DamagePartEnemyState
     {
         base.UpdatePhysic();
 
-        //partEnemy.move.MoveHandle(Mathf.Sign(partEnemy.AttackDir.x));
+        //partEnemy.moving.MoveHandle(Mathf.Sign(partEnemy.AttackDir.x));
     }
 
     public override void Exit()
     {
-        //partEnemy.move.StopMoveCoroutine();
+        //partEnemy.moving.StopMoveCoroutine();
     }
 }

@@ -3,20 +3,20 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Test1 : MonoBehaviour
+public class Test1 : GameElement, IReceive<SignalGoldReceived>,IReceive<SignalEnemyDie>
 {
+    [SerializeField] private int goldCount = 0;
+    [SerializeField] private int enemyCount = 0;
 
-    public WeaponEquipController2D equip;
 
-    void Update()
+    public void Receive(in SignalGoldReceived signal)
     {
-        if (Input.GetMouseButtonDown(0))
-            equip.SetMode(EquipMode2D.StrongHinge);
+        goldCount += signal.receivedGoldCount;
+        //Debug.Log(goldCount);
+    }
 
-        if (Input.GetMouseButtonUp(0))
-            equip.SetMode(EquipMode2D.HardParent);
-
-        if (Input.GetKeyDown(KeyCode.G))
-            equip.DropWeapon();
+    public void Receive(in SignalEnemyDie signal)
+    {
+        enemyCount += signal.enemyDieCount;
     }
 }

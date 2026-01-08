@@ -215,7 +215,7 @@ public class AttackData
     {
         float elapsed = 0f;
 
-        // ✅ Apply balance 1 lần duy nhất
+        // ✅ Apply balances 1 lần duy nhất
         foreach (var item in attackDatas)
         {
             item?.ApplyBalanceOnce();

@@ -1,7 +1,7 @@
 using UnityEngine;
 public enum EquipMode2D
 {
-    HardParent,    // idle
+    HardParent,    // idling
     StrongHinge,   // attack
     WeakHinge,     // hit / stun
     Free           // drop

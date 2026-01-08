@@ -302,7 +302,7 @@ namespace Terresquall {
 
             // Check if there are no directional constraints.
             if (directions <= 0) {
-                // If snapToEdge is enabled, move the joystick to the edge of the radius;
+                // If snapToEdge is enabled, moving the joystick to the edge of the radius;
                 // otherwise, clamp the movement to the radius based on the input distance (diff).
                 desiredPosition = snapToEdge
                     ? (Vector2)transform.position + diff.normalized * radius // Snap to the edge of the joystick's radius
@@ -311,7 +311,7 @@ namespace Terresquall {
                 // If there are directional constraints, calculate the nearest snap direction.
                 Vector2 snapDirection = SnapDirection(diff.normalized, directions, ((360f / directions) + angleOffset) * Mathf.Deg2Rad);
 
-                // If snapToEdge is enabled move the joystick to the edge in the snap direction
+                // If snapToEdge is enabled moving the joystick to the edge in the snap direction
                 // otherwise, apply clamped movement in the snap direction based on the input distance.
                 desiredPosition = snapToEdge
                     ? (Vector2)transform.position + snapDirection * radius // Snap to the edge of the joystick's radius in the snap direction
@@ -591,7 +591,7 @@ namespace Terresquall {
 
             if(!IsInteractable()) return;
 
-            // Skip if we don't move far enough from the joystick's current position
+            // Skip if we don't moving far enough from the joystick's current position
             if (Vector2.Distance(transform.position, newPos) < GetRadius()) return;
 
             Vector2 position;

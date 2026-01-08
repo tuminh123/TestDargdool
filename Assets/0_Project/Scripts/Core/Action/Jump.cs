@@ -53,7 +53,7 @@ public class Jump : MonoBehaviour
         this.bodyForce = bodyForce;
     }
     /* [SerializeField] private Rigidbody2D body;
-     [SerializeField] private Balance balance;
+     [SerializeField] private Balance balances;
 
      [SerializeField] private float jumpForce = 8f;
      [SerializeField] private float forwardForce = 3f;
@@ -61,7 +61,7 @@ public class Jump : MonoBehaviour
      public void Execute(float dir)
      {
          // 1. Làm mất cân bằng khi nhảy
-         balance.Apply(1.5f);
+         balances.Apply(1.5f);
 
          // 2. Add lực
          Vector2 force =
@@ -73,7 +73,7 @@ public class Jump : MonoBehaviour
 
      public void Recover()
      {
-         balance.Recover();
+         balances.Recover();
      }*/
 
 }

@@ -215,4 +215,5 @@ public class CharacterCtrl : CharacterParent
 
         return baseDamage;
     }
+
 }

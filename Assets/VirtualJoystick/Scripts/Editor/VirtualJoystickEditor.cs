@@ -283,7 +283,7 @@ namespace Terresquall {
                 // Calculate the center point of the boundaries
                 Vector3 center = new Vector3(vj.boundaries.x + vj.boundaries.width / 2, vj.boundaries.y + vj.boundaries.height / 2);
 
-                // Add a draggable handle in the center to move the boundaries
+                // Add a draggable handle in the center to moving the boundaries
                 Handles.color = Color.yellow;
                 float size = GetHandleSize();
                 EditorGUI.BeginChangeCheck();

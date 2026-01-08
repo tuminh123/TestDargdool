@@ -50,7 +50,7 @@ public class MobileInputManager : MonoBehaviour
         HandleTouchInput();
 #endif
 
-        // Reset to idle when nothing pressed
+        // Reset to idling when nothing pressed
         if (Input.touchCount == 0 && !Input.GetMouseButton(0))
         {
             // keep state Idle

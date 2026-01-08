@@ -78,8 +78,17 @@ public abstract class EnemyAI : CharacterParent
         //Destroy(bodyParent.gameObject);
         GameEventBus.RaiseEnemyDead();
 
-        if (ZenManager.Instance.itemPoolManager == null || ZenManager.Instance == null) return;
-        ZenManager.Instance.itemPoolManager.SpawnGoldItem(transform.position);
+        int goldCount = 3;
+        if (SingletonManager.Instance == null || SingletonManager.Instance.goldManager == null) return;
+        SingletonManager.Instance.goldManager.AddGold(goldCount);
+
+        Global.Send(new SignalGoldReceived { receivedGoldCount = goldCount} );
+        Global.Send(new SignalEnemyDie { enemyDieCount = 1} );
+
+        /* for (int i = 0; i < 3; i++)
+         {
+             ZenManager.Instance.itemPoolManager.SpawnGoldItem(transform.position);
+         }*/
 
     }
     protected override Vector2 GetKnockDir()

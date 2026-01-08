@@ -19,7 +19,7 @@ public class LoadingSceneController : MonoBehaviour
     [SerializeField] private Image fadeImage;           // Image đen để fade
     [SerializeField] private float fadeDuration = 1f;
 
-    private int count = 0;
+    private int goldCount = 0;
 
     void Start()
     {
@@ -83,9 +83,9 @@ public class LoadingSceneController : MonoBehaviour
 
     private void LoadingFirstHandle()
     {
-        if (count >= 1) return;
+        if (goldCount >= 1) return;
         GameEventBus.RaiseLoadingFirst();
-        count++;
+        goldCount++;
     }
 
     IEnumerator FadeIn()

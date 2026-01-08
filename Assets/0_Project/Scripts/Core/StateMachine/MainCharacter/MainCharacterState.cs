@@ -49,7 +49,7 @@ public class MainCharacterState : IState
             }
 */
             airTapCount++;
-            //Debug.Log("Air tap count: " + airTapCount);
+            //Debug.Log("Air tap goldCount: " + airTapCount);
         }
 
         characterCtrl.SetAttackDirection(pos);
@@ -115,10 +115,10 @@ public class MainCharacterState : IState
         }
 
 
-        if (Input.GetKeyDown(KeyCode.W))
+      /*  if (Input.GetKeyDown(KeyCode.W))
         {
             characterCtrl.weaponEquip.ThrowWeapon(characterCtrl.DirFace);
-        }
+        }*/
 
         /*if (SwipeManager.Tap && characterCtrl.attack.CanAttack() && !characterCtrl.IsStunned)
         {
