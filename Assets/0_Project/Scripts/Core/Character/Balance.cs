@@ -3,19 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BalanceType
+{
+    none = 0,
+    head = 1,
+    body_up = 2,
+    right_arm = 3,
+    right_forearm = 4,
+    right_hand = 5,
+    left_arm = 6,
+    left_forearm = 7,
+    left_hand = 8,
+    right_leg = 9,
+    right_lower_leg = 10,
+    right_foot = 11,
+    left_leg = 12,
+    left_lower_leg = 13,
+    left_foot = 14,
+    body_bottom = 15,
+    hip = 16,
 
+}
 public class Balance : MonoBehaviour
 {
     [SerializeField] private float rot;
-    [SerializeField] private float force;
+    [SerializeField] private float force = 30;
 
     [SerializeField] private float minRot = -180f;
     [SerializeField] private float maxRot = 180f;
 
-    //[SerializeField] private float smoothTime = 0.1f; // thời gian mượt
-    //private float angularVelocity; // lưu velocity giữa các frame
-
-    [SerializeField] private DefaultBalanceData dataSO;
+    [SerializeField] private BalanceType type;
+    private BalanceData data;
     public HingeJoint2D hinge { get; private set; }
 
     private Rigidbody2D rb;
@@ -24,7 +42,7 @@ public class Balance : MonoBehaviour
 
 
     //get
-    public DefaultBalanceData DataSO => dataSO;
+    public BalanceType Type => type;
     public float Rotation=>rot;
     public float Force=>force;
     public Rigidbody2D Rb => rb;
@@ -33,7 +51,6 @@ public class Balance : MonoBehaviour
 
     private void Awake()
     {
-        ResetData();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         hinge = GetComponent<HingeJoint2D>();
@@ -70,11 +87,15 @@ public class Balance : MonoBehaviour
     }
     public void EnablePose() => isPoseActive = true;
     public void DisablePose() => isPoseActive = false;
-    public void ResetData()
+
+    public void SetBalanceData(BalanceData data)
     {
-        //Debug.Log("Reset");
-        if (dataSO == null) return;
-        dataSO.Init(out rot,out force);
+        this.data = data;
+    }
+    public void SetAction()
+    {
+        this.rot = data.rotChange;
+        this.force = data.forceChange;
     }
     public void SetPropertie(float targetRotation,float force)
     {
@@ -125,36 +146,6 @@ public class Balance : MonoBehaviour
         // Đảm bảo physics reset
         rb.Sleep();
         rb.WakeUp();
-    }
-    /////////////////////////////////////////////////////////////////////
-
-
-    private float baseMass;
-    private float baseGravity;
-    private float baseLinearDrag;
-    private float baseAngularDrag;
-
-    /// <summary>
-    /// Làm bộ phận mất thăng bằng
-    /// multiplier càng cao → càng nặng → càng khó kiểm soát
-    /// </summary>
-    public void Apply(float multiplier)
-    {
-        rb.mass = baseMass * multiplier;
-        rb.gravityScale = baseGravity * multiplier;
-        rb.linearDamping = baseLinearDrag * multiplier;
-        rb.angularDamping = baseAngularDrag * multiplier;
-    }
-
-    /// <summary>
-    /// Trả lại trạng thái ổn định
-    /// </summary>
-    public void Recover()
-    {
-        rb.mass = baseMass;
-        rb.gravityScale = baseGravity;
-        rb.linearDamping = baseLinearDrag;
-        rb.angularDamping = baseAngularDrag;
     }
 
 }

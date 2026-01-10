@@ -132,7 +132,7 @@ public abstract class EnemyAI : CharacterParent
     }
     private float DamageCaculate()
     {
-        float baseDamage = stats.DamageBase;
+        float baseDamage = stats.DamageConfig;
 
         bool isCrit = UnityEngine.Random.value < stats.CritChane;
 

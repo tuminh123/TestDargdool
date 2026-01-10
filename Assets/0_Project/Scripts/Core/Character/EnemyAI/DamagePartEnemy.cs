@@ -87,9 +87,9 @@ public class DamagePartEnemy : EnemyAI
 
         yield return new WaitForSeconds(3f);
 
-        right_up_arm.ResetData();
+        /*right_up_arm.ResetData();
         right_down_arm.ResetData();
-        right_hand.ResetData();
+        right_hand.ResetData();*/
 
     }
 
@@ -150,12 +150,12 @@ public class DamagePartEnemy : EnemyAI
 
         //damagePartToPlayer.gameObject.SetActive(false);
 
-        right_up_arm.ResetData();
+       /* right_up_arm.ResetData();
         right_down_arm.ResetData();
         right_hand.ResetData();
         left_up_arm.ResetData();
         left_down_arm.ResetData();
-        left_hand.ResetData();
+        left_hand.ResetData();*/
 
     }
     #endregion

@@ -40,7 +40,8 @@ public class DamageBalance : MonoBehaviour
 
     private float GetDamageMultiplier()
     {
-        switch (balance.DataSO.Type)
+        return 0;
+       /* switch (balance.DataSO.Type)
         {
             case BalanceType.head:
                 return 15;
@@ -61,6 +62,6 @@ public class DamageBalance : MonoBehaviour
                 return 5;
             default:
                 return 1;
-        }
+        }*/
     }
 }

@@ -63,15 +63,6 @@ public class CharacterCtrl : CharacterParent
         poseMotors = GetComponentsInChildren<PoseMotor>();
     }
     
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-
-        GameEventBus.OnPlayerSpawn += GameEventBus_OnPlayerSpawn;
-        GameEventBus.OnLevelUp += ApplyLevel;
-        healthBase.OnDead += OnDead;
-
-    }   
 
     protected override void OnDestroy()
     {
@@ -92,6 +83,11 @@ public class CharacterCtrl : CharacterParent
         }
 
         stateMachine.InitState(idelState);
+
+
+        GameEventBus.OnPlayerSpawn += GameEventBus_OnPlayerSpawn;
+        GameEventBus.OnLevelUp += ApplyLevel;
+        healthBase.OnDead += OnDead;
     }
     
 

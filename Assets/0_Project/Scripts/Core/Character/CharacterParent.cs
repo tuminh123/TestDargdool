@@ -3,7 +3,6 @@ using Cysharp.Threading.Tasks;
 using DamageNumbersPro;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.U2D.IK;
 using Zenject;
 #region Stats Character
 
@@ -128,20 +127,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         InitLimbs();
         InitPhysicDamageDeal();
     }
-    protected virtual void OnEnable()
-    {
-        if (healthBase == null) return;
 
-        healthBase.OnTakeDamage += OnTakeDamage;
-    }
-    protected virtual void OnDisable()
-    {
-        stateMachine.ExitState();
-        if (healthBase == null) return;
-       
-        healthBase.OnTakeDamage -= OnTakeDamage;
-
-    }
     protected virtual void OnDestroy()
     {
         stateMachine.ExitState();

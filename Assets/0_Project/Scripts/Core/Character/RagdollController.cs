@@ -4,7 +4,7 @@ using Lofelt.NiceVibrations;
 using Cysharp.Threading.Tasks;
 public class RagdollController : MonoBehaviour
 {
-    [SerializeField] List<Balance> balances;
+    [SerializeField] Balance[] balances ;
     [SerializeField] float knockdownThreshold = 10f;
 
     [SerializeField] private float explosionForce = 25f;
@@ -12,6 +12,9 @@ public class RagdollController : MonoBehaviour
     [SerializeField] private float cameraBias = 0.6f;
 
     bool isRagdoll;
+
+    //get
+    public Balance[] Balances => balances;
 
     public void OnHit(Vector2 force, float impact)
     {

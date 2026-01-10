@@ -25,22 +25,6 @@ public class IdleData
         rightDownLeg.SetRotation(low_leg);
 
     }
-
-    public void ResetData()
-    {
-        rightLeg.ResetData();
-        leftLeg.ResetData();
-        body.ResetData();
-        rightDownLeg.ResetData();
-        leftDownLeg.ResetData();
-
-        rightArmUp.ResetData();
-        rightArmDown.ResetData();
-        rightHand.ResetData();
-        leftArmUp.ResetData();
-        leftArmDown.ResetData();
-        leftHand.ResetData();
-    }
 }
 
 public class Idle : MonoBehaviour
@@ -49,7 +33,6 @@ public class Idle : MonoBehaviour
     [SerializeField] float damping = 0.85f; // giảm nhẹ, tự nhiên
     public void IdelHandle()
     {
-        data.ResetData();
 
         data.SetRot(50, 30, 25);
 
@@ -59,31 +42,4 @@ public class Idle : MonoBehaviour
     {
         data.Body.Rb.linearVelocity = new Vector2(data.Body.Rb.linearVelocity.x * damping, data.Body.Rb.linearVelocity.y);
     }
-  /*  [Header("Pose Motors")]
-    [SerializeField] private PoseMotor body;
-    [SerializeField] private PoseMotor rightLeg;
-    [SerializeField] private PoseMotor leftLeg;
-    [SerializeField] private PoseMotor rightArm;
-    [SerializeField] private PoseMotor leftArm;
-
-    public void Enter()
-    {
-        // Body thẳng
-        body.SetTargetRotation(0);
-        body.Enable();
-
-        // Chân đứng nhẹ
-        rightLeg.SetTargetRotation(10);
-        leftLeg.SetTargetRotation(-10);
-
-        rightLeg.Enable();
-        leftLeg.Enable();
-
-        // Tay thả lỏng
-        rightArm.SetTargetRotation(20);
-        leftArm.SetTargetRotation(-20);
-
-        rightArm.Enable();
-        leftArm.Enable();
-    }*/
 }
