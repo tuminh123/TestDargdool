@@ -106,6 +106,13 @@ public class CharacterCtrl : CharacterParent
         obj = this;
     }
 
+    #region Idle
+    public void BeginIdle()
+    {
+        ragdollController.actionBase.SetAction("Idle");
+    }
+    #endregion
+
     public override void OnTakeDamage()
     {
         base.OnTakeDamage();

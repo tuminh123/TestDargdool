@@ -25,10 +25,10 @@ public class ActionDataSO : ScriptableObject
     public  BalanceData[] balanceDatas;
     private Dictionary<BalanceType, BalanceData> balanceDataDict;
 
-    private void Awake()
+    private void OnEnable()
     {
         balanceDataDict = new Dictionary<BalanceType, BalanceData>();
-        if(balanceDatas.Length <= 0) return;
+        if (balanceDatas.Length <= 0) return;
 
         foreach (var item in balanceDatas)
         {

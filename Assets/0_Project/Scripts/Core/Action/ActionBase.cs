@@ -1,14 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionBase : MonoBehaviour
+public class ActionBase 
 {
-    [SerializeField] protected ActionDataSO[] actionDataSO;
-    [SerializeField] protected RagdollController ragdollController;
-
+    protected ActionDataSO[] actionDataSO;
+    protected Balance[] balances;
     private Dictionary<string, ActionDataSO> actionDataDict;
+    public ActionBase(ActionDataSO[] actionDataSO, Balance[] balances)
+    {
+        this.actionDataSO = actionDataSO;
+        this.balances = balances;
 
-    private void Awake()
+        actionDataDict = new Dictionary<string, ActionDataSO>();
+
+        if (actionDataSO.Length <= 0) return;
+        foreach (var item in actionDataSO)
+        {
+            if (item == null) continue;
+            actionDataDict[item.actionName] = item;
+        }
+    }
+
+    
+/*    private void Awake()
     {
         actionDataDict = new Dictionary<string, ActionDataSO>();
 
@@ -18,24 +32,28 @@ public class ActionBase : MonoBehaviour
             if(item==null) continue;
             actionDataDict[item.actionName] = item;
         }
-    }
+    }*/
 
     public void SetAction(string name)
     {
-        if(ragdollController == null) return;
-        Balance[] balances = ragdollController.Balances;
+        ActionDataSO actionData = GetActionData(name);
+        if (actionData == null) return;
+
         if(balances.Length <= 0) return;
 
         foreach (var item in balances)
         {
             if(item == null) continue;
 
-            ActionDataSO actionData = GetActionData(name);
-            if(actionData == null) continue;
-            if(actionData.GetBalanceData(item.Type) is BalanceData data)
+           /* if(actionData.GetBalanceData(item.Type) is BalanceData data)
             {
                 item.SetBalanceData(data);
-            }
+            }*/
+           // set action
+            BalanceData data = actionData.GetBalanceData(item.Type);
+
+            item.SetRotation(data.rotChange);
+            
         }
     }
 
