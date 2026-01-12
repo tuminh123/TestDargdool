@@ -8,8 +8,9 @@ public class CharacterAttackT : CharacterMainT
     public override void Enter()
     {
         base.Enter();
-        characterT.attack.DisableBalance();
         characterT.attack.Attack(characterT.AttackDir);
+        characterT.attack.DisableBalance();
+        //characterT.attack.Attack(characterT.AttackDir);
 
         characterT.attack.currentAttack.OnAttackEnd += CurrentAttack_OnAttackEnd;
     }

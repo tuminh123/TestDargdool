@@ -10,7 +10,8 @@ public class MainMoveState : MainCharacterState
     public override void Enter()
     {
         base.Enter();
-        //characterCtrl.SetLayerBalance("None");
+        characterCtrl?.ragdollController?.actionBase.SetPostAction(new ActionPostNormal());
+
     }
     public override void Update()
     {
@@ -23,7 +24,7 @@ public class MainMoveState : MainCharacterState
     public override void UpdatePhysic()
     {
         base.UpdatePhysic();
-        characterCtrl.move.MoveHandle(x);
+        characterCtrl.move.MoveHandle(x,characterCtrl.ragdollController.actionBase);
     }
 
     public override void Exit()

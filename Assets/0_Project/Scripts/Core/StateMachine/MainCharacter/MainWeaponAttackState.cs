@@ -23,16 +23,21 @@ public class MainWeaponAttackState : MainCharacterState
             return;
         }
 
-        cts = new CancellationTokenSource();
+       /* cts = new CancellationTokenSource();
 
         if (characterCtrl.weaponEquip.CurrentWeapon == null) return;
         characterCtrl.weaponEquip.CurrentWeapon.EnableAttack();
         characterCtrl.SendWeaponDamageBase();
 
-        characterCtrl.attack.HandleWeaponAttack(characterCtrl.AttackDir).Forget();
+        string name = characterCtrl.AttackDir.x < 0 ? "LeftWeaponArm" : "RightWeaponArm";
+
+        characterCtrl.attack.HandleAttack(characterCtrl.AttackDir, characterCtrl.ragdollController.actionBase, name).Forget();
+
         characterCtrl.weaponEquip.SetFaceWeaponAttack(characterCtrl.AttackDir);
 
-        if (characterCtrl.attack.currentAttackData == null) return;
+        if (characterCtrl.attack.currentAttackData == null) return;*/
+
+        characterCtrl?.attack?.EnterAttack(characterCtrl,"LeftWeaponArm","RightWeaponArm");
 
         characterCtrl.attack.currentAttackData.OnAttacking += OnAttacking;
         characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
@@ -54,6 +59,7 @@ public class MainWeaponAttackState : MainCharacterState
       
         base.Exit();
 
+        characterCtrl?.attack?.ExitAttack(characterCtrl);
 
         if (cts != null)
         {

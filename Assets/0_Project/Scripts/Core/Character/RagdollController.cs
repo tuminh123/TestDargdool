@@ -5,8 +5,8 @@ using Cysharp.Threading.Tasks;
 public class RagdollController : MonoBehaviour
 {
     [SerializeField] private Balance[] balances ;
-    [SerializeField] private ActionDataSO[] actionDataSO;
-    public ActionBase actionBase { get; private set; }
+    [SerializeField] private ActionDataSO[] actionsDataSO;
+    public ActionPostBase actionBase { get; private set; }
 
     [SerializeField] float knockdownThreshold = 10f;
 
@@ -18,9 +18,10 @@ public class RagdollController : MonoBehaviour
 
     //get
     public Balance[] Balances => balances;
+    public ActionDataSO[] ActionsDataSO => actionsDataSO;
     private void Awake()
     {
-        actionBase = new ActionBase(actionDataSO, balances);
+        actionBase = new ActionPostBase(actionsDataSO, balances,new ActionPostNormal());
     }
     public void OnHit(Vector2 force, float impact)
     {
@@ -47,8 +48,6 @@ public class RagdollController : MonoBehaviour
 
         isRagdoll = false;
     }
-
-    
 
     public async UniTask Explode()
     {

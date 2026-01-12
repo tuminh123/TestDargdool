@@ -11,57 +11,40 @@ public class MainAttackState : MainCharacterState
     public override void Enter()
     {
         base.Enter();
-        characterCtrl.attackContext.EnableAttack();
+      /*  characterCtrl.attackContext.EnableAttack();
         characterCtrl.attackContext.EnableAttackPhysics(characterCtrl.AttackDir);
-        characterCtrl.attack.HandleAttack(characterCtrl.AttackDir).Forget();
 
-        characterCtrl.SendDamageBase();
+        string name = characterCtrl.AttackDir.x < 0 ? "LeftPunch" : "RightPunch";
+
+        characterCtrl.attack.HandleAttack(characterCtrl.AttackDir,characterCtrl.ragdollController.actionBase,name).Forget();
+
+        characterCtrl.SendDamageBase();*/
+
+        characterCtrl?.attack?.EnterAttack(characterCtrl, "LeftPunch", "RightPunch");
+
 
         if (characterCtrl.attack.currentAttackData == null) return;
-
-        characterCtrl.attack.currentAttackData.EnableEffect(true);
-        characterCtrl.attack.currentAttackData.OnAttacking += Attacking;
+       // characterCtrl.attack.currentAttackData.OnAttacking += Attacking;
         characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
-
-        /*  foreach (var pose in characterCtrl.PoseMotors)
-              pose.Disable();
-
-          characterCtrl.attack
-          .HandleAttack(characterCtrl.AttackDir);
-          *//*.Forget();*//*
-
-          characterCtrl.attack.OnAttackEnd += EndAttack;*/
 
     }
     public override void Exit()
     {
         base.Exit();
+        /*
+                characterCtrl.attackContext.DisableAttack();
+                characterCtrl.attackContext.ResetPhysics();*/
 
-        characterCtrl.attackContext.DisableAttack();
-        characterCtrl.attackContext.ResetPhysics();
+        characterCtrl?.attack?.ExitAttack(characterCtrl);
 
         if (characterCtrl.attack.currentAttackData == null) return;
-
-        characterCtrl.attack.currentAttackData.EnableEffect(false);
-        characterCtrl.attack.currentAttackData.OnAttacking -= Attacking;
+        //characterCtrl.attack.currentAttackData.OnAttacking -= Attacking;
         characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
-        /* foreach (var pose in characterCtrl.PoseMotors)
-             pose.Enable();
+    }
 
-         //characterCtrl.attack.CancelAttack();
-         characterCtrl.attack.OnAttackEnd -= EndAttack;*/
-    }
-    private void Attacking()
-    {
-       /* Debug.Log("Attack");
-        characterCtrl.SendDamage();*/
-    }
     private void EndAttack()
     {
-        //characterCtrl.SendDamage();
-        //stateMachine.ChangeState(characterCtrl.idelState);
-
-        //characterCtrl.attack.CancelAttack();
+        Debug.Log("End");
         stateMachine.ChangeState(characterCtrl.idelState);
     }
 

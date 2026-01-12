@@ -33,9 +33,6 @@ public class CharacterCtrl : CharacterParent
 
     #endregion
 
-    private PoseMotor[] poseMotors;
-
-    public PoseMotor[] PoseMotors => poseMotors;
     public Transform Head => head;
     public bool IsSendDamage { get; private set; } = false;
     protected override void Awake()
@@ -60,7 +57,6 @@ public class CharacterCtrl : CharacterParent
         stunnedState = new MainStunState(stateMachine, this,stunTime);
         weaponAttackState = new MainWeaponAttackState(stateMachine, this);
 
-        poseMotors = GetComponentsInChildren<PoseMotor>();
     }
     
 
@@ -98,6 +94,12 @@ public class CharacterCtrl : CharacterParent
     }
     private void FixedUpdate()
     {
+        move?.LimitMoving
+        (
+            ragdollController?.actionBase?.GetBalance(BalanceType.body_up).Rb,
+            ragdollController?.actionBase?.GetBalance(BalanceType.right_leg).Rb,
+            ragdollController?.actionBase?.GetBalance(BalanceType.left_leg).Rb
+        );
         stateMachine.UpdatePhysicState();
     }
 

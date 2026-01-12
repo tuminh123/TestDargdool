@@ -59,8 +59,6 @@ public class MainCharacterState : IState
 
     private void TryAttack()
     {
-        if (!characterCtrl.attack.CanAttack())
-            return;
 
         if (characterCtrl.weaponEquip.HasWeapon)
         {

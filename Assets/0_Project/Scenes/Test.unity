@@ -5676,8 +5676,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73037ecf588fe904da8435da90f5b4ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackHandles: []
-  balanceTests: []
+  attackHandles:
+  - profile: {fileID: 11400000, guid: 0301623e8eef43b4cafff67c977cd013, type: 2}
+    balances:
+    - {fileID: 7626174268203768879}
+    - {fileID: 8216721124543897165}
+    - {fileID: 7442387462876044843}
+    - {fileID: 5809506077360731697}
+  balanceTests:
+  - {fileID: 8807930075772766111}
+  - {fileID: 5809506077360731697}
+  - {fileID: 4677327115950291765}
+  - {fileID: 5238650851701734620}
+  - {fileID: 5481978037539063723}
+  - {fileID: 8606340206599950292}
+  - {fileID: 5779769455699378881}
+  - {fileID: 7442387462876044843}
+  - {fileID: 8216721124543897165}
+  - {fileID: 7626174268203768879}
+  - {fileID: 8466280572769392862}
+  - {fileID: 6360942752374591156}
+  - {fileID: 5878754659631931472}
+  - {fileID: 8122617063088655519}
 --- !u!1 &887618423
 GameObject:
   m_ObjectHideFlags: 0
@@ -6757,8 +6777,12 @@ MonoBehaviour:
   - {fileID: 1101523748381623345}
   - {fileID: 7788024269822280083}
   - {fileID: 645215323313635370}
-  actionDataSO:
+  actionsDataSO:
   - {fileID: 11400000, guid: 38c7e10cf7614cb4aa28f0999a9b008f, type: 2}
+  - {fileID: 11400000, guid: c969b750be1ea01488f729a1f219dc13, type: 2}
+  - {fileID: 11400000, guid: 395d1213e5edb0243b5b00a5bb5d5162, type: 2}
+  - {fileID: 11400000, guid: b2c8e684976fa434aaefe34aa8602080, type: 2}
+  - {fileID: 11400000, guid: fe349a0a5083f654a818159b12852206, type: 2}
   knockdownThreshold: 10
   explosionForce: 25
   torqueForce: 15
@@ -7185,138 +7209,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 3661525431883807848}
   configSO: {fileID: 11400000, guid: 590b4fa3835ace34e9a5e4cbdba92c01, type: 2}
-  leftAttacks:
-  - attackDatas:
-    - balance: {fileID: 3476451650792197165}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 5925602061102996854}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 2561980184584901208}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 3661525431883807848}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    trails:
-    - {fileID: 2400377319908141653}
-  - attackDatas:
-    - balance: {fileID: 7937270861091936922}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 1101523748381623345}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 3661525431883807848}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 3577238967436291751}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    trails:
-    - {fileID: 2114638061764254748}
-  rightAttacks:
-  - attackDatas:
-    - balance: {fileID: 3240763068493576728}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 5538702374393216531}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 861439041801492837}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 3661525431883807848}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    trails:
-    - {fileID: 4585503586078795470}
-  - attackDatas:
-    - balance: {fileID: 7788024269822280083}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 645215323313635370}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 861439041801492837}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 3661525431883807848}
-      force: 0
-      torque: 5
-      balanceMultiplier: 1.5
-    trails:
-    - {fileID: 6630860247650491110}
-  weaponLeftAttack:
-    attackDatas:
-    - balance: {fileID: 3476451650792197165}
-      force: 50
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 5925602061102996854}
-      force: 50
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 2561980184584901208}
-      force: 15
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 3240763068493576728}
-      force: 50
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 5538702374393216531}
-      force: 50
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 861439041801492837}
-      force: 15
-      torque: 5
-      balanceMultiplier: 1.5
-    trails: []
-  weaponRightAttack:
-    attackDatas:
-    - balance: {fileID: 3476451650792197165}
-      force: 50
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 5925602061102996854}
-      force: 50
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 2561980184584901208}
-      force: 15
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 3240763068493576728}
-      force: 50
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 5538702374393216531}
-      force: 50
-      torque: 5
-      balanceMultiplier: 1.5
-    - balance: {fileID: 861439041801492837}
-      force: 15
-      torque: 5
-      balanceMultiplier: 1.5
-    trails: []
   textEffect: {fileID: 5160297317622529263, guid: 9310b0803d351cb41957e2d53b743476, type: 3}
 --- !u!4 &948338824956482964
 Transform:
@@ -7809,16 +7701,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3180c6903c944b0eb58c2dd36a8e2418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 3661525431883807848}
-  body_2: {fileID: 8567303017911603403}
-  hip: {fileID: 3577238967436291751}
-  leftLeg: {fileID: 7937270861091936922}
-  rightLeg: {fileID: 7788024269822280083}
-  leftHipLeg: {fileID: 1101523748381623345}
-  rightHipLeg: {fileID: 645215323313635370}
   jumpHeight: 5
   bodyForce: 4
   forwardForce: 4
+  controller: {fileID: 468884335905494443}
 --- !u!4 &1374784553888620710
 Transform:
   m_ObjectHideFlags: 0
@@ -12039,19 +11925,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a43a7842a7423b941235bbcb962bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    rightLeg: {fileID: 7788024269822280083}
-    leftLeg: {fileID: 7937270861091936922}
-    body: {fileID: 3577238967436291751}
-    rightDownLeg: {fileID: 645215323313635370}
-    leftDownLeg: {fileID: 1101523748381623345}
-    rightArmUp: {fileID: 3240763068493576728}
-    rightArmDown: {fileID: 5538702374393216531}
-    rightHand: {fileID: 861439041801492837}
-    leftArmUp: {fileID: 3476451650792197165}
-    leftArmDown: {fileID: 5925602061102996854}
-    leftHand: {fileID: 2561980184584901208}
-  damping: 0.85
 --- !u!4 &6010121253712283913
 Transform:
   m_ObjectHideFlags: 0
@@ -12631,18 +12504,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ef441bf968c49cb848d1c3a4cbc9801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    rightLeg: {fileID: 7788024269822280083}
-    rightThigh: {fileID: 645215323313635370}
-    rightUpArm: {fileID: 3240763068493576728}
-    rightLowArm: {fileID: 5538702374393216531}
-    rightHand: {fileID: 861439041801492837}
-    leftLeg: {fileID: 7937270861091936922}
-    leftThigh: {fileID: 1101523748381623345}
-    leftUpArm: {fileID: 3476451650792197165}
-    leftLowArm: {fileID: 5925602061102996854}
-    leftHand: {fileID: 2561980184584901208}
-    body: {fileID: 3577238967436291751}
   speed: 5
   legWait: 0.5
   maxSpeed: 10
@@ -12883,7 +12744,7 @@ GameObject:
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &6991780471180040188
 GameObject:
   m_ObjectHideFlags: 0
@@ -12903,7 +12764,7 @@ GameObject:
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &6991780471180040189
 MonoBehaviour:
   m_ObjectHideFlags: 0

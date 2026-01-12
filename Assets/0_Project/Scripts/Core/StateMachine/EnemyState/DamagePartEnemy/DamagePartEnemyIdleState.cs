@@ -11,7 +11,7 @@ public class DamagePartEnemyIdleState : DamagePartEnemyState
     {
         base.Enter();
         time = 2f;
-        //partEnemy.idling.IdelHandle();
+        //partEnemy.idling.IdleHandle();
     }
     public override void Update()
     {

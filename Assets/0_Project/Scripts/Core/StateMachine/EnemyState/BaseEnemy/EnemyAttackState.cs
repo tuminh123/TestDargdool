@@ -11,16 +11,20 @@ public class EnemyAttackState : EnemyBaseState
     public override void Enter()
     {
         base.Enter();
-        enemyBasic.attackContext.EnableAttack();
+       /* enemyBasic.attackContext.EnableAttack();
         enemyBasic.attackContext.EnableAttackPhysics(enemyBasic.AttackDir);
-        enemyBasic.attack.HandleAttack(enemyBasic.AttackDir).Forget();
 
-        enemyBasic.SendDamageBase();
+        string name = enemyBasic.AttackDir.x < 0 ? "LeftPunch" : "RightPunch";
+        enemyBasic.attack.HandleAttack(enemyBasic.AttackDir, enemyBasic.ragdollController.actionBase, name).Forget();
+
+        enemyBasic.SendDamageBase();*/
+
+        enemyBasic?.attack?.EnterAttack(enemyBasic, "LeftPunch", "RightPunch");
 
         if (enemyBasic.attack.currentAttackData == null) return;
 
-        enemyBasic.attack.currentAttackData.EnableEffect(true);
-        enemyBasic.attack.currentAttackData.OnAttacking += OnAttacking;
+       /* enemyBasic.attack.currentAttackData.EnableEffect(true);
+        enemyBasic.attack.currentAttackData.OnAttacking += OnAttacking;*/
         enemyBasic.attack.currentAttackData.OnEndAttack += OnAttackEnd;
     }
 
@@ -28,13 +32,16 @@ public class EnemyAttackState : EnemyBaseState
     public override void Exit()
     {
         base.Exit();
-        enemyBasic.attackContext.DisableAttack();
-        enemyBasic.attackContext.ResetPhysics();
+
+        enemyBasic?.attack?.ExitAttack(enemyBasic);
+
+        /*  enemyBasic.attackContext.DisableAttack();
+          enemyBasic.attackContext.ResetPhysics();*/
 
         if (enemyBasic.attack.currentAttackData == null) return;
 
-        enemyBasic.attack.currentAttackData.EnableEffect(false);
-        enemyBasic.attack.currentAttackData.OnAttacking -= OnAttacking;
+        /*enemyBasic.attack.currentAttackData.EnableEffect(false);
+        enemyBasic.attack.currentAttackData.OnAttacking -= OnAttacking;*/
         enemyBasic.attack.currentAttackData.OnEndAttack -= OnAttackEnd;
     }
 
@@ -44,10 +51,10 @@ public class EnemyAttackState : EnemyBaseState
         stateMachine.ChangeState(enemyBasic.enemyCombatState);
     }
 
-    private void OnAttacking()
+   /* private void OnAttacking()
     {
         enemyBasic.SendDamage();
         
     }
-
+*/
 }

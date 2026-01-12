@@ -9,8 +9,9 @@ public class MainIdelState : MainCharacterState
     public override void Enter()
     {
         base.Enter();
-        //characterCtrl.idle.IdelHandle();
-        characterCtrl.BeginIdle();
+        characterCtrl?.ragdollController?.actionBase.SetPostAction(new ActionPostNormal());
+
+        characterCtrl.idle.IdleHandle(characterCtrl.ragdollController.actionBase);
     }
     public override void Update()
     {

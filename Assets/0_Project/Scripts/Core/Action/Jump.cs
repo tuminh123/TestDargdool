@@ -2,20 +2,49 @@
 
 public class Jump : MonoBehaviour
 {
-    [SerializeField] private Balance body;
-    [SerializeField] private Balance body_2;
-    [SerializeField] private Balance hip;
-    [SerializeField] private Balance leftLeg;
-    [SerializeField] private Balance rightLeg;
-    [SerializeField] private Balance leftHipLeg;
-    [SerializeField] private Balance rightHipLeg;
 
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] float bodyForce = 2f;
     [SerializeField] float forwardForce = 3f;
 
+    [SerializeField] RagdollController controller;
 
     public void JumpHandle(float x)
+    {
+        Vector2 upForce, forward;
+
+        SetDirJump(x, out upForce, out forward);
+
+        if(controller == null) return;
+        Balance[] bodys = new Balance[]
+        {
+            controller?.actionBase?.GetBalance(BalanceType.body_up),
+            controller?.actionBase?.GetBalance(BalanceType.body_bottom),
+            controller ?.actionBase ?.GetBalance(BalanceType.hip),
+        };
+        Balance[] legs = new Balance[]
+        {
+            controller ?.actionBase ?.GetBalance(BalanceType.left_leg),
+            controller ?.actionBase ?.GetBalance(BalanceType.left_lower_leg),
+            controller ?.actionBase ?.GetBalance(BalanceType.right_leg),
+            controller ?.actionBase ?.GetBalance(BalanceType.right_lower_leg)
+        };
+
+        if (bodys.Length <= 0 || legs.Length <= 0) return;
+
+        foreach (var item in bodys)
+        {
+            if(item == null) continue;
+            item.Rb.AddForce((upForce + forward) * jumpHeight,ForceMode2D.Impulse);
+        }
+        foreach (var item in legs)
+        {
+            if (item == null) continue;
+            item.Rb.AddForce((upForce + forward) * jumpHeight*3, ForceMode2D.Impulse);
+        }
+    }
+
+    private void SetDirJump(float x, out Vector2 upForce, out Vector2 forward)
     {
         Vector2 dirJump;
         if (x > 0)
@@ -32,16 +61,8 @@ public class Jump : MonoBehaviour
         }
 
 
-        Vector2 upForce = Vector2.up * bodyForce;
-        Vector2 forward = dirJump * forwardForce;
-
-        body.Rb.AddForce(upForce + forward, ForceMode2D.Impulse);
-        body_2.Rb.AddForce(upForce + forward, ForceMode2D.Impulse);
-        hip.Rb.AddForce(upForce + forward, ForceMode2D.Impulse);
-        leftLeg.Rb.AddForce((upForce + forward) * jumpHeight * 100);
-        leftHipLeg.Rb.AddForce((upForce + forward) * jumpHeight * 100);
-        rightLeg.Rb.AddForce((upForce + forward) * jumpHeight * 100);
-        rightHipLeg.Rb.AddForce((upForce + forward) * jumpHeight * 100);
+        upForce = Vector2.up * bodyForce;
+        forward = dirJump * forwardForce;
     }
 
     public void SetJumpHeight(float jumpHeight)
@@ -52,28 +73,4 @@ public class Jump : MonoBehaviour
     {
         this.bodyForce = bodyForce;
     }
-    /* [SerializeField] private Rigidbody2D body;
-     [SerializeField] private Balance balances;
-
-     [SerializeField] private float jumpForce = 8f;
-     [SerializeField] private float forwardForce = 3f;
-
-     public void Execute(float dir)
-     {
-         // 1. Làm mất cân bằng khi nhảy
-         balances.Apply(1.5f);
-
-         // 2. Add lực
-         Vector2 force =
-             Vector2.up * jumpForce +
-             Vector2.right * dir * forwardForce;
-
-         body.AddForce(force, ForceMode2D.Impulse);
-     }
-
-     public void Recover()
-     {
-         balances.Recover();
-     }*/
-
 }

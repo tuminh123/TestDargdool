@@ -2,13 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*public enum action_type
-{
-    none = 0,
-    idle = 1,
-    attack = 2,
-    move = 3,
-}*/
 
 [System.Serializable]
 public struct BalanceData
@@ -46,12 +39,6 @@ public class ActionDataSO : ScriptableObject
         {
             return default;
         }
-            /*foreach (var item in balanceDatas)
-            {
-                // Removed 'item == null' check because BalanceData is a struct and cannot be null
-                if (item.type == type) return item;
-            }
-            // Return a default BalanceData if not found*/
            
     }
 }

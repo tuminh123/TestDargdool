@@ -136,6 +136,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         healthBase.OnTakeDamage -= OnTakeDamage;
     }
 
+    #region Init Limb
     void InitLimbs()
     {
         foreach (var limb in limbHitBoxs)
@@ -154,6 +155,8 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
             dealer.Init(this,attackContext);
         }
     }
+    #endregion
+
     #region Damage Event
     public virtual void OnTakeDamage()
     {
@@ -200,19 +203,6 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         this.isStunned = isStunned;
     }
 
-    public virtual void SendDamage()
-    {
-        foreach (var item in damageDetect)
-        {
-            if (item == null) continue;
-            item.SetDamageBase(stats.DamageBase);
-            if (item.SenderDamageTo())
-            {
-                break;
-            }
-        }
-    }
-
     public void SendDamageBase()
     {
         Global.Send(new SignalSendDamage
@@ -234,36 +224,9 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         return baseDamage;
     }
     #endregion
-
-
-    public void Buff(float healthMultiplier, float damageMultiplierr)
-    {
-        //Debug.Log("buff");
-        float buffMaxHealth = stats.MaxHealth*healthMultiplier;
-        float buffDamageBase = stats.DamageBase * damageMultiplierr;
-        //Debug.Log(buffMaxHealth);
-        //Debug.Log(buffDamageBase);
-        stats.SetMaxHealth(buffMaxHealth);
-        stats.SetDamageBase(buffDamageBase);
-
-        healthBase.SetMaxHealth(stats.MaxHealth);
-        foreach (var item in damageDetect)
-        {
-            if (item == null) continue;
-            item.SetDamageBase(stats.DamageBase);
-        }
-    }
+   
     #region Reset character
-    /* public void ResetBalance()
-     {
-         foreach (var item in childBalance)
-         {
-             if (item == null) continue;
-             item.ResetState();
-         }
-         bodyParent.ResetState();
-         attack.CancelAttack();
-     }*/
+
     public void ResetOnGameRestart()
     {
        StartCoroutine(ResetCharacter());
@@ -301,6 +264,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     }
     #endregion
 
+    #region Utils
     public void FlipSystem(float x,Transform transform)
     {
         if (x > 0 && !isFacingRight) Flip(transform);
@@ -314,4 +278,22 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         isFacingRight = !isFacingRight;
         transform.Rotate(0, 180, 0);
     }
+    public void Buff(float healthMultiplier, float damageMultiplierr)
+    {
+        //Debug.Log("buff");
+        float buffMaxHealth = stats.MaxHealth * healthMultiplier;
+        float buffDamageBase = stats.DamageBase * damageMultiplierr;
+        //Debug.Log(buffMaxHealth);
+        //Debug.Log(buffDamageBase);
+        stats.SetMaxHealth(buffMaxHealth);
+        stats.SetDamageBase(buffDamageBase);
+
+        healthBase.SetMaxHealth(stats.MaxHealth);
+        foreach (var item in damageDetect)
+        {
+            if (item == null) continue;
+            item.SetDamageBase(stats.DamageBase);
+        }
+    }
+    #endregion
 }

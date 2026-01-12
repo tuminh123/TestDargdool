@@ -8,40 +8,6 @@ using UnityEngine;
 #region Attack Data
 
 [System.Serializable]
-public class AttackImpulse
-{
-    [SerializeField] private Balance balance;
-    [SerializeField] private float force = 10f;
-    [SerializeField] private float torque = 5f;
-    [SerializeField] private float balanceMultiplier = 1.5f;
-
-    private bool balanceApplied;
-
-    public Balance Balance => balance;
-    public float Torque => torque;
-   
-    public float Force => force;
-
-    public void ApplyBalanceOnce()
-    {
-        if (balanceApplied || balance == null) return;
-
-        balance.Rb.gravityScale = 3f;
-        balance.Rb.mass = 2f;
-        balanceApplied = true;
-    }
-
-    public void ResetBalance()
-    {
-        if (balance == null) return;
-
-        balance.Rb.gravityScale = 1f;
-        balance.Rb.mass = 1f;
-        balanceApplied = false;
-    }
-}
-
-[System.Serializable]
 public class AttackData
 {
     #region Couroutine
@@ -151,9 +117,6 @@ public class AttackData
     public System.Action OnEndAttack;
 
     #endregion
-
-    [SerializeField] private List<AttackImpulse> attackDatas = new();
-    [SerializeField] TrailRenderer[] trails;
     private bool isAttacking;
     public bool IsAttacking => isAttacking;
 
@@ -167,7 +130,9 @@ public class AttackData
     public async UniTask ExecuteAttack(
         AttackDataConfigSO configSO,
         Vector2 attackDir,
-        CancellationToken token
+        CancellationToken token,
+        ActionPostBase postBase,
+        string nameAction
     )
     {
         if (isAttacking) return;
@@ -181,20 +146,17 @@ public class AttackData
 
             // Apply physics + motion song song
             await UniTask.WhenAll(
-                AttackApply(configSO, attackDir, cts.Token),
-                PostAttack(configSO, cts.Token)
+                AttackApply(configSO, attackDir, cts.Token,postBase),
+                PostAttack(configSO, cts.Token,postBase,nameAction)
             );
         }
         catch (OperationCanceledException)
         {
             // Attack bị cancel
         }
-        finally
-        {
-            Cleanup();
-            isAttacking = false;
-            OnEndAttack?.Invoke();
-        }
+        Cleanup();
+        isAttacking = false;
+        OnEndAttack?.Invoke();
     }
 
     public void CancelAttack()
@@ -207,77 +169,55 @@ public class AttackData
 
     #region Core Logic
 
-    private async UniTask AttackApply(
-        AttackDataConfigSO configSO,
-        Vector2 attackDir,
-        CancellationToken token
-    )
+    private async UniTask AttackApply(AttackDataConfigSO configSO,Vector2 attackDir,CancellationToken token,ActionPostBase postBase)
     {
         float elapsed = 0f;
-
-        // ✅ Apply balances 1 lần duy nhất
-        foreach (var item in attackDatas)
-        {
-            item?.ApplyBalanceOnce();
-        }
 
         while (elapsed < configSO.AttackDuration)
         {
             token.ThrowIfCancellationRequested();
             elapsed += Time.fixedDeltaTime;
 
-            foreach (var item in attackDatas)
+            foreach (var item in postBase.Balances)
             {
-                if (item?.Balance == null) continue;
+                if (item == null) continue;
 
-                Balance arm = item.Balance;
-
-                Vector2 targetPos =
-                    attackDir * configSO.AttackReach +
-                    Vector2.Perpendicular(attackDir) * configSO.ProceduralOffset;
+                Vector2 targetPos = attackDir * configSO.AttackReach + Vector2.Perpendicular(attackDir) * configSO.ProceduralOffset;
 
                 // Launch force
                 if (elapsed < configSO.LaunchTime)
                 {
-                    arm.Rb.AddForce(
-                        attackDir * configSO.AttackForce,
-                        ForceMode2D.Impulse
-                    );
+                    item.Rb.AddForce(attackDir * configSO.AttackForce, ForceMode2D.Impulse);
                 }
 
-                SmoothMotionHelper.SmoothMoveTowardsLimited(
-                    arm.Rb,
-                    targetPos,
-                    configSO.MaxSpeed,
-                    configSO.MaxForce,
-                    configSO.DecelDistance
-                );
+                SmoothMotionHelper.SmoothMoveTowardsLimited(item.Rb, targetPos, configSO.MaxSpeed, configSO.MaxForce, configSO.DecelDistance);
             }
 
             await UniTask.WaitForFixedUpdate(token);
         }
-    }
+}
+
 
     private async UniTask PostAttack(
         AttackDataConfigSO configSO,
-        CancellationToken token
+        CancellationToken token,
+        ActionPostBase postBase,
+        string nameAction
     )
     {
         float poseDuration = 0.35f;
         float elapsed = 0f;
 
         // Freeze motion + reset physics
-        foreach (var item in attackDatas)
+        foreach (var item in postBase.Balances)
         {
-            if (item?.Balance == null) continue;
+            if (item == null) continue;
 
-            var rb = item.Balance.Rb;
+            var rb = item.Rb;
             rb.linearDamping = configSO.LinearDrag;
             rb.angularDamping = configSO.AngularDrag;
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
-
-            item.ResetBalance();
         }
 
         while (elapsed < poseDuration)
@@ -285,21 +225,7 @@ public class AttackData
             token.ThrowIfCancellationRequested();
             elapsed += Time.fixedDeltaTime;
 
-            foreach (var item in attackDatas)
-            {
-                if (item?.Balance == null) continue;
-
-                Balance part = item.Balance;
-
-                float t = SmoothMotionHelper.SmoothRotateLimited(
-                    part.Rotation,
-                    item.Torque,
-                    configSO.RotateSmoothSpeed,
-                    configSO.MaxAngularSpeed
-                );
-
-                part.SetRotation(t);
-            }
+            postBase.SetAction(nameAction);
 
             await UniTask.WaitForFixedUpdate(token);
         }
@@ -318,16 +244,6 @@ public class AttackData
     }
 
     #endregion
-
-    public void EnableEffect(bool enable)
-    {
-        if (trails.Length <= 0) return;
-        foreach (var item in trails)
-        {
-            if (item == null) continue;
-            item.emitting = enable;
-        }
-    }
 
     #endregion
 }

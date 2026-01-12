@@ -49,6 +49,12 @@ public abstract class EnemyAI : CharacterParent
     }
     private void FixedUpdate()
     {
+        move?.LimitMoving
+        (
+            ragdollController?.actionBase?.GetBalance(BalanceType.body_up).Rb,
+            ragdollController?.actionBase?.GetBalance(BalanceType.right_leg).Rb,
+            ragdollController?.actionBase?.GetBalance(BalanceType.left_leg).Rb
+        );
         stateMachine.UpdatePhysicState();
     }
     private void HeadRotation()

@@ -55,11 +55,7 @@ public class Balance : MonoBehaviour
         col = GetComponent<Collider2D>();
         hinge = GetComponent<HingeJoint2D>();
     }
-    //private void OnValidate()
-    //{
-    //    rotChange = dataSO.Torque;
-    //    forceChange = dataSO.Force;
-    //}
+
     private void Start()
     {
         CacheState();
@@ -78,30 +74,11 @@ public class Balance : MonoBehaviour
             float clampedRot = Mathf.Clamp(rot, minRot, maxRot);
             rb.MoveRotation(Mathf.LerpAngle(rb.rotation, clampedRot, force * Time.fixedDeltaTime));
         }
-        //else
-        //{
-        //    //float clampedRot = Mathf.Clamp(rotChange, minRot, maxRot);
-        //    float newRotation = Mathf.SmoothDampAngle(rb.rotation, clampedRot, ref angularVelocity, smoothTime);
-        //    rb.MoveRotation(newRotation);
-        //}
     }
+
+    #region Set API
     public void EnablePose() => isPoseActive = true;
     public void DisablePose() => isPoseActive = false;
-
-    public void SetBalanceData(BalanceData data)
-    {
-        this.data = data;
-    }
-    public void SetAction()
-    {
-        this.rot = data.rotChange;
-        this.force = data.forceChange;
-    }
-    public void SetPropertie(float targetRotation,float force)
-    {
-        this.rot = targetRotation;
-        this.force = force;
-    }
     public void SetRotation(float targetRotation)
     {
         this.rot = targetRotation;
@@ -110,6 +87,27 @@ public class Balance : MonoBehaviour
     {
         this.force = force;
     }
+    #endregion
+
+    #region Apply Mass Impulse
+    public void ApplyBalanceOnce()
+    {
+        if (rb == null) return;
+
+        rb.gravityScale = 3f;
+        rb.mass = 2f;
+        //balanceApplied = true;
+    }
+
+    public void ResetBalance()
+    {
+        if (rb == null) return;
+
+        rb.gravityScale = 1f;
+        rb.mass = 1f;
+        //balanceApplied = false;
+    }
+    #endregion
 
     ///////////////////////////////////////////////////////
 
@@ -119,6 +117,7 @@ public class Balance : MonoBehaviour
     private float startAngularDrag;
     private RigidbodyConstraints2D startConstraints;
     private float startGravity;
+    private float startMass;
 
     public void CacheState()
     {
@@ -128,12 +127,13 @@ public class Balance : MonoBehaviour
         startAngularDrag = rb.angularDamping;
         startConstraints = rb.constraints;
         startGravity = rb.gravityScale;
+        startMass = rb.mass;
     }
 
     public void ResetState()
     {
-        rb.linearVelocity = Vector2.zero;
-        rb.angularVelocity = 0f;
+        /*rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;*/
 
         rb.position = startPos;
         rb.rotation = startRot;
@@ -142,7 +142,7 @@ public class Balance : MonoBehaviour
         rb.angularDamping = startAngularDrag;
         rb.constraints = startConstraints;
         rb.gravityScale = startGravity;
-
+        rb.mass = startMass;
         // Đảm bảo physics reset
         rb.Sleep();
         rb.WakeUp();

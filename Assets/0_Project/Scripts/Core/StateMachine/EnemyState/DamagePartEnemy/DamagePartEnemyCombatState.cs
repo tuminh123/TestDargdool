@@ -15,7 +15,7 @@ public class DamagePartEnemyCombatState : DamagePartEnemyState
     public override void Enter()
     {
         base.Enter();
-        //partEnemy.idling.IdelHandle();
+        //partEnemy.idling.IdleHandle();
         attackTime = attackDuration;
     }
 
@@ -52,6 +52,6 @@ public class DamagePartEnemyCombatState : DamagePartEnemyState
             return;
         }
 
-        //partEnemy.idling.IdelHandle();
+        //partEnemy.idling.IdleHandle();
     }
 }

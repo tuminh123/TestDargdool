@@ -28,7 +28,7 @@ public class DamagePartEnemyAttackState : DamagePartEnemyState
 
     private void OnAttackEnd()
     {
-       partEnemy.SendDamage();
+        //partEnemy.SendDamage();
 
         stateMachine.ChangeState(partEnemy.damagePartEnemyCombatState);
     }
