@@ -9,16 +9,35 @@ public class Attack : MonoBehaviour
     [SerializeField] private AttackDataConfigSO configSO;
     [SerializeField] private PhysicsAttackOriginalProfile physicsProfile;
 
-    private IAttack attack;
-
-
+    public AttackPhysicSystem attackSystem { get; private set; }
+    public AttackData currentAttackData { get; private set; }
+    public IAttack attack { get; private set; }
 
     //Text attack effect
     [SerializeField] protected DamageNumber textEffect;
     protected string[] texts = { "Bump", "Bonk", "Baam", "Hit", "Pow", "Pop", "Thunk", "Smack", "Ahh" };
 
-    public AttackData currentAttackData { get; private set; }
-
+    public void Init(ActionPostBase actionPost,GameObject obj,AttackIntent intent,string nameAction)
+    {
+        actionPost.SetPostAction(new ActionPostPhysic(intent, physicsProfile));
+        attackSystem = new AttackPhysicSystem(actionPost.Balances,actionPost.ActionsDataSO,physicsProfile,actionPost,intent,actionPost.PostBalance);
+        attack = new AttackPhysicOriginal(obj,attackSystem,nameAction);
+    }
+    public void Init(ActionPostBase actionPost,string name,GameObject obj)
+    {
+        AttackData data = new AttackData();
+        actionPost.SetPostAction(new ActionPostSmooth(configSO));
+        currentAttackData = data; ;
+        attack = new AttackPhysicSmooth(data, configSO, actionPost, name, obj);
+    }
+    public void SetAttack(IAttack attack)
+    {
+        this.attack = attack;
+    }
+    public void ExecuteAttack(Vector2 dir)
+    {
+        attack.AttackHandle(dir);
+    }
     #region Coutine 
     /* private Coroutine attackRoutine;
 
@@ -104,7 +123,7 @@ public class Attack : MonoBehaviour
 
     public void CancelAttack()
     {
-        if (attackCTS == null)
+        if (attackCTS != null)
         {
             attackCTS.Cancel();
             attackCTS.Dispose();

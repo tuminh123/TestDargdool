@@ -85,7 +85,6 @@ public class CharacterCtrl : CharacterParent
         GameEventBus.OnLevelUp += ApplyLevel;
         healthBase.OnDead += OnDead;
     }
-    
 
     private void Update()
     {
@@ -107,13 +106,6 @@ public class CharacterCtrl : CharacterParent
     {
         obj = this;
     }
-
-    #region Idle
-    public void BeginIdle()
-    {
-        ragdollController.actionBase.SetAction("Idle");
-    }
-    #endregion
 
     public override void OnTakeDamage()
     {
@@ -198,6 +190,8 @@ public class CharacterCtrl : CharacterParent
         foreach (var dmg in damageDetect)
             dmg.SetDamageBase(stats.DamageBase);
     }
+
+    #region Weapon Damage Handle
     public void SendWeaponDamageBase()
     {
         if (weaponEquip == null || weaponEquip.CurrentWeapon == null) return;
@@ -220,5 +214,6 @@ public class CharacterCtrl : CharacterParent
 
         return baseDamage;
     }
+    #endregion
 
 }

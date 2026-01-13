@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class AttackPhysicOriginal : IAttack
 {
-    private ActionPostBase postBase;
     private GameObject obj;
-    private AttackSystem attackSystem;
+    private AttackPhysicSystem attackSystem;
+    private string actionName;
 
     private CancellationTokenSource atcToken;
     private CancellationTokenSource linkToken;
 
-    public AttackPhysicOriginal(ActionPostBase postBase, GameObject obj, AttackSystem attackSystem)
+    public AttackPhysicOriginal(GameObject obj, AttackPhysicSystem attackSystem,string actionName)
     {
-        this.postBase = postBase;
         this.obj = obj;
         this.attackSystem = attackSystem;
+        this.actionName = actionName;
     }
 
     public void AttackHandle(Vector2 dir)
@@ -26,11 +26,10 @@ public class AttackPhysicOriginal : IAttack
         linkToken = CancellationTokenSource.CreateLinkedTokenSource(atcToken.Token, obj.GetCancellationTokenOnDestroy());
 
         var token = linkToken.Token;
-        AttackIntent intent = new AttackIntent { direction = dir, strength = 1f };
 
-        //attackSystem.Execute(intent, token, postBase).Forget();
+        //attackSystem.Execute(intent, token, balanses).Forget();
         UniTaskSafe.Forget(
-           ct => attackSystem.Execute(intent, ct, postBase),
+           ct => attackSystem.Execute(ct,actionName),
            token,
            "Weapon original physic attack"
         );

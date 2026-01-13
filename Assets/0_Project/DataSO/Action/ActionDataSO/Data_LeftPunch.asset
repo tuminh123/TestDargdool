@@ -23,12 +23,3 @@ MonoBehaviour:
   - type: 8
     rotChange: -90
     forceChange: 0
-  - type: 3
-    rotChange: 100
-    forceChange: 0
-  - type: 4
-    rotChange: 100
-    forceChange: 0
-  - type: 5
-    rotChange: 100
-    forceChange: 0

@@ -5,20 +5,20 @@ using UnityEngine.Profiling;
 
 public class WeaponAttackPhysicOriginal : IAttack
 {
-    private ActionPostBase postBase;
     private WeaponBase weapon;
     private GameObject obj;
-    private AttackSystem attackSystem;
+    private AttackPhysicSystem attackSystem;
+    private string actionName;
 
     private CancellationTokenSource atcToken;
     private CancellationTokenSource linkToken;
 
-    public WeaponAttackPhysicOriginal( ActionPostBase postBase, WeaponBase weapon,GameObject obj, AttackSystem attackSystem)
+    public WeaponAttackPhysicOriginal(WeaponBase weapon,GameObject obj, AttackPhysicSystem attackSystem,string actionName)
     {
-        this.postBase = postBase;
         this.weapon = weapon;
         this.obj = obj;
         this.attackSystem = attackSystem;
+        this.actionName = actionName;
     }
 
     public void AttackHandle(Vector2 dir)
@@ -29,11 +29,10 @@ public class WeaponAttackPhysicOriginal : IAttack
         linkToken = CancellationTokenSource.CreateLinkedTokenSource(atcToken.Token, obj.GetCancellationTokenOnDestroy());
 
         var token = linkToken.Token;
-        AttackIntent intent = new AttackIntent { direction = dir, strength = 1f };
 
         // Wrap the method call in a lambda to match the required Func<CancellationToken, UniTask> signature
         UniTaskSafe.Forget(
-            ct => attackSystem.Execute(intent, ct, postBase, weapon),
+            ct => attackSystem.Execute(ct, weapon,actionName),
             token,
             "Weapon original physic attack"
         );

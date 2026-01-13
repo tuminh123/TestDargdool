@@ -29,16 +29,8 @@ public class ActionDataSO : ScriptableObject
         }
     }
 
-    public BalanceData GetBalanceData(BalanceType type)
+    public bool TryGetBalanceData(BalanceType type, out BalanceData data)
     {
-        if(balanceDataDict.TryGetValue(type, out BalanceData data))
-        {
-            return data;
-        }
-        else
-        {
-            return default;
-        }
-           
+        return balanceDataDict.TryGetValue(type, out data);
     }
 }

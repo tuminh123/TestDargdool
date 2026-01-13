@@ -9,7 +9,11 @@ public class ActionPostNormal : IPostBalance
             if (item == null) continue;
 
             // set action
-            BalanceData data = dataSO.GetBalanceData(item.Type);
+            if (!dataSO.TryGetBalanceData(item.Type, out var data))
+            {
+                //Debug.LogWarning($"Missing BalanceData: {item.Type}");
+                continue;
+            }
 
             item.SetRotation(data.rotChange);
 

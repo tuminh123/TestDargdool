@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class MainWeaponAttackState : MainCharacterState
 {
-    CancellationTokenSource cts;
-
+    string name;
     public MainWeaponAttackState(
         StateMachine stateMachine,
         CharacterCtrl characterCtrl
@@ -23,74 +22,47 @@ public class MainWeaponAttackState : MainCharacterState
             return;
         }
 
-       /* cts = new CancellationTokenSource();
-
         if (characterCtrl.weaponEquip.CurrentWeapon == null) return;
         characterCtrl.weaponEquip.CurrentWeapon.EnableAttack();
-        characterCtrl.SendWeaponDamageBase();
+       
 
-        string name = characterCtrl.AttackDir.x < 0 ? "LeftWeaponArm" : "RightWeaponArm";
+        string name = characterCtrl.AttackDir.x > 0 ? "PhysicWeaponRightPunch" : "PhysicWeaponLeftPunch";
+        this.name = name;
 
-        characterCtrl.attack.HandleAttack(characterCtrl.AttackDir, characterCtrl.ragdollController.actionBase, name).Forget();
+        // Init
+        characterCtrl?.ragdollController?.actionBase?.DisableBalance(name);
+        characterCtrl.InitAttack(name);
+        characterCtrl?.attack.SetAttack(new WeaponAttackPhysicOriginal(characterCtrl.weaponEquip.CurrentWeapon,characterCtrl.gameObject,characterCtrl?.attack.attackSystem,name));
+
+        // Action
 
         characterCtrl.weaponEquip.SetFaceWeaponAttack(characterCtrl.AttackDir);
+        characterCtrl?.attack?.ExecuteAttack(characterCtrl.AttackDir);
+        characterCtrl.SendWeaponDamageBase();
+       
 
-        if (characterCtrl.attack.currentAttackData == null) return;*/
+        characterCtrl.attack.attackSystem.OnAttackEnd += EndAttack;
 
-        characterCtrl?.attack?.EnterAttack(characterCtrl,"LeftWeaponArm","RightWeaponArm");
-
-        characterCtrl.attack.currentAttackData.OnAttacking += OnAttacking;
-        characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
         characterCtrl.weaponEquip.OnDrop += WeaponEquip_OnDrop;
     }
 
-    /*public override void Update()
-    {
-        base.Update();
-
-        if (characterCtrl.weaponEquip.CurrentWeapon.DamageDealer.IsSendDamage)
-        {
-
-        }
-    }*/
    
     public override void Exit()
     {
       
         base.Exit();
-
-        characterCtrl?.attack?.ExitAttack(characterCtrl);
-
-        if (cts != null)
-        {
-            cts?.Cancel();
-            cts?.Dispose();
-            cts = null;
-        }
-
-        if (characterCtrl.weaponEquip.CurrentWeapon == null) return;
         characterCtrl.weaponEquip.CurrentWeapon.DisableAttack();
+        characterCtrl?.ragdollController?.actionBase?.EnableBalance(name);
+        characterCtrl.attack.attackSystem.OnAttackEnd -= EndAttack;
 
-        if (characterCtrl.attack.currentAttackData == null) return;
-        characterCtrl.attack.currentAttackData.OnAttacking -= OnAttacking;
-        characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
         characterCtrl.weaponEquip.OnDrop -= WeaponEquip_OnDrop; 
     }
     private void WeaponEquip_OnDrop()
     {
         stateMachine.ChangeState(characterCtrl.idelState);
     }
-
-    private void OnAttacking()
-    {
-        //AttackAsync(cts.Token).Forget();
-    }
     private void EndAttack()
     {
-        //characterCtrl.SendDamage();
-        //stateMachine.ChangeState(characterCtrl.idelState);
-        //characterCtrl.attack.CancelAttack();
-
         stateMachine.ChangeState(characterCtrl.idelState);
     }
 

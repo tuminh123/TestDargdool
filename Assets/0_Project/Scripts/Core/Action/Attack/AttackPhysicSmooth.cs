@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Threading;
 using UnityEngine;
 
@@ -24,34 +25,24 @@ public class AttackPhysicSmooth : IAttack
 
     public void AttackHandle(Vector2 dir)
     {
-        HandleAttack(dir, postBase, nameAttack, obj).Forget();
-    }
-    public async UniTask HandleAttack(Vector2 attackDir, ActionPostBase postBase, string nameAttack, GameObject @object)
-    {
-
         CancelAttack();
 
         attackCTS = new CancellationTokenSource();
-        linkedCTS = CancellationTokenSource.CreateLinkedTokenSource(attackCTS.Token, @object.GetCancellationTokenOnDestroy());
+        linkedCTS = CancellationTokenSource.CreateLinkedTokenSource(attackCTS.Token, obj.GetCancellationTokenOnDestroy());
         var token = linkedCTS.Token;
 
-        AttackData attackData = new AttackData();
+        UniTaskSafe.Forget(
+           ct => currentAttackData.ExecuteAttack(configSO,dir,ct, postBase, nameAttack),
+           token,
+           "Smooth physic attack"
+        );
 
-        currentAttackData = attackData;
-
-        try
-        {
-
-            await attackData.ExecuteAttack(configSO, attackDir, token, postBase, nameAttack);
-        }
-        catch (System.OperationCanceledException)
-        {
-            Debug.Log("Attack error ");
-        }
+        //HandleAttack(dir, postBase, nameAttack).Forget();
     }
+
     public void CancelAttack()
     {
-        if (attackCTS == null)
+        if (attackCTS != null)
         {
             attackCTS.Cancel();
             attackCTS.Dispose();

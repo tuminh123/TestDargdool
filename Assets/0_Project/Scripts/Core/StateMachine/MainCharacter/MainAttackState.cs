@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MainAttackState : MainCharacterState
 {
+    protected string name;
     public MainAttackState(StateMachine stateMachine, CharacterCtrl characterCtrl) : base(stateMachine, characterCtrl)
     {
        
@@ -11,40 +12,43 @@ public class MainAttackState : MainCharacterState
     public override void Enter()
     {
         base.Enter();
-      /*  characterCtrl.attackContext.EnableAttack();
-        characterCtrl.attackContext.EnableAttackPhysics(characterCtrl.AttackDir);
 
-        string name = characterCtrl.AttackDir.x < 0 ? "LeftPunch" : "RightPunch";
+        string name = characterCtrl.AttackDir.x > 0 ? "RightPunch" : "LeftPunch";
+        this.name = name;
 
-        characterCtrl.attack.HandleAttack(characterCtrl.AttackDir,characterCtrl.ragdollController.actionBase,name).Forget();
+        //characterCtrl.ragdollController.actionBase.InitBalancesOfActionDataSO(name);
+        characterCtrl.attackContext.EnableAttack();
+        
 
-        characterCtrl.SendDamageBase();*/
+        //string name = characterCtrl.AttackDir.x > 0 ? "PhysicRightPunch" : "PhysicLeftPunch";
+        // Init
+        /* characterCtrl?.ragdollController?.actionBase?.DisableBalance(name);
+         characterCtrl.InitAttack(name);*/
+        characterCtrl?.attack?.Init(characterCtrl.ragdollController.actionBase, name, characterCtrl.gameObject);
+        // Action
+        characterCtrl?.attack?.ExecuteAttack(characterCtrl.AttackDir);
+        characterCtrl.SendDamageBase();
 
-        characterCtrl?.attack?.EnterAttack(characterCtrl, "LeftPunch", "RightPunch");
-
-
-        if (characterCtrl.attack.currentAttackData == null) return;
-       // characterCtrl.attack.currentAttackData.OnAttacking += Attacking;
+        //characterCtrl.attack.attackSystem.OnAttackEnd += EndAttack;
         characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
 
     }
     public override void Exit()
     {
         base.Exit();
-        /*
-                characterCtrl.attackContext.DisableAttack();
-                characterCtrl.attackContext.ResetPhysics();*/
 
-        characterCtrl?.attack?.ExitAttack(characterCtrl);
-
-        if (characterCtrl.attack.currentAttackData == null) return;
-        //characterCtrl.attack.currentAttackData.OnAttacking -= Attacking;
+        characterCtrl.attackContext.DisableAttack();
+       //characterCtrl?.ragdollController?.actionBase?.EnableBalance(name);
+        //characterCtrl.attack.attackSystem.OnAttackEnd -= EndAttack;
         characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
+
     }
 
     private void EndAttack()
     {
         Debug.Log("End");
+
+        //ragdollController.actionBase.ClearBalancesOfActionDataSO();
         stateMachine.ChangeState(characterCtrl.idelState);
     }
 

@@ -6,8 +6,6 @@ using System.Threading;
 using UnityEngine;
 
 #region Attack Data
-
-[System.Serializable]
 public class AttackData
 {
     #region Couroutine
@@ -120,8 +118,6 @@ public class AttackData
     private bool isAttacking;
     public bool IsAttacking => isAttacking;
 
-    private CancellationTokenSource cts;
-
     #region Public API
 
     /// <summary>
@@ -138,31 +134,31 @@ public class AttackData
         if (isAttacking) return;
 
         isAttacking = true;
-        cts = CancellationTokenSource.CreateLinkedTokenSource(token);
 
         try
         {
             OnAttacking?.Invoke();
 
+            postBase.InitBalancesOfActionDataSO(nameAction);
             // Apply physics + motion song song
             await UniTask.WhenAll(
-                AttackApply(configSO, attackDir, cts.Token,postBase),
-                PostAttack(configSO, cts.Token,postBase,nameAction)
+                AttackApply(configSO, attackDir, token, postBase),
+                PostAttack(configSO, token, postBase, nameAction)
+                
             );
+
+          
         }
         catch (OperationCanceledException)
         {
             // Attack bị cancel
         }
-        Cleanup();
-        isAttacking = false;
-        OnEndAttack?.Invoke();
-    }
-
-    public void CancelAttack()
-    {
-        if (cts != null && !cts.IsCancellationRequested)
-            cts.Cancel();
+        finally
+        {
+            isAttacking = false;
+            OnEndAttack?.Invoke();
+            postBase.ClearBalancesOfActionDataSO();
+        }
     }
 
     #endregion
@@ -172,17 +168,20 @@ public class AttackData
     private async UniTask AttackApply(AttackDataConfigSO configSO,Vector2 attackDir,CancellationToken token,ActionPostBase postBase)
     {
         float elapsed = 0f;
-
+        Debug.Log("AttackApply started");
+        Debug.Log(postBase.BalanceOfActionsData.Count.ToString());
         while (elapsed < configSO.AttackDuration)
         {
             token.ThrowIfCancellationRequested();
             elapsed += Time.fixedDeltaTime;
 
-            foreach (var item in postBase.Balances)
+            foreach (var item in postBase.BalanceOfActionsData)
             {
                 if (item == null) continue;
 
                 Vector2 targetPos = attackDir * configSO.AttackReach + Vector2.Perpendicular(attackDir) * configSO.ProceduralOffset;
+
+                Debug.Log($"AttackApply | balance={item.Type} | targetPos={targetPos}");
 
                 // Launch force
                 if (elapsed < configSO.LaunchTime)
@@ -229,18 +228,6 @@ public class AttackData
 
             await UniTask.WaitForFixedUpdate(token);
         }
-    }
-
-    #endregion
-
-    #region Cleanup
-
-    private void Cleanup()
-    {
-        if (cts == null) return;
-
-        cts.Dispose();
-        cts = null;
     }
 
     #endregion

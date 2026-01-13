@@ -126,6 +126,8 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     {
         InitLimbs();
         InitPhysicDamageDeal();
+
+        healthBase.OnTakeDamage += OnTakeDamage;
     }
 
     protected virtual void OnDestroy()
@@ -158,6 +160,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     #endregion
 
     #region Damage Event
+
     public virtual void OnTakeDamage()
     {
         if(healthBase.IsDead) return;
@@ -171,6 +174,17 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         SingletonManager.Instance.soundManager.PlaySound(SoundType.Crunch);
 
     }
+
+    public void InitAttack(string name)
+    {
+        AttackIntent intent = new AttackIntent
+        {
+            direction = attackDir,
+            strength = 1f
+        };
+        attack.Init(ragdollController.actionBase, gameObject, intent, name);
+    }
+
     public void EnableBalance()
     {
         foreach (var item in childBalance)

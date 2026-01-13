@@ -18,17 +18,23 @@ public class ActionPostSmooth : IPostBalance
             if (item == null) continue;
 
             // set action
-            BalanceData data = dataSO.GetBalanceData(item.Type);
+            if (!dataSO.TryGetBalanceData(item.Type, out var data))
+            {
+                //Debug.LogWarning($"Missing BalanceData: {item.Type}");
+                continue;
+            }
 
             float t = SmoothMotionHelper.SmoothRotateLimited(
                    item.Rotation,
                    data.rotChange,
                    configSO.RotateSmoothSpeed,
                    configSO.MaxAngularSpeed
-               );
-
-
+            );
+          
             item.SetRotation(t);
+            Debug.Log(
+  $"POST {dataSO.actionName} | balance={item.Type} | rot={data.rotChange}"
+);
 
         }
     }

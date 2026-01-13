@@ -2,25 +2,35 @@
 using System.Threading;
 using UnityEngine;
 
-public class AttackSystem
+public class AttackPhysicSystem
 {
     public event System.Action OnAttackEnd;
+
+    private Balance[] balances;
+    private ActionDataSO[] actions;
     private PhysicsAttackOriginalProfile profile;
+    private ActionPostBase actionPost;
+    private AttackIntent intent;
+    private IPostBalance postBalance;
 
-    //get
-    public PhysicsAttackOriginalProfile Profile => profile;
-
-    public AttackSystem(PhysicsAttackOriginalProfile profile)
+    public AttackPhysicSystem(Balance[] balances, ActionDataSO[] actions, PhysicsAttackOriginalProfile profile, ActionPostBase actionPost, AttackIntent intent, IPostBalance postBalance)
     {
+        this.balances = balances;
+        this.actions = actions;
         this.profile = profile;
+        this.actionPost = actionPost;
+        this.intent = intent;
+        this.postBalance = postBalance;
+        actionPost = new ActionPostBase(actions, balances, /*new ActionPostPhysic(intent, profile)*/ postBalance);
+        
     }
 
-    public async UniTask Execute(AttackIntent intent, CancellationToken token, ActionPostBase actionPost, WeaponBase weapon)
+    public async UniTask Execute(CancellationToken token, WeaponBase weapon,string nameAction)
     {
         try
         {
-            await UniTask.WhenAll(BalancePostAttack(intent, token, actionPost), WeaponPostAttack(intent, token, weapon));
-            ResetBalanceAttack(weapon, actionPost);
+            await UniTask.WhenAll(BalancePostAttack(token, nameAction), WeaponPostAttack( token, weapon));
+            ResetBalanceAttack(weapon);
             OnAttackEnd?.Invoke();
         }
         catch (System.Exception e)
@@ -29,12 +39,12 @@ public class AttackSystem
         }
     }
 
-    public async UniTask Execute(AttackIntent intent, CancellationToken token, ActionPostBase actionPost)
+    public async UniTask Execute(CancellationToken token,string nameAction)
     {
         try
         {
-            await BalancePostAttack(intent, token, actionPost);
-            ResetBalanceAttack(actionPost);
+            await BalancePostAttack(token,nameAction);
+            ResetBalanceAttack();
             OnAttackEnd?.Invoke();
         }
         catch (System.Exception e)
@@ -43,7 +53,7 @@ public class AttackSystem
         }
     }
 
-    private async UniTask WeaponPostAttack(AttackIntent intent, CancellationToken token, WeaponBase weapon)
+    private async UniTask WeaponPostAttack(CancellationToken token, WeaponBase weapon)
     {
         float elapsed = 0f;
 
@@ -67,19 +77,17 @@ public class AttackSystem
         }
 
     }
-    private async UniTask BalancePostAttack(AttackIntent intent, CancellationToken token, ActionPostBase actionPost)
+    private async UniTask BalancePostAttack(CancellationToken token,string nameAction)
     {
         float elapsed = 0f;
-        float totalMass = 0f;
+        //float totalMass = 0f;
 
-        Balance[] balances = actionPost?.Balances;
-
-        if (balances.Length <= 0) return;
+      /*  if (balances.Length <= 0) return;
         foreach (var item in balances)
         {
             if (item == null) continue;
             totalMass += item.Rb.mass;
-        }
+        }*/
 
         try
         {
@@ -89,14 +97,16 @@ public class AttackSystem
                 token.ThrowIfCancellationRequested();
                 elapsed += Time.fixedDeltaTime;
 
-                foreach (var item in balances)
-                {
-                    if (item == null) continue;
+                /* foreach (var item in balances)
+                 {
+                     if (item == null) continue;
 
-                    float ratio = item.Rb.mass / totalMass;
-                    item.Rb.AddForce(intent.direction.normalized * profile.PushForce * intent.strength * ratio, ForceMode2D.Impulse);
-                    item.Rb.AddTorque(intent.Sign * profile.ArmTorque, ForceMode2D.Force);
-                }
+                     float ratio = item.Rb.mass / totalMass;
+                     item.Rb.AddForce(intent.direction.normalized * profile.PushForce * intent.strength * ratio, ForceMode2D.Impulse);
+                     item.Rb.AddTorque(intent.Sign * profile.ArmTorque, ForceMode2D.Force);
+                 }*/
+
+                actionPost.SetAction(nameAction);
 
                 await UniTask.WaitForFixedUpdate(token);
             }
@@ -108,16 +118,14 @@ public class AttackSystem
     }
 
 
-    private void ResetBalanceAttack(WeaponBase weapon, ActionPostBase actionPost)
+    private void ResetBalanceAttack(WeaponBase weapon)
     {
         if (weapon == null) return;
         weapon.rb.angularDamping = profile.RecoveryAngularDamping;
-        ResetBalanceAttack(actionPost);
+        ResetBalanceAttack();
     }
-    private void ResetBalanceAttack(ActionPostBase actionPost)
+    private void ResetBalanceAttack()
     {
-
-        Balance[] balances = actionPost?.Balances;
         if (balances.Length <= 0) return;
         foreach (var item in balances)
         {

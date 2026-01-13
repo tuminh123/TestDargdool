@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyAttackState : EnemyBaseState
 {
+    private string name;
     public EnemyAttackState(StateMachine stateMachine, EnemyBasic enemyBasic) : base(stateMachine, enemyBasic)
     {
     }
@@ -11,50 +12,36 @@ public class EnemyAttackState : EnemyBaseState
     public override void Enter()
     {
         base.Enter();
-       /* enemyBasic.attackContext.EnableAttack();
-        enemyBasic.attackContext.EnableAttackPhysics(enemyBasic.AttackDir);
+        enemyBasic.attackContext.EnableAttack();
+        
 
-        string name = enemyBasic.AttackDir.x < 0 ? "LeftPunch" : "RightPunch";
-        enemyBasic.attack.HandleAttack(enemyBasic.AttackDir, enemyBasic.ragdollController.actionBase, name).Forget();
+        string name = enemyBasic.AttackDir.x > 0 ? "PhysicRightPunch" : "PhysicLeftPunch";
+        this.name = name;
 
-        enemyBasic.SendDamageBase();*/
+        // Init
+        enemyBasic?.ragdollController?.actionBase?.DisableBalance(name);
+        enemyBasic.InitAttack(name);
 
-        enemyBasic?.attack?.EnterAttack(enemyBasic, "LeftPunch", "RightPunch");
+        // Action
+        enemyBasic?.attack?.ExecuteAttack(enemyBasic.AttackDir);
+        enemyBasic.SendDamageBase();
 
-        if (enemyBasic.attack.currentAttackData == null) return;
-
-       /* enemyBasic.attack.currentAttackData.EnableEffect(true);
-        enemyBasic.attack.currentAttackData.OnAttacking += OnAttacking;*/
-        enemyBasic.attack.currentAttackData.OnEndAttack += OnAttackEnd;
+        enemyBasic.attack.attackSystem.OnAttackEnd += EndAttack;
     }
 
     
     public override void Exit()
     {
         base.Exit();
-
-        enemyBasic?.attack?.ExitAttack(enemyBasic);
-
-        /*  enemyBasic.attackContext.DisableAttack();
-          enemyBasic.attackContext.ResetPhysics();*/
-
-        if (enemyBasic.attack.currentAttackData == null) return;
-
-        /*enemyBasic.attack.currentAttackData.EnableEffect(false);
-        enemyBasic.attack.currentAttackData.OnAttacking -= OnAttacking;*/
-        enemyBasic.attack.currentAttackData.OnEndAttack -= OnAttackEnd;
+        enemyBasic.attackContext.DisableAttack();
+        enemyBasic?.ragdollController?.actionBase?.EnableBalance(name);
+        enemyBasic.attack.attackSystem.OnAttackEnd -= EndAttack;
     }
 
-    private void OnAttackEnd()
+    private void EndAttack()
     {
-        enemyBasic.attack.CancelAttack();
+
         stateMachine.ChangeState(enemyBasic.enemyCombatState);
     }
 
-   /* private void OnAttacking()
-    {
-        enemyBasic.SendDamage();
-        
-    }
-*/
 }
