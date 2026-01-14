@@ -10,7 +10,7 @@ public class MainMoveState : MainCharacterState
     public override void Enter()
     {
         base.Enter();
-        characterCtrl?.ragdollController?.actionBase.SetPostAction(new ActionPostNormal());
+        //characterCtrl?.ragdollController?.actionBase.SetPostAction(new ActionPostNormal());
 
     }
     public override void Update()

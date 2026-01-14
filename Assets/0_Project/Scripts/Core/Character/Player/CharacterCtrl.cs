@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Zenject;
 
 public class CharacterCtrl : CharacterParent
@@ -93,12 +94,15 @@ public class CharacterCtrl : CharacterParent
     }
     private void FixedUpdate()
     {
+        Profiler.BeginSample("Limit moving");
         move?.LimitMoving
         (
             ragdollController?.actionBase?.GetBalance(BalanceType.body_up).Rb,
             ragdollController?.actionBase?.GetBalance(BalanceType.right_leg).Rb,
             ragdollController?.actionBase?.GetBalance(BalanceType.left_leg).Rb
         );
+        Profiler.EndSample();
+
         stateMachine.UpdatePhysicState();
     }
 
@@ -107,9 +111,9 @@ public class CharacterCtrl : CharacterParent
         obj = this;
     }
 
-    public override void OnTakeDamage()
+    public override void OnTakeDamage(float damage)
     {
-        base.OnTakeDamage();
+        base.OnTakeDamage(damage);
 
         if(weaponEquip != null )
         {
@@ -154,15 +158,17 @@ public class CharacterCtrl : CharacterParent
         FirebaseService.Instance.LogEvent("player dead", new EventParameter("time", "2025"));
         LastPositionBeforeDead = transform.position;
 
-        SetKnockBackBalance();
-        DisableBalance();
+        //SetKnockBackBalance();
+
+        if (ragdollController != null) ragdollController.DisableRagdoll(GetKnockDir());
+        else return;
+        //DisableBalance();
         //weaponEquip.Equipping();
 
         GameEventBus.RaisePlayerLose(this);
-        //OnDeadWait().Forget();
     }
 
-    protected override Vector2 GetKnockDir()
+    public override Vector2 GetKnockDir()
     {
         if (zone == null) return Vector2.up;
         EnemyAI enemy = zone.GetNearestEnemy(transform);
@@ -187,8 +193,6 @@ public class CharacterCtrl : CharacterParent
         healthBase.SetMaxHealth(stats.MaxHealth);
         healthBase.SetCurrentHealth(stats.MaxHealth * oldPercent);
 
-        foreach (var dmg in damageDetect)
-            dmg.SetDamageBase(stats.DamageBase);
     }
 
     #region Weapon Damage Handle

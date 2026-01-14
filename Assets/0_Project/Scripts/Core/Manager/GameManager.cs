@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         {
             player.transform.position = player.LastPositionBeforeDead;
 
-            player.EnableBalance();
+            player?.ragdollController?.ResetRagdoll();
         }
 
         //player.weaponEquip.UnEquipping();

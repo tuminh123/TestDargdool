@@ -26,6 +26,7 @@ public enum BalanceType
 }
 public class Balance : MonoBehaviour
 {
+    #region Balance attribute
     [SerializeField] private float rot;
     [SerializeField] private float force = 30;
 
@@ -33,13 +34,26 @@ public class Balance : MonoBehaviour
     [SerializeField] private float maxRot = 180f;
 
     [SerializeField] private BalanceType type;
-    private BalanceData data;
-    public HingeJoint2D hinge { get; private set; }
 
+    private bool isPoseActive = true;
+    #endregion
+
+    #region Rigibody2D attribute
+    private Vector2 startPos;
+    private float startRot;
+    private float startLinearDrag;
+    private float startAngularDrag;
+    private RigidbodyConstraints2D startConstraints;
+    private float startGravity;
+    private float startMass;
+    #endregion
+
+    #region Component State Cache
+    public HingeJoint2D hinge { get; private set; }
+    public Transform model { get; private set; }
     private Rigidbody2D rb;
     private Collider2D col;
-    private bool isPoseActive = true;
-
+    #endregion
 
     //get
     public BalanceType Type => type;
@@ -54,6 +68,7 @@ public class Balance : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         hinge = GetComponent<HingeJoint2D>();
+        model = transform.Find(StringConst.MODEL);
     }
 
     private void Start()
@@ -89,35 +104,8 @@ public class Balance : MonoBehaviour
     }
     #endregion
 
-    #region Apply Mass Impulse
-    public void ApplyBalanceOnce()
-    {
-        if (rb == null) return;
-
-        rb.gravityScale = 3f;
-        rb.mass = 2f;
-        //balanceApplied = true;
-    }
-
-    public void ResetBalance()
-    {
-        if (rb == null) return;
-
-        rb.gravityScale = 1f;
-        rb.mass = 1f;
-        //balanceApplied = false;
-    }
-    #endregion
-
-    ///////////////////////////////////////////////////////
-
-    private Vector2 startPos;
-    private float startRot;
-    private float startLinearDrag;
-    private float startAngularDrag;
-    private RigidbodyConstraints2D startConstraints;
-    private float startGravity;
-    private float startMass;
+    #region Reset State
+  
 
     public void CacheState()
     {
@@ -147,5 +135,6 @@ public class Balance : MonoBehaviour
         rb.Sleep();
         rb.WakeUp();
     }
+    #endregion
 
 }

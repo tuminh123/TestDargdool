@@ -14,8 +14,8 @@ public class EnemyStunState : EnemyBaseState
     {
         base.Enter();
         stunTime = stunDuration;
-        enemyBasic.SetKnockBackBalance();
-        enemyBasic.DisableBalance();
+        //enemyBasic.SetKnockBackBalance();
+        enemyBasic?.ragdollController?.DisableRagdoll(enemyBasic.GetKnockDir());
         
     }
     public override void Update()
@@ -32,7 +32,7 @@ public class EnemyStunState : EnemyBaseState
     {
         base.Exit();
         enemyBasic.SetIsStunned(false);
-        enemyBasic.EnableBalance();
+        enemyBasic?.ragdollController?.EnableRagdoll();
     }
 
 

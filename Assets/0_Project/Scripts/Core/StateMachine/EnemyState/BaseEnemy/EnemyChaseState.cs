@@ -13,7 +13,7 @@ public class EnemyChaseState : EnemyBaseState
     public override void Update()
     {
         base.Update();
-        enemyBasic?.ragdollController?.actionBase.SetPostAction(new ActionPostNormal());
+        //enemyBasic?.ragdollController?.actionBase.SetPostAction(new ActionPostNormal());
 
         if (enemyBasic.disBetweenEnemyAndPlayer <= enemyBasic.MaxAttackDistance) stateMachine.ChangeState(enemyBasic.enemyCombatState);
     }

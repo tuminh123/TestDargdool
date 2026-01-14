@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MainAttackState : MainCharacterState
 {
-    protected string name;
     public MainAttackState(StateMachine stateMachine, CharacterCtrl characterCtrl) : base(stateMachine, characterCtrl)
     {
        
@@ -13,24 +12,14 @@ public class MainAttackState : MainCharacterState
     {
         base.Enter();
 
-        string name = characterCtrl.AttackDir.x > 0 ? "RightPunch" : "LeftPunch";
-        this.name = name;
+        string name = characterCtrl.AttackDir.x > 0 ? StringConst.RIGHT_PUNCH : StringConst.LEFT_PUNCH;
 
-        //characterCtrl.ragdollController.actionBase.InitBalancesOfActionDataSO(name);
         characterCtrl.attackContext.EnableAttack();
-        
-
-        //string name = characterCtrl.AttackDir.x > 0 ? "PhysicRightPunch" : "PhysicLeftPunch";
-        // Init
-        /* characterCtrl?.ragdollController?.actionBase?.DisableBalance(name);
-         characterCtrl.InitAttack(name);*/
-        characterCtrl?.attack?.Init(characterCtrl.ragdollController.actionBase, name, characterCtrl.gameObject);
         // Action
-        characterCtrl?.attack?.ExecuteAttack(characterCtrl.AttackDir);
+        characterCtrl?.attack?.ExecuteAttack(characterCtrl.AttackDir,characterCtrl?.ragdollController?.actionBase,name,characterCtrl.gameObject);
         characterCtrl.SendDamageBase();
 
-        //characterCtrl.attack.attackSystem.OnAttackEnd += EndAttack;
-        characterCtrl.attack.currentAttackData.OnEndAttack += EndAttack;
+        characterCtrl.attack.currentAttack.OnAttackEnd += EndAttack;
 
     }
     public override void Exit()
@@ -38,17 +27,15 @@ public class MainAttackState : MainCharacterState
         base.Exit();
 
         characterCtrl.attackContext.DisableAttack();
-       //characterCtrl?.ragdollController?.actionBase?.EnableBalance(name);
-        //characterCtrl.attack.attackSystem.OnAttackEnd -= EndAttack;
-        characterCtrl.attack.currentAttackData.OnEndAttack -= EndAttack;
+
+        characterCtrl?.attack?.CancelAttack();
+        characterCtrl.attack.currentAttack.OnAttackEnd -= EndAttack;
 
     }
 
     private void EndAttack()
     {
-        Debug.Log("End");
-
-        //ragdollController.actionBase.ClearBalancesOfActionDataSO();
+        //Debug.Log("End");
         stateMachine.ChangeState(characterCtrl.idelState);
     }
 

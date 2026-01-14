@@ -52,39 +52,25 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     public RagdollController ragdollController { get; private set; }
     public AttackContext attackContext { get; private set; }
     public GroundDetect groundDetect { get; private set; }
-    public CharacterDamage[] damageDetect { get; private set; }
     #endregion
+    [Space]
     [SerializeField] protected Stats stats;
+    [Space]
+    [SerializeField] private DamageNumber damageNumber;
 
     public StateMachine stateMachine { get; private set; }
 
-    //Balance
-    protected Balance[] childBalance;
-    protected LimbHitBox[] limbHitBoxs;
-    protected PhysicsDamageDealer[] physicsCharacterDamageDealers; 
-
-    [SerializeField] protected float knockBackForce;
-
     //damage
     protected Vector2 attackDir;
-    protected Coroutine damageCoroutine;
     protected bool isStunned =false;
-    protected bool balanceColSkip;
 
     //Flip
+    [Space]
     [SerializeField] protected float dirFace = 1;
     protected bool isFacingRight = true;
 
     // Replace the problematic auto-property with a standard property implementation
 
-    public Vector2 DirFace
-    {
-        get
-        {
-            Vector2 dir = dirFace == 1 ? Vector2.right : Vector2.left;
-            return dir;
-        }
-    }
     public Vector2 AttackDir=> attackDir;
     public bool IsStunned => isStunned;
     public Stats Stats => stats;
@@ -92,7 +78,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     public GameObject OnjSend => transform.gameObject;
 
     public abstract void OnDead();
-    protected abstract Vector2 GetKnockDir();
+    public abstract Vector2 GetKnockDir();
 
     protected virtual void Awake()
     {
@@ -106,28 +92,21 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         healthBase = GetComponent<HealthBase>();
         ragdollController = GetComponent<RagdollController>();
         attackContext = GetComponent<AttackContext>();
-
-        damageDetect = GetComponentsInChildren<CharacterDamage>();
-
-        //bodyParent = transform.GetComponent<Balance>();
-        childBalance = transform.GetComponentsInChildren<Balance>();
-        limbHitBoxs = transform.GetComponentsInChildren<LimbHitBox>();
-        physicsCharacterDamageDealers = transform.GetComponentsInChildren<PhysicsDamageDealer>();
+      
 
         stateMachine = new StateMachine();
 
-        foreach (var item in damageDetect)
-        {
-            if (item == null) continue;
-            item.SetDamageBase(stats.DamageBase);
-        }
     }
     protected virtual void Start()
     {
-        InitLimbs();
-        InitPhysicDamageDeal();
+        if (ragdollController != null)
+        {
+            ragdollController.InitLimbs(this);
+            ragdollController.InitPhysicDamageDeal(this, attackContext);
+        }
+        else return;
 
-        healthBase.OnTakeDamage += OnTakeDamage;
+            healthBase.OnTakeDamage += OnTakeDamage;
     }
 
     protected virtual void OnDestroy()
@@ -138,32 +117,15 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         healthBase.OnTakeDamage -= OnTakeDamage;
     }
 
-    #region Init Limb
-    void InitLimbs()
-    {
-        foreach (var limb in limbHitBoxs)
-        {
-            if(limb == null) continue;
-            limb.Init(this);
-        }
-    }
-
-    void InitPhysicDamageDeal()
-    {
-        //Debug.Log($"[InitWeapons] attackContext = {attackContext}");
-        foreach (var dealer in physicsCharacterDamageDealers)
-        {
-            if (dealer == null) continue;
-            dealer.Init(this,attackContext);
-        }
-    }
-    #endregion
-
     #region Damage Event
 
-    public virtual void OnTakeDamage()
+    public virtual void OnTakeDamage(float damage)
     {
         if(healthBase.IsDead) return;
+
+        string damageText = $" -{damage}";
+        damageNumber.Spawn(transform.position, damageText);
+
         isStunned = true;
         if (ZenManager.Instance == null) return;
         VfxBase vfx = ZenManager.Instance.vfxPoolManager.Spawn(StringConst.HURTVFX, transform.position, Quaternion.identity);
@@ -173,44 +135,6 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         if (SingletonManager.Instance == null || SingletonManager.Instance.soundManager == null) return;
         SingletonManager.Instance.soundManager.PlaySound(SoundType.Crunch);
 
-    }
-
-    public void InitAttack(string name)
-    {
-        AttackIntent intent = new AttackIntent
-        {
-            direction = attackDir,
-            strength = 1f
-        };
-        attack.Init(ragdollController.actionBase, gameObject, intent, name);
-    }
-
-    public void EnableBalance()
-    {
-        foreach (var item in childBalance)
-        {
-            if(item == null) continue;
-            item.EnablePose();
-        }
-    }
-    public void DisableBalance()
-    {
-        foreach (var item in childBalance)
-        {
-            if (item == null) continue;
-            item.DisablePose();
-        }
-    }
-
-    public void SetKnockBackBalance( )
-    {
-        Vector2 knockBackDir = GetKnockDir();
-        foreach (var item in childBalance)
-        {
-            if(item == null) continue ;
-            //item.Rb.linearVelocity = knockBackDir * knockBackForce; ;
-            item.Rb.AddForce(knockBackDir*knockBackForce,ForceMode2D.Impulse);
-        }
     }
     public void SetIsStunned(bool isStunned)
     {
@@ -260,7 +184,8 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
 
     private void DestroyBalance()
     {
-        foreach (var item in childBalance)
+        if (ragdollController == null || ragdollController?.Balances.Length <= 0) return;
+        foreach (var item in ragdollController.Balances)
         {
             if (item == null) continue;
             Destroy(item.gameObject);
@@ -269,7 +194,8 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
 
     private void ResetBalance()
     {
-        foreach (var item in childBalance)
+        if (ragdollController == null || ragdollController?.Balances.Length <= 0) return;
+        foreach (var item in ragdollController.Balances)
         {
             if (item == null) continue;
             //item.hinge.enabled = false;
@@ -303,11 +229,6 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         stats.SetDamageBase(buffDamageBase);
 
         healthBase.SetMaxHealth(stats.MaxHealth);
-        foreach (var item in damageDetect)
-        {
-            if (item == null) continue;
-            item.SetDamageBase(stats.DamageBase);
-        }
     }
     #endregion
 }

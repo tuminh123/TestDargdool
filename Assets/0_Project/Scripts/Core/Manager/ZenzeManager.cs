@@ -7,6 +7,5 @@ public class ZenzeManager : MonoInstaller
     public override void InstallBindings()
     {
         base.InstallBindings();
-        Container.Bind<InputManager>().FromComponentInHierarchy().AsSingle();
     }
 }

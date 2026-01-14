@@ -43,7 +43,7 @@ public class Move :MonoBehaviour
 
     #region Moving handle
 
-    public void MoveHandle(float x, ActionPostBase action)
+    public void MoveHandle(float x, IPostAction action)
     {
         //if (isAttacking) return;
 
@@ -95,7 +95,7 @@ public class Move :MonoBehaviour
         isMovingLeft = false;
         isMovingRight = false;
     }
-    IEnumerator MoveRight(float seconds,ActionPostBase action,Rigidbody2D rightLeg,Rigidbody2D leftLeg)
+    IEnumerator MoveRight(float seconds,IPostAction action,Rigidbody2D rightLeg,Rigidbody2D leftLeg)
     {
         while (isMovingRight)
         {
@@ -104,7 +104,7 @@ public class Move :MonoBehaviour
             //data.Walk_1();
             //leftLeg.Rb.AddForce(Vector2.right * (speed * 1000) * Time.fixedDeltaTime);
 
-            action.SetAction("MoveStep_1");
+            action.SetAction(StringConst.MOVE_STEP_1);
             SmoothMotionHelper.SmoothMoveTowards(rightLeg, rightLeg.position + Vector2.right * speed * Time.fixedDeltaTime, maxSpeed);
 
             yield return new WaitForSeconds(seconds);
@@ -112,14 +112,14 @@ public class Move :MonoBehaviour
             //data.Walk_2();
             // rightLeg.Rb.AddForce(Vector2.right * (speed * 1000) * Time.fixedDeltaTime);
 
-            action.SetAction("MoveStep_2");
+            action.SetAction(StringConst.MOVE_STEP_2);
             SmoothMotionHelper.SmoothMoveTowards(leftLeg, leftLeg.position + Vector2.right * speed * Time.fixedDeltaTime, maxSpeed);
 
             yield return new WaitForSeconds(seconds);
         }
     }
 
-    IEnumerator MoveLeft(float seconds, ActionPostBase action,Rigidbody2D rightLeg, Rigidbody2D leftLeg)
+    IEnumerator MoveLeft(float seconds, IPostAction action,Rigidbody2D rightLeg, Rigidbody2D leftLeg)
     {
         while (isMovingLeft)
         {
@@ -129,7 +129,7 @@ public class Move :MonoBehaviour
             //data.Walk_2();
             //rightLeg.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
 
-            action.SetAction("MoveStep_2");
+            action.SetAction(StringConst.MOVE_STEP_2);
             SmoothMotionHelper.SmoothMoveTowards(rightLeg, rightLeg.position + Vector2.left * speed * Time.fixedDeltaTime, maxSpeed);
 
             yield return new WaitForSeconds(seconds);
@@ -138,7 +138,7 @@ public class Move :MonoBehaviour
             //data.Walk_1();
             //playerData.playerData.LeftLeg.Rb.AddForce(Vector2.left * (speed * 1000) * Time.fixedDeltaTime);
 
-            action.SetAction("MoveStep_1");
+            action.SetAction(StringConst.MOVE_STEP_1);
             SmoothMotionHelper.SmoothMoveTowards(leftLeg, leftLeg.position + Vector2.left * speed * Time.fixedDeltaTime, maxSpeed);
 
             yield return new WaitForSeconds(seconds);

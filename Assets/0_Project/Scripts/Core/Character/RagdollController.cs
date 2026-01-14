@@ -4,15 +4,24 @@ using Lofelt.NiceVibrations;
 using Cysharp.Threading.Tasks;
 public class RagdollController : MonoBehaviour
 {
+    #region Balance System
     [SerializeField] private Balance[] balances ;
     [SerializeField] private ActionDataSO[] actionsDataSO;
-    public ActionPostBase actionBase { get; private set; }
+
+    protected LimbHitBox[] limbHitBoxs;
+    protected PhysicsDamageDealer[] physicsCharacterDamageDealers;
+
+    public IPostAction actionBase { get; private set; }
+    #endregion
 
     [SerializeField] float knockdownThreshold = 10f;
+    [SerializeField] float knockbackForce = 100f;
 
+    #region Exeplosion
     [SerializeField] private float explosionForce = 25f;
     [SerializeField] private float torqueForce = 15f;
     [SerializeField] private float cameraBias = 0.6f;
+    #endregion
 
     bool isRagdoll;
 
@@ -21,33 +30,85 @@ public class RagdollController : MonoBehaviour
     public ActionDataSO[] ActionsDataSO => actionsDataSO;
     private void Awake()
     {
-        actionBase = new ActionPostBase(actionsDataSO, balances,new ActionPostNormal());
+        if (limbHitBoxs == null || limbHitBoxs.Length <= 0)
+        {
+            limbHitBoxs = transform.GetComponentsInChildren<LimbHitBox>();
+        }
+
+        if (physicsCharacterDamageDealers == null || physicsCharacterDamageDealers.Length <= 0)
+        {
+            physicsCharacterDamageDealers = transform.GetComponentsInChildren<PhysicsDamageDealer>();
+        }
+
+        if(balances == null || balances.Length <= 0)
+        {
+            balances = transform.GetComponentsInChildren<Balance>();
+        }
+
+        actionBase = new ActionPostBase(actionsDataSO, balances);
     }
+
+    #region Init Limb
+    public void InitLimbs(CharacterParent parent)
+    {
+        foreach (var limb in limbHitBoxs)
+        {
+            if (limb == null) continue;
+            limb.Init(parent);
+        }
+    }
+
+    public void InitPhysicDamageDeal(IObjSendDamage obj,IAttackContext context)
+    {
+        //Debug.Log($"[InitWeapons] attackContext = {attackContext}");
+        foreach (var dealer in physicsCharacterDamageDealers)
+        {
+            if (dealer == null) continue;
+            dealer.Init(obj,context);
+        }
+    }
+    #endregion
+
+
+    #region Hit Ragdoll
     public void OnHit(Vector2 force, float impact)
     {
         if (impact < knockdownThreshold) return;
-        EnterRagdoll();
+        DisableRagdoll(force);
     }
 
-    public void EnterRagdoll()
+    public void DisableRagdoll(Vector2 force)
     {
         if (isRagdoll) return;
         isRagdoll = true;
 
         foreach (var b in balances)
+        {
             b.DisablePose();
+            b.Rb.AddForce(force*knockbackForce, ForceMode2D.Impulse);
+        }
     }
 
-    public void Recover()
+    public void EnableRagdoll()
+    {
+        foreach (var b in balances)
+        {
+            //b.ResetState();
+            b.EnablePose();
+        }
+
+        isRagdoll = false;
+    }
+    public void ResetRagdoll()
     {
         foreach (var b in balances)
         {
             b.ResetState();
             b.EnablePose();
         }
-
         isRagdoll = false;
     }
+    #endregion
 
     public async UniTask Explode()
     {

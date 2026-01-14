@@ -12,7 +12,7 @@ public class EnemyIdleState : EnemyBaseState
         base.Enter();
         time = 2f;
 
-        enemyBasic?.ragdollController?.actionBase.SetPostAction(new ActionPostNormal());
+        //enemyBasic?.ragdollController?.actionBase.SetPostAction(new ActionPostNormal());
         enemyBasic.idle.IdleHandle(enemyBasic.ragdollController.actionBase);
     }
     public override void Update()

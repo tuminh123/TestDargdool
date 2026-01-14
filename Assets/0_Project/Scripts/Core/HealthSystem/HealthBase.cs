@@ -6,12 +6,12 @@ using UnityEngine;
 public class HealthBase : MonoBehaviour,IDamageable,IHeal
 {
     public event Action<float, float> OnHealthChanged;
-    public System.Action OnTakeDamage;
+    public System.Action<float> OnTakeDamage;
     public System.Action OnDead;
 
     [SerializeField] private float maxHealth;
     [SerializeField] private float currentHealth;
-    [SerializeField] private DamageNumber damageNumber;
+   
     public float MaxHealth => maxHealth;
     public float CurrentHealth => currentHealth;
 
@@ -37,12 +37,10 @@ public class HealthBase : MonoBehaviour,IDamageable,IHeal
 
     public void TakeDamaged(float damage)
     {
-        string damageText = $" -{damage}";
         if(IsDead) return;
         currentHealth -= damage;
 
-        OnTakeDamage?.Invoke();
-        damageNumber.Spawn(transform.position, damageText);
+        OnTakeDamage?.Invoke(damage);
 
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         

@@ -13,6 +13,18 @@ public static class StringConst
     public const string UPGRADESCENE = "UpgradeScene";
     public const string LOADINGSCENE = "LoadingScene";
 
+    //Character
+    public const string IDLE = "Idle";
+    public const string LEFT_PUNCH = "LeftPunch";
+    public const string RIGHT_PUNCH = "RightPunch";
+    public const string MOVE_STEP_1 = "MoveStep_1";
+    public const string MOVE_STEP_2 = "MoveStep_2";
+    public const string PHYSIC_LEFT_PUNCH = "PhysicLeftPunch";
+    public const string PHYSIC_RIGHT_PUNCH = "PhysicRightPunch";
+    public const string WEAPON_LEFT_PHYSIC = "PhysicWeaponLeftPunch";
+    public const string WEAPON_RIGHT_PHYSIC = "PhysicWeaponRightPunch";
+
+
     //Object in game
     public const string GOLD = "Gold";
     public const string DAGGER = "Dagger";

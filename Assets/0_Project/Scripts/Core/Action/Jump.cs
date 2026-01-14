@@ -44,6 +44,7 @@ public class Jump : MonoBehaviour
         }
     }
 
+    #region Set Jump Attribute
     private void SetDirJump(float x, out Vector2 upForce, out Vector2 forward)
     {
         Vector2 dirJump;
@@ -73,4 +74,5 @@ public class Jump : MonoBehaviour
     {
         this.bodyForce = bodyForce;
     }
+    #endregion
 }

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57e03d3f3c329594a91c13cd5ac4520d, type: 3}
   m_Name: Physics Attack Original Profile Data SO
   m_EditorClassIdentifier: 
-  armTorque: 15
-  weaponTorque: 15
+  armTorque: 30
+  weaponTorque: 30
   impulseDuration: 0.3
   pushForce: 30
   recoveryAngularDamping: 6

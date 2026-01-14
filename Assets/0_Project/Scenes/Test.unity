@@ -5196,7 +5196,6 @@ GameObject:
   - component: {fileID: 250491686}
   - component: {fileID: 250491688}
   - component: {fileID: 250491687}
-  - component: {fileID: 250491689}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -5247,20 +5246,6 @@ MonoBehaviour:
   tapMaxMovement: 25
   swipeThreshold: 90
   deadzone: 6
---- !u!114 &250491689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 250491684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75f8179dce1fa6d48a0fbc2214bdf2cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tapThreshold: 0.3
-  dragThreshold: 5
 --- !u!1 &260222634
 GameObject:
   m_ObjectHideFlags: 0
@@ -7174,6 +7159,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1850b9088052b0f4cbdc2656ed1a4a5f, type: 2}
   - {fileID: 11400000, guid: bf7e8de23c8657e4389da384eca67169, type: 2}
   knockdownThreshold: 10
+  knockbackForce: 100
   explosionForce: 25
   torqueForce: 15
   cameraBias: 0.6
@@ -8506,7 +8492,7 @@ Transform:
   m_GameObject: {fileID: 6306752701786874248}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0040000007, y: -0.7850003, z: 0}
+  m_LocalPosition: {x: 0.0040000007, y: -0.732, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9734,14 +9720,13 @@ MonoBehaviour:
     damageBase: 2
     critChane: 0.1
     critMultiplier: 0.15
-  knockBackForce: 15
+  damageNumber: {fileID: 3871730886404011901, guid: 05c764287b5cfdd428a99b0079a24332, type: 3}
   dirFace: 1
   maxAttackDistance: 3.5
   attackDuration: 1
-  stunnedDuration: 2
+  stunnedDuration: 3
   dieDuration: 4
   dieParticle: {fileID: 7748156313947599279}
-  headModel: {fileID: 7847069652898960471}
 --- !u!96 &2114638061764254748
 TrailRenderer:
   serializedVersion: 3
@@ -10472,7 +10457,7 @@ Transform:
   m_GameObject: {fileID: 5726159016560546069}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -37.5, y: 0, z: 0}
+  m_LocalPosition: {x: -15.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10845,7 +10830,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
-  damageNumber: {fileID: 3871730886404011901, guid: 05c764287b5cfdd428a99b0079a24332, type: 3}
 --- !u!4 &2852936214409744987
 Transform:
   m_ObjectHideFlags: 0
@@ -10855,7 +10839,7 @@ Transform:
   m_GameObject: {fileID: 8122617061688776916}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0040000007, y: -0.7850003, z: 0}
+  m_LocalPosition: {x: 0.0040000007, y: -0.732, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12352,7 +12336,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -0.0040016174, y: -0.48000002}
+  m_ConnectedAnchor: {x: -0.00399971, y: -0.48000002}
   m_UseConnectedAnchor: 1
   m_UseMotor: 0
   m_Motor:
@@ -12657,7 +12641,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -0.0040016174, y: -0.48000002}
+  m_ConnectedAnchor: {x: -0.00399971, y: -0.48000002}
   m_UseConnectedAnchor: 1
   m_UseMotor: 0
   m_Motor:
@@ -12886,6 +12870,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bf7e8de23c8657e4389da384eca67169, type: 2}
   - {fileID: 11400000, guid: fe349a0a5083f654a818159b12852206, type: 2}
   knockdownThreshold: 10
+  knockbackForce: 70
   explosionForce: 25
   torqueForce: 15
   cameraBias: 0.6
@@ -14438,7 +14423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &5732299634021025514
 GameObject:
   m_ObjectHideFlags: 0
@@ -15558,7 +15543,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.0040000007, y: -0.7850003}
+  m_ConnectedAnchor: {x: 0.0040000007, y: -0.732}
   m_UseConnectedAnchor: 1
   m_UseMotor: 0
   m_Motor:
@@ -16450,7 +16435,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.0040016174, y: -0.78499997}
+  m_ConnectedAnchor: {x: 0.00399971, y: -0.78499997}
   m_UseConnectedAnchor: 1
   m_UseMotor: 0
   m_Motor:
@@ -22361,7 +22346,7 @@ MonoBehaviour:
     damageBase: 30
     critChane: 0
     critMultiplier: 0
-  knockBackForce: 15
+  damageNumber: {fileID: 3871730886404011901, guid: 05c764287b5cfdd428a99b0079a24332, type: 3}
   dirFace: 1
   head: {fileID: 4812387880362849267}
   levelStatModifier:
@@ -22369,7 +22354,7 @@ MonoBehaviour:
     damagePercentPerLevel: 0.08
     critChanceFlatPerLevel: 0.01
     critMultiplierFlatPerLevel: 0.05
-  stunTime: 2
+  stunTime: 3
 --- !u!114 &7839136674281493765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22528,7 +22513,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.0040000007, y: -0.7850003}
+  m_ConnectedAnchor: {x: 0.0040000007, y: -0.732}
   m_UseConnectedAnchor: 1
   m_UseMotor: 0
   m_Motor:
@@ -22649,7 +22634,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.0040016174, y: -0.78499997}
+  m_ConnectedAnchor: {x: 0.00399971, y: -0.78499997}
   m_UseConnectedAnchor: 1
   m_UseMotor: 0
   m_Motor:
@@ -23202,7 +23187,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5000
   currentHealth: 0
-  damageNumber: {fileID: 3871730886404011901, guid: 05c764287b5cfdd428a99b0079a24332, type: 3}
 --- !u!50 &8450819862048650559
 Rigidbody2D:
   serializedVersion: 5

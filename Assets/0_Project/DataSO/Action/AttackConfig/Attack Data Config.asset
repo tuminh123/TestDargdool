@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Attack Data Config
   m_EditorClassIdentifier: 
   attackName: Attack_Data
-  attackForce: 30
+  attackForce: 25
   attackDuration: 0.5
   maxSpeed: 5
   attackReach: 1

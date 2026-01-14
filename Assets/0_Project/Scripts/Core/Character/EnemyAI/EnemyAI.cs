@@ -3,6 +3,7 @@ using Core;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Zenject;
 
 public abstract class EnemyAI : CharacterParent
@@ -17,8 +18,6 @@ public abstract class EnemyAI : CharacterParent
     [SerializeField] protected float dieDuration = 3;
 
     [SerializeField] protected ParticleSystem dieParticle;
-
-    [SerializeField] private Transform headModel;
 
     public CharacterCtrl characterCtrl { get;private set; }
     public PlayerDetect playerDetect { get; private set; }
@@ -44,30 +43,24 @@ public abstract class EnemyAI : CharacterParent
     private void Update()
     {
         HandleProperties();
-        HeadRotation();
+
         stateMachine.UpdateState();
     }
     private void FixedUpdate()
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        Profiler.BeginSample("Limit moving");
+#endif
         move?.LimitMoving
         (
             ragdollController?.actionBase?.GetBalance(BalanceType.body_up).Rb,
             ragdollController?.actionBase?.GetBalance(BalanceType.right_leg).Rb,
             ragdollController?.actionBase?.GetBalance(BalanceType.left_leg).Rb
         );
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        Profiler.EndSample();
+#endif
         stateMachine.UpdatePhysicState();
-    }
-    private void HeadRotation()
-    {
-        if (characterCtrl == null || characterCtrl.healthBase.IsDead) return;
-        Transform player = characterCtrl.transform;
-
-        if(player == null) return;
-        Vector2 dir = -transform.position + player.position;
-
-        if (headModel == null) return;
-        if (dir.x > 0) headModel.transform.localScale = new Vector3(1, 1, 1);
-        else if (dir.x < 0) headModel.transform.localScale = new Vector3(-1, 1, 1);
     }
 
     private void HandleProperties()
@@ -81,7 +74,7 @@ public abstract class EnemyAI : CharacterParent
     public override void OnDead()
     {
         Destroy(gameObject);
-        //Destroy(bodyParent.gameObject);
+
         GameEventBus.RaiseEnemyDead();
 
         int goldCount = 3;
@@ -91,13 +84,8 @@ public abstract class EnemyAI : CharacterParent
         Global.Send(new SignalGoldReceived { receivedGoldCount = goldCount} );
         Global.Send(new SignalEnemyDie { enemyDieCount = 1} );
 
-        /* for (int i = 0; i < 3; i++)
-         {
-             ZenManager.Instance.itemPoolManager.SpawnGoldItem(transform.position);
-         }*/
-
     }
-    protected override Vector2 GetKnockDir()
+    public override Vector2 GetKnockDir()
     {
         if (characterCtrl == null || characterCtrl.healthBase.IsDead) return Vector2.zero;
         Transform player = characterCtrl.transform;
@@ -106,9 +94,11 @@ public abstract class EnemyAI : CharacterParent
     }  
     public void EnemyDieHandle()
     {
-        DisableBalance();
+        if (ragdollController != null) ragdollController.DisableRagdoll(GetKnockDir());
+        else return;
+        //DisableBalance();
         
-        SetKnockBackBalance();
+        //SetKnockBackBalance();
 
         ragdollController?.Explode();
 
@@ -128,25 +118,4 @@ public abstract class EnemyAI : CharacterParent
         base.OnDestroy();
         StopCoroutine(SetDieParticle());
     }
-
-    /*public void SendDamageBase()
-    {
-        Global.Send(new SignalSendDamage
-        {
-            damaged = DamageCaculate()
-        });
-    }
-    private float DamageCaculate()
-    {
-        float baseDamage = stats.DamageConfig;
-
-        bool isCrit = UnityEngine.Random.value < stats.CritChane;
-
-        if (isCrit)
-        {
-            baseDamage *= stats.CritMultiplier;
-        }
-
-        return baseDamage;
-    }*/
 }

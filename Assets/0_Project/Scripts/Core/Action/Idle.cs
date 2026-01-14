@@ -3,8 +3,8 @@
 
 public class Idle : MonoBehaviour
 {
-    public void IdleHandle(ActionPostBase action)
+    public void IdleHandle(IPostAction action)
     {
-        action.SetAction("Idle");
+        action.SetAction(StringConst.IDLE);
     }
 }
