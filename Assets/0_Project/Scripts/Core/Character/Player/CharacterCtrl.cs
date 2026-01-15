@@ -59,19 +59,11 @@ public class CharacterCtrl : CharacterParent
         weaponAttackState = new MainWeaponAttackState(stateMachine, this);
 
     }
-    
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
-        GameEventBus.OnLevelUp -= ApplyLevel;
-        healthBase.OnDead -= OnDead;
-    }
 
     protected override void Start()
     {
         base.Start();
+
         InitPlayerData();
 
         if (LevelManager.Instance != null)
@@ -86,6 +78,16 @@ public class CharacterCtrl : CharacterParent
         GameEventBus.OnLevelUp += ApplyLevel;
         healthBase.OnDead += OnDead;
     }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
+        GameEventBus.OnLevelUp -= ApplyLevel;
+        healthBase.OnDead -= OnDead;
+    }
+
+   
 
     private void Update()
     {

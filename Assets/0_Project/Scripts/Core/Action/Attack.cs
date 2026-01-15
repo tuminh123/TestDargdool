@@ -11,7 +11,8 @@ public class Attack : MonoBehaviour
     [SerializeField] private AttackDataConfigSO configSO;
     [SerializeField] private PhysicsAttackOriginalProfile physicsProfile;
 
-    public IRagdollAttackSystem currentAttack;
+    public IRagdollAttackSystem currentAttack { get; private set; }
+    public RagdollAttackContext attackContext { get; private set; }
 
     //token
     private CancellationTokenSource atc;
@@ -21,48 +22,14 @@ public class Attack : MonoBehaviour
     [SerializeField] protected DamageNumber textEffect;
     protected string[] texts = { "Bump", "Bonk", "Baam", "Hit", "Pow", "Pop", "Thunk", "Smack", "Ahh" };
 
+    //get
+    public AttackDataConfigSO ConfigSO => configSO;
+    public PhysicsAttackOriginalProfile PhysicsProfile => physicsProfile;
+
     private void Awake()
     {
         currentAttack = new AttackSmoothSystem(configSO);
-    }
-
-    public void SetAttack(IRagdollAttackSystem attack)
-    {
-        this.currentAttack = attack;
-    }
-    public void ExecuteAttack(Vector2 dir,IPostAction postAction,string name,GameObject obj)
-    {
-
-        atc = new CancellationTokenSource();
-        ltc = CancellationTokenSource.CreateLinkedTokenSource(atc.Token,obj.GetCancellationTokenOnDestroy());
-        var token = ltc.Token;
-
-        UniTaskSafe.Forget
-        (
-            ct => this.currentAttack.ExecuteAttack(ct, dir, postAction, name),
-            token,
-            "attacking task"
-        );
-
-       
-    }
-    public void CancelAttack()
-    {
-        if (ltc != null)
-        {
-            if (!ltc.IsCancellationRequested) ltc.Cancel();
-
-            ltc.Dispose();
-            ltc = null;
-        }
-
-        if (atc != null)
-        {
-            if (!atc.IsCancellationRequested) atc.Cancel();
-
-            atc.Dispose();
-            atc = null;
-        }
+        attackContext = new RagdollAttackContext(currentAttack);
     }
 
     #region UI Text Popup

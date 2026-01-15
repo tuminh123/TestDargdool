@@ -25,6 +25,7 @@ public class EnemyBaseState : IState
         {
             return;
         }
+
         if (enemyBasic.characterCtrl == null || enemyBasic.characterCtrl.healthBase.IsDead)
         {
             stateMachine.ChangeState(enemyBasic.enemyIdleState);

@@ -8,6 +8,7 @@
     public EnemyCombatState enemyCombatState { get; private set; }
     public EnemyIdleState enemyIdleState { get; private set; }
     public EnemyJumpState enemyJumpState { get; private set; }
+    public EnemyBreakBoxState enemyBreakBoxState { get; private set; }
     #endregion
 
     protected override void Awake()
@@ -20,10 +21,16 @@
         enemyStunState = new EnemyStunState(stateMachine,this,stunnedDuration);
         enemyIdleState = new EnemyIdleState(stateMachine, this);
         enemyJumpState = new EnemyJumpState(stateMachine, this);
+        enemyBreakBoxState  = new EnemyBreakBoxState(stateMachine, this);
     }
     protected override void Start()
     {
         base.Start();
         stateMachine.InitState(enemyIdleState);
+    }
+    protected override void EnemyAI_OnBoxDetect(Box obj)
+    {
+        base.EnemyAI_OnBoxDetect(obj);
+        stateMachine.ChangeState(enemyBreakBoxState);
     }
 }

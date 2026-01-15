@@ -2,16 +2,17 @@ using Core;
 using System;
 using System.Collections;
 using UnityEngine;
-using Zenject.SpaceFighter;
 
 public abstract class Box : ObjInGameBase,IPhysicReceiveDamage,IGameElement,IReceive<SignalSendDamage>
 {
+    [SerializeField] Faction faction;
     public Animator ani { get; private set; }
     public BoxHealth boxHealth { get;private set; }
 
     public GameObject Owner => transform.gameObject;
+    public Faction Faction => faction;
 
-    public bool HasSetup { get; private set; }
+    public bool HasSetup { get; private set; } 
 
     private float damage;
 

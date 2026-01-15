@@ -64,17 +64,6 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
     private async UniTask BalancePostAttack(CancellationToken token, string nameAction, IPostAction postAction, Vector2 dir)
     {
         float elapsed = 0f;
-        float totalMass = 0f;
-
-        if (postAction.Balances.Length <= 0) return;
-        foreach (var item in postAction.Balances)
-        {
-            if (item == null) continue;
-
-            if (postAction.GetActionData(nameAction) == null) continue;
-
-            totalMass += item.Rb.mass;
-        }
 
         try
         {
@@ -84,15 +73,7 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
                 token.ThrowIfCancellationRequested();
                 elapsed += Time.fixedDeltaTime;
 
-                foreach (var item in postAction.Balances)
-                {
-                    if (item == null) continue;
-                    if (postAction.GetActionData(nameAction) == null) continue;
-
-                    float ratio = item.Rb.mass / totalMass;
-                    item.Rb.AddForce(dir.normalized * profile.PushForce * ratio, ForceMode2D.Impulse);
-                    item.Rb.AddTorque(dir.x * profile.ArmTorque, ForceMode2D.Force);
-                }
+                postAction.SetAction(nameAction);
 
                 await UniTask.WaitForFixedUpdate(token);
             }
@@ -104,13 +85,13 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
     }
     private void ResetBalanceAttack(WeaponBase weapon, IPostAction postBase,string nameAction)
     {
-        if (postBase.Balances.Length <= 0) return;
-        foreach (var item in postBase.Balances)
+        BalanceData[] balancesData = postBase.GetBalanceArray(nameAction);
+        if (balancesData.Length <= 0) return;
+        foreach (var item in balancesData)
         {
-            if (item == null) continue;
-            if (postBase.GetActionData(nameAction) == null) continue;
-            // Tăng damping để vật lý tự chậm lại
-            item.Rb.angularDamping = profile.RecoveryAngularDamping;
+            Balance balance = postBase.GetBalance(item.type);
+            if (balance == null) continue;
+            balance.Rb.angularDamping = profile.RecoveryAngularDamping;
         }
 
         if (weapon == null) return;

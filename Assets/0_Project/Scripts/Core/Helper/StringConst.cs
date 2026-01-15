@@ -23,6 +23,8 @@ public static class StringConst
     public const string PHYSIC_RIGHT_PUNCH = "PhysicRightPunch";
     public const string WEAPON_LEFT_PHYSIC = "PhysicWeaponLeftPunch";
     public const string WEAPON_RIGHT_PHYSIC = "PhysicWeaponRightPunch";
+    public const string WEAPON_RIGHT_ATTACK = "WeaponAttackRight";
+    public const string WEAPON_LEFT_ATTACK = "WeaponAttackLeft";
 
 
     //Object in game

@@ -1,7 +1,8 @@
+﻿using Cysharp.Threading.Tasks;
+using Lofelt.NiceVibrations;
 using System.Collections.Generic;
 using UnityEngine;
-using Lofelt.NiceVibrations;
-using Cysharp.Threading.Tasks;
+using UnityEngine.Profiling;
 public class RagdollController : MonoBehaviour
 {
     #region Balance System
@@ -10,8 +11,7 @@ public class RagdollController : MonoBehaviour
 
     protected LimbHitBox[] limbHitBoxs;
     protected PhysicsDamageDealer[] physicsCharacterDamageDealers;
-
-    public IPostAction actionBase { get; private set; }
+   
     #endregion
 
     [SerializeField] float knockdownThreshold = 10f;
@@ -23,7 +23,10 @@ public class RagdollController : MonoBehaviour
     [SerializeField] private float cameraBias = 0.6f;
     #endregion
 
-    bool isRagdoll;
+    private bool isRagdoll;
+
+    public IPostAction actionBase { get; private set; }
+    public ActionPostContext postContext { get; private set; }
 
     //get
     public Balance[] Balances => balances;
@@ -45,7 +48,33 @@ public class RagdollController : MonoBehaviour
             balances = transform.GetComponentsInChildren<Balance>();
         }
 
-        actionBase = new ActionPostBase(actionsDataSO, balances);
+        actionBase = new ScriptPostAction(actionsDataSO,balances);
+        postContext = new ActionPostContext(actionBase);
+    }
+
+    public void EnableBalancePost(string name)
+    {
+        BalanceData[] balanceDatas = actionBase.GetBalanceArray(name);
+        if (balanceDatas == null || balanceDatas.Length <= 0) return;
+
+        foreach (var item in balanceDatas)
+        {
+            Balance balance = actionBase.GetBalance(item.type);
+            if (balance == null) continue;
+            balance.EnablePose();    
+        }
+    }
+    public void DisableBalancePost(string name)
+    {
+        BalanceData[] balanceDatas = actionBase.GetBalanceArray(name);
+        if (balanceDatas == null || balanceDatas.Length <= 0) return;
+
+        foreach (var item in balanceDatas)
+        {
+            Balance balance = actionBase.GetBalance(item.type);
+            if (balance == null) continue;
+            balance.DisablePose();
+        }
     }
 
     #region Init Limb
@@ -84,8 +113,11 @@ public class RagdollController : MonoBehaviour
 
         foreach (var b in balances)
         {
+            if (b == null) continue;
+           
             b.DisablePose();
             b.Rb.AddForce(force*knockbackForce, ForceMode2D.Impulse);
+            //b.Rb.AddForce(force*knockbackForce, ForceMode2D.Force);
         }
     }
 

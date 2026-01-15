@@ -26,7 +26,7 @@ public class PlayerWeaponEquip : MonoBehaviour
 
     [Header("Pull Physics")]
     [SerializeField] float grabForce = 2000f;
-    [SerializeField] float grabDistance = 0.2f;
+    [SerializeField] float grabDistance = 0.5f;
 
     //EquipState state = EquipState.Idle;
     HandController activeHand;
@@ -115,10 +115,7 @@ public class PlayerWeaponEquip : MonoBehaviour
 
         pullJoint.target = activeHand.transform.position;
 
-        float dist = Vector2.Distance(
-            pullingWeapon.rb.position,
-            activeHand.transform.position
-        );
+        float dist = Vector2.Distance(pullingWeapon.rb.position,activeHand.transform.position);
 
         if (dist <= grabDistance)
         {

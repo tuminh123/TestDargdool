@@ -1,17 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionPostBase : IPostAction
+public abstract class ActionPostBase : IPostAction
 {
     protected ActionDataSO[] actionDataSO;
     protected Balance[] balances;
-    private Dictionary<string, ActionDataSO> actionDataDict;
-    private Dictionary<BalanceType, Balance> balanceDict;
-    private List<Balance> balanceOfActionsData = new List<Balance>();
 
-    //get
-    public Balance[] Balances => balances;
-    public ActionDataSO[] ActionsDataSO => actionDataSO;
+    protected Dictionary<string, ActionDataSO> actionDataDict;
+    protected Dictionary<BalanceType, Balance> balanceDict;
+    protected Dictionary<ActionDataSO, BalanceData[]> balancesArrayDataDict;
+
 
     public ActionPostBase(ActionDataSO[] actionDataSO, Balance[] balances)
     {
@@ -20,6 +18,7 @@ public class ActionPostBase : IPostAction
 
         actionDataDict = new Dictionary<string, ActionDataSO>();
         balanceDict = new Dictionary<BalanceType, Balance>();
+        balancesArrayDataDict = new Dictionary<ActionDataSO, BalanceData[]>();
 
         if (actionDataSO.Length <= 0) return;
         foreach (var item in actionDataSO)
@@ -27,59 +26,21 @@ public class ActionPostBase : IPostAction
             if (item == null) continue;
             actionDataDict[item.actionName] = item;
         }
+        foreach (var item in actionDataSO)
+        {
+            if (item == null) continue;
+            balancesArrayDataDict[item] = item.balanceDatas;
+        }
 
         if (balances.Length <= 0) return;
         foreach (var item in balances)
         {
             if (item == null) continue;
             balanceDict[item.Type] = item;
-        }  
-    }
-
-
-
-    public void SetAction(string name)
-    {
-        ActionDataSO actionData = GetActionData(name);
-        if (actionData == null) return;
-
-        if(balances.Length <= 0) return;
-
-        foreach (var item in balances)
-        {
-            if (item == null) continue;
-
-            // set action
-            if (!actionData.TryGetBalanceData(item.Type, out var data)) continue;
-
-            item.SetRotation(data.rotChange);
-
         }
 
     }
-
-    #region Set Balance Attributes 
-    
-    public void DisableBalance()
-    {
-        if(balanceOfActionsData.Count <= 0) return;
-        foreach (var item in balanceOfActionsData)
-        {
-            if (item == null) continue;
-            item.DisablePose();
-        }
-    }
-    public void EnableBalance()
-    {
-        if (balanceOfActionsData.Count <= 0) return;
-        foreach (var item in balanceOfActionsData)
-        {
-            if (item == null) continue;
-            item.EnablePose();
-        }
-    }
-
-    #endregion
+    public abstract void SetAction(string name);
 
     #region Get Data
     public ActionDataSO GetActionData(string actionName)
@@ -106,5 +67,13 @@ public class ActionPostBase : IPostAction
             return null;
         }
     }
+    public BalanceData[] GetBalanceArray(string name)
+    {
+        ActionDataSO actionData = GetActionData(name);
+        if(actionData == null) return null;
+        if (!balancesArrayDataDict.TryGetValue(actionData, out var balanceDatas)) return null;
+        return balanceDatas;
+    }
+
     #endregion
 }

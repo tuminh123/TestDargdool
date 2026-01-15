@@ -18,10 +18,10 @@ public abstract class EnemyAI : CharacterParent
     [SerializeField] protected float dieDuration = 3;
 
     [SerializeField] protected ParticleSystem dieParticle;
+    [SerializeField] protected BoxDetect boxDetect;
 
     public CharacterCtrl characterCtrl { get;private set; }
     public PlayerDetect playerDetect { get; private set; }
-
     public float disBetweenEnemyAndPlayer { get; private set; }
 
     //get
@@ -39,7 +39,23 @@ public abstract class EnemyAI : CharacterParent
         base.Start();
         characterCtrl = CharacterCtrl.Instance;
         dieParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+        boxDetect.OnBoxDetect += EnemyAI_OnBoxDetect;
     }
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        StopCoroutine(SetDieParticle());
+
+        boxDetect.OnBoxDetect -= EnemyAI_OnBoxDetect;
+    }
+
+    protected virtual void EnemyAI_OnBoxDetect(Box obj)
+    {
+        if (obj == null) return;
+        attackDir = obj.transform.position - transform.position;
+    }
+
     private void Update()
     {
         HandleProperties();
@@ -112,10 +128,5 @@ public abstract class EnemyAI : CharacterParent
         dieParticle.Play();
         yield return new WaitForSeconds(3);
         dieParticle.Clear();
-    }
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        StopCoroutine(SetDieParticle());
     }
 }

@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class MainWeaponAttackState : MainCharacterState
 {
-    public MainWeaponAttackState(
-        StateMachine stateMachine,
-        CharacterCtrl characterCtrl
-    ) : base(stateMachine, characterCtrl) { }
+    private IPostAction postAction;
+    public MainWeaponAttackState(StateMachine stateMachine,CharacterCtrl characterCtrl) : base(stateMachine, characterCtrl)
+    {
+        postAction = new SmoothPostAction(characterCtrl?.ragdollController?.ActionsDataSO, characterCtrl?.ragdollController?.Balances, characterCtrl?.attack?.ConfigSO);
+    }
 
     public override void Enter()
     {
@@ -21,31 +22,20 @@ public class MainWeaponAttackState : MainCharacterState
             return;
         }
 
+        string name = characterCtrl.AttackDir.x > 0 ? StringConst.WEAPON_RIGHT_ATTACK : StringConst.WEAPON_LEFT_ATTACK;
+   
         if (characterCtrl.weaponEquip.CurrentWeapon == null) return;
         characterCtrl.weaponEquip.CurrentWeapon.EnableAttack();
 
-      /*  AttackIntent intent = new AttackIntent
-        {
-            direction = characterCtrl.AttackDir,
-            strength = 1f
-        };*/
-        string name = characterCtrl.AttackDir.x > 0 ? StringConst.WEAPON_RIGHT_PHYSIC : StringConst.WEAPON_LEFT_PHYSIC;
-
-        // Init
-        //characterCtrl?.ragdollController?.actionBase?.DisableBalance();
-       
-        //characterCtrl.attack.Init(characterCtrl?.ragdollController.actionBase, characterCtrl.gameObject, intent, name);
-  
-        //characterCtrl?.attack.SetAttack(new WeaponAttackPhysicOriginal(characterCtrl.weaponEquip.CurrentWeapon,characterCtrl.gameObject,characterCtrl?.attack.attackSystem,name));
+        characterCtrl?.ragdollController?.postContext.SetPostAction(postAction);
 
         // Action
-        //characterCtrl?.attack?.ExecuteAttack(characterCtrl.AttackDir);
-        //characterCtrl.weaponEquip.SetFaceWeaponAttack(characterCtrl.AttackDir);
+        characterCtrl?.attack?.attackContext?.ExecuteAttack(characterCtrl.AttackDir, characterCtrl?.ragdollController?.actionBase, name, characterCtrl.gameObject);
+        characterCtrl.weaponEquip.SetFaceWeaponAttack(characterCtrl.AttackDir);
         characterCtrl.SendWeaponDamageBase();
        
 
-        //characterCtrl.attack.attackSystem.OnAttackEnd += EndAttack;
-
+        characterCtrl.attack.currentAttack.OnAttackEnd += EndAttack;
         characterCtrl.weaponEquip.OnDrop += WeaponEquip_OnDrop;
     }
 
@@ -54,10 +44,13 @@ public class MainWeaponAttackState : MainCharacterState
     {
       
         base.Exit();
-       /* characterCtrl.weaponEquip.CurrentWeapon.DisableAttack();
-        characterCtrl?.ragdollController?.actionBase?.EnableBalance();
-        characterCtrl.attack.attackSystem.OnAttackEnd -= EndAttack;
-*/
+
+        if (characterCtrl.weaponEquip.CurrentWeapon != null)
+        {
+            characterCtrl.weaponEquip.CurrentWeapon.DisableAttack();
+        }
+
+        characterCtrl.attack.currentAttack.OnAttackEnd -= EndAttack;
         characterCtrl.weaponEquip.OnDrop -= WeaponEquip_OnDrop; 
     }
     private void WeaponEquip_OnDrop()

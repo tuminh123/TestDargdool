@@ -9,6 +9,7 @@ public class PhysicsDamageDealer : MonoBehaviour
     [SerializeField] float maxDamage = 50f;
     [SerializeField] LayerMask targetLayer;
     [SerializeField] Rigidbody2D rb;
+    [SerializeField] Faction faction;
 
     IAttackContext attackContext;
     IObjSendDamage objSendDamage;
@@ -51,21 +52,19 @@ public class PhysicsDamageDealer : MonoBehaviour
         if (!col.transform.TryGetComponent(out IPhysicReceiveDamage hitBox)) return;
 
         GameObject target = hitBox.Owner;
+
         if (!target || target == objSendDamage.OnjSend) return;
         if (damagedTargets.Contains(target)) return;
-
         if (!targetLayer.Contains(target.layer)) return;
+        if (faction == hitBox.Faction) return;
 
         // float impact = rb.mass * col.relativeVelocity.sqrMagnitude;
         float impact = rb.mass * col.relativeVelocity.magnitude;
-
         if (impact < minImpact) return;
-
         float damage = Mathf.Clamp(impact * damageMultiplier, 0, maxDamage);
         //float rawDamage = impact * damageMultiplier;
 
         damagedTargets.Add(target);
-
         hitBox.ReceiveHit(damage, col.relativeVelocity);
     }
 }

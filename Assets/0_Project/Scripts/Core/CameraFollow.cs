@@ -1,55 +1,85 @@
 ﻿using System;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+    /*
+        [Header("Offset so với target")]
+        [SerializeField] Vector3 offset = new Vector3(0, 0, -10f);
 
-    [Header("Offset so với target")]
-    [SerializeField] Vector3 offset = new Vector3(0, 0, -10f);
+        [Header("Độ mượt khi theo dõi")]
+        [Range(0f, 1f)]
+        [SerializeField] float smoothSpeed = 0.15f;
+        [SerializeField] Transform target;
 
-    [Header("Độ mượt khi theo dõi")]
-    [Range(0f, 1f)]
-    [SerializeField] float smoothSpeed = 0.15f;
-    [SerializeField] Transform target;
+        private Vector3 velocity = Vector3.zero;
 
-    private Vector3 velocity = Vector3.zero;
+        private void Start()
+        {
+            target = CharacterCtrl.Instance.transform;
 
-    private void Start()
+            GameEventBus.OnGameRestart += OnGameRestart;
+        }
+
+        private void OnGameRestart()
+        {
+            target = CharacterCtrl.Instance.transform;
+        }
+
+        private void OnDestroy()
+        {
+            GameEventBus.OnGameRestart -= OnGameRestart;
+        }
+
+        void LateUpdate()
+        {
+            //Transform target = SingletonManager.Instance.gameManager.PlayerInstance.transform;
+
+            if (target == null) return;
+
+            // Vị trí camera muốn tới
+            Vector3 desiredPos = target.position + offset;
+
+            // SmoothDamp tối ưu hơn Lerp (ít GC, chuyển động tự nhiên)
+            Vector3 smoothedPos = Vector3.SmoothDamp(
+                transform.position,
+                desiredPos,
+                ref velocity,
+                smoothSpeed
+            );
+
+            transform.position = smoothedPos;
+        }*/
+
+    [SerializeField] Vector3 offset = new(0, 0, -10);
+    [SerializeField] float smoothTime = 0.15f;
+    [SerializeField] float maxFollowSpeed = 20f;
+
+    Transform target;
+    Rigidbody2D targetRb;
+    Vector3 velocity;
+
+    void Start()
     {
+        if (target == null) return;
         target = CharacterCtrl.Instance.transform;
-
-        GameEventBus.OnGameRestart += OnGameRestart;
-    }
-
-    private void OnGameRestart()
-    {
-        target = CharacterCtrl.Instance.transform;
-    }
-
-    private void OnDestroy()
-    {
-        GameEventBus.OnGameRestart -= OnGameRestart;
+        targetRb = target.GetComponent<Rigidbody2D>();
     }
 
     void LateUpdate()
     {
-      /*  if (SingletonManager.Instance.gameManager.CurrentState != GameState.PLAY) return;
-        if (SingletonManager.Instance.gameManager.PlayerInstance == null) return;*/
-        //Transform target = SingletonManager.Instance.gameManager.PlayerInstance.transform;
+        if (targetRb == null) return;
 
-        if (target == null) return;
+        Vector3 desired = (Vector3)targetRb.position + offset;
 
-        // Vị trí camera muốn tới
-        Vector3 desiredPos = target.position + offset;
-
-        // SmoothDamp tối ưu hơn Lerp (ít GC, chuyển động tự nhiên)
-        Vector3 smoothedPos = Vector3.SmoothDamp(
+        transform.position = Vector3.SmoothDamp(
             transform.position,
-            desiredPos,
+            desired,
             ref velocity,
-            smoothSpeed
+            smoothTime,
+            maxFollowSpeed,
+            Time.deltaTime
         );
-
-        transform.position = smoothedPos;
     }
 }

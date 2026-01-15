@@ -4,8 +4,11 @@ using UnityEngine;
 public class LimbHitBox : GameElement,IReceive<SignalSendDamage>,IPhysicReceiveDamage
 {
     [SerializeField] float damageScale = 1f;
+    [SerializeField] Faction faction;
     private float damage;
     CharacterParent owner;
+
+    public Faction Faction => faction;
 
     GameObject IPhysicReceiveDamage.Owner => owner.gameObject;
 

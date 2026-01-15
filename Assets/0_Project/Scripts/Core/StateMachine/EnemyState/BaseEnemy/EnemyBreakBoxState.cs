@@ -1,30 +1,24 @@
-﻿using Cysharp.Threading.Tasks;
-using System;
 using UnityEngine;
 
-public class EnemyAttackState : EnemyBaseState
+public class EnemyBreakBoxState : EnemyBaseState
 {
     private IPostAction postAction;
-    public EnemyAttackState(StateMachine stateMachine, EnemyBasic enemyBasic) : base(stateMachine, enemyBasic)
+    public EnemyBreakBoxState(StateMachine stateMachine, EnemyBasic enemyBasic) : base(stateMachine, enemyBasic)
     {
         postAction = new SmoothPostAction(enemyBasic?.ragdollController?.ActionsDataSO, enemyBasic?.ragdollController?.Balances, enemyBasic?.attack?.ConfigSO);
     }
-
     public override void Enter()
     {
         base.Enter();
-
-        string name = enemyBasic.AttackDir.x > 0 ? StringConst.RIGHT_PUNCH : StringConst.LEFT_PUNCH;
+        string name = enemyBasic.AttackDir.x < 0 ? "LeftKick" : "RightKick";
         enemyBasic.attackContext.EnableAttack();
         enemyBasic?.ragdollController?.postContext.SetPostAction(postAction);
 
-        enemyBasic?.attack?.attackContext?.ExecuteAttack(enemyBasic.AttackDir,enemyBasic.ragdollController.actionBase,name,enemyBasic.gameObject);
+        enemyBasic?.attack?.attackContext?.ExecuteAttack(enemyBasic.AttackDir, enemyBasic.ragdollController.actionBase, name, enemyBasic.gameObject);
         enemyBasic.SendDamageBase();
 
         enemyBasic.attack.currentAttack.OnAttackEnd += EndAttack;
     }
-
-    
     public override void Exit()
     {
         base.Exit();
@@ -35,8 +29,12 @@ public class EnemyAttackState : EnemyBaseState
 
     private void EndAttack()
     {
+        /*if (enemyBasic.IsBoxDetect)
+        {
+            stateMachine.ChangeState(enemyBasic.enemyIdleState);
+        }*/
 
-        stateMachine.ChangeState(enemyBasic.enemyCombatState);
+        stateMachine.ChangeState(enemyBasic.enemyIdleState);
     }
 
 }

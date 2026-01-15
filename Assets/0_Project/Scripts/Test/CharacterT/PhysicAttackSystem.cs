@@ -13,7 +13,8 @@ public struct AttackIntent
 [System.Serializable] 
 public class AttackHandle 
 { 
-    public event System.Action OnAttackEnd; 
+    public event System.Action OnAttackEnd;
+    [SerializeField] private Balance[] balances;
     [SerializeField] private PhysicsAttackOriginalProfile profile;
 
     public async UniTask Execute(AttackIntent intent, CancellationToken token, ActionPostBase actionPost,WeaponBase weapon)
@@ -73,7 +74,7 @@ public class AttackHandle
         float elapsed = 0f;
         float totalMass = 0f;
 
-        Balance[] balances = actionPost?.Balances;
+       /* Balance[] balances = actionPost?.Balances;*/
 
         if (balances.Length <= 0) return;
         foreach (var item in balances)
@@ -117,7 +118,7 @@ public class AttackHandle
     }
     private void ResetBalanceAttack(ActionPostBase actionPost) { 
        
-        Balance[] balances = actionPost?.Balances;
+       /* Balance[] balances = actionPost?.Balances;*/
         if (balances.Length <= 0) return; 
         foreach (var item in balances) 
         { 
