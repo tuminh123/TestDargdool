@@ -55,15 +55,14 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] Vector3 offset = new(0, 0, -10);
     [SerializeField] float smoothTime = 0.15f;
     [SerializeField] float maxFollowSpeed = 20f;
+    [SerializeField] Transform target;
 
-    Transform target;
     Rigidbody2D targetRb;
     Vector3 velocity;
 
     void Start()
     {
-        if (target == null) return;
-        target = CharacterCtrl.Instance.transform;
+        //target = CharacterCtrl.Instance.transform;
         targetRb = target.GetComponent<Rigidbody2D>();
     }
 

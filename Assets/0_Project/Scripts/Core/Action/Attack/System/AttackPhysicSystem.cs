@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Threading;
 using Unity.Android.Gradle.Manifest;
 using UnityEngine;
@@ -21,6 +22,10 @@ public class AttackPhysicSystem : IRagdollAttackSystem
         {
             await BalancePostAttack(token, nameAction,postBase,dir);
 
+        }
+        catch (OperationCanceledException e)
+        {
+            Debug.LogException(e);
         }
         catch (System.Exception e)
         {
@@ -48,6 +53,10 @@ public class AttackPhysicSystem : IRagdollAttackSystem
 
                 await UniTask.WaitForFixedUpdate(token);
             }
+        }
+        catch (OperationCanceledException e)
+        {
+            Debug.Log(e);
         }
         catch (System.Exception e)
         {

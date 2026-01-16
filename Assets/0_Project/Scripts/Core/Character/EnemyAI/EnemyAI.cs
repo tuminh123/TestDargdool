@@ -110,7 +110,7 @@ public abstract class EnemyAI : CharacterParent
     }  
     public void EnemyDieHandle()
     {
-        if (ragdollController != null) ragdollController.DisableRagdoll(GetKnockDir());
+        if (ragdollController != null) ragdollController.DisableRagdoll();
         else return;
         //DisableBalance();
         

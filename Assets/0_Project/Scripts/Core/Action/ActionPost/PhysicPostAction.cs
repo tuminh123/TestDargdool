@@ -10,7 +10,10 @@ public class PhysicPostAction : ActionPostBase
         this.profile = profile;
         this.dir = dir;
     }
-
+    public void SetDir(Vector2 dir)
+    {
+        this.dir = dir;
+    }
     public override void SetAction(string name)
     {
         BalanceData[] balanceDatas = GetBalanceArray(name);

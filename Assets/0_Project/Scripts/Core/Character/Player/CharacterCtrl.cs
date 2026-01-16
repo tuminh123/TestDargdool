@@ -96,14 +96,14 @@ public class CharacterCtrl : CharacterParent
     }
     private void FixedUpdate()
     {
-        Profiler.BeginSample("Limit moving");
+        //Profiler.BeginSample("Limit moving");
         move?.LimitMoving
         (
             ragdollController?.actionBase?.GetBalance(BalanceType.body_up).Rb,
             ragdollController?.actionBase?.GetBalance(BalanceType.right_leg).Rb,
             ragdollController?.actionBase?.GetBalance(BalanceType.left_leg).Rb
         );
-        Profiler.EndSample();
+        //Profiler.EndSample();
 
         stateMachine.UpdatePhysicState();
     }
@@ -117,10 +117,10 @@ public class CharacterCtrl : CharacterParent
     {
         base.OnTakeDamage(damage);
 
-        if(weaponEquip != null )
+        /*if(weaponEquip != null )
         {
             weaponEquip.DropWeapon();
-        }
+        }*/
 
         if(healthBase.CurrentHealth < healthBase.MaxHealth * 0.3f)
         {
@@ -162,7 +162,7 @@ public class CharacterCtrl : CharacterParent
 
         //SetKnockBackBalance();
 
-        if (ragdollController != null) ragdollController.DisableRagdoll(GetKnockDir());
+        if (ragdollController != null) ragdollController.DisableRagdoll();
         else return;
         //DisableBalance();
         //weaponEquip.Equipping();

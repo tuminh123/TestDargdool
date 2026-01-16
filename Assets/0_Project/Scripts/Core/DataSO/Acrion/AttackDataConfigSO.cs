@@ -3,7 +3,6 @@
 [CreateAssetMenu (fileName ="Attack Data Config",menuName ="Data SO/Attack/ Config")]
 public class AttackDataConfigSO : ScriptableObject
 {
-    [SerializeField] private string attackName;
     [SerializeField] private float attackForce = 15f;
     [SerializeField] private float attackDuration = 0.5f;
     [SerializeField] private float maxSpeed = 5f;                 // Max speed tay/chân
@@ -18,7 +17,6 @@ public class AttackDataConfigSO : ScriptableObject
     [SerializeField] private float launchTime = 0.3f; // 10% duration dùng lực chính
     [SerializeField] private float proceduralOffset = 0.2f;
     //get
-    public string AttackName => attackName;
     public float AttackForce => attackForce;
     public float AttackDuration => attackDuration;
     public float AttackReach => attackReach;

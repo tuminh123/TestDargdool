@@ -17,14 +17,24 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
 {
     [SerializeField] protected WeaponType weaponType = WeaponType.MELE;
     //[SerializeField] protected FixedJoint2D fixedJoint2D;
-    [SerializeField] protected ItemDeSpawn weaponDeSpawn;
     [SerializeField] protected float damage = 100;
-    [SerializeField] protected WeaponPhysicDamageDealer damageDealer;
-    [SerializeField] protected TrailRenderer[] trails; 
+    [SerializeField] protected TrailRenderer[] trails;
+
+    #region Component
+    [Inject] public WeaponPhysicDamageDealer DamageDealer { get; private set; }
+    [SerializeField] protected ItemDeSpawn weaponDeSpawn;
+
+    /* [Inject]
+     void Init(WeaponPhysicDamageDealer damageDealer)
+     {
+         this.damageDealer = damageDealer;
+     }*/
+
+    #endregion
+
     public bool IsAttacking { get;private set; }
 
     public GameObject OnjSend => gameObject;
-    public WeaponPhysicDamageDealer DamageDealer => damageDealer;
 
     public event Action OnAttackStart;
     //Coroutine moveCoroutine;
@@ -34,11 +44,11 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
 
     private void Start()
     {
-        if (damageDealer == null)
+       /* if (damageDealer == null)
         {
             damageDealer = GetComponentInChildren<WeaponPhysicDamageDealer>();
-        }
-        damageDealer.Init(this, this);
+        }*/
+        DamageDealer.Init(this, this);
     }
 
     public void DisableAttack()
@@ -50,34 +60,6 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
     {
         IsAttacking = true;
         OnAttackStart?.Invoke();
-    }
-    public void Equipping()
-    {
-        if (rb == null) return;
-
-        SetRb2d(RigidbodyType2D.Kinematic);
-
-        if (weaponDeSpawn == null) return;
-        weaponDeSpawn.gameObject.SetActive(false);
-    }
-
-   
-
-    public void UnEquipping()
-    {
-        if (rb == null) return;
-
-        SetRb2d(RigidbodyType2D.Dynamic);
-
-        if (weaponDeSpawn == null) return;
-        weaponDeSpawn.gameObject.SetActive(true);
-    }
-
-    private void SetRb2d(RigidbodyType2D type2D)
-    {
-        rb.bodyType = type2D;
-        rb.linearVelocity = Vector2.zero;
-        rb.angularVelocity = 0f;
     }
 
     public void WeaponFly(Vector2 hitDirection)
@@ -106,54 +88,4 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
             item.emitting = enable;
         }
     }
-
-    #region Old System
-    /*   public void MoveToHand(HandController hand)
-       {
-           if (moveCoroutine != null)
-               StopCoroutine(moveCoroutine);
-
-           moveCoroutine = StartCoroutine(MoveRoutine(hand));
-       }
-
-       IEnumerator MoveRoutine(HandController hand)
-       {
-           rb.simulated = false;
-
-           while (Vector2.Distance(transform.position, hand.transform.position) > 0.05f)
-           {
-               Vector3 targetPos = hand.transform.position - transform.position;
-
-               transform.position = Vector3.Lerp(
-                   transform.position,
-                   targetPos,
-                   Time.deltaTime * 20
-               );
-
-               yield return null;
-           }
-       }
-
-       public void ResetWeapon()
-       {
-
-           if (fixedJoint2D == null || weaponDeSpawn == null) return;
-           fixedJoint2D.enabled = false;
-           weaponDeSpawn.gameObject.SetActive(true);
-
-           fixedJoint2D.connectedBody = null;
-       }
-       public void Equipping(Rigidbody2D rb)
-       {
-           transform.localPosition = Vector3.zero;
-           transform.localRotation = Quaternion.identity;
-
-           if (fixedJoint2D == null || weaponDeSpawn == null) return;
-           fixedJoint2D.enabled = true;
-           weaponDeSpawn.gameObject.SetActive(false);
-
-           fixedJoint2D.connectedBody = rb;
-       }*/
-    #endregion
-
 }

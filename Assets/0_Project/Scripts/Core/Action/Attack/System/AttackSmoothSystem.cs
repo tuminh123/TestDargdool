@@ -45,6 +45,10 @@ public class AttackSmoothSystem : IRagdollAttackSystem
         {
             Debug.LogException(e);
         }
+        catch (System.Exception e)
+        {
+            Debug.LogException(e);
+        }
         finally
         {
             isAttacking = false;

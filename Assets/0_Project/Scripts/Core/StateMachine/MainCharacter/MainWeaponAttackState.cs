@@ -3,12 +3,17 @@ using System;
 using System.Threading;
 using UnityEngine;
 
+#region Test_1
+/*
 public class MainWeaponAttackState : MainCharacterState
 {
-    private IPostAction postAction;
+    private CancellationTokenSource atc;
+    private CancellationTokenSource ltc;
+   
+    
+    IRagdollAttackSystem currentAttack;
     public MainWeaponAttackState(StateMachine stateMachine,CharacterCtrl characterCtrl) : base(stateMachine, characterCtrl)
     {
-        postAction = new SmoothPostAction(characterCtrl?.ragdollController?.ActionsDataSO, characterCtrl?.ragdollController?.Balances, characterCtrl?.attack?.ConfigSO);
     }
 
     public override void Enter()
@@ -22,20 +27,32 @@ public class MainWeaponAttackState : MainCharacterState
             return;
         }
 
-        string name = characterCtrl.AttackDir.x > 0 ? StringConst.WEAPON_RIGHT_ATTACK : StringConst.WEAPON_LEFT_ATTACK;
+        string name = characterCtrl.AttackDir.x > 0 ? StringConst.WEAPON_RIGHT_PHYSIC : StringConst.WEAPON_LEFT_PHYSIC;
    
         if (characterCtrl.weaponEquip.CurrentWeapon == null) return;
         characterCtrl.weaponEquip.CurrentWeapon.EnableAttack();
 
-        characterCtrl?.ragdollController?.postContext.SetPostAction(postAction);
+        IPostAction postAction = new PhysicPostAction(characterCtrl?.ragdollController?.ActionsDataSO, characterCtrl?.ragdollController?.Balances, characterCtrl.AttackDir, characterCtrl?.attack?.PhysicsProfile);
+        IRagdollAttackSystem ragdollAttack = new AttackWeaponPhysicSystem(characterCtrl?.attack?.PhysicsProfile, characterCtrl?.weaponEquip?.CurrentWeapon);//ragdollAttack == null
 
-        // Action
-        characterCtrl?.attack?.attackContext?.ExecuteAttack(characterCtrl.AttackDir, characterCtrl?.ragdollController?.actionBase, name, characterCtrl.gameObject);
+        currentAttack = ragdollAttack;
+
+        atc = new CancellationTokenSource();
+        ltc = CancellationTokenSource.CreateLinkedTokenSource(atc.Token,characterCtrl.destroyCancellationToken);
+        var token = ltc.Token;
+        UniTaskSafe.Forget
+        (
+            tc => ragdollAttack.ExecuteAttack(tc,characterCtrl.AttackDir, postAction, name),
+            token,
+            " weapon attack context"
+        );
+       
+
         characterCtrl.weaponEquip.SetFaceWeaponAttack(characterCtrl.AttackDir);
         characterCtrl.SendWeaponDamageBase();
        
 
-        characterCtrl.attack.currentAttack.OnAttackEnd += EndAttack;
+        currentAttack.OnAttackEnd += EndAttack;
         characterCtrl.weaponEquip.OnDrop += WeaponEquip_OnDrop;
     }
 
@@ -44,15 +61,37 @@ public class MainWeaponAttackState : MainCharacterState
     {
       
         base.Exit();
+        currentAttack.OnAttackEnd -= EndAttack;
+        CancelAttack();
+        currentAttack = null;
 
         if (characterCtrl.weaponEquip.CurrentWeapon != null)
         {
             characterCtrl.weaponEquip.CurrentWeapon.DisableAttack();
         }
 
-        characterCtrl.attack.currentAttack.OnAttackEnd -= EndAttack;
         characterCtrl.weaponEquip.OnDrop -= WeaponEquip_OnDrop; 
     }
+
+    public void CancelAttack()
+    {
+        if (ltc != null)
+        {
+            if (!ltc.IsCancellationRequested) ltc.Cancel();
+
+            ltc.Dispose();
+            ltc = null;
+        }
+
+        if (atc != null)
+        {
+            if (!atc.IsCancellationRequested) atc.Cancel();
+
+            atc.Dispose();
+            atc = null;
+        }
+    }
+
     private void WeaponEquip_OnDrop()
     {
         stateMachine.ChangeState(characterCtrl.idelState);
@@ -62,4 +101,177 @@ public class MainWeaponAttackState : MainCharacterState
         stateMachine.ChangeState(characterCtrl.idelState);
     }
 
+}*/
+#endregion
+
+#region Test_2
+
+public class MainWeaponAttackState : MainCharacterState
+{
+    private CancellationTokenSource atc;
+    private CancellationTokenSource ltc;
+    private IRagdollAttackSystem attackSystem;
+    private IPostAction postAction;
+
+    public MainWeaponAttackState(StateMachine stateMachine, CharacterCtrl characterCtrl) : base(stateMachine, characterCtrl)
+    {
+        InitAttackSystems();
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+
+        if (!IsValidWeapon())
+        {
+            stateMachine.ChangeState(characterCtrl.idelState);
+            return;
+        }
+        
+        CheckConditionsAttack();
+
+        characterCtrl.weaponEquip.CurrentWeapon.EnableAttack();
+
+        // Action
+        StartAttackAsync();
+
+        characterCtrl.SendWeaponDamageBase();
+
+        SubscribeEvents();
+    }
+
+
+    public override void Exit()
+    {
+
+        base.Exit();
+
+        //CancelAttack();
+        UnsubscribeEvents();
+
+        /*postAction = null;
+        attackSystem = null;*/
+
+        if (characterCtrl.weaponEquip.CurrentWeapon != null)
+        {
+            characterCtrl.weaponEquip.CurrentWeapon.DisableAttack();
+        }
+
+    }
+    #region FUNCTION
+    // Check Conditions
+    private bool IsValidWeapon()
+    {
+        return characterCtrl.weaponEquip != null &&
+               characterCtrl.weaponEquip.HasWeapon &&
+               characterCtrl.weaponEquip.CurrentWeapon != null &&
+               characterCtrl.attack != null;
+    }
+
+    #region Attack system
+    // Object Attack Initialization
+
+    private void InitAttackSystems()
+    {
+        attackSystem ??= new AttackWeaponPhysicSystem(
+            characterCtrl.attack.PhysicsProfile,
+            null
+        );
+
+        postAction ??= new PhysicPostAction(
+            characterCtrl.ragdollController.ActionsDataSO,
+            characterCtrl.ragdollController.Balances,
+            Vector2.zero,
+            characterCtrl.attack.PhysicsProfile
+        );
+    }
+
+    //Set Conditions Attack
+    private void CheckConditionsAttack()
+    {
+        AttackWeaponPhysicSystem physicSystem = attackSystem as AttackWeaponPhysicSystem;
+        PhysicPostAction physicPost = postAction as PhysicPostAction;
+        physicSystem?.SetWeapon(characterCtrl?.weaponEquip?.CurrentWeapon);
+        physicPost.SetDir(characterCtrl.AttackDir);
+    }
+
+    // Execute Attack
+    private void StartAttackAsync()
+    {
+        string name = characterCtrl.AttackDir.x > 0
+            ? StringConst.WEAPON_RIGHT_PHYSIC
+            : StringConst.WEAPON_LEFT_PHYSIC;
+
+        atc = new CancellationTokenSource();
+        ltc = CancellationTokenSource.CreateLinkedTokenSource(atc.Token, characterCtrl.destroyCancellationToken);
+        var token = ltc.Token;
+
+
+        UniTaskSafe.Forget(
+            tc => attackSystem.ExecuteAttack(
+                tc,
+                characterCtrl.AttackDir,
+                postAction,
+                name),
+            token,
+            "MainWeaponAttackState"
+        );
+        characterCtrl.weaponEquip.SetFlipWeaponByAttackDir(characterCtrl.AttackDir);
+    }
+
+    public void CancelAttack()
+    {
+        if (ltc != null)
+        {
+            if (!ltc.IsCancellationRequested) ltc.Cancel();
+
+            ltc.Dispose();
+            ltc = null;
+        }
+
+        if (atc != null)
+        {
+            if (!atc.IsCancellationRequested) atc.Cancel();
+
+            atc.Dispose();
+            atc = null;
+        }
+    }
+    #endregion
+
+    #region Event
+    private void SubscribeEvents()
+    {
+        attackSystem.OnAttackEnd += EndAttack;
+        characterCtrl.weaponEquip.OnDrop += WeaponEquip_OnDrop;
+
+        characterCtrl.weaponEquip.CurrentWeapon.DamageDealer.OnIsSendDamage += PlayerWeaponEquip_OnIsSendDamage;
+    }
+
+    private void UnsubscribeEvents()
+    {
+        attackSystem.OnAttackEnd -= EndAttack;
+        characterCtrl.weaponEquip.OnDrop -= WeaponEquip_OnDrop;
+
+        characterCtrl.weaponEquip.CurrentWeapon.DamageDealer.OnIsSendDamage -= PlayerWeaponEquip_OnIsSendDamage;
+    }
+
+    private void WeaponEquip_OnDrop()
+    {
+        stateMachine.ChangeState(characterCtrl.idelState);
+    }
+    private void EndAttack()
+    {
+        stateMachine.ChangeState(characterCtrl.idelState);
+    }
+
+    private void PlayerWeaponEquip_OnIsSendDamage()
+    {
+        characterCtrl?.weaponEquip?.DropWeapon();
+        characterCtrl?.weaponEquip ? .CurrentWeapon?.WeaponFly(Vector2.up);
+    }
+    #endregion
+
+    #endregion
 }
+#endregion

@@ -52,30 +52,32 @@ public class RagdollController : MonoBehaviour
         postContext = new ActionPostContext(actionBase);
     }
 
-    public void EnableBalancePost(string name)
-    {
-        BalanceData[] balanceDatas = actionBase.GetBalanceArray(name);
-        if (balanceDatas == null || balanceDatas.Length <= 0) return;
+    #region Test
+    /* public void EnableBalancePost(string name)
+     {
+         BalanceData[] balanceDatas = actionBase.GetBalanceArray(name);
+         if (balanceDatas == null || balanceDatas.Length <= 0) return;
 
-        foreach (var item in balanceDatas)
-        {
-            Balance balance = actionBase.GetBalance(item.type);
-            if (balance == null) continue;
-            balance.EnablePose();    
-        }
-    }
-    public void DisableBalancePost(string name)
-    {
-        BalanceData[] balanceDatas = actionBase.GetBalanceArray(name);
-        if (balanceDatas == null || balanceDatas.Length <= 0) return;
+         foreach (var item in balanceDatas)
+         {
+             Balance balance = actionBase.GetBalance(item.type);
+             if (balance == null) continue;
+             balance.EnablePose();    
+         }
+     }
+     public void DisableBalancePost(string name)
+     {
+         BalanceData[] balanceDatas = actionBase.GetBalanceArray(name);
+         if (balanceDatas == null || balanceDatas.Length <= 0) return;
 
-        foreach (var item in balanceDatas)
-        {
-            Balance balance = actionBase.GetBalance(item.type);
-            if (balance == null) continue;
-            balance.DisablePose();
-        }
-    }
+         foreach (var item in balanceDatas)
+         {
+             Balance balance = actionBase.GetBalance(item.type);
+             if (balance == null) continue;
+             balance.DisablePose();
+         }
+     }*/
+    #endregion
 
     #region Init Limb
     public void InitLimbs(CharacterParent parent)
@@ -103,10 +105,10 @@ public class RagdollController : MonoBehaviour
     public void OnHit(Vector2 force, float impact)
     {
         if (impact < knockdownThreshold) return;
-        DisableRagdoll(force);
+        DisableRagdoll();
     }
 
-    public void DisableRagdoll(Vector2 force)
+    public void DisableRagdoll()
     {
         if (isRagdoll) return;
         isRagdoll = true;
@@ -116,8 +118,6 @@ public class RagdollController : MonoBehaviour
             if (b == null) continue;
            
             b.DisablePose();
-            b.Rb.AddForce(force*knockbackForce, ForceMode2D.Impulse);
-            //b.Rb.AddForce(force*knockbackForce, ForceMode2D.Force);
         }
     }
 
@@ -139,6 +139,16 @@ public class RagdollController : MonoBehaviour
             b.EnablePose();
         }
         isRagdoll = false;
+    }
+    public void KnockBackCharacter(Vector2 dir)
+    {
+        foreach (var b in balances)
+        {
+            if (b == null) continue;
+
+            b.Rb.AddForce(dir*knockbackForce, ForceMode2D.Impulse);
+            //b.Rb.AddForce(force*knockbackForce, ForceMode2D.Force);
+        }
     }
     #endregion
 

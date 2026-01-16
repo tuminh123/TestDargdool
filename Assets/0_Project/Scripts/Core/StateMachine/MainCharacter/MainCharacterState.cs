@@ -59,6 +59,7 @@ public class MainCharacterState : IState
 
     private void TryAttack()
     {
+        //stateMachine.ChangeState(characterCtrl.attackState);
 
         if (characterCtrl.weaponEquip.HasWeapon)
         {

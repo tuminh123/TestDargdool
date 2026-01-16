@@ -134,7 +134,6 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
 
         if (SingletonManager.Instance == null || SingletonManager.Instance.soundManager == null) return;
         SingletonManager.Instance.soundManager.PlaySound(SoundType.Crunch);
-
     }
     public void SetIsStunned(bool isStunned)
     {

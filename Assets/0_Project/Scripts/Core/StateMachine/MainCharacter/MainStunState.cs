@@ -14,8 +14,9 @@ public class MainStunState : MainCharacterState
     {
         base.Enter();
         time = stunTime;
-        characterCtrl?.ragdollController?.DisableRagdoll(characterCtrl.GetKnockDir());
-        //characterCtrl.SetKnockBackBalance();
+
+        characterCtrl?.ragdollController?.DisableRagdoll();
+        characterCtrl?.ragdollController?.KnockBackCharacter(characterCtrl.GetKnockDir());
         
         
     }

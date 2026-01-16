@@ -10,6 +10,7 @@ public class WeaponPhysicDamageDealer : MonoBehaviour
     [SerializeField] float maxDamage = 50f;
     [SerializeField] LayerMask targetLayer;
     [SerializeField] Rigidbody2D rb;
+    [SerializeField] Faction faction;
 
     IAttackContext attackContext;
     IObjSendDamage objSendDamage;
@@ -41,7 +42,10 @@ public class WeaponPhysicDamageDealer : MonoBehaviour
     {
         damagedTargets.Clear();
     }
-
+    public void SetFaction(Faction faction)
+    {
+        this.faction = faction;
+    }
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (attackContext == null || !attackContext.IsAttacking) return;
@@ -56,9 +60,8 @@ public class WeaponPhysicDamageDealer : MonoBehaviour
 
         if (!target || target == objSendDamage.OnjSend) return;
         if (damagedTargets.Contains(target)) return;
-
+        if (faction == hitBox.Faction) return;
         if (!targetLayer.Contains(target.layer)) return;
-        //Debug.Log("1");
         damagedTargets.Add(target);
 
         OnIsSendDamage?.Invoke();

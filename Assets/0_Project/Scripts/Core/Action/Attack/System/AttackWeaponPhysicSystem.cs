@@ -16,12 +16,20 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
         this.profile = profile;
         this.weapon = weapon;
     }
+    public void SetWeapon(WeaponBase weapon)
+    {
+        this.weapon = weapon;
+    }
     public async UniTask ExecuteAttack(CancellationToken token, Vector2 dir, IPostAction postBase, string nameAction)
     {
         try
         {
             await UniTask.WhenAll(WeaponPostAttack(token, weapon, dir), BalancePostAttack(token, nameAction,postBase,dir));
 
+        }
+        catch (OperationCanceledException e)
+        {
+            Debug.Log(e);
         }
         catch (System.Exception e)
         {
@@ -51,8 +59,13 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
                 weapon.rb.AddForce(dir * profile.PushForce, ForceMode2D.Impulse);
                 weapon.rb.AddTorque(dir.x * profile.WeaponTorque, ForceMode2D.Force);
 
+                if (token == null) return;
                 await UniTask.WaitForFixedUpdate(token);
             }
+        }
+        catch (OperationCanceledException e)
+        {
+            Debug.Log(e);
         }
         catch (System.Exception e)
         {
@@ -77,6 +90,10 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
 
                 await UniTask.WaitForFixedUpdate(token);
             }
+        }
+        catch (OperationCanceledException e)
+        {
+            Debug.Log(e);
         }
         catch (System.Exception e)
         {
