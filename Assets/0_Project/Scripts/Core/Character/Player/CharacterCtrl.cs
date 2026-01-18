@@ -20,7 +20,6 @@ public class CharacterCtrl : CharacterParent
 
     [SerializeField] private float stunTime = 4;
     public DetectionZone zone { get; private set; }
-    public PlayerWeaponEquip weaponEquip { get; private set; }
 
     public Vector3 LastPositionBeforeDead { get; private set; }
 
@@ -48,7 +47,7 @@ public class CharacterCtrl : CharacterParent
         Instance = this;
 
         zone = GetComponentInChildren<DetectionZone>();
-        weaponEquip = GetComponentInChildren<PlayerWeaponEquip>();
+
         //state init
         //stateMachine = new StateMachine();
         moveState = new MainMoveState(stateMachine, this);
@@ -116,11 +115,6 @@ public class CharacterCtrl : CharacterParent
     public override void OnTakeDamage(float damage)
     {
         base.OnTakeDamage(damage);
-
-        /*if(weaponEquip != null )
-        {
-            weaponEquip.DropWeapon();
-        }*/
 
         if(healthBase.CurrentHealth < healthBase.MaxHealth * 0.3f)
         {
@@ -196,30 +190,5 @@ public class CharacterCtrl : CharacterParent
         healthBase.SetCurrentHealth(stats.MaxHealth * oldPercent);
 
     }
-
-    #region Weapon Damage Handle
-    public void SendWeaponDamageBase()
-    {
-        if (weaponEquip == null || weaponEquip.CurrentWeapon == null) return;
-        
-        Global.Send(new SignalSendDamage
-        {
-            damaged = DamageCaculate() + weaponEquip.CurrentWeapon.Damage
-        });
-    }
-    private float DamageCaculate()
-    {
-        float baseDamage = stats.DamageBase;
-
-        bool isCrit = UnityEngine.Random.value < stats.CritChane;
-
-        if (isCrit)
-        {
-            baseDamage *= stats.CritMultiplier;
-        }
-
-        return baseDamage;
-    }
-    #endregion
 
 }

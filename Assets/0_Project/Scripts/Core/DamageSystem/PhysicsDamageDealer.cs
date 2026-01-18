@@ -57,6 +57,7 @@ public class PhysicsDamageDealer : MonoBehaviour
         if (damagedTargets.Contains(target)) return;
         if (!targetLayer.Contains(target.layer)) return;
         if (faction == hitBox.Faction) return;
+        Debug.Log(hitBox.Faction.ToString());
 
         // float impact = rb.mass * col.relativeVelocity.sqrMagnitude;
         float impact = rb.mass * col.relativeVelocity.magnitude;

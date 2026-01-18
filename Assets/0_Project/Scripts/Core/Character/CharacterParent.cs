@@ -52,6 +52,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     public RagdollController ragdollController { get; private set; }
     public AttackContext attackContext { get; private set; }
     public GroundDetect groundDetect { get; private set; }
+    public EquipmentBase weaponEquip { get; private set; }
     #endregion
     [Space]
     [SerializeField] protected Stats stats;
@@ -92,7 +93,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         healthBase = GetComponent<HealthBase>();
         ragdollController = GetComponent<RagdollController>();
         attackContext = GetComponent<AttackContext>();
-      
+        weaponEquip = GetComponentInChildren<EquipmentBase>();
 
         stateMachine = new StateMachine();
 
@@ -126,6 +127,9 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         string damageText = $" -{damage}";
         damageNumber.Spawn(transform.position, damageText);
 
+        Vector2 dir = Random.value > 0.5f ? Vector2.right : Vector2.left;
+        weaponEquip?.DropWeapon(dir);
+
         isStunned = true;
         if (ZenManager.Instance == null) return;
         VfxBase vfx = ZenManager.Instance.vfxPoolManager.Spawn(StringConst.HURTVFX, transform.position, Quaternion.identity);
@@ -140,6 +144,7 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         this.isStunned = isStunned;
     }
 
+    #region Damage Caculate
     public void SendDamageBase()
     {
         Global.Send(new SignalSendDamage
@@ -147,6 +152,18 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
             damaged = DamageCaculate()
         });
     }
+
+    public void SendWeaponDamageBase()
+    {
+        if (weaponEquip == null || weaponEquip.CurrentWeapon == null) return;
+
+        Global.Send(new SignalSendDamage
+        {
+            damaged = DamageCaculate() + weaponEquip.CurrentWeapon.Damage
+        });
+    }
+ 
+
     private float DamageCaculate()
     {
         float baseDamage = stats.DamageBase;
@@ -161,7 +178,9 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         return baseDamage;
     }
     #endregion
-   
+
+    #endregion
+
     #region Reset character
 
     public void ResetOnGameRestart()

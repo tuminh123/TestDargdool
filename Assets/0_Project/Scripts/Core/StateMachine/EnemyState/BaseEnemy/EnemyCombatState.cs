@@ -37,8 +37,16 @@ public class EnemyCombatState : EnemyBaseState
 
         if (attackTime <= 0f)
         {
-            stateMachine.ChangeState(enemyBasic.enemyAttackState);
-            return;
+            if (enemyBasic.weaponEquip.HasWeapon)
+            {
+                stateMachine.ChangeState(enemyBasic.enemyBaseWeaponAttack);
+                return;
+            }
+            else 
+            {
+                stateMachine.ChangeState(enemyBasic.enemyAttackState);
+                return;
+            }
         }
 
         enemyBasic.idle.IdleHandle(enemyBasic.ragdollController.actionBase);

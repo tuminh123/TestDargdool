@@ -21,17 +21,11 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
     [SerializeField] protected TrailRenderer[] trails;
 
     #region Component
-    [Inject] public WeaponPhysicDamageDealer DamageDealer { get; private set; }
+    [SerializeField] protected WeaponPhysicDamageDealer damageDealer;
     [SerializeField] protected ItemDeSpawn weaponDeSpawn;
-
-    /* [Inject]
-     void Init(WeaponPhysicDamageDealer damageDealer)
-     {
-         this.damageDealer = damageDealer;
-     }*/
-
     #endregion
 
+    public bool isEquipping { get; private set; }
     public bool IsAttacking { get;private set; }
 
     public GameObject OnjSend => gameObject;
@@ -41,15 +35,15 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
     
     //get
     public float Damage => damage;
+    public WeaponPhysicDamageDealer DamageDealer => damageDealer;
 
     private void Start()
     {
-       /* if (damageDealer == null)
-        {
-            damageDealer = GetComponentInChildren<WeaponPhysicDamageDealer>();
-        }*/
         DamageDealer.Init(this, this);
     }
+
+    public void Equipping() => isEquipping = true;
+    public void UnEquipping() => isEquipping = false;
 
     public void DisableAttack()
     {

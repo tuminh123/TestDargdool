@@ -18,7 +18,12 @@ public abstract class EquipmentBase : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out WeaponBase weapon)) return ;
+        if (HasWeapon) return;
+        if (weapon.isEquipping) return;
+
         currentWeapon = weapon;
+        
+        weapon.Equipping();
 
         SetAbstractWeaponWhenEquip();
 
@@ -36,13 +41,19 @@ public abstract class EquipmentBase : MonoBehaviour
         SetFlipWeaponByHand(currentWeapon);
     }
 
-    public virtual void DropWeapon()
+    public virtual void DropWeapon(Vector2 dir)
     {
         OnDrop?.Invoke();
+        if (currentWeapon == null) return;
+
         currentWeapon?.DamageDealer?.SetFaction(Faction.None);
         currentWeapon.transform.parent = null;
         currentHand = null;
+
         currentWeapon.rb.bodyType = RigidbodyType2D.Dynamic;
+        currentWeapon.UnEquipping();
+        currentWeapon.WeaponFly(dir);
+
         currentWeapon = null;
 
     }

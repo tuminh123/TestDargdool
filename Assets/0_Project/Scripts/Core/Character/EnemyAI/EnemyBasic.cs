@@ -9,6 +9,7 @@
     public EnemyIdleState enemyIdleState { get; private set; }
     public EnemyJumpState enemyJumpState { get; private set; }
     public EnemyBreakBoxState enemyBreakBoxState { get; private set; }
+    public EnemyBaseWeaponAttack enemyBaseWeaponAttack { get; private set; }
     #endregion
 
     protected override void Awake()
@@ -22,6 +23,7 @@
         enemyIdleState = new EnemyIdleState(stateMachine, this);
         enemyJumpState = new EnemyJumpState(stateMachine, this);
         enemyBreakBoxState  = new EnemyBreakBoxState(stateMachine, this);
+        enemyBaseWeaponAttack = new EnemyBaseWeaponAttack(stateMachine, this);
     }
     protected override void Start()
     {

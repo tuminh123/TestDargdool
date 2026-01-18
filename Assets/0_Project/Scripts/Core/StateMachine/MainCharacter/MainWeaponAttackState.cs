@@ -146,16 +146,10 @@ public class MainWeaponAttackState : MainCharacterState
 
         base.Exit();
 
-        //CancelAttack();
-        UnsubscribeEvents();
-
         /*postAction = null;
         attackSystem = null;*/
 
-        if (characterCtrl.weaponEquip.CurrentWeapon != null)
-        {
-            characterCtrl.weaponEquip.CurrentWeapon.DisableAttack();
-        }
+      UnsubscribeEvents();
 
     }
     #region FUNCTION
@@ -245,7 +239,6 @@ public class MainWeaponAttackState : MainCharacterState
         attackSystem.OnAttackEnd += EndAttack;
         characterCtrl.weaponEquip.OnDrop += WeaponEquip_OnDrop;
 
-        characterCtrl.weaponEquip.CurrentWeapon.DamageDealer.OnIsSendDamage += PlayerWeaponEquip_OnIsSendDamage;
     }
 
     private void UnsubscribeEvents()
@@ -253,7 +246,6 @@ public class MainWeaponAttackState : MainCharacterState
         attackSystem.OnAttackEnd -= EndAttack;
         characterCtrl.weaponEquip.OnDrop -= WeaponEquip_OnDrop;
 
-        characterCtrl.weaponEquip.CurrentWeapon.DamageDealer.OnIsSendDamage -= PlayerWeaponEquip_OnIsSendDamage;
     }
 
     private void WeaponEquip_OnDrop()
@@ -262,14 +254,16 @@ public class MainWeaponAttackState : MainCharacterState
     }
     private void EndAttack()
     {
+        CancelAttack();
+
+        if (characterCtrl.weaponEquip.CurrentWeapon != null)
+        {
+            characterCtrl.weaponEquip.CurrentWeapon.DisableAttack();
+        }
+
         stateMachine.ChangeState(characterCtrl.idelState);
     }
 
-    private void PlayerWeaponEquip_OnIsSendDamage()
-    {
-        characterCtrl?.weaponEquip?.DropWeapon();
-        characterCtrl?.weaponEquip ? .CurrentWeapon?.WeaponFly(Vector2.up);
-    }
     #endregion
 
     #endregion
