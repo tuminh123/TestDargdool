@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02059fddd6333e342a2a3ad78e51cfc2, type: 3}
+  m_Name: Vfx_Attack
+  m_EditorClassIdentifier: 
+  nameObj: attack_vfx
+  objectData: {fileID: 5447545923182648384, guid: 46ffd2ff65d2a1040acfe8a239bf50f0, type: 3}

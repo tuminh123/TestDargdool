@@ -131,6 +131,7 @@ public class MainWeaponAttackState : MainCharacterState
         CheckConditionsAttack();
 
         characterCtrl.weaponEquip.CurrentWeapon.EnableAttack();
+        characterCtrl.weaponEquip.CurrentWeapon.EnableEffect(true);
 
         // Action
         StartAttackAsync();
@@ -258,6 +259,7 @@ public class MainWeaponAttackState : MainCharacterState
 
         if (characterCtrl.weaponEquip.CurrentWeapon != null)
         {
+            characterCtrl.weaponEquip.CurrentWeapon.EnableEffect(false);
             characterCtrl.weaponEquip.CurrentWeapon.DisableAttack();
         }
 

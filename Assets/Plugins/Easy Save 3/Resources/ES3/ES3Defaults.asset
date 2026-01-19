@@ -36,8 +36,11 @@ MonoBehaviour:
     assemblyNames:
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
+    - CFXRDemo
+    - CFXRRuntime
     - DamageNumbersPro
     - IngameDebugConsole.Runtime
+    - KinoBloom.Runtime
     - Lofelt.NiceVibrations
     - Lofelt.NiceVibrations.Demo
     - MaxSdk.Scripts

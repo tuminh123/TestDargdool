@@ -6,7 +6,7 @@ using Zenject;
 
 public class VfxDeSpawn : MonoBehaviour
 {
-    [InjectOptional] private VfxPoolManager vfxPoolManager;
+    [SerializeField] private VfxPoolManager vfxPoolManager;
     [SerializeField] private float durationTime;
     private float time;
     private VfxBase vfxBase;
@@ -22,16 +22,10 @@ public class VfxDeSpawn : MonoBehaviour
         time-=Time.deltaTime;
         if(time <= 0)
         {
-            VfxDeSpawnHandle();
+            
 
             time = durationTime;
         }
     }
 
-    private void VfxDeSpawnHandle()
-    {
-        ZenManager.Instance.vfxPoolManager.DeSpawn(vfxBase);
-        Transform holder = ZenManager.Instance.vfxPoolManager.Holder;
-        ZenManager.Instance.vfxPoolManager.SetParent(vfxBase, holder);
-    }
 }

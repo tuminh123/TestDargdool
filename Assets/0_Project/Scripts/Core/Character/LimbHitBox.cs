@@ -1,4 +1,5 @@
 ﻿using Core;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class LimbHitBox : GameElement,IReceive<SignalSendDamage>,IPhysicReceiveDamage
@@ -7,10 +8,11 @@ public class LimbHitBox : GameElement,IReceive<SignalSendDamage>,IPhysicReceiveD
     [SerializeField] Faction faction;
     private float damage;
     CharacterParent owner;
-
+    //get
     public Faction Faction => faction;
 
     GameObject IPhysicReceiveDamage.Owner => owner.gameObject;
+
 
     public void Init(CharacterParent owner)
     {
@@ -32,6 +34,11 @@ public class LimbHitBox : GameElement,IReceive<SignalSendDamage>,IPhysicReceiveD
         if (owner == null) return;
         float finalDamage = damage * damageScale + rawDamage;
 
+        if (owner.VfxPoolManager != null)
+        {
+            VfxBase vfx = null;
+            owner.VfxPoolManager.SpawnVfx(StringConst.HITVFX, gameObject, out vfx);
+        }
         owner.healthBase.TakeDamaged(finalDamage);
         owner.ragdollController.OnHit(force, rawDamage);
     }

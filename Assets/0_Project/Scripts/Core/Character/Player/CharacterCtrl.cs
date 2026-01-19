@@ -155,11 +155,15 @@ public class CharacterCtrl : CharacterParent
         LastPositionBeforeDead = transform.position;
 
         //SetKnockBackBalance();
+        VfxBase vfx = null;
+        vfxPoolManager.SpawnVfx(StringConst.DIEVFX, gameObject, out vfx);
 
-        if (ragdollController != null) ragdollController.DisableRagdoll();
+        if (ragdollController != null)
+        {
+            ragdollController.DisableRagdoll();
+            ragdollController.KnockBackCharacter(GetKnockDir());
+        }
         else return;
-        //DisableBalance();
-        //weaponEquip.Equipping();
 
         GameEventBus.RaisePlayerLose(this);
     }

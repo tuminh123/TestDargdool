@@ -40,8 +40,9 @@ public class Stats
 #endregion
 public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
 {
-    [InjectOptional]
-    private VfxPoolManager vfxPoolManager;
+
+    [SerializeField] protected VfxPoolManager vfxPoolManager;
+    public VfxPoolManager VfxPoolManager => vfxPoolManager;
 
     #region Child component
     public Move move { get; private set; }
@@ -58,6 +59,9 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     [SerializeField] protected Stats stats;
     [Space]
     [SerializeField] private DamageNumber damageNumber;
+    [Space]
+    [SerializeField] private GameObject leftHand;
+    [SerializeField] private GameObject rightHand;
 
     public StateMachine stateMachine { get; private set; }
 
@@ -77,6 +81,8 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
     public Stats Stats => stats;
 
     public GameObject OnjSend => transform.gameObject;
+    public GameObject LeftHand => leftHand;
+    public GameObject RightHand => rightHand;
 
     public abstract void OnDead();
     public abstract Vector2 GetKnockDir();
@@ -131,10 +137,12 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         weaponEquip?.DropWeapon(dir);
 
         isStunned = true;
-        if (ZenManager.Instance == null) return;
-        VfxBase vfx = ZenManager.Instance.vfxPoolManager.Spawn(StringConst.HURTVFX, transform.position, Quaternion.identity);
+        //if (ZenManager.Instance == null || ZenManager.Instance.vfxPoolManager) return;
+        VfxBase vfx = null;
+        vfxPoolManager.SpawnVfx(StringConst.HURTVFX, gameObject,out vfx);
 
-        ZenManager.Instance.vfxPoolManager.SetParent(vfx, transform);
+        if (vfx == null) return;
+        vfxPoolManager.SetParent(vfx, transform);
 
         if (SingletonManager.Instance == null || SingletonManager.Instance.soundManager == null) return;
         SingletonManager.Instance.soundManager.PlaySound(SoundType.Crunch);
@@ -247,6 +255,14 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         stats.SetDamageBase(buffDamageBase);
 
         healthBase.SetMaxHealth(stats.MaxHealth);
+    }
+    public void EffectSpawns(GameObject @object,out VfxBase vfx)
+    {
+        vfxPoolManager.SpawnVfx(StringConst.ATTACKVFX, @object, out vfx);
+    }
+    public void EffectDeSpawns(VfxBase @object)
+    {
+        vfxPoolManager.DeSpawn(@object);
     }
     #endregion
 }

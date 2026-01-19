@@ -38,6 +38,9 @@ public static class StringConst
     //Vfx
     public const string DIEVFX = "DieVfx";
     public const string HURTVFX = "HurtVfx";
+    public const string ATTACKVFX = "AttackVfx";
+    public const string HITVFX = "HitVfx";
+    public const string EXPLOSIONVFX = "ExplosionVfx";
 
     //Weapon
     public const string WEAPON = "Weapon";

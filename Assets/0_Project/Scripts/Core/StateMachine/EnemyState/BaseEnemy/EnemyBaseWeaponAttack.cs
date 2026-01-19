@@ -25,6 +25,7 @@ public class EnemyBaseWeaponAttack : EnemyBaseState
         CheckConditionsAttack();
 
         enemyBasic.weaponEquip.CurrentWeapon.EnableAttack();
+        enemyBasic.weaponEquip.CurrentWeapon.EnableEffect(true);
 
         // Action
         StartAttackAsync();
@@ -153,6 +154,7 @@ public class EnemyBaseWeaponAttack : EnemyBaseState
         if (enemyBasic.weaponEquip.CurrentWeapon != null)
         {
             enemyBasic.weaponEquip.CurrentWeapon.DisableAttack();
+            enemyBasic.weaponEquip.CurrentWeapon.EnableEffect(false);
         }
 
         stateMachine.ChangeState(enemyBasic.enemyIdleState);

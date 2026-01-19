@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponPhysicDamageDealer : MonoBehaviour
+public class WeaponPhysicDamageDealer : APhysicDamageDeal
 {
     public event System.Action OnIsSendDamage;
 
     //[SerializeField] float minImpact = 3f;
-    [SerializeField] float damageMultiplier = 0.05f;
+  /*  [SerializeField] float damageMultiplier = 0.05f;
     [SerializeField] float maxDamage = 50f;
     [SerializeField] LayerMask targetLayer;
     [SerializeField] Rigidbody2D rb;
@@ -14,9 +14,9 @@ public class WeaponPhysicDamageDealer : MonoBehaviour
 
     IAttackContext attackContext;
     IObjSendDamage objSendDamage;
-    HashSet<GameObject> damagedTargets = new();
+   
 
-    public void Init(IObjSendDamage objSendDamage, IAttackContext attackContext)
+    public override void Init(IObjSendDamage objSendDamage, IAttackContext attackContext)
     {
         //Debug.Log($"[InitWeapons] attackContext = {attackContext}");
         this.objSendDamage = objSendDamage;
@@ -41,7 +41,7 @@ public class WeaponPhysicDamageDealer : MonoBehaviour
     public void ClearTarget()
     {
         damagedTargets.Clear();
-    }
+    }*/
     public void SetFaction(Faction faction)
     {
         this.faction = faction;

@@ -1,10 +1,12 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class MainAttackState : MainCharacterState
 {
     private IPostAction postAction;
+    private VfxBase vfx = null;
 
     public MainAttackState(StateMachine stateMachine, CharacterCtrl characterCtrl) : base(stateMachine, characterCtrl)
     {
@@ -20,6 +22,8 @@ public class MainAttackState : MainCharacterState
         characterCtrl.attackContext.EnableAttack();
         characterCtrl?.ragdollController?.postContext.SetPostAction(postAction);
 
+        GameObject hand = characterCtrl.AttackDir.x > 0 ? characterCtrl.RightHand : characterCtrl.LeftHand; 
+        characterCtrl.EffectSpawns(hand,out vfx);
         characterCtrl?.attack?.attackContext?.ExecuteAttack(characterCtrl.AttackDir,characterCtrl?.ragdollController?.actionBase,name,characterCtrl.gameObject);
         characterCtrl.SendDamageBase();
 
@@ -30,7 +34,6 @@ public class MainAttackState : MainCharacterState
     {
         base.Exit();
 
-        characterCtrl.attackContext.DisableAttack();
         characterCtrl.attack.currentAttack.OnAttackEnd -= EndAttack;
 
     }
@@ -38,6 +41,11 @@ public class MainAttackState : MainCharacterState
     private void EndAttack()
     {
         //Debug.Log("End");
+        if (vfx != null)
+        {
+            characterCtrl.EffectDeSpawns(vfx);
+        }
+        characterCtrl.attackContext.DisableAttack();
         stateMachine.ChangeState(characterCtrl.idelState);
     }
 

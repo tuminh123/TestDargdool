@@ -84,6 +84,7 @@ public class AttackSmoothSystem : IRagdollAttackSystem
                 if (elapsed < configSO.LaunchTime)
                 {
                     balance.Rb.AddForce(attackDir * configSO.AttackForce, ForceMode2D.Impulse);
+                    //balance.Rb.linearVelocity =  attackDir * configSO.AttackForce;
                 }
 
                 SmoothMotionHelper.SmoothMoveTowardsLimited(balance.Rb, targetPos, configSO.MaxSpeed, configSO.MaxForce, configSO.DecelDistance);

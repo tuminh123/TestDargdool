@@ -16,4 +16,4 @@ MonoBehaviour:
   weaponTorque: 30
   impulseDuration: 0.3
   pushForce: 30
-  recoveryAngularDamping: 6
+  recoveryAngularDamping: 10
