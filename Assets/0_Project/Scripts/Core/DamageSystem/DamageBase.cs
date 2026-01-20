@@ -15,7 +15,7 @@ public class DamageBase : MonoBehaviour
         this.damageBase = damageBase;
     }
 
-    public virtual bool SenderDamageTo()
+    public virtual bool SenderDamageTo(out Collider2D[] colliders)
     {
         #region test
         /*  Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius,layer);
@@ -32,7 +32,7 @@ public class DamageBase : MonoBehaviour
           return false;*/
         #endregion
 
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, layer);
+        colliders = Physics2D.OverlapCircleAll(transform.position, radius, layer);
 
         foreach (Collider2D collider in colliders)
         {
@@ -48,7 +48,7 @@ public class DamageBase : MonoBehaviour
         return false;
 
     }
-    
+
     protected void DamageHandle(IDamageable health)
     {
         //Debug.Log($"1 ");

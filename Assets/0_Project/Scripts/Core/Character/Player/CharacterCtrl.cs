@@ -156,7 +156,7 @@ public class CharacterCtrl : CharacterParent
 
         //SetKnockBackBalance();
         VfxBase vfx = null;
-        vfxPoolManager.SpawnVfx(StringConst.DIEVFX, gameObject, out vfx);
+        ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.DIEVFX, gameObject, out vfx);
 
         if (ragdollController != null)
         {

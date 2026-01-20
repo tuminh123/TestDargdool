@@ -1,31 +1,51 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using UnityEditor;
 using UnityEngine;
 using Zenject;
 
 public class VfxDeSpawn : MonoBehaviour
 {
-    [SerializeField] private VfxPoolManager vfxPoolManager;
-    [SerializeField] private float durationTime;
-    private float time;
-    private VfxBase vfxBase;
+    [SerializeField] protected int timeDuration = 3;
+    [SerializeField] protected VfxBase vfxBase;
 
-    private void Awake()
+    private CancellationTokenSource cts;
+
+    private void OnEnable()
     {
-        vfxBase = GetComponentInParent<VfxBase>();
-        time = durationTime;
+        // Tạo token hủy khi Disable
+        cts = new CancellationTokenSource();
+
+        // Kết hợp token Disable + Destroy
+        var linkedToken = CancellationTokenSource
+            .CreateLinkedTokenSource(cts.Token, this.GetCancellationTokenOnDestroy())
+            .Token;
+
+        WaitForDeSpawn(linkedToken).Forget();
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        time-=Time.deltaTime;
-        if(time <= 0)
+        // Hủy task khi disable
+        if (cts != null)
         {
-            
-
-            time = durationTime;
+            cts.Cancel();
+            cts.Dispose();
+            cts = null;
         }
     }
 
+    public async UniTask WaitForDeSpawn(CancellationToken token)
+    {
+        try
+        {
+            await UniTask.Delay(timeDuration * 1000, cancellationToken: token);
+
+            ZenManager.Instance?.vfxPoolManager?.DeSpawnVfx(vfxBase);
+        }
+        catch (OperationCanceledException) { }
+    }
 }

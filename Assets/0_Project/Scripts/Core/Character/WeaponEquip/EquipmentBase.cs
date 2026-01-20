@@ -38,6 +38,7 @@ public abstract class EquipmentBase : MonoBehaviour
         currentWeapon.transform.position = currentHand.transform.position;
         currentWeapon.rb.bodyType = RigidbodyType2D.Kinematic;
         currentWeapon.transform.parent = currentHand.transform;
+        currentWeapon.WeaponDeSpawn.gameObject.SetActive(false);
         SetFlipWeaponByHand(currentWeapon);
     }
 
@@ -51,6 +52,7 @@ public abstract class EquipmentBase : MonoBehaviour
         currentHand = null;
 
         currentWeapon.rb.bodyType = RigidbodyType2D.Dynamic;
+        currentWeapon.WeaponDeSpawn.gameObject.SetActive(true);
         currentWeapon.UnEquipping();
         currentWeapon.WeaponFly(dir);
 

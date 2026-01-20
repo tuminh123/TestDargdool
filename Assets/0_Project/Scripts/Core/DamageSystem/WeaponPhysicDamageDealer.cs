@@ -62,6 +62,10 @@ public class WeaponPhysicDamageDealer : APhysicDamageDeal
         if (damagedTargets.Contains(target)) return;
         if (faction == hitBox.Faction) return;
         if (!targetLayer.Contains(target.layer)) return;
+
+        VfxBase vfx = null;
+        ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.HURTVFX, col.gameObject, out vfx);
+
         damagedTargets.Add(target);
 
         OnIsSendDamage?.Invoke();

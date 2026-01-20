@@ -20,13 +20,13 @@ public class Dagger : ObjInGameBase
     {
         // nếu đã trúng mục tiêu → không kiểm tra nữa
         if (hasHit) return;
-
+/*
         // kiểm tra damage
         if (weaponDamage.SenderDamageTo())
         {
             hasHit = true;
             ZenManager.Instance.objInGamePoolManager.DeSpawn(this);
-        }
+        }*/
     }
 
     public void SetDaggerAction(Vector2 dir,float rot)

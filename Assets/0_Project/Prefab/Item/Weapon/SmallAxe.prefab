@@ -115,11 +115,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   force: 10
   weaponType: 1
-  weaponDeSpawn: {fileID: 9199314602462558142}
   damage: 100
-  damageDealer: {fileID: 7660186789402274510}
   trails:
   - {fileID: 3613094979975425037}
+  damageDealer: {fileID: 7660186789402274510}
+  weaponDeSpawn: {fileID: 9199314602462558142}
 --- !u!1 &819766602102926650
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,8 +260,9 @@ MonoBehaviour:
   maxDamage: 50
   targetLayer:
     serializedVersion: 2
-    m_Bits: 640
+    m_Bits: 704
   rb: {fileID: 2581199471579178898}
+  faction: 0
 --- !u!1 &8977764511953324626
 GameObject:
   m_ObjectHideFlags: 0

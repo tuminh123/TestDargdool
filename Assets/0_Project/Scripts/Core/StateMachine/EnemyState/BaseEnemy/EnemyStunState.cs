@@ -14,7 +14,10 @@ public class EnemyStunState : EnemyBaseState
     {
         base.Enter();
         stunTime = stunDuration;
-       
+
+        Vector2 dir = Random.value > 0.5f ? Vector2.right : Vector2.left;
+        enemyBasic?.weaponEquip?.DropWeapon(dir);
+
         enemyBasic?.ragdollController?.DisableRagdoll();
         enemyBasic?.ragdollController?.KnockBackCharacter(enemyBasic.GetKnockDir());
 

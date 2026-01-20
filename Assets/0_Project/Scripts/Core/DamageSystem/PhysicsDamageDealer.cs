@@ -57,6 +57,9 @@ public class PhysicsDamageDealer : APhysicDamageDeal
         if (!targetLayer.Contains(target.layer)) return;
         if (faction == hitBox.Faction) return;
 
+        VfxBase vfx = null;
+        ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.HITVFX,col.gameObject, out vfx);
+
         //Debug.Log(hitBox.Faction.ToString());
 
         // float impact = rb.mass * col.relativeVelocity.sqrMagnitude;

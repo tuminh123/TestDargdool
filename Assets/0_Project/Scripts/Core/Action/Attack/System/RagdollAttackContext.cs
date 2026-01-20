@@ -21,7 +21,7 @@ public class RagdollAttackContext
     public void ExecuteAttack(Vector2 dir, IPostAction postAction, string name, GameObject obj)
     {
 
-        CancelAttack();
+        //CancelAttack();
 
         atc = new CancellationTokenSource();
         ltc = CancellationTokenSource.CreateLinkedTokenSource(atc.Token, obj.GetCancellationTokenOnDestroy());

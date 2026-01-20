@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3952973671934898030
 Transform:
   m_ObjectHideFlags: 0
@@ -94,8 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b315b84dd35b6c845a77ab9fa8757b67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vfxPoolManager: {fileID: 0}
-  durationTime: 0
+  timeDuration: 3
+  vfxBase: {fileID: 3803035618624129334}
 --- !u!1001 &2433213675319283819
 PrefabInstance:
   m_ObjectHideFlags: 0

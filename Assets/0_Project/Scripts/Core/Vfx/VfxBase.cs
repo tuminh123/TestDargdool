@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class VfxBase : MonoBehaviour, IObjectPool,IResettable
 {
     [SerializeField] protected ParticleSystem[] systems;
-
+    
     public abstract string GetObjectName();
 
     public void PlayVfx()

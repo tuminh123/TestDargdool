@@ -29,6 +29,7 @@ public abstract class WeaponBase : ItemBase,IAttackContext,IObjSendDamage
     public bool IsAttacking { get;private set; }
 
     public GameObject OnjSend => gameObject;
+    public ItemDeSpawn WeaponDeSpawn => weaponDeSpawn;
 
     public event Action OnAttackStart;
     //Coroutine moveCoroutine;

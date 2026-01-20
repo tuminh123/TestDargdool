@@ -34,11 +34,6 @@ public class LimbHitBox : GameElement,IReceive<SignalSendDamage>,IPhysicReceiveD
         if (owner == null) return;
         float finalDamage = damage * damageScale + rawDamage;
 
-        if (owner.VfxPoolManager != null)
-        {
-            VfxBase vfx = null;
-            owner.VfxPoolManager.SpawnVfx(StringConst.HITVFX, gameObject, out vfx);
-        }
         owner.healthBase.TakeDamaged(finalDamage);
         owner.ragdollController.OnHit(force, rawDamage);
     }

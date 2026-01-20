@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("AdsManager.Instance is NULL – skip ads");
             yield break;
         }
-        AdsManager.Instance.InterAdsBegin();
+        AdsManager.Instance?.InterAdsBegin();
 
 
     }
@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;  
 
-        ZenManager.Instance.waveSpawner.ResetWave();
+        ZenManager.Instance?.waveSpawner?.ResetWave();
 
         var resettableObjects = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
         foreach (var r in resettableObjects)
@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
         }
 
         StopAllCoroutines();
-        ZenManager.Instance.uIManager.CloseCurrentPopup();
+        ZenManager.Instance?.uIManager?.CloseCurrentPopup();
 
         if (CharacterCtrl.Instance != null)
         {
@@ -172,6 +172,7 @@ public class GameManager : MonoBehaviour
         if (AdsManager.Instance == null)
         {
             Debug.LogWarning("AdsManager.Instance is NULL – skip ads");
+            return;
         }
         AdsManager.Instance.InterAdsBegin();
     }

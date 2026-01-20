@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class ItemPoolManager : ObjectPoolManager<ItemBase>
 {
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Debug.Log("1");
+            Spawn(StringConst.BOMB_BASE,transform.position,Quaternion.identity);
+            Debug.Log("2");
+        }
+    }
     public void SpawnRandomItem(Vector3 pos)
     {
         ItemBase item = Spawn(data.GetRandomPrefab(),pos,Quaternion.identity);

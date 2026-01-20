@@ -95,8 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b315b84dd35b6c845a77ab9fa8757b67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vfxPoolManager: {fileID: 0}
-  durationTime: 3
+  timeDuration: 3
+  vfxBase: {fileID: 7335449197023224853}
 --- !u!1001 &7638581194883960643
 PrefabInstance:
   m_ObjectHideFlags: 0

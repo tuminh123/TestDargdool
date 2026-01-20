@@ -1,6 +1,6 @@
 ﻿
 using Core;
-using System;
+
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -8,8 +8,7 @@ using Zenject;
 
 public abstract class EnemyAI : CharacterParent
 {
-    [InjectOptional]
-    private ItemPoolManager itemPoolManager;
+
 
     [SerializeField] protected float maxAttackDistance = 3;
     //Time change state
@@ -17,7 +16,6 @@ public abstract class EnemyAI : CharacterParent
     [SerializeField] protected float stunnedDuration = 4;
     [SerializeField] protected float dieDuration = 3;
 
-    [SerializeField] protected ParticleSystem dieParticle;
     [SerializeField] protected BoxDetect boxDetect;
 
     public CharacterCtrl characterCtrl { get;private set; }
@@ -38,14 +36,12 @@ public abstract class EnemyAI : CharacterParent
     {
         base.Start();
         characterCtrl = CharacterCtrl.Instance;
-        dieParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
         boxDetect.OnBoxDetect += EnemyAI_OnBoxDetect;
     }
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        StopCoroutine(SetDieParticle());
 
         boxDetect.OnBoxDetect -= EnemyAI_OnBoxDetect;
     }
@@ -110,7 +106,16 @@ public abstract class EnemyAI : CharacterParent
     }  
     public void EnemyDieHandle()
     {
-        if (ragdollController != null) ragdollController.DisableRagdoll();
+        VfxBase vfx = null;
+        ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.DIEVFX, gameObject, out vfx);
+
+        Vector2 dir = Random.value > 0.5f ? Vector2.right : Vector2.left;
+        weaponEquip?.DropWeapon(dir);
+        if (ragdollController != null)
+        {
+            ragdollController.DisableRagdoll();
+            ragdollController.KnockBackCharacter(GetKnockDir());
+        }
         else return;
         //DisableBalance();
         
@@ -118,15 +123,7 @@ public abstract class EnemyAI : CharacterParent
 
         ragdollController?.Explode();
 
-        StartCoroutine(SetDieParticle());
-
         if (LevelManager.Instance == null) return;
-        LevelManager.Instance.AddExp(100);
-    }
-    private IEnumerator SetDieParticle()
-    {
-        dieParticle.Play();
-        yield return new WaitForSeconds(3);
-        dieParticle.Clear();
+        LevelManager.Instance.AddExp(10);
     }
 }

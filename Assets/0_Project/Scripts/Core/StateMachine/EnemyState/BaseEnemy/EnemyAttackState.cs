@@ -38,6 +38,7 @@ public class EnemyAttackState : EnemyBaseState
 
     private void EndAttack()
     {
+        enemyBasic?.attack?.attackContext?.CancelAttack();
         if (vfx != null)
         {
             enemyBasic.EffectDeSpawns(vfx);

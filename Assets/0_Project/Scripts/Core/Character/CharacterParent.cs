@@ -41,9 +41,6 @@ public class Stats
 public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
 {
 
-    [SerializeField] protected VfxPoolManager vfxPoolManager;
-    public VfxPoolManager VfxPoolManager => vfxPoolManager;
-
     #region Child component
     public Move move { get; private set; }
     public Attack attack { get; private set; }
@@ -128,21 +125,20 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
 
     public virtual void OnTakeDamage(float damage)
     {
-        if(healthBase.IsDead) return;
+        Vector2 dir = Random.value > 0.5f ? Vector2.right : Vector2.left;
+        weaponEquip?.DropWeapon(dir);
+        if (healthBase.IsDead) return;
 
         string damageText = $" -{damage}";
         damageNumber.Spawn(transform.position, damageText);
 
-        Vector2 dir = Random.value > 0.5f ? Vector2.right : Vector2.left;
-        weaponEquip?.DropWeapon(dir);
-
         isStunned = true;
         //if (ZenManager.Instance == null || ZenManager.Instance.vfxPoolManager) return;
         VfxBase vfx = null;
-        vfxPoolManager.SpawnVfx(StringConst.HURTVFX, gameObject,out vfx);
+        ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.HURTVFX, gameObject,out vfx);
 
         if (vfx == null) return;
-        vfxPoolManager.SetParent(vfx, transform);
+        ZenManager.Instance?.vfxPoolManager?.SetParent(vfx, transform);
 
         if (SingletonManager.Instance == null || SingletonManager.Instance.soundManager == null) return;
         SingletonManager.Instance.soundManager.PlaySound(SoundType.Crunch);
@@ -256,13 +252,17 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
 
         healthBase.SetMaxHealth(stats.MaxHealth);
     }
-    public void EffectSpawns(GameObject @object,out VfxBase vfx)
+    public void EffectSpawns(GameObject @object, out VfxBase vfx)
     {
-        vfxPoolManager.SpawnVfx(StringConst.ATTACKVFX, @object, out vfx);
+        vfx = null;
+        if (ZenManager.Instance != null && ZenManager.Instance.vfxPoolManager != null)
+        {
+            ZenManager.Instance.vfxPoolManager.SpawnVfx(StringConst.ATTACKVFX, @object, out vfx);
+        }
     }
     public void EffectDeSpawns(VfxBase @object)
     {
-        vfxPoolManager.DeSpawn(@object);
+        ZenManager.Instance?.vfxPoolManager?.DeSpawn(@object);
     }
     #endregion
 }

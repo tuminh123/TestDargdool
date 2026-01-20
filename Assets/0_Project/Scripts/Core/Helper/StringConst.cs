@@ -41,6 +41,7 @@ public static class StringConst
     public const string ATTACKVFX = "AttackVfx";
     public const string HITVFX = "HitVfx";
     public const string EXPLOSIONVFX = "ExplosionVfx";
+    public const string FIREVFX = "FireVfx";
 
     //Weapon
     public const string WEAPON = "Weapon";
@@ -56,6 +57,7 @@ public static class StringConst
     public const string SPEARWEAPON = "SpearWeapon";
     public const string TWINSSWORDWEAPON = "TwinsSwordWeapon";
     public const string WARAXEWEAPON = "WarAxeWeapon";
+    public const string BOMB_BASE = "BombBase";
 
     //Projectile
     public const string SHURIKENPROJECTILE = "ShurikenProjectile";
@@ -65,4 +67,5 @@ public static class StringConst
     public const string NOTHING = "Nothing";
     public const string HORIZONTAL = "Horizontal";
     public const string VERTICAL = "Vertical";
+    public const string BOMB_EXPLOSION = "explosion_bomb_base";
 }

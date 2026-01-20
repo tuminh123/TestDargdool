@@ -41,6 +41,7 @@ public class MainAttackState : MainCharacterState
     private void EndAttack()
     {
         //Debug.Log("End");
+        characterCtrl?.attack?.attackContext?.CancelAttack();
         if (vfx != null)
         {
             characterCtrl.EffectDeSpawns(vfx);
