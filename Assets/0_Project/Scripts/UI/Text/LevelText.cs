@@ -1,21 +1,28 @@
+using System;
 using UnityEngine;
 
 public class LevelText : TextBase
 {
     private void Start()
     {
-        if (LevelManager.Instance == null) return;
-        GameEventBus.OnLevelUp += GameEventBus_OnLevelUp;
-
-        if (DataManager.Instance == null) return;
-        GameEventBus_OnLevelUp(LevelManager.Instance.Level);
+        if (LevelManager.Instance == null || LevelManager.Instance.RuntimeData == null) return;
+        LevelManager.Instance.RuntimeData.OnLevelChange += OnLevelUp;
+        GameEventBus.OnGameRestart += GameEventBus_OnGameRestart;
     }
 
     private void OnDestroy()
     {
-        GameEventBus.OnLevelUp -= GameEventBus_OnLevelUp;
+        if (LevelManager.Instance == null || LevelManager.Instance.RuntimeData == null) return;
+        LevelManager.Instance.RuntimeData.OnLevelChange -= OnLevelUp;
+        GameEventBus.OnGameRestart -= GameEventBus_OnGameRestart;
     }
-    private void GameEventBus_OnLevelUp(int level)
+
+    private void GameEventBus_OnGameRestart()
+    {
+        OnLevelUp(LevelManager.Instance.Level);
+    }
+
+    private void OnLevelUp(int level)
     {
         string text = $"Level : {level}";
         UpdateText(text);

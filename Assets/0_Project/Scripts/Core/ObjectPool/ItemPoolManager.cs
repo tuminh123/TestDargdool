@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class ItemPoolManager : ObjectPoolManager<ItemBase>
 {
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            Debug.Log("1");
-            Spawn(StringConst.BOMB_BASE,transform.position,Quaternion.identity);
-            Debug.Log("2");
-        }
-    }
     public void SpawnRandomItem(Vector3 pos)
     {
         ItemBase item = Spawn(data.GetRandomPrefab(),pos,Quaternion.identity);
@@ -24,7 +15,7 @@ public class ItemPoolManager : ObjectPoolManager<ItemBase>
         for (int i = 0; i < 5; i++)
         {
             Gold item = Spawn(StringConst.GOLD, pos, Quaternion.identity) as Gold;
-            if (item == null) return;
+            if (item == null) continue;
             item.SetVelocity();
         }
       

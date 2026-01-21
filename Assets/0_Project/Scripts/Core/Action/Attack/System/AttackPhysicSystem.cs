@@ -25,11 +25,13 @@ public class AttackPhysicSystem : IRagdollAttackSystem
         }
         catch (OperationCanceledException e)
         {
-            Debug.LogException(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
         catch (System.Exception e)
         {
-            Debug.LogException(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
         finally
         {
@@ -56,11 +58,13 @@ public class AttackPhysicSystem : IRagdollAttackSystem
         }
         catch (OperationCanceledException e)
         {
-            Debug.Log(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
         catch (System.Exception e)
         {
-            Debug.LogException(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
     }
 

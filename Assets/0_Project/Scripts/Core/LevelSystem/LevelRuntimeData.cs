@@ -1,27 +1,21 @@
+
 using UnityEngine;
 
 public class LevelRuntimeData
 {
+    public event System.Action<int> OnLevelChange;
     public int Level { get; private set; }
     public int CurrentExp { get; private set; }
     public int ExpToNext { get; private set; }
 
     private SimpleExpCurve expCurve;
 
-    public LevelRuntimeData(PlayerProgressData saveData, SimpleExpCurve curve)
+    public LevelRuntimeData(SimpleExpCurve curve)
     {
         expCurve = curve;
-        LoadFromSave(saveData);
-    }
-
-    public void LoadFromSave(PlayerProgressData save)
-    {
-        Level = Mathf.Max(1, save.level);
-        CurrentExp = Mathf.Max(0, save.currentExp);
-        ExpToNext = expCurve.GetExpToNextLevel(Level);
-
-        if (CurrentExp >= ExpToNext)
-            CurrentExp = 0;
+        Level = 1;
+        ExpToNext = curve.GetExpToNextLevel(Level);
+        OnLevelChange?.Invoke(Level);
     }
 
     public void AddExp(int amount)
@@ -39,11 +33,7 @@ public class LevelRuntimeData
         CurrentExp -= ExpToNext;
         Level++;
         ExpToNext = expCurve.GetExpToNextLevel(Level);
+        OnLevelChange?.Invoke(Level);
     }
 
-    public void WriteBack(PlayerProgressData save)
-    {
-        save.level = Level;
-        save.currentExp = CurrentExp;
-    }
 }

@@ -43,11 +43,13 @@ public class AttackSmoothSystem : IRagdollAttackSystem
         }
         catch (OperationCanceledException e)
         {
-            Debug.LogException(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
         catch (System.Exception e)
         {
-            Debug.LogException(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
         finally
         {
@@ -64,33 +66,47 @@ public class AttackSmoothSystem : IRagdollAttackSystem
     {
         float elapsed = 0f;
 
-        //Debug.Log(postBase.Balances.Count.ToString());
-        while (elapsed < configSO.AttackDuration)
+        try
         {
-            token.ThrowIfCancellationRequested();
-            elapsed += Time.fixedDeltaTime;
-
-            BalanceData[] balancesData = postBase.GetBalanceArray(nameAction);
-            if (balancesData.Length <= 0) return;
-            foreach (var item in balancesData)
+            //Debug.Log(postBase.Balances.Count.ToString());
+            while (elapsed < configSO.AttackDuration)
             {
-                Balance balance = postBase.GetBalance(item.type);
-                if (balance == null) continue;
-             
-                Vector2 targetPos = attackDir * configSO.AttackReach + Vector2.Perpendicular(attackDir) * configSO.ProceduralOffset;
+                token.ThrowIfCancellationRequested();
+                elapsed += Time.fixedDeltaTime;
 
-                //Debug.Log($"AttackApply | balance={item.Type} | targetPos={targetPos}");
-
-                if (elapsed < configSO.LaunchTime)
+                BalanceData[] balancesData = postBase.GetBalanceArray(nameAction);
+                if (balancesData.Length <= 0) return;
+                foreach (var item in balancesData)
                 {
-                    balance.Rb.AddForce(attackDir * configSO.AttackForce, ForceMode2D.Impulse);
-                    //balance.Rb.linearVelocity =  attackDir * configSO.AttackForce;
+                    Balance balance = postBase.GetBalance(item.type);
+                    if (balance == null) continue;
+
+                    Vector2 targetPos = attackDir * configSO.AttackReach + Vector2.Perpendicular(attackDir) * configSO.ProceduralOffset;
+
+                    //Debug.Log($"AttackApply | balance={item.Type} | targetPos={targetPos}");
+
+                    if (elapsed < configSO.LaunchTime)
+                    {
+                        balance.Rb.AddForce(attackDir * configSO.AttackForce, ForceMode2D.Impulse);
+                        //balance.Rb.linearVelocity =  attackDir * configSO.AttackForce;
+                    }
+
+                    SmoothMotionHelper.SmoothMoveTowardsLimited(balance.Rb, targetPos, configSO.MaxSpeed, configSO.MaxForce, configSO.DecelDistance);
                 }
 
-                SmoothMotionHelper.SmoothMoveTowardsLimited(balance.Rb, targetPos, configSO.MaxSpeed, configSO.MaxForce, configSO.DecelDistance);
-            }
+                await UniTask.WaitForFixedUpdate(token);
 
-            await UniTask.WaitForFixedUpdate(token);
+            }
+        }
+        catch (OperationCanceledException e)
+        {
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
+        }
+        catch (System.Exception e)
+        {
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
     }
 
@@ -99,15 +115,28 @@ public class AttackSmoothSystem : IRagdollAttackSystem
         float poseDuration = 0.35f;
         float elapsed = 0f;
 
-
-        while (elapsed < poseDuration)
+        try
         {
-            token.ThrowIfCancellationRequested();
-            elapsed += Time.fixedDeltaTime;
 
-            postBase.SetAction(nameAction);
+            while (elapsed < poseDuration)
+            {
+                token.ThrowIfCancellationRequested();
+                elapsed += Time.fixedDeltaTime;
 
-            await UniTask.WaitForFixedUpdate(token);
+                postBase.SetAction(nameAction);
+
+                await UniTask.WaitForFixedUpdate(token);
+            }
+        }
+        catch (OperationCanceledException e)
+        {
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
+        }
+        catch (System.Exception e)
+        {
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
     }
 

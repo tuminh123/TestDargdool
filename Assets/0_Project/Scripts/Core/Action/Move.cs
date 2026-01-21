@@ -25,6 +25,7 @@ public class Move :MonoBehaviour
 
     public void LimitMoving(Rigidbody2D Body,Rigidbody2D LeftLeg,Rigidbody2D RightLeg)
     {
+        if (Body == null || LeftLeg == null || RightLeg == null) return;
         LimitVelocity(Body);
         LimitVelocity(LeftLeg);
         LimitVelocity(RightLeg);
@@ -46,11 +47,13 @@ public class Move :MonoBehaviour
     public void MoveHandle(float x, IPostAction action)
     {
         //if (isAttacking) return;
+        if(action == null) return;
 
         Rigidbody2D body = action?.GetBalance(BalanceType.body_up)?.Rb;
         Rigidbody2D rightLeg = action?.GetBalance(BalanceType.right_leg)?.Rb;
         Rigidbody2D leftLeg = action?.GetBalance(BalanceType.left_leg)?.Rb;
 
+        if(body == null ||  rightLeg == null || leftLeg == null) return;
 
         if (Mathf.Abs(x) != 0)
         {

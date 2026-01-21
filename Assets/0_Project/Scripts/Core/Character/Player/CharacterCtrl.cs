@@ -15,6 +15,9 @@ public class CharacterCtrl : CharacterParent
 {    
     public static CharacterCtrl Instance { get; set; }
 
+    [Space]
+    [Header("Character component")]
+    //[SerializeField] private RegenerationDamageArea damageArea;
     [SerializeField] private Transform head;
     [SerializeField] private LevelStatModifier levelStatModifier;
 
@@ -47,7 +50,7 @@ public class CharacterCtrl : CharacterParent
         Instance = this;
 
         zone = GetComponentInChildren<DetectionZone>();
-
+        //damageArea.gameObject.SetActive(false);
         //state init
         //stateMachine = new StateMachine();
         moveState = new MainMoveState(stateMachine, this);
@@ -72,21 +75,24 @@ public class CharacterCtrl : CharacterParent
 
         stateMachine.InitState(idelState);
 
-
+        GameEventBus.OnGameRestart += GameEventBus_OnGameRestart;
         GameEventBus.OnPlayerSpawn += GameEventBus_OnPlayerSpawn;
         GameEventBus.OnLevelUp += ApplyLevel;
+        GameEventBus.OnPlayerRegeneration += GameEventBus_OnPlayerRegeneration;
         healthBase.OnDead += OnDead;
     }
+
+ 
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
+        GameEventBus.OnGameRestart -= GameEventBus_OnGameRestart;
         GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
         GameEventBus.OnLevelUp -= ApplyLevel;
+        GameEventBus.OnPlayerRegeneration -= GameEventBus_OnPlayerRegeneration;
         healthBase.OnDead -= OnDead;
     }
-
-   
 
     private void Update()
     {
@@ -107,6 +113,15 @@ public class CharacterCtrl : CharacterParent
         stateMachine.UpdatePhysicState();
     }
 
+    #region GameEventBus event
+    private void GameEventBus_OnPlayerRegeneration()
+    {
+        
+    }
+    private void GameEventBus_OnGameRestart()
+    {
+        InitPlayerData();
+    }
     private void GameEventBus_OnPlayerSpawn(CharacterCtrl obj)
     {
         obj = this;
@@ -124,6 +139,42 @@ public class CharacterCtrl : CharacterParent
             HapticPatterns.PlayPreset(HapticPatterns.PresetType.SoftImpact);
         }
     }
+    public override void OnDead()
+    {
+        FirebaseService.Instance.LogEvent("player dead", new EventParameter("time", "2025"));
+        LastPositionBeforeDead = transform.position;
+
+        //SetKnockBackBalance();
+        VfxBase vfx = null;
+        ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.DIEVFX, gameObject, out vfx);
+
+        if (ragdollController != null)
+        {
+            ragdollController.DisableRagdoll();
+            ragdollController.KnockBackCharacter(GetKnockDir());
+        }
+        else return;
+
+        GameEventBus.RaisePlayerLose(this);
+    }
+    public void ApplyLevel(int level)
+    {
+
+        /* float oldMax = healthBase.MaxHealth;
+         float oldPercent = healthBase.CurrentHealth / oldMax;*/
+
+        StatsCalculator.ApplyLevelStats(
+            stats,
+            level,
+            levelStatModifier
+        );
+
+        healthBase.SetMaxHealth(stats.MaxHealth);
+        //healthBase.SetCurrentHealth(stats.MaxHealth * oldPercent);
+        healthBase.InitHealth();
+    }
+    #endregion
+
     #region Stats setup
     private void InitPlayerData()
     {
@@ -149,24 +200,7 @@ public class CharacterCtrl : CharacterParent
         tapWorldPos.z = 0;
         attackDir = (tapWorldPos - transform.position).normalized;
     }
-    public override void OnDead()
-    {
-        FirebaseService.Instance.LogEvent("player dead", new EventParameter("time", "2025"));
-        LastPositionBeforeDead = transform.position;
-
-        //SetKnockBackBalance();
-        VfxBase vfx = null;
-        ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.DIEVFX, gameObject, out vfx);
-
-        if (ragdollController != null)
-        {
-            ragdollController.DisableRagdoll();
-            ragdollController.KnockBackCharacter(GetKnockDir());
-        }
-        else return;
-
-        GameEventBus.RaisePlayerLose(this);
-    }
+   
 
     public override Vector2 GetKnockDir()
     {
@@ -176,23 +210,5 @@ public class CharacterCtrl : CharacterParent
         return (transform.position - enemy.transform.position).normalized;
     }
 
-    public void ApplyLevel(int level)
-    {
-        if (DataManager.Instance == null || !DataManager.Instance.IsLoaded) return;
-
-        float oldMax = healthBase.MaxHealth;
-        float oldPercent = healthBase.CurrentHealth / oldMax;
-
-        StatsCalculator.ApplyLevelStats(
-            stats,
-            DataManager.Instance.PlayerData,
-            level,
-            levelStatModifier
-        );
-
-        healthBase.SetMaxHealth(stats.MaxHealth);
-        healthBase.SetCurrentHealth(stats.MaxHealth * oldPercent);
-
-    }
 
 }

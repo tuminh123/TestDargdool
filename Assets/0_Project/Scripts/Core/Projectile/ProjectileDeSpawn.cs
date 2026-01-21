@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Threading;
 using UnityEngine;
 using Zenject;
@@ -21,14 +22,23 @@ public class ProjectileDeSpawn : MonoBehaviour
             .CreateLinkedTokenSource(cts.Token, this.GetCancellationTokenOnDestroy())
             .Token;
 
-        WaitForDeSpawn(linkedToken).Forget();
+        UniTaskSafe.Forget
+        (
+        tc => WaitForDeSpawn(tc),
+        linkedToken,
+        $"{gameObject.name} despawn"
+        );
+        //WaitForDeSpawn(linkedToken).Forget();
     }
 
     private void OnDisable()
     {
-        // Hủy task khi disable
-        cts.Cancel();
-        cts.Dispose();
+        if (cts != null)
+        {
+            cts.Cancel();
+            cts.Dispose();
+            cts = null;
+        }
     }
 
     private void Awake()
@@ -38,8 +48,23 @@ public class ProjectileDeSpawn : MonoBehaviour
 
     public async UniTask WaitForDeSpawn(CancellationToken token)
     {
-        await UniTask.Delay(timeDuration * 1000, cancellationToken: token);
+        try
+        {
+            await UniTask.Delay(timeDuration * 1000, cancellationToken: token);
 
-        ZenManager.Instance. projectilePoolManager.DeSpawn(projectile);
+            ZenManager.Instance?.projectilePoolManager?.DeSpawn(projectile);
+
+        }
+        catch (OperationCanceledException e)
+        {
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
+        }
+        catch (System.Exception e)
+        {
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
+        }
+      
     }
 }

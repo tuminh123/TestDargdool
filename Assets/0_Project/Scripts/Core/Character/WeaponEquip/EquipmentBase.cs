@@ -1,4 +1,4 @@
-
+﻿
 using UnityEngine;
 
 public abstract class EquipmentBase : MonoBehaviour
@@ -33,11 +33,21 @@ public abstract class EquipmentBase : MonoBehaviour
     protected virtual void SetWeapon()
     {
         if (currentWeapon == null) return;
-        currentHand = Random.value > 0.5 ? leftHand : rightHand;
+        /* currentHand = Random.value > 0.5 ? leftHand : rightHand;
 
-        currentWeapon.transform.position = currentHand.transform.position;
+         CurrentWeapon.transform.rotation = Quaternion.Euler(0,0,0);
+         currentWeapon.transform.position = currentHand.transform.position;
+         currentWeapon.transform.parent = currentHand.transform;
+         */
+
+        currentHand = rightHand; // hoặc leftHand cố định
+
+        currentWeapon.transform.SetParent(currentHand.transform);
+        currentWeapon.transform.localPosition = Vector3.zero;
+        currentWeapon.transform.localRotation = Quaternion.Euler(0,0,-90);
+        currentWeapon.transform.localScale = Vector3.one;
+
         currentWeapon.rb.bodyType = RigidbodyType2D.Kinematic;
-        currentWeapon.transform.parent = currentHand.transform;
         currentWeapon.WeaponDeSpawn.gameObject.SetActive(false);
         SetFlipWeaponByHand(currentWeapon);
     }
@@ -53,6 +63,7 @@ public abstract class EquipmentBase : MonoBehaviour
 
         currentWeapon.rb.bodyType = RigidbodyType2D.Dynamic;
         currentWeapon.WeaponDeSpawn.gameObject.SetActive(true);
+        currentWeapon.transform.localRotation = Quaternion.identity;
         currentWeapon.UnEquipping();
         currentWeapon.WeaponFly(dir);
 
@@ -64,8 +75,19 @@ public abstract class EquipmentBase : MonoBehaviour
     public void SetFlipWeaponByAttackDir(Vector3 attackDir)
     {
         if (currentWeapon == null) return;
-        if (attackDir.x < 0) currentWeapon.transform.localScale = new Vector3(-1, 1, 1);
-        if (attackDir.x > 0) currentWeapon.transform.localScale = new Vector3(1, 1, 1);
+
+        if(attackDir.x > 0)
+        {
+            currentWeapon.transform.localScale = new Vector3(1, 1, 1);
+            currentWeapon.transform.localRotation = Quaternion.Euler(0, 0, -90);
+        }
+
+        if (attackDir.x < 0)
+        {
+            currentWeapon.transform.localScale = new Vector3(-1, 1, 1);
+            currentWeapon.transform.localRotation = Quaternion.Euler(0, 0, 90);
+        }
+
     }
     private void SetFlipWeaponByHand(WeaponBase weapon)
     {

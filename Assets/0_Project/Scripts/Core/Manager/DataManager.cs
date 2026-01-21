@@ -3,7 +3,6 @@
 [System.Serializable]
 public class PlayerData
 {
-    [SerializeField] private string name = "player";
     [SerializeField] private int goldCount = 100;
     [SerializeField] private float maxHp = 500;
     [SerializeField] private float damageBase = 30;
@@ -51,7 +50,6 @@ public class PlayerData
 
     public void ResetData()
     {
-        name = "player";
         goldCount = 100;
         maxHp = 200;
         damageBase = 30;
@@ -79,19 +77,14 @@ public class DataManager : MonoBehaviour
     [Space]
     [Header("Upgrade Data")]
     [SerializeField] private UpgradeData[] upgrades;
-    [Space]
-    [Header("Progress Data")]
-    [SerializeField] private PlayerProgressData progressData;
 
     private const string PLAYER_KEY = "PlayerData";
     private const string UPGRADE_KEY = "UpgradeData";
-    private const string PROGRESS_KEY = "PlayerProgressData";
 
     private const string SAVE_FILE = "SaveData.es3";
     public bool IsLoaded { get; private set; }
     // ================= GETTER =================
     public PlayerData PlayerData => playerData;
-    public PlayerProgressData ProgressData => progressData;
     public UpgradeData[] Upgrades => upgrades;
 
     private void Awake()
@@ -111,13 +104,6 @@ public class DataManager : MonoBehaviour
         IsLoaded = true;
     }
 
-    private void Start()
-    {
-        if ( LevelManager.Instance == null)return;
-        LevelManager.Instance.Init(progressData);
-
-    }
-
 
     #region Play Data Save/Load
     public void DataSave()
@@ -129,7 +115,6 @@ public class DataManager : MonoBehaviour
         }
 
         ES3.Save(PLAYER_KEY, playerData, SAVE_FILE);
-        ES3.Save(PROGRESS_KEY, progressData, SAVE_FILE);
         ES3.Save(UPGRADE_KEY, upgrades, SAVE_FILE);
 
         Debug.Log("Game Saved");
@@ -148,7 +133,6 @@ public class DataManager : MonoBehaviour
         {
             playerData = ES3.Load<PlayerData>(PLAYER_KEY, SAVE_FILE);
             upgrades = ES3.Load<UpgradeData[]>(UPGRADE_KEY, SAVE_FILE);
-            progressData = ES3.Load<PlayerProgressData>(PROGRESS_KEY, SAVE_FILE);
         }
         catch
         {
@@ -163,9 +147,6 @@ public class DataManager : MonoBehaviour
         playerData = new PlayerData();
         playerData.ResetData();
 
-        // Level / EXP
-        progressData = new PlayerProgressData();
-
         // Upgrade
         upgrades = new UpgradeData[]
         {
@@ -178,14 +159,9 @@ public class DataManager : MonoBehaviour
     public void ResetData()
     {
         playerData.ResetData();
-        progressData.Reset();
 
         ResetAllUpgrades();
         DataSave();
-
-        if (ZenManager.Instance != null && LevelManager.Instance != null)
-            LevelManager.Instance.Init(progressData);
-
         Debug.Log("All data reset");
     }
     public void DeleteAllData()

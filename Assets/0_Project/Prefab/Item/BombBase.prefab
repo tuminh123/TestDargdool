@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6717020093822059316}
+  - component: {fileID: 6177195845428926898}
   - component: {fileID: 4695248250819078223}
   m_Layer: 9
   m_Name: damage
@@ -16,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6717020093822059316
 Transform:
   m_ObjectHideFlags: 0
@@ -32,6 +33,42 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1917517782660130385}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &6177195845428926898
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433695858195264582}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 10
 --- !u!114 &4695248250819078223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,10 +82,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageBase: 30
-  radius: 10
-  layer:
-    serializedVersion: 2
-    m_Bits: 192
 --- !u!1 &7674242725408399958
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,7 +254,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 0
 --- !u!58 &3238434820700815790
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -270,8 +303,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50fea8ca702c6d44085c1bb6c573c66f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 10
+  force: 15
   timeExplosion: 2
-  timeDeSpawn: 3
+  timeDeSpawn: 2
   model: {fileID: 6538094891658762792}
   damage: {fileID: 4695248250819078223}

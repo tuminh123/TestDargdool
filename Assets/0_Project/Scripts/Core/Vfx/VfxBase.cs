@@ -27,6 +27,6 @@ public abstract class VfxBase : MonoBehaviour, IObjectPool,IResettable
 
     public void ResetOnGameRestart()
     {
-        ZenManager.Instance.vfxPoolManager.DeSpawn(this);
+        ZenManager.Instance?.vfxPoolManager?.DeSpawn(this);
     }
 }

@@ -22,8 +22,13 @@ public class ItemDeSpawn : MonoBehaviour
         var linkedToken = CancellationTokenSource
             .CreateLinkedTokenSource(cts.Token, this.GetCancellationTokenOnDestroy())
             .Token;
-
-        WaitForDeSpawn(linkedToken).Forget();
+        UniTaskSafe.Forget
+        (
+            tc => WaitForDeSpawn(tc),
+            linkedToken,
+            $"{gameObject.name} despawn"
+        );
+        //WaitForDeSpawn(linkedToken).Forget();
     }
 
     private void OnDisable()
@@ -31,7 +36,7 @@ public class ItemDeSpawn : MonoBehaviour
         // Hủy task khi disable
         if (cts != null)
         {
-            cts.Cancel();
+            if (!cts.IsCancellationRequested) cts.Cancel();
             cts.Dispose();
             cts = null;
         }
@@ -50,13 +55,21 @@ public class ItemDeSpawn : MonoBehaviour
 
             if (!token.IsCancellationRequested && itemBase != null) ItemDeSpawnHandle();
         }
-        catch (OperationCanceledException) { }
+        catch (OperationCanceledException e)
+        {
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
+        }
+        catch (System.Exception e)
+        {
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
+        }
     }
 
     private void ItemDeSpawnHandle()
     {
-        Transform holder = ZenManager.Instance. itemPoolManager.Holder;
-        ZenManager.Instance.itemPoolManager.DeSpawn(itemBase);
-        ZenManager.Instance. itemPoolManager.SetParent(itemBase, holder);
+        ZenManager.Instance?.itemPoolManager?.DeSpawn(itemBase);
+        ZenManager.Instance?. itemPoolManager?.SetParent(itemBase);
     }
 }

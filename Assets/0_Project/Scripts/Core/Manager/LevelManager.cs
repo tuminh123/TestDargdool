@@ -22,16 +22,16 @@ public class PlayerProgressData
 [DefaultExecutionOrder(-1010)]
 public class LevelManager : MonoBehaviour
 {
+    public event Action<int, int> OnExpChanged;
     public static LevelManager Instance { get;private set; }
     [SerializeField] private SimpleExpCurve expCurve;
+    private LevelRuntimeData runtimeData;
 
-    private LevelService service;
+    public int Level => runtimeData.Level;
+    public int CurrentExp => runtimeData.CurrentExp;
+    public int ExpToNext => runtimeData.ExpToNext;
 
-    public int Level;
-    public int CurrentExp => service.Runtime.CurrentExp;
-    public int ExpToNext => service.Runtime.ExpToNext;
-
-    public event Action<int, int> OnExpChanged;
+    public LevelRuntimeData RuntimeData => runtimeData;
 
     private void Awake()
     {
@@ -42,23 +42,33 @@ public class LevelManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+    }
+    private void Start()
+    {
+        Init();
 
+        GameEventBus.OnGameRestart += GameEventBus_OnGameRestart;
     }
 
-    public void Init(PlayerProgressData saveData)
+    private void OnDestroy()
     {
-        service = new LevelService(saveData, expCurve);
+        GameEventBus.OnGameRestart -= GameEventBus_OnGameRestart;
+    }
+    private void GameEventBus_OnGameRestart()
+    {
+        Init();
+    }
 
-        Level = service.Runtime.Level;
+    public void Init()
+    {
+        runtimeData = new LevelRuntimeData(expCurve);
 
         RaiseExpChanged();
     }
 
     public void AddExp(int amount)
     {
-        service.AddExp(amount);
-        Level = service.Runtime.Level;
+        ExpHandle(amount);
         RaiseExpChanged();
     }
 
@@ -67,11 +77,16 @@ public class LevelManager : MonoBehaviour
         OnExpChanged?.Invoke(CurrentExp, ExpToNext);
     }
 
-    public void ResetLevel()
+
+    public void ExpHandle(int amount)
     {
-        service.Reset();
-        RaiseExpChanged();
-        GameEventBus.RaiseLevelUp(Level);
+        runtimeData.AddExp(amount);
+
+        while (runtimeData.CanLevelUp())
+        {
+            runtimeData.ApplyLevelUp();
+            GameEventBus.RaiseLevelUp(runtimeData.Level);
+        }
     }
 }
 

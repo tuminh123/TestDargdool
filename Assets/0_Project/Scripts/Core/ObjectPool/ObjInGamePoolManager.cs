@@ -29,8 +29,9 @@ public class ObjInGamePoolManager : ObjectPoolManager<ObjInGameBase>
         string[] boxTypes =
         {
         StringConst.GOLDBOX,
-        StringConst.WEAPONBOX
-    };
+        StringConst.WEAPONBOX,
+        StringConst.BOMBBOX
+        };
 
         int rand = Random.Range(0, boxTypes.Length);
 

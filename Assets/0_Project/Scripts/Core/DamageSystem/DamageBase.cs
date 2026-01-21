@@ -3,50 +3,22 @@ using UnityEngine;
 public class DamageBase : MonoBehaviour
 {
     [SerializeField] protected float damageBase;
-    [SerializeField] protected float radius;
-    [SerializeField] protected LayerMask layer;
 
-    //get
-    public float Radius => radius;
-    public LayerMask Layer => layer;
-
-    public void SetDamageBase(float damageBase)
+    public void DamageHandle()
     {
-        this.damageBase = damageBase;
+
     }
 
-    public virtual bool SenderDamageTo(out Collider2D[] colliders)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        #region test
-        /*  Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius,layer);
-          foreach (Collider2D collider in colliders)
-          {
-              if(collider == null) continue;
-              if(collider.TryGetComponent(out IDamageable health))
-              {
-                  if (health.IsDead) return false;
-                  DamageHandle(health);
-                  return true;
-              }
-          }
-          return false;*/
-        #endregion
+        if (col == null) return;
+        VfxBase vfxFire = null;
+        ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.FIREVFX, col.gameObject, out vfxFire);
 
-        colliders = Physics2D.OverlapCircleAll(transform.position, radius, layer);
+        if (!col.TryGetComponent(out IDamageable health)) return;
 
-        foreach (Collider2D collider in colliders)
-        {
-            if (collider == null) continue;
-
-            if (!collider.TryGetComponent(out IDamageable health)) continue;
-
-            if (health.IsDead) continue;
-            DamageHandle(health);
-            return true;
-        }
-
-        return false;
-
+        if (health.IsDead) return;
+        DamageHandle(health);
     }
 
     protected void DamageHandle(IDamageable health)
@@ -54,10 +26,12 @@ public class DamageBase : MonoBehaviour
         //Debug.Log($"1 ");
         health.TakeDamaged(damageBase);
     }
-
-    private void OnDrawGizmos()
+    public void DisableDamage()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        gameObject.SetActive(false);
+    }
+    public void EnableDamage()
+    {
+        gameObject.SetActive(true);
     }
 }

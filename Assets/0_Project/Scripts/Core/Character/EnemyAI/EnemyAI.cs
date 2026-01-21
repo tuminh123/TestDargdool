@@ -124,6 +124,6 @@ public abstract class EnemyAI : CharacterParent
         ragdollController?.Explode();
 
         if (LevelManager.Instance == null) return;
-        LevelManager.Instance.AddExp(10);
+        LevelManager.Instance.AddExp(100);
     }
 }

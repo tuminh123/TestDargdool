@@ -19,24 +19,23 @@ public static class StatsCalculator
 {
     public static void ApplyLevelStats(
         Stats runtimeStats,
-        PlayerData baseData,
         int level,
         LevelStatModifier modifier)
     {
         int lv = Mathf.Max(level - 1, 0);
 
         // Health
-        float hp = baseData.Health * (1f + modifier.hpPercentPerLevel * lv);
+        float hp = runtimeStats.MaxHealth * (1f + modifier.hpPercentPerLevel * lv);
 
         // Damage
-        float damage = baseData.Damage * (1f + modifier.damagePercentPerLevel * lv);
+        float damage = runtimeStats.DamageBase * (1f + modifier.damagePercentPerLevel * lv);
 
         // Crit Chance (Clamp để tránh 100%)
-        float critChance = baseData.CritChance + modifier.critChanceFlatPerLevel * lv;
+        float critChance = runtimeStats.CritChane + modifier.critChanceFlatPerLevel * lv;
         critChance = Mathf.Clamp01(critChance);
 
         // Crit Multiplier (>= 1)
-        float critMultiplier = baseData.CritMultiplier + modifier.critMultiplierFlatPerLevel * lv;
+        float critMultiplier = runtimeStats.CritMultiplier + modifier.critMultiplierFlatPerLevel * lv;
         critMultiplier = Mathf.Max(1f, critMultiplier);
 
         runtimeStats.SetMaxHealth(hp);

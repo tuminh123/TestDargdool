@@ -33,7 +33,10 @@ public class MainAttackState : MainCharacterState
     public override void Exit()
     {
         base.Exit();
-
+        if (characterCtrl.healthBase.IsDead || characterCtrl.IsStunned)
+        {
+            characterCtrl.attackContext.DisableAttack();
+        }
         characterCtrl.attack.currentAttack.OnAttackEnd -= EndAttack;
 
     }

@@ -33,6 +33,11 @@ public class EnemyAttackState : EnemyBaseState
     {
         base.Exit();
 
+        if (enemyBasic.healthBase.IsDead || enemyBasic.IsStunned)
+        {
+            enemyBasic.attackContext.DisableAttack();
+        }
+
         enemyBasic.attack.currentAttack.OnAttackEnd -= EndAttack;
     }
 

@@ -33,6 +33,7 @@ public static class StringConst
     public const string BOX = "Box";
     public const string GOLDBOX = "GoldBox";
     public const string WEAPONBOX = "WeaponBox";
+    public const string BOMBBOX = "BombBox";
     public const string HEALINGPOTION = "HealingPotion";
 
     //Vfx

@@ -29,11 +29,13 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
         }
         catch (OperationCanceledException e)
         {
-            Debug.Log(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
         catch (System.Exception e)
         {
-            Debug.LogException(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
         finally
         {
@@ -54,7 +56,7 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
 
                 if (weapon == null) return;
 
-                Debug.Log($"Apply force to {weapon.name}");
+                //Debug.Log($"Apply force to {weapon.name}");
 
                 weapon.rb.AddForce(dir * profile.PushForce, ForceMode2D.Impulse);
                 weapon.rb.AddTorque(dir.x * profile.WeaponTorque, ForceMode2D.Force);
@@ -65,11 +67,13 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
         }
         catch (OperationCanceledException e)
         {
-            Debug.Log(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
         catch (System.Exception e)
         {
-            Debug.LogException(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
 
     }
@@ -93,11 +97,13 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
         }
         catch (OperationCanceledException e)
         {
-            Debug.Log(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
         catch (System.Exception e)
         {
-            Debug.LogException(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
     }
     private void ResetBalanceAttack(WeaponBase weapon, IPostAction postBase,string nameAction)

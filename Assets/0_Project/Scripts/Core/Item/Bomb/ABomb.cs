@@ -9,23 +9,19 @@ public abstract class ABomb : ItemBase
     [SerializeField] protected float timeExplosion = 2;
     [SerializeField] protected float timeDeSpawn = 1;
     [Space]
-    [Header("Inject")]
-    [Space]
     [Header("Component")]
     // component
     [SerializeField] protected Transform model;
     [SerializeField] protected DamageBase damage;
 
     protected CancellationTokenSource cts;
-    protected override void Awake()
-    {
-        base.Awake();
-        model.gameObject.SetActive(true);
-
-        //SetVelocity();
-    }
+    
     private void OnEnable()
     {
+        SetVelocity();
+        model.gameObject.SetActive(true);
+        damage.DisableDamage();
+
         cts = new CancellationTokenSource();
         CancellationToken token = CancellationTokenSource.CreateLinkedTokenSource(cts.Token,this.GetCancellationTokenOnDestroy()).Token;
         UniTaskSafe.Forget
@@ -39,7 +35,7 @@ public abstract class ABomb : ItemBase
     {
         if (cts != null)
         {
-            cts.Cancel();
+            if (!cts.IsCancellationRequested) cts.Cancel();
             cts.Dispose();
             cts = null;
         }
@@ -53,34 +49,27 @@ public abstract class ABomb : ItemBase
             int timeDeSpawn = Mathf.RoundToInt(1000*this.timeDeSpawn);
             await UniTask.Delay(timeExplosion, cancellationToken: token);
 
-            model.gameObject.SetActive(false);
-
             VfxBase vfxExplosion = null;
-            VfxBase vfxFire = null;
+            model.gameObject.SetActive(false);
             ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.EXPLOSIONVFX, gameObject, out vfxExplosion);
-
-            Collider2D[] col = null; 
-            if (damage.SenderDamageTo(out col))
-            {
-                foreach (var item in col)
-                {
-                    if (item == null) continue;
-                    ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.FIREVFX,item.gameObject, out vfxFire);
-                }
-            }
+            damage.EnableDamage();
 
             await UniTask.Delay(timeDeSpawn, cancellationToken:token);
 
+            //vfxExplosion.StopVfx();
+            damage.DisableDamage();
             ZenManager.Instance?.itemPoolManager?.DeSpawn(this);
           
         }
         catch (OperationCanceledException e)
         {
-            Debug.LogException(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
         catch (System.Exception e)
         {
-            Debug.LogException(e);
+            //Debug.LogException(e);
+            Debug.LogWarning(e);
         }
     }
 }
