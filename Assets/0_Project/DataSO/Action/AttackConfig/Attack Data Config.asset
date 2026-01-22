@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80dd393e0a509ba43986c7b26b5ebcd4, type: 3}
   m_Name: Attack Data Config
   m_EditorClassIdentifier: 
-  attackForce: 30
+  attackForce: 25
   attackDuration: 0.5
   maxSpeed: 5
   attackReach: 1

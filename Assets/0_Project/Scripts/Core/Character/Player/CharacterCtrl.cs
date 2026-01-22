@@ -17,13 +17,14 @@ public class CharacterCtrl : CharacterParent
 
     [Space]
     [Header("Character component")]
-    //[SerializeField] private RegenerationDamageArea damageArea;
+    [SerializeField] private RegenerationDamageArea damageArea;
+    public RegenerationDamageArea DamageArea => damageArea;
+
     [SerializeField] private Transform head;
     [SerializeField] private LevelStatModifier levelStatModifier;
 
     [SerializeField] private float stunTime = 4;
     public DetectionZone zone { get; private set; }
-
     public Vector3 LastPositionBeforeDead { get; private set; }
 
     #region  State
@@ -50,7 +51,7 @@ public class CharacterCtrl : CharacterParent
         Instance = this;
 
         zone = GetComponentInChildren<DetectionZone>();
-        //damageArea.gameObject.SetActive(false);
+        damageArea.gameObject.SetActive(false);
         //state init
         //stateMachine = new StateMachine();
         moveState = new MainMoveState(stateMachine, this);
@@ -78,7 +79,6 @@ public class CharacterCtrl : CharacterParent
         GameEventBus.OnGameRestart += GameEventBus_OnGameRestart;
         GameEventBus.OnPlayerSpawn += GameEventBus_OnPlayerSpawn;
         GameEventBus.OnLevelUp += ApplyLevel;
-        GameEventBus.OnPlayerRegeneration += GameEventBus_OnPlayerRegeneration;
         healthBase.OnDead += OnDead;
     }
 
@@ -90,7 +90,6 @@ public class CharacterCtrl : CharacterParent
         GameEventBus.OnGameRestart -= GameEventBus_OnGameRestart;
         GameEventBus.OnPlayerSpawn -= GameEventBus_OnPlayerSpawn;
         GameEventBus.OnLevelUp -= ApplyLevel;
-        GameEventBus.OnPlayerRegeneration -= GameEventBus_OnPlayerRegeneration;
         healthBase.OnDead -= OnDead;
     }
 
@@ -114,10 +113,7 @@ public class CharacterCtrl : CharacterParent
     }
 
     #region GameEventBus event
-    private void GameEventBus_OnPlayerRegeneration()
-    {
-        
-    }
+   
     private void GameEventBus_OnGameRestart()
     {
         InitPlayerData();
@@ -157,6 +153,7 @@ public class CharacterCtrl : CharacterParent
 
         GameEventBus.RaisePlayerLose(this);
     }
+
     public void ApplyLevel(int level)
     {
 

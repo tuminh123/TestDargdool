@@ -36,6 +36,23 @@ public class PlayerData
                 break;
         }
     }
+    public float GetProperties(UpgradeType type)
+    {
+        switch (type)
+        {
+            case UpgradeType.HEALTH:
+                return maxHp;
+            case UpgradeType.DAMAGEBASE:
+                return damageBase;
+            case UpgradeType.CRITCHANCE:
+                return critChance;
+            case UpgradeType.CRITMULTIPLIER:
+                return critMultiplier;
+            default:
+                return 0f;
+        }
+
+    }
     public bool AddGold(int amount)
     {
         goldCount += amount;
@@ -150,17 +167,23 @@ public class DataManager : MonoBehaviour
         // Upgrade
         upgrades = new UpgradeData[]
         {
-            new UpgradeData(UpgradeType.HEALTH,         15, 1.15f, 0.10f),
-            new UpgradeData(UpgradeType.DAMAGEBASE,     20, 1.15f, 0.10f),
-            new UpgradeData(UpgradeType.CRITMULTIPLIER, 25, 1.15f, 0.10f),
-            new UpgradeData(UpgradeType.CRITCHANCE,     30, 1.15f, 0.10f)
+            new UpgradeData(UpgradeType.HEALTH,         30, 0.1f, 1.15f),
+            new UpgradeData(UpgradeType.DAMAGEBASE,     40, 0.1f, 1.15f),
+            new UpgradeData(UpgradeType.CRITMULTIPLIER, 50, 0.1f, 1.15f),
+            new UpgradeData(UpgradeType.CRITCHANCE,     55, 0.1f, 1.15f)
         };
     }
     public void ResetData()
     {
         playerData.ResetData();
 
-        ResetAllUpgrades();
+        upgrades = new UpgradeData[]
+       {
+            new UpgradeData(UpgradeType.HEALTH,         30, 0.1f, 1.15f),
+            new UpgradeData(UpgradeType.DAMAGEBASE,     40, 0.1f, 1.15f),
+            new UpgradeData(UpgradeType.CRITMULTIPLIER, 50, 0.1f, 1.15f),
+            new UpgradeData(UpgradeType.CRITCHANCE,     55, 0.1f, 1.15f)
+       };
         DataSave();
         Debug.Log("All data reset");
     }
@@ -170,23 +193,4 @@ public class DataManager : MonoBehaviour
     }
     #endregion
 
-    #region Data Upgrades
-    public void ResetAllUpgrades()
-    {
-        foreach (var up in upgrades)
-        {
-            if (up == null) continue;
-            up.ResetToDefault();
-        }
-    }
-    public UpgradeData GetUpgradeData(UpgradeType type)
-    {
-        foreach (var up in upgrades)
-        {
-            if(up == null) continue;
-            if (up.Type == type) return up;
-        }
-        return null;
-    }
-    #endregion
 }

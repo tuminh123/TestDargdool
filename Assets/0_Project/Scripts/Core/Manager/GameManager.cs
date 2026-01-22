@@ -73,14 +73,19 @@ public class GameManager : MonoBehaviour
 
         CharacterCtrl player = CharacterCtrl.Instance;
 
-        if (player == null) return;
-        if (player.healthBase == null) return;
-
-        if (player.healthBase.IsDead) 
+        if (player.healthBase.IsDead)
         {
+            player.ragdollController.EnableRagdoll();
             player.transform.position = player.LastPositionBeforeDead;
+            player.healthBase.InitHealth();
 
-            player?.ragdollController?.ResetRagdoll();
+
+            UniTaskSafe.Forget
+               (
+                   tc => DamageHandler(player),
+                   this.GetCancellationTokenOnDestroy(),
+                   $"{gameObject.name}_RegenerationDamageArea"
+               );
         }
 
         //player.weaponEquip.UnEquipping();
@@ -88,6 +93,16 @@ public class GameManager : MonoBehaviour
         ZenManager.Instance.uIManager.PopupLose.ClosePopup();
 
     }
+
+    private async UniTask DamageHandler(CharacterCtrl ctrl)
+    {
+        VfxBase vfxEle = null;
+        ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.ELECTRICVFXAREA, ctrl.gameObject, out vfxEle);
+        ctrl.DamageArea.gameObject.SetActive(true);
+        await UniTask.Delay(2000);
+        ctrl.DamageArea.gameObject.SetActive(false);
+    }
+
     private void GameEventBus_OnGamePause()
     {
         Time.timeScale = 0;
@@ -152,7 +167,6 @@ public class GameManager : MonoBehaviour
             CharacterCtrl.Instance = null;
         }
 
-        // 🟢 TẠO PLAYER MỚI
         Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
 
     }

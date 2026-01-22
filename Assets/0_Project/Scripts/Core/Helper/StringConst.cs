@@ -43,6 +43,7 @@ public static class StringConst
     public const string HITVFX = "HitVfx";
     public const string EXPLOSIONVFX = "ExplosionVfx";
     public const string FIREVFX = "FireVfx";
+    public const string ELECTRICVFXAREA = "ElectricVfxArea";
 
     //Weapon
     public const string WEAPON = "Weapon";

@@ -1,30 +1,20 @@
+using Core;
 using System;
+using TMPro;
 using UnityEngine;
 
-public class LevelText : TextBase
+public class LevelText : GameElement ,IReceive<SignalLevelText>
 {
-    private void Start()
-    {
-        if (LevelManager.Instance == null || LevelManager.Instance.RuntimeData == null) return;
-        LevelManager.Instance.RuntimeData.OnLevelChange += OnLevelUp;
-        GameEventBus.OnGameRestart += GameEventBus_OnGameRestart;
-    }
-
-    private void OnDestroy()
-    {
-        if (LevelManager.Instance == null || LevelManager.Instance.RuntimeData == null) return;
-        LevelManager.Instance.RuntimeData.OnLevelChange -= OnLevelUp;
-        GameEventBus.OnGameRestart -= GameEventBus_OnGameRestart;
-    }
-
-    private void GameEventBus_OnGameRestart()
-    {
-        OnLevelUp(LevelManager.Instance.Level);
-    }
+    [SerializeField] private TextMeshProUGUI text;
 
     private void OnLevelUp(int level)
     {
-        string text = $"Level : {level}";
-        UpdateText(text);
+        string textS = $"Level : {level}";
+        text.text = textS;
+    }
+
+    public void Receive(in SignalLevelText signal)
+    {
+        OnLevelUp(signal.level);
     }
 }

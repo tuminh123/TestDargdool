@@ -1,93 +1,75 @@
+﻿using System;
+using System.Collections;
+using AssetKits.ParticleImage;
+using Core;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpgradeUI : MonoBehaviour
+public class UpgradeUI : MonoBehaviour //GameElement, IReceive<SignalUpgrade>
 {
-    [SerializeField] private TextMeshProUGUI propertieText;
-    [SerializeField] private TextMeshProUGUI goldText;
-    [SerializeField] private Button increaseButton;
+
     [SerializeField] private UpgradeType type;
-    [SerializeField] private Popup.Popup popPanel;
+    [SerializeField] private Button button;
+    [SerializeField] private TextMeshProUGUI costText;
+    [SerializeField] private TextMeshProUGUI statText;
+    [SerializeField] private Popup.Popup popup;
+    [SerializeField] private GameObject particleImage;
+    
+    private UpgradeService service;
+    private IUpgradeCommand command;
+
+    private void Awake() {
+        particleImage.SetActive(false);
+        if(DataManager.Instance == null) return;
+        service = new UpgradeService(DataManager.Instance);
+        command = new UpgradeCommand(type, service);
+    }
 
     private void Start()
     {
-        UpdateText();
-        increaseButton.onClick.AddListener(Upgrade);
+        InitUpgradeUI();
+        button.onClick.AddListener(OnClick);
     }
-
-    private void UpdateText()
+    private void OnClick()
     {
-        if (DataManager.Instance == null) return;
-        UpgradeData dataUpgrade = DataManager.Instance.GetUpgradeData(type);
-        if (dataUpgrade == null) return; 
-        goldText.text = dataUpgrade.UpgradeCost.ToString();
-        propertieText.text = GetStatText();
-
-    }
-
-    private void Upgrade()
-    {
-        if (DataManager.Instance == null) return;
-        UpgradeData dataUpgrade = DataManager.Instance.GetUpgradeData(type);
-        if(dataUpgrade == null) return;
-
-        var goldMgr = SingletonManager.Instance.goldManager;
-
-        if (!goldMgr.MinusGold(dataUpgrade.UpgradeCost))
+        if (!service.CanUpgrade(type))
         {
-            Debug.Log("Not enough gold!");
-            popPanel.OpenPopup();
+            popup.OpenPopup();
             return;
         }
-
-        float stat = GetCurrentStat();
-        float add = (stat/3)* dataUpgrade.StatIncreasePercent;
-
-        int addInt = Mathf.RoundToInt(add);
-
-        Debug.Log($"{stat} : {add}");
-
-        DataManager.Instance.PlayerData.AddProperties(dataUpgrade.Type, addInt);
-
-        dataUpgrade.CostIncrease();
-        //SingletonManager.Instance.dataManager.DataSave();
-        UpdateText();
-    }
-
-    private string GetStatText()
-    {
-        if (DataManager.Instance == null) return string.Empty;
-        UpgradeData dataUpgrade = DataManager.Instance.GetUpgradeData(type);
-        if (dataUpgrade == null) return string.Empty;
-        var data = DataManager.Instance.PlayerData;
-
-        return dataUpgrade.Type switch
+        if (command.Execute())
         {
-            UpgradeType.HEALTH => $"Health : {data.Health}",
-            UpgradeType.DAMAGEBASE => $"Damage : {data.Damage}",
-            UpgradeType.CRITCHANCE => $"Crit : {data.CritChance}",
-            UpgradeType.CRITMULTIPLIER => $"Crit Multiplier : {data.CritMultiplier}",
-            _ => "Unknown"
-        };
+            InitUpgradeUI();
+            
+            UniTaskSafe.Forget
+            (
+                tc => EffectHandle(),
+                this.GetCancellationTokenOnDestroy(),
+                $"{type.ToString()} upgrade effect"
+            );
+
+        }
     }
 
-    private float GetCurrentStat()
+    private async UniTask EffectHandle()
     {
-        if (DataManager.Instance == null) return 0;
-        UpgradeData dataUpgrade = DataManager.Instance.GetUpgradeData(type);
-        if (dataUpgrade == null) return 0;
-        var data = DataManager.Instance.PlayerData;
-
-        return dataUpgrade.Type switch
-        {
-            UpgradeType.HEALTH => data.Health,
-            UpgradeType.DAMAGEBASE => data.Damage,
-            UpgradeType.CRITCHANCE => data.CritChance,
-            UpgradeType.CRITMULTIPLIER => data.CritMultiplier,
-            _ => 0f
-        };
+        particleImage.SetActive(true);
+        await UniTask.Delay(2000);
+        particleImage.SetActive(false);
+    }
+    public void InitUpgradeUI()
+    {
+        if(service == null) return;
+        service.GetStats(type, out float stat, out int cost);
+        costText.text = cost.ToString();
+        statText.text = stat.ToString();
     }
 
+    // public void Receive(in SignalUpgrade signal)
+    // {
+    //     costText.text = signal.NewCost.ToString();
+    //     statText.text = signal.NewStat.ToString();
+    // }
 }

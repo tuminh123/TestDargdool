@@ -20,6 +20,7 @@ public class CameraFollow : MonoBehaviour
         target = CharacterCtrl.Instance.transform;
 
         GameEventBus.OnGameRestart += OnGameRestart;
+        GameEventBus.OnPlayerRegeneration += OnGameRestart;
     }
 
     private void OnGameRestart()
@@ -30,6 +31,7 @@ public class CameraFollow : MonoBehaviour
     private void OnDestroy()
     {
         GameEventBus.OnGameRestart -= OnGameRestart;
+        GameEventBus.OnPlayerRegeneration -= OnGameRestart;
     }
 
     void LateUpdate()

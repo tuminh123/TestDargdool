@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02059fddd6333e342a2a3ad78e51cfc2, type: 3}
+  m_Name: Vfx_ElectricArea
+  m_EditorClassIdentifier: 
+  nameObj: ElectricArea_Vfx
+  objectData: {fileID: 8747028012302837062, guid: 07808b39bf5405f4992db53fc8db492d, type: 3}

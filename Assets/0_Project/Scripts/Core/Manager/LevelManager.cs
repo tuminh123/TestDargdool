@@ -1,24 +1,7 @@
-using UnityEngine;
+using Core;
 using System;
+using UnityEngine;
 
-[Serializable]
-public class PlayerProgressData
-{
-    public int level;
-    public int currentExp;
-
-    public PlayerProgressData()
-    {
-        level = 1;
-        currentExp = 0;
-    }
-
-    public void Reset()
-    {
-        level = 1;
-        currentExp = 0;
-    }
-}
 [DefaultExecutionOrder(-1010)]
 public class LevelManager : MonoBehaviour
 {
@@ -42,11 +25,11 @@ public class LevelManager : MonoBehaviour
         }
 
         Instance = this;
+
+        runtimeData = new LevelRuntimeData(expCurve);
     }
     private void Start()
     {
-        Init();
-
         GameEventBus.OnGameRestart += GameEventBus_OnGameRestart;
     }
 
@@ -56,13 +39,7 @@ public class LevelManager : MonoBehaviour
     }
     private void GameEventBus_OnGameRestart()
     {
-        Init();
-    }
-
-    public void Init()
-    {
-        runtimeData = new LevelRuntimeData(expCurve);
-
+        runtimeData.ResetLevel(expCurve);
         RaiseExpChanged();
     }
 

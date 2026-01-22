@@ -4284,7 +4284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     maxHealth: 150
-    damageBase: 2
+    damageBase: 30
     critChane: 0.1
     critMultiplier: 0.15
   damageNumber: {fileID: 3871730886404011901, guid: 05c764287b5cfdd428a99b0079a24332, type: 3}

@@ -742,7 +742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1909821681977454487}
   - component: {fileID: 6663967027402495547}
-  - component: {fileID: 5845944517610444370}
+  - component: {fileID: 8052974010551439945}
   m_Layer: 5
   m_Name: UpgradeUI
   m_TagString: Untagged
@@ -779,7 +779,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7307202536946854458}
   m_CullTransparentMesh: 1
---- !u!114 &5845944517610444370
+--- !u!114 &8052974010551439945
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -788,13 +788,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7307202536946854458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d6c8421756179a46a86a69408235a38, type: 3}
+  m_Script: {fileID: 11500000, guid: afc1e11e44be61d4ca183c7fb25fa689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  propertieText: {fileID: 5918725873225858912}
-  goldText: {fileID: 2004643515671863164}
-  increaseButton: {fileID: 7691608440259886986}
   type: 0
+  button: {fileID: 7691608440259886986}
+  costText: {fileID: 2004643515671863164}
+  statText: {fileID: 5918725873225858912}
+  popup: {fileID: 0}
 --- !u!1 &8758368612813925720
 GameObject:
   m_ObjectHideFlags: 0
