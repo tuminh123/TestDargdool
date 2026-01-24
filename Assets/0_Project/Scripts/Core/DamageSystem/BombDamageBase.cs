@@ -1,19 +1,16 @@
 ﻿
 using UnityEngine;
-public class DamageBase : MonoBehaviour
+public abstract class BombDamageBase : MonoBehaviour
 {
     [SerializeField] protected float damageBase;
 
-    public void DamageHandle()
-    {
-
-    }
+    public abstract void VfxSpawm(GameObject obj);
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col == null) return;
-        VfxBase vfxFire = null;
-        ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.FIREVFX, col.gameObject, out vfxFire);
+        
+        VfxSpawm(col.gameObject);
 
         if (!col.TryGetComponent(out IDamageable health)) return;
 

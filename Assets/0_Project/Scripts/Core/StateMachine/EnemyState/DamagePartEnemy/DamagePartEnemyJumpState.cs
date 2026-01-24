@@ -9,7 +9,7 @@ public class DamagePartEnemyJumpState : DamagePartEnemyState
     {
         base.Enter();
         float x = partEnemy.AttackDir.x;
-        //partEnemy.jump.JumpHandle(x);
+        partEnemy.jump.JumpHandle(x);
     }
     public override void Update()
     {

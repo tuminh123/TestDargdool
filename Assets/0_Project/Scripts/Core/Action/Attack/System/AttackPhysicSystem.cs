@@ -42,29 +42,15 @@ public class AttackPhysicSystem : IRagdollAttackSystem
     private async UniTask BalancePostAttack(CancellationToken token, string nameAction,IPostAction postAction , Vector2 dir)
     {
         float elapsed = 0f;
-
-        try
+        // Áp lực trong một khoảng thời gian ngắn
+        while (elapsed < profile.ImpulseDuration)
         {
-            // Áp lực trong một khoảng thời gian ngắn
-            while (elapsed < profile.ImpulseDuration)
-            {
-                token.ThrowIfCancellationRequested();
-                elapsed += Time.fixedDeltaTime;
+            token.ThrowIfCancellationRequested();
+            elapsed += Time.fixedDeltaTime;
 
-                postAction.SetAction(nameAction);
+            postAction.SetAction(nameAction);
 
-                await UniTask.WaitForFixedUpdate(token);
-            }
-        }
-        catch (OperationCanceledException e)
-        {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
-        }
-        catch (System.Exception e)
-        {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
+            await UniTask.WaitForFixedUpdate(token);
         }
     }
 

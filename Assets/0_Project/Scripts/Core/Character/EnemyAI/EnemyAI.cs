@@ -19,30 +19,34 @@ public abstract class EnemyAI : CharacterParent
     [SerializeField] protected BoxDetect boxDetect;
 
     public CharacterCtrl characterCtrl { get;private set; }
-    public PlayerDetect playerDetect { get; private set; }
+    //public PlayerDetect playerDetect { get; private set; }
     public float disBetweenEnemyAndPlayer { get; private set; }
 
     //get
     public float MaxAttackDistance => maxAttackDistance;
+    public bool CanAddExp { get; private set; }
     protected override void Awake()
     {
         base.Awake();
         healthBase.SetMaxHealth(stats.MaxHealth);
-        playerDetect = GetComponentInChildren<PlayerDetect>();
+        //playerDetect = GetComponentInChildren<PlayerDetect>();
         //state init
     }
 
     protected override void Start()
     {
         base.Start();
+        CanAddExp = true;
         characterCtrl = CharacterCtrl.Instance;
 
+        if (boxDetect == null) return;
         boxDetect.OnBoxDetect += EnemyAI_OnBoxDetect;
     }
     protected override void OnDestroy()
     {
         base.OnDestroy();
 
+        if (boxDetect == null) return;
         boxDetect.OnBoxDetect -= EnemyAI_OnBoxDetect;
     }
 
@@ -52,13 +56,13 @@ public abstract class EnemyAI : CharacterParent
         attackDir = obj.transform.position - transform.position;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         HandleProperties();
 
         stateMachine.UpdateState();
     }
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         Profiler.BeginSample("Limit moving");
@@ -124,6 +128,8 @@ public abstract class EnemyAI : CharacterParent
         ragdollController?.Explode();
 
         if (LevelManager.Instance == null) return;
+        if (!CanAddExp) return;
         LevelManager.Instance.AddExp(100);
     }
+    public void DontAddExp() => CanAddExp = false;
 }

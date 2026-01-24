@@ -57,13 +57,10 @@ public class ProjectileDeSpawn : MonoBehaviour
         }
         catch (OperationCanceledException e)
         {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
         }
         catch (System.Exception e)
         {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
+            Debug.LogError($"[ProjectileDeSpawn] Unexpected error on {name}\n{e}");
         }
       
     }

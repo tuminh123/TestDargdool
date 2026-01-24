@@ -15,9 +15,13 @@ public class DamagePartEnemyStundState : DamagePartEnemyState
     {
         base.Enter();
         stunTime = stunDuration;
-        //partEnemy.SetKnockBackBalance();
-        //partEnemy?.ragdollController?.DisableRagdoll();
-        
+
+        Vector2 dir = Random.value > 0.5f ? Vector2.right : Vector2.left;
+        partEnemy?.weaponEquip?.DropWeapon(dir);
+
+        partEnemy?.ragdollController?.DisableRagdoll();
+        partEnemy?.ragdollController?.KnockBackCharacter(partEnemy.GetKnockDir());
+
     }
     public override void Update()
     {

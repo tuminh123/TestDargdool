@@ -57,13 +57,10 @@ public class ItemDeSpawn : MonoBehaviour
         }
         catch (OperationCanceledException e)
         {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
         }
         catch (System.Exception e)
         {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
+            Debug.LogError($"[ItemDeSpawn] Unexpected error on {name}\n{e}");
         }
     }
 

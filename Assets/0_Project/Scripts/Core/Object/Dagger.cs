@@ -5,15 +5,15 @@ public class Dagger : ObjInGameBase
 {
     [InjectOptional] private ObjInGamePoolManager objInGamePoolManager;
     [SerializeField] private Transform model;
-    private DamageBase weaponDamage;
+    private BombDamageBase weaponDamage;
     private bool hasHit = false;   // tránh gây damage 2 lần
-    public DamageBase WeaponDamage=>weaponDamage;
+    public BombDamageBase WeaponDamage=>weaponDamage;
     //get
     public bool HasHit => hasHit;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        weaponDamage = GetComponentInChildren<DamageBase>();
+        weaponDamage = GetComponentInChildren<BombDamageBase>();
     }
 
     private void Update()

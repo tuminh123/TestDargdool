@@ -15,18 +15,23 @@ public class DamagePartEnemyChaseState : DamagePartEnemyState
     public override void Update()
     {
         base.Update();
-        if (partEnemy.disBetweenEnemyAndPlayer <= partEnemy.MaxAttackDistance) 
+
+        partEnemy.FlipSystem(partEnemy.AttackDir.x, partEnemy.Head);
+        if (partEnemy.disBetweenEnemyAndPlayer <= partEnemy.MaxAttackDistance)
+        {
             stateMachine.ChangeState(partEnemy.damagePartEnemyCombatState);
+            return;
+        }
     }
     public override void UpdatePhysic()
     {
         base.UpdatePhysic();
 
-        //partEnemy.moving.MoveHandle(Mathf.Sign(partEnemy.AttackDir.x));
+        partEnemy.move.MoveHandle(Mathf.Sign(partEnemy.AttackDir.x), partEnemy.ragdollController.actionBase);
     }
 
     public override void Exit()
     {
-        //partEnemy.moving.StopMoveCoroutine();
+        partEnemy.move.StopMoveCoroutine();
     }
 }

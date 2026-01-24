@@ -54,13 +54,10 @@ public class ObjectInGameDeSpawn : MonoBehaviour
         }
         catch (OperationCanceledException e)
         {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
         }
         catch (System.Exception e)
         {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
+            Debug.LogError($"[ObjInGameDeSpawn] Unexpected error on {name}\n{e}");
         }
     }
 

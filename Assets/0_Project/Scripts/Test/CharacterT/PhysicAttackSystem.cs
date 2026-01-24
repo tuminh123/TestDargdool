@@ -156,7 +156,7 @@ public class PhysicAttackSystem : MonoBehaviour
     {
         AttackHandle attack = GetAttack(); 
         if (attack == null) return; currentAttack = attack; 
-        /* StopAttack(); cts = new CancellationTokenSource();*/ 
+        /* StopAttack(); cts_Shoot = new CancellationTokenSource();*/ 
         //Vector2 dir = Random.value > 0.5f ? Vector2.right : Vector2.left;
         AttackIntent intent = new AttackIntent { direction = dir, strength = 1f }; 
         //attack.Execute(intent, this.GetCancellationTokenOnDestroy()).Forget(); 

@@ -2,30 +2,20 @@
 using UnityEngine;
 public class PlayerDetect : MonoBehaviour
 {
-    [SerializeField] private float radius;
-    [SerializeField] private LayerMask playerLayer;
-    public bool IsPlayer()
+    public CharacterCtrl player { get;private set; }
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Collider2D collider = Physics2D.OverlapCircle(transform.position, radius, playerLayer);
-        return collider != null;
+        if (!collision.TryGetComponent(out CharacterCtrl player)) return;
+        this.player = player;
     }
-    private void OnDrawGizmos()
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        if (!collision.TryGetComponent(out CharacterCtrl player)) return;
+        this.player = player;
     }
-
-    //private void Awake()
-    //{
-    //    IsPlayer = false;
-    //}
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if(collision.CompareTag("Player")) IsPlayer = true;
-    //}
-    //private void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag("Player")) IsPlayer = false;
-    //}
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!collision.TryGetComponent(out CharacterCtrl player)) return;
+        this.player = null;
+    }
 }

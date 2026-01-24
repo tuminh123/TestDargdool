@@ -47,33 +47,20 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
     {
         float elapsed = 0f;
 
-        try
+        while (elapsed < profile.ImpulseDuration)
         {
-            while (elapsed < profile.ImpulseDuration)
-            {
-                token.ThrowIfCancellationRequested();
-                elapsed += Time.fixedDeltaTime;
+            token.ThrowIfCancellationRequested();
+            elapsed += Time.fixedDeltaTime;
 
-                if (weapon == null) return;
+            if (weapon == null) return;
 
-                //Debug.Log($"Apply force to {weapon.name}");
+            //Debug.Log($"Apply force to {weapon.name}");
 
-                weapon.rb.AddForce(dir * profile.PushForce, ForceMode2D.Impulse);
-                weapon.rb.AddTorque(dir.x * profile.WeaponTorque, ForceMode2D.Force);
+            weapon.rb.AddForce(dir * profile.PushForce, ForceMode2D.Impulse);
+            weapon.rb.AddTorque(dir.x * profile.WeaponTorque, ForceMode2D.Force);
 
-                if (token == null) return;
-                await UniTask.WaitForFixedUpdate(token);
-            }
-        }
-        catch (OperationCanceledException e)
-        {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
-        }
-        catch (System.Exception e)
-        {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
+            if (token == null) return;
+            await UniTask.WaitForFixedUpdate(token);
         }
 
     }
@@ -82,28 +69,14 @@ public class AttackWeaponPhysicSystem : IRagdollAttackSystem
     {
         float elapsed = 0f;
 
-        try
+        while (elapsed < profile.ImpulseDuration)
         {
-            // Áp lực trong một khoảng thời gian ngắn
-            while (elapsed < profile.ImpulseDuration)
-            {
-                token.ThrowIfCancellationRequested();
-                elapsed += Time.fixedDeltaTime;
+            token.ThrowIfCancellationRequested();
+            elapsed += Time.fixedDeltaTime;
 
-                postAction.SetAction(nameAction);
+            postAction.SetAction(nameAction);
 
-                await UniTask.WaitForFixedUpdate(token);
-            }
-        }
-        catch (OperationCanceledException e)
-        {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
-        }
-        catch (System.Exception e)
-        {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
+            await UniTask.WaitForFixedUpdate(token);
         }
     }
     private void ResetBalanceAttack(WeaponBase weapon, IPostAction postBase,string nameAction)

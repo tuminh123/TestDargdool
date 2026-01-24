@@ -6,6 +6,7 @@ public abstract class ItemBase : MonoBehaviour,IObjectPool,IResettable
     [SerializeField] protected float force = 10f;
     public Rigidbody2D rb { get; private set; }
 
+    public float Force => force;
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();

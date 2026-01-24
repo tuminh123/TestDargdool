@@ -33,6 +33,9 @@ public class MainAttackState : MainCharacterState
     public override void Exit()
     {
         base.Exit();
+        characterCtrl?.attack?.attackContext?.CancelAttack();
+
+
         if (characterCtrl.healthBase.IsDead || characterCtrl.IsStunned)
         {
             characterCtrl.attackContext.DisableAttack();
@@ -44,8 +47,7 @@ public class MainAttackState : MainCharacterState
     private void EndAttack()
     {
         //Debug.Log("End");
-        characterCtrl?.attack?.attackContext?.CancelAttack();
-        if (vfx != null)
+   if (vfx != null)
         {
             characterCtrl.EffectDeSpawns(vfx);
         }

@@ -33,6 +33,8 @@ public class EnemyAttackState : EnemyBaseState
     {
         base.Exit();
 
+        enemyBasic?.attack?.attackContext?.CancelAttack();
+
         if (enemyBasic.healthBase.IsDead || enemyBasic.IsStunned)
         {
             enemyBasic.attackContext.DisableAttack();
@@ -43,7 +45,7 @@ public class EnemyAttackState : EnemyBaseState
 
     private void EndAttack()
     {
-        enemyBasic?.attack?.attackContext?.CancelAttack();
+      
         if (vfx != null)
         {
             enemyBasic.EffectDeSpawns(vfx);

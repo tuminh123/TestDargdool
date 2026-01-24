@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        if (popupLose == null || popupWin == null) return;
         popupLose.gameObject.SetActive(false);
         popupWin.gameObject.SetActive(false);
     }

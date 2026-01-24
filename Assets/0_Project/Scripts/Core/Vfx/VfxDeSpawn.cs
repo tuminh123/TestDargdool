@@ -50,19 +50,20 @@ public class VfxDeSpawn : MonoBehaviour
             int time = Mathf.RoundToInt(timeDuration * 1000);
             await UniTask.Delay(time, cancellationToken: token);
 
+            if (token.IsCancellationRequested) return;
+            if (this == null || !gameObject.activeInHierarchy) return;
+            if (vfxBase == null) return;
+
             vfxBase.StopVfx();
             ZenManager.Instance?.vfxPoolManager?.DeSpawnVfx(vfxBase);
            
         }
         catch (OperationCanceledException e)
         {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
         }
         catch (System.Exception e)
         {
-            //Debug.LogException(e);
-            Debug.LogWarning(e);
+            Debug.LogError($"[VfxDeSpawn] Unexpected error on {name}\n{e}");
         }
     }
 }

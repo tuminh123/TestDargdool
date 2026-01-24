@@ -12,11 +12,12 @@ public abstract class ABomb : ItemBase
     [Header("Component")]
     // component
     [SerializeField] protected Transform model;
-    [SerializeField] protected DamageBase damage;
+    [SerializeField] protected BombDamageBase damage;
 
     protected CancellationTokenSource cts;
-    
-    private void OnEnable()
+
+    public abstract void EffectSpawm();
+    protected virtual void OnEnable()
     {
         SetVelocity();
         model.gameObject.SetActive(true);
@@ -31,7 +32,7 @@ public abstract class ABomb : ItemBase
             "Bomb!"
         );
     }
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         if (cts != null)
         {
@@ -49,9 +50,11 @@ public abstract class ABomb : ItemBase
             int timeDeSpawn = Mathf.RoundToInt(1000*this.timeDeSpawn);
             await UniTask.Delay(timeExplosion, cancellationToken: token);
 
-            VfxBase vfxExplosion = null;
+          
             model.gameObject.SetActive(false);
-            ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.EXPLOSIONVFX, gameObject, out vfxExplosion);
+
+            EffectSpawm();
+
             damage.EnableDamage();
 
             await UniTask.Delay(timeDeSpawn, cancellationToken:token);

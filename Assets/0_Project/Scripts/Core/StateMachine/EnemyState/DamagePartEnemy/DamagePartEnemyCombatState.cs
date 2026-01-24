@@ -15,7 +15,6 @@ public class DamagePartEnemyCombatState : DamagePartEnemyState
     public override void Enter()
     {
         base.Enter();
-        //partEnemy.idling.IdleHandle();
         attackTime = attackDuration;
     }
 
@@ -25,13 +24,6 @@ public class DamagePartEnemyCombatState : DamagePartEnemyState
 
         attackTime -= Time.deltaTime;
 
-
-        if (partEnemy.disBetweenEnemyAndPlayer > partEnemy.MaxAttackDistance * 3)
-        {
-            stateMachine.ChangeState(partEnemy.damagePartEnemyJumpState);
-            return;
-        }
-
         if (partEnemy.disBetweenEnemyAndPlayer > partEnemy.MaxAttackDistance)
         {
             stateMachine.ChangeState(partEnemy.damagePartEnemyChaseState);
@@ -40,18 +32,12 @@ public class DamagePartEnemyCombatState : DamagePartEnemyState
 
         if (attackTime <= 0f)
         {
-            IState[] states = new IState[]
-            {
-            partEnemy.damagePartEnemyAttackState,
-            partEnemy.damagePartEnemyDefenseState,
-            partEnemy.damagePartEnemyShootState,
-            };
-
-            int rand = Random.Range(0, states.Length);
-            stateMachine.ChangeState(states[rand]);
+            stateMachine.ChangeState(partEnemy.damagePartEnemyAttackState);
             return;
         }
 
-        //partEnemy.idling.IdleHandle();
+        partEnemy.idle.IdleHandle(partEnemy.ragdollController.actionBase);
+
+            
     }
 }

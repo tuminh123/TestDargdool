@@ -25,6 +25,9 @@ public static class StringConst
     public const string WEAPON_RIGHT_PHYSIC = "PhysicWeaponRightPunch";
     public const string WEAPON_RIGHT_ATTACK = "WeaponAttackRight";
     public const string WEAPON_LEFT_ATTACK = "WeaponAttackLeft";
+    public const string ICE_SHOOT_LEFT = "IceShootLeft";
+    public const string ICE_SHOOT_RIGHT = "IceShootRight";
+    public const string ELECTRIC_SKILL = "ElectricSkill";
 
 
     //Object in game
@@ -44,6 +47,8 @@ public static class StringConst
     public const string EXPLOSIONVFX = "ExplosionVfx";
     public const string FIREVFX = "FireVfx";
     public const string ELECTRICVFXAREA = "ElectricVfxArea";
+    public const string ICEBOMBVFX = "IceBombVfx";
+    public const string ICEHITVFX = "IceHitVfx";
 
     //Weapon
     public const string WEAPON = "Weapon";
@@ -60,6 +65,7 @@ public static class StringConst
     public const string TWINSSWORDWEAPON = "TwinsSwordWeapon";
     public const string WARAXEWEAPON = "WarAxeWeapon";
     public const string BOMB_BASE = "BombBase";
+    public const string BOMB_ICE = "BombIce";
 
     //Projectile
     public const string SHURIKENPROJECTILE = "ShurikenProjectile";

@@ -11,12 +11,14 @@ public class DamagePartEnemyIdleState : DamagePartEnemyState
     {
         base.Enter();
         time = 2f;
-        //partEnemy.idling.IdleHandle();
+        partEnemy.idle.IdleHandle(partEnemy.ragdollController.actionBase);
     }
     public override void Update()
     {
         base.Update();
+
         time -= Time.deltaTime;
+
         if (time <= 0f)
         {
             stateMachine.ChangeState(partEnemy.damagePartEnemyCombatState);
