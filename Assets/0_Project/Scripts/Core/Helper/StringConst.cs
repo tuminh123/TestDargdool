@@ -12,6 +12,7 @@ public static class StringConst
     public const string GAMEPLAYSCENE = "GamePlay";
     public const string UPGRADESCENE = "UpgradeScene";
     public const string LOADINGSCENE = "LoadingScene";
+    public const string BOSSROOM = "BossRoom";
 
     //Character
     public const string IDLE = "Idle";

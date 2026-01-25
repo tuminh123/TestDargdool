@@ -32,8 +32,16 @@ public class DamagePartEnemyCombatState : DamagePartEnemyState
 
         if (attackTime <= 0f)
         {
-            stateMachine.ChangeState(partEnemy.damagePartEnemyAttackState);
-            return;
+            if (partEnemy.healthBase.CurrentHealth <= (partEnemy.healthBase.MaxHealth / 2) && partEnemy.CanActiveSkill())
+            {
+                stateMachine.ChangeState(partEnemy.damagePartEnemyAreaIceSkill);
+                return;
+            }
+            else
+            {
+                stateMachine.ChangeState(partEnemy.damagePartEnemyAttackState);
+                return;
+            }
         }
 
         partEnemy.idle.IdleHandle(partEnemy.ragdollController.actionBase);

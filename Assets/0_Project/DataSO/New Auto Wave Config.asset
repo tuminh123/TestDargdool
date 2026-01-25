@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f64985a288076ea49a6baafae11f3ec2, type: 3}
+  m_Name: New Auto Wave Config
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 8986815103135028540, guid: 0bb423490f937b141b772fd858b670e9, type: 3}
+  totalWaves: 10
+  startCount: 5
+  increasePerWave: 5
+  spawnInterval: 2
+  waveDelay: 2
+  healthPerWave: 3
+  damagePerWave: 2
+  critChancePerWave: 1
+  critMultiplierPerWave: 5

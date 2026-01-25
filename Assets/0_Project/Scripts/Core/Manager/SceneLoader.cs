@@ -18,6 +18,10 @@ public class SceneLoader : MonoBehaviour
     {
         LoadScene(StringConst.GAMEPLAYSCENE);
     }
+    public void LoadBossScene()
+    {
+        LoadScene(StringConst.BOSSROOM);
+    }
     public void LoadUpgradeScene()
     {
         LoadScene(StringConst.UPGRADESCENE);

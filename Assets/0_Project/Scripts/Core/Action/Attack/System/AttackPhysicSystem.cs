@@ -1,7 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 
 public class AttackPhysicSystem : IRagdollAttackSystem

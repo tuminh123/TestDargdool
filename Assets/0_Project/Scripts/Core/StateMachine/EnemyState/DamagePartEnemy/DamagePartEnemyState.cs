@@ -44,11 +44,6 @@ public class DamagePartEnemyState : IState
             stateMachine.ChangeState(partEnemy.damagePartEnemyStund);
             return;
         }
-        if (partEnemy.healthBase.CurrentHealth <= 998 && partEnemy.CanSummon())
-        {
-            stateMachine.ChangeState(partEnemy.damagePartEnemySummon);
-            return;
-        }
         if (partEnemy.CanTeleport)
         {
             stateMachine.ChangeState(partEnemy.teleportState);

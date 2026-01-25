@@ -18,39 +18,49 @@ public class DamagePartEnemy : EnemyAI
     public DamagePartEnemySummon damagePartEnemySummon { get; private set; }
     public DamagePartShooting partShooting { get; private set; }
     public DamagePartEnemyTeleportState teleportState { get; private set; }
+    public DamagePartEnemyAreaIceSkill damagePartEnemyAreaIceSkill { get; private set; }
     #endregion
 
     public event System.Action EndShooting;
     public event System.Action EndTeleport;
     public event System.Action EndSummon;
+    public event System.Action EndIceSkill;
 
     [SerializeField] private Transform head;
+
+    [Space]
+    [Header("Shoot skill")]
     [SerializeField] private Transform shootPointLeft;
     [SerializeField] private Transform shootPointRight;
-
     [SerializeField] private float durationShoot = 10f;
+    public Transform currentShootPoint { get; private set; }
+    public float timeToShoot { get; private set; }
+    public CharacterShoot shoot { get; private set; }
+
+    [Space]
+    [Header("Teleport skill")]
     [SerializeField] private float durationTeleport = 8f;
     [SerializeField] private float distance = 10f;
+    public float timeToTeleport { get; private set; }
 
+    [Space]
+    [Header("Summon Skill")]
     [SerializeField] private GameObject clone;
-
     [SerializeField] private int maxSummonCount = 5;
     [SerializeField] private float summonCooldown = 12f;
-
     private float lastSummonTime = -999f;
     private int currentAliveMinions = 0;
 
-
+    [Space]
+    [Header("Ice area skill")]
     [SerializeField] private RegenerationDamageArea damageArea;
-
-    public float timeToShoot {  get; private set; }
-    public float timeToTeleport{  get; private set; }
-    public CharacterShoot shoot { get;private set; }    
-    public Transform currentShootPoint { get; private set; }
+    [SerializeField] private float skillCooldown = 12f;
+    private float lastSkillTime = -999f;
 
     private CancellationTokenSource cts_Shoot;
     private CancellationTokenSource cts_Teleport;
     private CancellationTokenSource cts_Summon;
+    private CancellationTokenSource cts_Skill;
     //get
     public Transform Head => head;
     public RegenerationDamageArea DamageArea => damageArea;
@@ -67,6 +77,7 @@ public class DamagePartEnemy : EnemyAI
         damagePartEnemySummon = new DamagePartEnemySummon(this, stateMachine);
         partShooting = new DamagePartShooting(this, stateMachine);
         teleportState = new DamagePartEnemyTeleportState(this, stateMachine);
+        damagePartEnemyAreaIceSkill = new DamagePartEnemyAreaIceSkill(this, stateMachine);
 
         shoot = new SnowBossShoot(currentShootPoint);
 
@@ -74,10 +85,13 @@ public class DamagePartEnemy : EnemyAI
     protected override void Start()
     {
         base.Start();
-        DontAddExp();
+
         stateMachine.InitState(damagePartEnemyIdleState);
+
         timeToShoot = durationShoot;
         timeToTeleport = durationTeleport;
+
+        if (damageArea != null) damageArea.gameObject.SetActive(false);
     }
 
     protected override void Update()
@@ -87,6 +101,58 @@ public class DamagePartEnemy : EnemyAI
         base.Update();
 
     }
+
+    #region Ice area skill
+
+    public bool CanActiveSkill()
+    {
+        if (Time.time - lastSkillTime < skillCooldown) return false;
+
+        return true;
+    }
+    public void ActiveIceAreaSkill()
+    {
+        if (!CanActiveSkill())
+        {
+            EndIceSkill?.Invoke();
+            return;
+        }
+
+        cts_Skill = new CancellationTokenSource();
+        var ltcs = CancellationTokenSource.CreateLinkedTokenSource(cts_Skill.Token, this.GetCancellationTokenOnDestroy()).Token;
+
+        UniTaskSafe.Forget
+        (
+            ct =>   IceAreaSkillHandle(ct),
+            ltcs,
+            $"{gameObject.name} is active ice area skill"
+        );
+    }
+    private async UniTask IceAreaSkillHandle(CancellationToken token)
+    {
+        VfxBase vfxIceBomb = null;
+        ZenManager.Instance?.vfxPoolManager?.SpawnVfx(StringConst.ICEBOMBVFX, gameObject, out vfxIceBomb);
+        damageArea?.gameObject?.SetActive(true);
+
+        await UniTask.WaitForSeconds(1f, cancellationToken: token);
+
+        ZenManager.Instance?.vfxPoolManager?.DeSpawnVfx(vfxIceBomb);
+        damageArea?.gameObject?.SetActive(false);
+
+    }
+
+    public void CancelIceAreaSkill()
+    {
+        if (cts_Skill != null)
+        {
+            if (!cts_Skill.IsCancellationRequested) cts_Skill.Cancel();
+            cts_Skill.Dispose();
+            cts_Skill = null;
+        }
+    }
+
+
+    #endregion
 
     #region Summon
 
@@ -164,6 +230,12 @@ public class DamagePartEnemy : EnemyAI
 
     public void Teleport()
     {
+        if (!CanTeleport)
+        {
+            EndTeleport?.Invoke();
+            return;
+        }
+
         cts_Teleport = new CancellationTokenSource();
         var ltcs = CancellationTokenSource.CreateLinkedTokenSource(cts_Teleport.Token, this.GetCancellationTokenOnDestroy()).Token;
 
@@ -216,6 +288,13 @@ public class DamagePartEnemy : EnemyAI
     public bool CanShoot => timeToShoot <= 0;
     public void ShootHandle()
     {
+
+        if (!CanShoot)
+        {
+            EndShooting?.Invoke();
+            return;
+        }
+
         cts_Shoot = new CancellationTokenSource();
         var ltcs = CancellationTokenSource.CreateLinkedTokenSource(cts_Shoot.Token,this.GetCancellationTokenOnDestroy()).Token;
 

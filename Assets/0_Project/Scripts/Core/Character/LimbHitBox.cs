@@ -1,5 +1,4 @@
 ﻿using Core;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class LimbHitBox : GameElement,IReceive<SignalSendDamage>,IPhysicReceiveDamage

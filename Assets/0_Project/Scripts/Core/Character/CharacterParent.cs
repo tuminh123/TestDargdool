@@ -240,15 +240,19 @@ public abstract class CharacterParent : MonoBehaviour,IResettable,IObjSendDamage
         isFacingRight = !isFacingRight;
         transform.Rotate(0, 180, 0);
     }
-    public void Buff(float healthMultiplier, float damageMultiplierr)
+    public void Buff(float healthMultiplier, float damageMultiplierr,float critC,float critM)
     {
         //Debug.Log("buff");
         float buffMaxHealth = stats.MaxHealth * healthMultiplier;
         float buffDamageBase = stats.DamageBase * damageMultiplierr;
+        float buffCritC = stats.CritChane * critC;
+        float buffCritM = stats.CritMultiplier * critM;
         //Debug.Log(buffMaxHealth);
         //Debug.Log(buffDamageBase);
         stats.SetMaxHealth(buffMaxHealth);
         stats.SetDamageBase(buffDamageBase);
+        stats.SetCritChane(buffCritC);
+        stats.SetCritMultiplier(buffCritM);
 
         healthBase.SetMaxHealth(stats.MaxHealth);
     }

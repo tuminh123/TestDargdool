@@ -130,6 +130,10 @@ public abstract class EnemyAI : CharacterParent
         if (LevelManager.Instance == null) return;
         if (!CanAddExp) return;
         LevelManager.Instance.AddExp(100);
+
+        if (SingletonManager.Instance == null || SingletonManager.Instance.goldManager == null) return;
+        SingletonManager.Instance.goldManager.AddGold(1);
+        Global.Send(new SignalGoldReceived { receivedGoldCount = 1 });
     }
     public void DontAddExp() => CanAddExp = false;
 }

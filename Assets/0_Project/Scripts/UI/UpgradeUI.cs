@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading;
 using AssetKits.ParticleImage;
 using Core;
 using Cysharp.Threading.Tasks;
@@ -45,7 +46,7 @@ public class UpgradeUI : MonoBehaviour //GameElement, IReceive<SignalUpgrade>
             
             UniTaskSafe.Forget
             (
-                tc => EffectHandle(),
+                tc => EffectHandle(tc),
                 this.GetCancellationTokenOnDestroy(),
                 $"{type.ToString()} upgrade effect"
             );
@@ -53,10 +54,10 @@ public class UpgradeUI : MonoBehaviour //GameElement, IReceive<SignalUpgrade>
         }
     }
 
-    private async UniTask EffectHandle()
+    private async UniTask EffectHandle(CancellationToken token)
     {
         particleImage.SetActive(true);
-        await UniTask.Delay(2000);
+        await UniTask.Delay(1000,cancellationToken: token);
         particleImage.SetActive(false);
     }
     public void InitUpgradeUI()

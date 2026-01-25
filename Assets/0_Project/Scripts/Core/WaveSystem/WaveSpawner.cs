@@ -7,7 +7,11 @@ using UnityEngine;
 public class WaveSpawner : MonoBehaviour
 {
     [SerializeField] private List<Wave> waves;
-    [SerializeField] private Transform[] spawnPoints;
+    [Space]
+    [Space]
+    [Header("Auto spawn")]
+    [SerializeField] private bool useAutoWave;
+    [SerializeField] private AutoWaveConfig autoWaveConfig;
     /*[SerializeField] private bool isSpawn;*/
 
     private int currentWaveIndex = 0;
@@ -16,11 +20,17 @@ public class WaveSpawner : MonoBehaviour
 
     private void Start()
     {
+        if (useAutoWave && autoWaveConfig != null)
+        {
+            waves = AutoWaveGenerator.Generate(autoWaveConfig);
+        }
+
+
         WaveSapwning();
 
         //TÍNH TỔNG ENEMY TRONG WAVE
         Wave wave = waves[currentWaveIndex];
-      ResetEnemyCount(wave);
+        ResetEnemyCount(wave);
 
 
         GameEventBus.OnGameRestart += OnGameRestart;
@@ -88,8 +98,8 @@ public class WaveSpawner : MonoBehaviour
             {
                 for (int i = 0; i < enemyData.Count; i++)
                 {
-                    Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                    GameObject enemyObj = SpawnEnemy(enemyData.EnemyPrefab, spawnPoint.position);
+                    Vector3 spawnPoint = SpawnPoint.Instance.GetSpawnPos();
+                    GameObject enemyObj = SpawnEnemy(enemyData.EnemyPrefab, spawnPoint);
                     ApplyBuffToEnemy(enemyObj, enemyData, currentWaveIndex);
                     yield return new WaitForSeconds(enemyData.SpawnInterval);
                 }
@@ -152,9 +162,10 @@ public class WaveSpawner : MonoBehaviour
         {
             float healthMultiplier = 1f + enemyData.healthPerWave * waveIndex;
             float damageMultiplier = 1f + enemyData.damagePerWave * waveIndex;
+            float critCMultiplier = 1f + enemyData.critChancePerWave * waveIndex;
+            float critMMultiplier = 1f + enemyData.critMultiplierPerWave * waveIndex;
 
-
-            enemy.Buff(healthMultiplier, damageMultiplier);
+            enemy.Buff(healthMultiplier, damageMultiplier,critCMultiplier,critMMultiplier);
         }
     }
 
